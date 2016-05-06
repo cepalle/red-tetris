@@ -16,7 +16,7 @@ Because we use React, Redux, Node.js and Socket.io, we had to define 3 kinds of 
 
 ### Install
 
-Install (https://nodejs.org/en/)[node] first.
+Install [node](https://nodejs.org/en/) first.
 Then,
 
 ```
