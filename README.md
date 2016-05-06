@@ -16,8 +16,7 @@ Because we use React, Redux, Node.js and Socket.io, we had to define 3 kinds of 
 
 ### Install
 
-Install [node](https://nodejs.org/en/) first.
-Then,
+Install [node](https://nodejs.org/en/) first. After that:
 
 ```
 $ npm install
@@ -53,7 +52,7 @@ webpack: bundle is now VALID.
 ```
 
 
-Point your browser to `http://0.0.0.0:8080/` will load client side application. You should see `Soon, will be here a fantastic Tetris ...`, open your console and check you have :
+Point your browser to `http://0.0.0.0:8080/` it will load client side application. You should see `Soon, will be here a fantastic Tetris ...`, open your console and check you have :
 
 ```
 [HMR] Waiting for update signal from WDS...
@@ -91,7 +90,7 @@ A simple template to implement simple unit tests. In Tetris context you will try
 
 #### redux.js
 
-Target is to test `actions` and `reducers` in one time. You can always split those tests as explained (http://redux.js.org/docs/recipes/WritingTests.html)[here].
+Target is to test `actions` and `reducers` in one time. You can always split those tests as explained [here](http://redux.js.org/docs/recipes/WritingTests.html).
 Look at the code :
 
 ```
@@ -123,7 +122,7 @@ describe('Fake redux test', function(){
 ```
 
 1. We use a special middleware to set up hooks in action’s workflow.
-2. We need root reducer, but can use any kind of reducer
+2. We use here the  root reducer, but it can be replaced by  any kind of reducer
 3. target is to check updates in our store, so we have to create a store for each check (`it()`), `configureStore` is a store helper.
 
 *configureStore* :
@@ -131,7 +130,7 @@ describe('Fake redux test', function(){
 * `reducer`:  not necessary the root one
 * `socket`:  (unused here)
 * `initial state`:  set up to realize the action
-* `actions hook`: object where keys are action’s type and values are callbacks. `action’s type` is one of your actions defines in your application, `callback` function will receive  {getState, dispatch, action} as real parameter.
+* `actions hook`: object where keys are action’s type and values are callbacks. `action’s type` is one of your actions defined in your application, `callback` function will receive  {getState, dispatch, action} as real parameter.
 
 Thanks to the hook you can react to actions, just to check a new state after an action, or to send actions to follow a workflow and check state at the end.
 
@@ -141,7 +140,7 @@ In our sample, we register a callback when `ALERT_POP` will be dispatched and ch
 
 #### server.js
 
-Very similar to previous test, but offer to test server code involved in a client action. You can use this kind of solution to test a pipeline like `action -> fetch -> action -> reducer`. Here client / server communication is based on socket.io and we use a middleware inspired by (https://github.com/itaylor/redux-socket.io)[redux-socket.io] to transparantly dispatch and receive socket.io messages. So our test covers  `action -> socket.emit -> server code -> client socket callback -> action -> reducer`. I do not know if it’s still a unit test, but it’s a useful solution to test.
+Very similar to previous test, but offer to test server code involved in a client action. You can use this kind of solution to test a pipeline like `action -> fetch -> action -> reducer`. Here client / server communication is based on socket.io and we use a middleware inspired by [redux-socket.io](https://github.com/itaylor/redux-socket.io) to transparantly dispatch and receive socket.io messages. So our test covers  `action -> socket.emit -> server code -> client socket callback -> action -> reducer`. I do not know if it’s still a unit test, but it’s a useful solution to test.
 
 Let’s have a look on code:
 
@@ -188,7 +187,7 @@ In our context, we dispatch `ping` action and register a callback on `pong` acti
 
 #### Coverage
 
-WARNING: The actual set up will not give you the whole coverage of your tests, but only the coverage of imported modules. So beware of importing in test’s files all modules you have to test.
+WARNING: The actual set up will not give you the whole coverage of your tests, but only the coverage of imported modules. So beware to import in test’s files all modules you have to test.
 
 ```
 npm run coverage
@@ -203,7 +202,7 @@ Check results …. of this command, and launch your browser to `./coverage/lcov-
 
 ### Production Mode
 
-It’s not a production recipe to run your Tetris over billions of players, but just 2 commandes to run it without live reload.
+It’s not a production recipe to run your Tetris over billions of players, but just 2 commands to run it without live reload.
 
 ```
 $ npm run srv-dist
