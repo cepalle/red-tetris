@@ -188,8 +188,6 @@ In our context, we dispatch `ping` action and register a callback on `pong` acti
 
 #### Coverage
 
-WARNING: The actual set up will not give you the whole coverage of your tests, but only the coverage of imported modules. So beware of importing in test’s files all modules you have to test.
-
 ```
 npm run coverage
 

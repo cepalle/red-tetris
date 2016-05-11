@@ -9,7 +9,7 @@
     "srv-dev": "DEBUG=tetris:* babel-watch -w src src/server/main.js",
     "srv-dist": "DEBUG=tetris:* babel src --out-dir dist",
     "test": "mocha --require babel-core/register --reporter spec",
-    "coverage": "NODE_ENV=test BABEL_PLUGIN__COVERAGE__TEST=1 nyc -r lcov -r text mocha --require babel-core/register"
+    "coverage": "NODE_ENV=test nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha "
   },
   "dependencies": {
     "react": "^15.0.2",
@@ -33,15 +33,15 @@
     "chai-as-promised": "^5.3.0",
     "chai-equal-jsx": "^1.0.9",
     "mocha": "^2.4.5",
-    "nyc": "^6.4.0",
+    "nyc": "^6.4.4",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.6.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.10.0"
   },
   "nyc": {
-    "include": [
-      "/"
+    "exclude": [
+      "build"
     ]
   },
   "babel": {
@@ -49,18 +49,6 @@
       "es2015",
       "react",
       "stage-0"
-    ],
-    "env": {
-      "test": {
-        "plugins": [
-          [
-            "__coverage__",
-            {
-              "ignore": "test/"
-            }
-          ]
-        ]
-      }
-    }
+    ]
   }
 }
