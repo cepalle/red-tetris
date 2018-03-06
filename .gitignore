@@ -6,4 +6,3 @@ tmp
 node_modules
 .idea/
 42_red-tetris.iml
-package-lock.json
