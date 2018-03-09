@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "client-prod": "webpack-dev-server --mode production ./src/client/index.js --open",
     "client-dev": "webpack-dev-server --mode development ./src/client/index.js --open",
-    "srv-prod" : "node ./src/srv/main.js",
-    "srv-dev" : "node ./src/srv/main.js"
+    "srv-prod": "node ./src/srv/main.js",
+    "srv-dev": "node ./src/srv/main.js"
   },
   "keywords": [],
   "author": "cepalle;aviscogl",
@@ -25,5 +25,8 @@
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.10",
     "webpack-dev-server": "^3.1.0"
+  },
+  "dependencies": {
+    "redux": "^3.7.2"
   }
 }
