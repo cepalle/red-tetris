@@ -1,16 +1,15 @@
 {
-  "name": "red_test",
-  "version": "1.0.0",
+  "name": "42_red-tetris",
+  "version": "0.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --mode development",
-    "build": "webpack --mode production",
-    "start": "webpack-dev-server --mode development --open"
+    "client-prod": "webpack-dev-server --mode production --open",
+    "client-dev": "webpack-dev-server --mode development --open"
   },
   "keywords": [],
-  "author": "",
+  "author": "cepalle;aviscogl",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.0",
