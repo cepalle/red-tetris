@@ -1,7 +1,7 @@
 {
-  "name": "red_tetrisboilerplate",
+  "name": "red_tetris",
   "version": "0.0.1",
-  "author": "redpelicans",
+  "author": "cepalle;aviscogl",
   "license": "MIT",
   "scripts": {
     "eslint": "eslint src",
@@ -13,13 +13,13 @@
     "coverage": "NODE_ENV=test nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha "
   },
   "dependencies": {
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2",
-    "react-redux": "^4.4.5",
-    "redux": "^3.5.2",
-    "redux-logger": "^2.6.1",
-    "redux-thunk": "^2.0.1",
-    "socket.io": "^1.4.6"
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
+    "redux": ">=3.5.2",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": ">=2.0.1",
+    "socket.io": "^2.0.4"
   },
   "devDependencies": {
     "babel-cli": "^6.7.7",
