@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client-prod": "webpack-dev-server --mode production --open",
-    "client-dev": "webpack-dev-server --mode development --open"
+    "client-prod": "webpack-dev-server --mode production ./src/client/index.js --open",
+    "client-dev": "webpack-dev-server --mode development ./src/client/index.js --open",
+    "srv-prod" : "node ./src/srv/main.js",
+    "srv-dev" : "node ./src/srv/main.js"
   },
   "keywords": [],
   "author": "cepalle;aviscogl",
