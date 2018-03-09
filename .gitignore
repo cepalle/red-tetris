@@ -1,8 +1,3 @@
-*~
-*.swp
-*.swo
-log
-tmp
-node_modules
-.idea/
-42_red-tetris.iml
+./dist
+./node_modules
+./idea
