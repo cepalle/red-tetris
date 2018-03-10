@@ -1,4 +1,4 @@
-# 42_red-tetris
+# red-tetris
 
 libs that can be useful to add:
 * redux-logger
