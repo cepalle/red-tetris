@@ -1,4 +1,5 @@
 dist/
+false/
 node_modules/
 .idea/
-red-tetris.iml
+*.iml
