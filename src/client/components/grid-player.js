@@ -3,8 +3,9 @@ import React from "react";
 const LinePlayer = (props) => {
   let line_render = [];
   for (let i = 0; i < props.line.length; i++) {
+    let part_name = "part_" + props.line[i];
     line_render.push(
-      <div key={i}>{props.line[i]}</div>
+      <div key={i} className={part_name}>{props.line[i]}</div>
     );
   }
   return (
