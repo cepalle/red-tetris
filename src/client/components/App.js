@@ -1,11 +1,11 @@
 import React from "react";
+import {store} from "../store";
+import {GridPlayer} from "./grid-player";
 
 const App = () => {
   return (
     <div>
-      <p>
-        React here!
-      </p>
+      <GridPlayer grid={store.getState().grids[0].grid} />
     </div>
   );
 };

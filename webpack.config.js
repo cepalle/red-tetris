@@ -1,7 +1,8 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 module.exports = {
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
@@ -16,6 +17,12 @@ module.exports = {
             minimize: true
           }
         }]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {loader: "css-loader"},
+        ]
       }
     ]
   },
