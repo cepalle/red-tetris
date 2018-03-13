@@ -7,6 +7,7 @@ import {add_parts_flow} from "./action-creators"
 const socket = io.connect('http://localhost:4433');
 
 // socket.on('flow', data => store.dispatch(add_parts_flow(data)));
+// socket.on('conection', /* creat or rejoin rooms */);
 
 function gen_flow() {
   console.log("gen_flow");

@@ -1,5 +1,7 @@
 import {PARTS} from '../common/parts';
 
+{window.location.href}
+
 const exemple = {
   grids: [
     {
@@ -27,8 +29,8 @@ const exemple = {
       player_name: "name",
     },
   ],
-  player_name: "name",
-  room_name: "room",
+  player_name: window.location.href.split("[")[1].split("]")[0], // change ?
+  room_name: window.location.href.split("#")[1].split("[")[0],
   is_master: true,
   parts_flow: [PARTS._1, PARTS._2, PARTS._1, PARTS._5, PARTS._6, PARTS._1],
   cur_part_pos: {x: 0, y: 5},
