@@ -1,5 +1,5 @@
 import {PARTS} from '../common/parts';
-import {url_get_player_name, url_get_room_name} from "./url_handler"
+import {url_get_player_name, url_get_room_name} from "./url-handler"
 
 const initialState = {
   grids: [
