@@ -1,5 +1,5 @@
 
-const RoomManager = require("../RoomsManager");
+const RoomManager = require("../data/room/RoomsManager");
 const socketDefs = require("../../common/socket-definitions");
 
 const ERRORS = {

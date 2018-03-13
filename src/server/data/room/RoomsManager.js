@@ -52,7 +52,7 @@ class RoomManager {
     if (room.getUsers().length === 0)
       return false;
     room.getUsers().forEach(e => {
-      room.removeUser(e);
+      room.removeUser(e.username);
     });
     return true;
   }
