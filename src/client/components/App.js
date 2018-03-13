@@ -7,7 +7,7 @@ const App = () => {
     <div>
       <Grid grid={store.getState().grids[0].grid} />
       <br/>
-      <Line line={store.getState().parts_flow}/>
+      <p>part flow:</p><Line line={store.getState().parts_flow}/>
     </div>
   );
 };

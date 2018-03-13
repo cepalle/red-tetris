@@ -1,4 +1,4 @@
-import {PARTS} from '../parts';
+import {PARTS} from '../common/parts';
 
 const exemple = {
   grids: [
