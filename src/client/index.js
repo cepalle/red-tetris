@@ -4,6 +4,4 @@ import App from "./components/App";
 import './index.css'
 //import {socket} from "./socketAPI";
 
-console.log("FUCK YOU !!!!!", socket)
-
 ReactDOM.render(<App/>, document.getElementById("app"));
