@@ -8,4 +8,4 @@ const PARTS = {
   _7 : 7,
 };
 
-export {PARTS};
+module.exports = {PARTS};
