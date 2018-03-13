@@ -1,44 +1,33 @@
 import React from "react";
 import {add_parts_flow} from "../action-creators";
-import {store} from "../store";
+import {connect} from 'react-redux';
 
+const Line = ({line, onClickCase}) =>
+  <div className="line">
+    {line.map((el, i) =>
+      <div key={i} className={"part_" + el} onClick={() => onClickCase(line[i])}/>
+    )}
+  </div>
+;
 
-
-
-
-import { connect } from 'react-redux';
-
-
-
-
-
-
-
-
-
-const Line = props => {
-  return (
-    <div className="line">
-      {props.line.map((el, i) =>
-        <div key={i} className={"part_" + el} onClick={() => {
-
-          store.dispatch(add_parts_flow([props.line[i]]));
-          console.log(props.line[i]);
-
-
-        }
-        }/>
-      )}
-    </div>
-  );
+const mapStateToPropsLine = state => {
+  return {
+    line: state.parts_flow.map(e => e)
+  }
 };
 
-const Grid = props => {
-  return (
-    <div className="grid">
-      {props.grid.map((el, i) => <Line key={i} line={el}/>)}
-    </div>
-  );
+const mapDispatchToPropsLine = dispatch => {
+  return {
+    onClickCase: e => {
+      dispatch(add_parts_flow([e]));
+      console.log(e);
+    }
+  }
 };
 
-export {Grid, Line};
+const LineConnect = connect(
+  mapStateToPropsLine,
+  mapDispatchToPropsLine
+)(Line);
+
+export {LineConnect};
