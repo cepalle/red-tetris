@@ -55,15 +55,12 @@ const initialState = {
 };
 
 const reducer = (state = exemple, action) => {
-  /*
   switch (action.type) {
-    case 'ADD_TODO':
-      return state.concat([action.text]);
+    case 'ADD_PARTS_FLOW':
+      return Object.assign({}, state, {parts_flow: state.parts_flow.concat(action.data)});
     default:
       return state;
   }
-  * */
-  return state;
 };
 
 export {reducer};
