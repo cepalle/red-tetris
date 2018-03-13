@@ -1,6 +1,6 @@
 const User = require("./User");
 const RoomManager = require("./RoomsManager");
-const RoomPacketSender = require("./packet/packet-sender");
+const PacketSender = require("./packet/packet-sender");
 
 class Room {
 
@@ -25,7 +25,7 @@ class Room {
       const user = new User(username, id, Date.now(), master);
       this.users.push(user);
 
-      RoomPacketSender.packetSendPlayerJoin(user, this);
+      PacketSender.packetSendPlayerJoin(user, this);
 
       return user;
     }
@@ -42,7 +42,7 @@ class Room {
     if (user.isMaster())
       this.promoteNewUser(user);
 
-    RoomPacketSender.packetSendPlayerQuit(user, this);
+    PacketSender.packetSendPlayerQuit(user, this);
 
     return user;
   }
@@ -58,7 +58,7 @@ class Room {
     if (user.isMaster())
       this.promoteNewUser(user);
 
-    RoomPacketSender.packetSendPlayerQuit(user, this);
+    PacketSender.packetSendPlayerQuit(user, this);
 
     return user;
   }
@@ -89,7 +89,7 @@ class Room {
     this.waiting = stateWaiting;
 
     if (this.waiting)
-      RoomPacketSender.packetSendGameStart(this);
+      PacketSender.packetSendGameStart(this);
   }
 
   /**
@@ -102,7 +102,7 @@ class Room {
     else {
       const promotedUser = this.users.sort((a, b) => a.order > b.order)[0];
       promotedUser.setMaster(true);
-      RoomPacketSender.packetSendPlayerPromoted(promotedUser, this);
+      PacketSender.packetSendPlayerPromoted(promotedUser, this);
     }
   }
 
