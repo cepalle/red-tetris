@@ -38,6 +38,10 @@ const ERRORS = {
 
 class SocketHandler {
 
+  /**
+   * Create a new socket handler
+   * @param socket
+   */
   constructor(socket) {
     this.socket = socket;
     this.id = socket.id;
@@ -70,7 +74,13 @@ class SocketHandler {
         this.socket.emit(response, {error: ERRORS.ROOM_NOT_EXIST});
         return;
       }
-      if (!RoomManager.getRoom(data.roomName).canJoin())
+      const room = RoomManager.getRoom(data.roomName);
+      if (!room.canJoin()) {
+        this.socket.emit(response, {error: ERRORS.ROOM_ALREADY_IN_GAME});
+        return;
+      }
+      room.addUser(data.playerName, this.id);
+      this.socket.emit(response, {success: true})
     }
   }
 

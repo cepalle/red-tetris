@@ -3,22 +3,21 @@ require("./util/ArraysUtil");
 const server = require("net").createServer();
 const io = require("socket.io")(server);
 const SocketHandler = require("SocketHandler");
-const RoomManager = require("RoomsManager");
+
+const socketHandlerList = [];
 
 
 function handleClient(socket) {
-  const id = socket.id;
 
-  socket.on("createRoom", function (info) {
-    if (info.roomName && info.playerName) {
+  const socketHandler = new SocketHandler(socket);
+  socketHandlerList.push(socketHandler);
 
-    }
-    else
-      socket.emit("createRoomResponse", {error: ""})
-  });
+  socket.on("createRoom", socketHandler.createRoom);
+  socket.on("joinRoom", socketHandler.joinRoom);
 
   socket.on("disconnect", function () {
-
+    socketHandlerList.removeObj(socketHandler);
+    //TODO disconect action (remove from room ...)
   });
 }
 
