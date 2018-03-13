@@ -1,7 +1,11 @@
 import io from 'socket.io-client';
 
-const socket = io.connect('https://le-101.tk:443');
 
+// handel subscription
+
+const socket = io.connect('https://le-101.tk:4433'); // REPLACE adresse
+
+/*
 function subscribeToId(cb) {
   socket.on('setId', cid => cb(cid));
 }
@@ -9,3 +13,5 @@ function subscribeToId(cb) {
 function sendAction(act, id) {
   socket.emit("action", id, act);
 }
+*/
+export {socket};

@@ -1,6 +1,6 @@
 import React from "react";
 
-const LinePlayer = (props) => {
+const Line = (props) => {
   let line_render = [];
   for (let i = 0; i < props.line.length; i++) {
     let part_name = "part_" + props.line[i];
@@ -15,11 +15,11 @@ const LinePlayer = (props) => {
   );
 };
 
-const GridPlayer = (props) => {
+const Grid = (props) => {
   let grid_render = [];
   for (let i = 0; i < props.grid.length; i++) {
     grid_render.push(
-      <LinePlayer key={i} line={props.grid[i]}/>
+      <Line key={i} line={props.grid[i]}/>
     );
   }
 
@@ -30,4 +30,4 @@ const GridPlayer = (props) => {
   );
 };
 
-export {GridPlayer};
+export {Grid, Line};
