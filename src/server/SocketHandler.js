@@ -86,8 +86,8 @@ class SocketHandler {
 
   /**
    * Check if data contain data.roomName and data.playerName
-   * @param data
-   * @param response
+   * @param {Object} data
+   * @param {string} response
    * @returns {boolean}
    */
   dataIsValid(data, response) {
@@ -98,5 +98,6 @@ class SocketHandler {
       return false;
     }
   }
-
 }
+
+module.exports = SocketHandler;
