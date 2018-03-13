@@ -2,21 +2,25 @@ import React from "react";
 import {add_parts_flow} from "../action-creators";
 import {connect} from 'react-redux';
 
-const Line = ({line, onClickCase}) =>
-  <div className="line">
-    {line.map((el, i) =>
-      <div key={i} className={"part_" + el} onClick={() => onClickCase(line[i])}/>
+const GridPlayerComponent = ({grid, onClickCase}) =>
+  <div className={"grid"}>
+    {grid.map((line, i) =>
+      <div key={i} className={"line"}>
+        {line.map((el, j) =>
+          <div key={j} className={"part_" + el} onClick={() => onClickCase(el)}/>
+        )}
+      </div>
     )}
   </div>
 ;
 
-const mapStateToPropsLine = state => {
+const mapStateToProps = state => {
   return {
-    line: state.parts_flow.map(e => e)
+    grid: state.grids[0].grid.map(l => l.map(el => el))
   }
 };
 
-const mapDispatchToPropsLine = dispatch => {
+const mapDispatchToProps = dispatch => {
   return {
     onClickCase: e => {
       dispatch(add_parts_flow([e]));
@@ -25,9 +29,9 @@ const mapDispatchToPropsLine = dispatch => {
   }
 };
 
-const LineConnect = connect(
-  mapStateToPropsLine,
-  mapDispatchToPropsLine
-)(Line);
+const GridPlayer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GridPlayerComponent);
 
-export {LineConnect};
+export {GridPlayer};

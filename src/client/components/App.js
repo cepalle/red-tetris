@@ -1,12 +1,13 @@
 import React from "react";
-import {LineConnect} from "./grid-player";
+import {FlowTest} from "./flow-test";
+import {GridPlayer} from "./grid-player"
 
-const App = () => {
-  return (
-    <div>
-      <p>part flow:</p><LineConnect />
-    </div>
-  );
-};
+const App = () =>
+  <div>
+    <GridPlayer/>
+    <p>part flow:</p>
+    <FlowTest/>
+  </div>
+;
 
 export default App;
