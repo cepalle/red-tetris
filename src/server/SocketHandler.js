@@ -1,5 +1,5 @@
 
-const RoomManager = require("RoomsManager");
+const RoomManager = require("./RoomsManager");
 
 //----------------------------------------------------------------------------
 //
