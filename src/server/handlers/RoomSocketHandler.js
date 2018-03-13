@@ -1,21 +1,6 @@
 
 const RoomManager = require("../RoomsManager");
-
-//----------------------------------------------------------------------------
-//
-// Event Socket.io Server side
-// createRoom    = {roomName, playerName}
-// joinRoom      = {roomName, playerName}
-// quitRoom      = {roomName, playerName}
-// startPlaying  = {roomName, playerName}
-//
-// Event Socket.io Client side
-// createRoomResponse    = {error: {type, message}} || {success, room, user}
-// joinRoomResponse      = {error: {type, message}} || {success, room, user}
-// quitRoomResponse      = {error: {type, message}} || {success, room, user}
-// startPlayingResponse  = {error: {type, message}} || {success, room, user}
-//
-//----------------------------------------------------------------------------
+const socketDefs = require("../../common/socket-definitions");
 
 const ERRORS = {
   UNEXPECTED_DATA: {
@@ -60,7 +45,7 @@ class RoomSocketHandler {
    * @param {string} data.roomName
    * @param {string} data.playerName
    */
-  createRoom(data, response = "createRoomResponse") {
+  createRoom(data, response = socketDefs.CREATE_ROOM) {
     if (this.dataIsValid(data, response)) {
       if (RoomManager.hasRoom(data.roomName)) {
         this.socket.emit(response, {error: ERRORS.ROOM_EXIST});
@@ -79,7 +64,7 @@ class RoomSocketHandler {
    * @param {string} data.playerName
    * @param {string} response
    */
-  joinRoom(data, response = "joinRoomResponse") {
+  joinRoom(data, response = socketDefs.CREATE_ROOM_RESPONSE) {
     if (this.dataIsValid(data, response) && this.roomIsValid(data, response)) {
       const room = RoomManager.getRoom(data.roomName);
       if (!room.canJoin())
@@ -99,7 +84,7 @@ class RoomSocketHandler {
    * @param {string} data.playerName
    * @param {string} response
    */
-  quitRoom(data, response = "quitRoomResponse") {
+  quitRoom(data, response = socketDefs.QUIT_ROOM) {
     if (this.dataIsValid(data, response) && this.roomIsValid(data, response)) {
       const room = RoomManager.getRoom(data.roomName);
       if (!room.containUser(data.playerName))

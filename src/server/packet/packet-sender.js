@@ -2,17 +2,7 @@
  * @type {Map}
  */
 const socketMap = require("../main");
-
-
-//----------------------------------------------------------------------------
-//
-// Packet room client side
-// packetPlayerJoin       = {player, room}
-// paccketPlayerQuit      = {player, room}
-// packetPlayerPromoted   = {player, room}
-// packetGameStart        = {room}
-//
-//----------------------------------------------------------------------------
+const socketDefs = require("../../common/socket-definitions");
 
 /**
  * This packet is sent when a new player is coming in a room.
@@ -21,7 +11,7 @@ const socketMap = require("../main");
  * @param {Room} room
  */
 function packetSendPlayerJoin(user, room) {
-  sendPacketToAllPlayer("packetPlayerJoin", user, room, {user, room});
+  sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_JOIN, user, room, {user, room});
 }
 
 /**
@@ -31,7 +21,7 @@ function packetSendPlayerJoin(user, room) {
  * @param {Room} room
  */
 function packetSendPlayerQuit(user, room) {
-  sendPacketToAllPlayer("packetPlayerQuit", user, room, {user, room});
+  sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_QUIT, user, room, {user, room});
 }
 
 /**
@@ -41,7 +31,7 @@ function packetSendPlayerQuit(user, room) {
  * @param {Room} room
  */
 function packetSendPlayerPromoted(user, room) {
-  sendPacketToAllPlayer("packetPlayerPromoted", user, room, {user, room}, false);
+  sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_PROMOTED, user, room, {user, room}, false);
 }
 
 /**
@@ -49,7 +39,7 @@ function packetSendPlayerPromoted(user, room) {
  * @param {Room} room
  */
 function packetSendGameStart(room) {
-  sendPacketToAllPlayer("packetGameStart", user, room, {room}, false);
+  sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, user, room, {room}, false);
 }
 
 function sendPacketToAllPlayer(packetName, user, room, data, exceptConcerned = true) {
@@ -59,4 +49,4 @@ function sendPacketToAllPlayer(packetName, user, room, data, exceptConcerned = t
   });
 }
 
-module.exports = { packetSendPlayerJoin, packetSendPlayerPromoted, packetSendPlayerQuit, packetSendGameStart};
+module.exports = { packetSendPlayerJoin, packetSendPlayerPromoted, packetSendPlayerQuit, packetSendGameStart };

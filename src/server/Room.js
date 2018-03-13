@@ -1,6 +1,6 @@
 const User = require("./User");
 const RoomManager = require("./RoomsManager");
-const RoomPacketSender = require("./packet/room-packet-sender");
+const RoomPacketSender = require("./packet/packet-sender");
 
 class Room {
 
