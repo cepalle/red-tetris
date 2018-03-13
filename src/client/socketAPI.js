@@ -2,7 +2,7 @@ import io from 'socket.io-client';
 
 // handel subscription
 
-const socket = io.connect('http://localhost:4433'); // REPLACE adresse
+const socket = io.connect('http://localhost:4433');
 
 /*
 function subscribeToId(cb) {

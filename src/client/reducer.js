@@ -55,6 +55,8 @@ const initialState = {
 };
 
 const reducer = (state = exemple, action) => {
+  console.log(action);
+  console.log(state);
   switch (action.type) {
     case 'ADD_PARTS_FLOW':
       return Object.assign({}, state, {parts_flow: state.parts_flow.concat(action.data)});
