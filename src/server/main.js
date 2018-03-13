@@ -17,7 +17,7 @@ function handleClient(socket) {
 
   socket.on("disconnect", function () {
     socketHandlerList.removeObj(socketHandler);
-    //TODO disconect action (remove from room ...)
+    //TODO disconect action remove from room ...
   });
 }
 
