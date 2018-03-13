@@ -1,7 +1,14 @@
+const User = require("./User");
+const RoomManager = require("./RoomsManager");
+const RoomPacketSender = require("./packet/room-packet-sender");
+
 class Room {
 
   constructor(name) {
     this.name = name;
+    /**
+     * @type {Array<User>}
+     */
     this.users = [];
     this.waiting = true;
   }
@@ -10,19 +17,34 @@ class Room {
    * Add an user with username and id
    * @param {string} username
    * @param {string} id
+   * @param {boolean} [master]
+   * @return {User}
    */
-  addUser(username, id) {
-    if (!this.containId(id) && this.waiting)
-      this.users.push({username, id});
+  addUser(username, id, master = false) {
+    if (!this.containUser(username) && this.waiting) {
+      const user = new User(username, id, Date.now(), master);
+      this.users.push(user);
+
+      RoomPacketSender.packetSendPlayerJoin(user, this);
+
+      return user;
+    }
   }
 
   /**
    * Remove
    * @param {string} username
+   * @return {User}
    */
   removeUser(username) {
     const user = this.users.find(e => e.username === username);
     this.users.removeObj(user);
+    if (user.isMaster())
+      this.promoteNewUser(user);
+
+    RoomPacketSender.packetSendPlayerQuit(user, this);
+
+    return user;
   }
 
   /**
@@ -31,10 +53,13 @@ class Room {
    * @returns {(Object|undefined)}
    */
   removeFromId(id) {
-    if (!this.containId(id))
-      return;
     const user = this.users.find(e => e.id === id);
     this.users.removeObj(user);
+    if (user.isMaster())
+      this.promoteNewUser(user);
+
+    RoomPacketSender.packetSendPlayerQuit(user, this);
+
     return user;
   }
 
@@ -53,7 +78,7 @@ class Room {
    * @returns {boolean}
    */
   containUser(username) {
-    return this.users.find(e => e.name === username) !== undefined;
+    return this.users.find(e => e.username === username) !== undefined;
   }
 
   /**
@@ -61,9 +86,24 @@ class Room {
    * @param {boolean} stateWaiting
    */
   setWaiting(stateWaiting) {
-    if (typeof stateWaiting !== "boolean")
-      return;
     this.waiting = stateWaiting;
+
+    if (this.waiting)
+      RoomPacketSender.packetSendGameStart(this);
+  }
+
+  /**
+   * Check if the player is the master, if it is assign the master role to another player
+   * @param {User} user
+   */
+  promoteNewUser(user) {
+    if (this.users.length === 0)
+      RoomManager.destroyRoom(this.name);
+    else {
+      const promotedUser = this.users.sort((a, b) => a.order > b.order)[0];
+      promotedUser.setMaster(true);
+      RoomPacketSender.packetSendPlayerPromoted(promotedUser, this);
+    }
   }
 
   /**
@@ -76,7 +116,7 @@ class Room {
 
   /**
    * Returns all user in the room
-   * @returns {Array}
+   * @returns {Array<User>}
    */
   getUsers() {
     return this.users;
