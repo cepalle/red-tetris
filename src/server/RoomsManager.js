@@ -3,27 +3,48 @@ const Room = require("./Room");
 class RoomManager {
 
   constructor() {
+    console.log("Initialisation of RoomManager");
     this.rooms = [];
   }
 
+  /**
+   * Get room from a name,
+   * @param {string} roomName
+   * @returns {Room}
+   */
   getRoom(roomName) {
-    if (typeof roomName !== "string")
-      return undefined;
     return this.rooms.find(e => e.name === roomName);
   }
 
+  /**
+   * Return true if a room with that name exist or false else
+   * @param {string} roomName
+   * @returns {boolean}
+   */
   hasRoom(roomName) {
     if (typeof roomName !== "string")
       return false;
     return this.getRoom(roomName) !== undefined;
   }
 
+  /**
+   * Add a room to the RoomManager
+   * @param roomName
+   * @returns {(Room, boolean)}
+   */
   addRoom(roomName) {
-    if (typeof roomName !== "string" || this.getRoom(roomName) !== undefined)
+    if (this.getRoom(roomName) !== undefined)
       return false;
-    this.rooms.push(new Room(roomName));
+    const room = new Room(roomName);
+    this.rooms.push(room);
+    return room;
   }
 
+  /**
+   * Destroy a room with name roomName, before that, remove all user from room properly
+   * @param roomName
+   * @returns {boolean}
+   */
   destroyRoom(roomName) {
     if (typeof roomName !== "string" || this.getRoom(roomName) === undefined)
       return false;
@@ -36,3 +57,7 @@ class RoomManager {
     return true;
   }
 }
+
+const rm =  new RoomManager();
+
+module.exports = rm;

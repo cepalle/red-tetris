@@ -2,16 +2,20 @@ require("./util/ArraysUtil");
 
 const server = require("net").createServer();
 const io = require("socket.io")(server);
+const SocketHandler = require("SocketHandler");
+const RoomManager = require("RoomsManager");
 
-
-
-/// createRoom    = {roomName, playerName}
-/// joinRoom      = {roomName, playerName}
-/// quitRoom      = {roomName, playerName}
-/// startPlaying  = {roomName, playerName}
 
 function handleClient(socket) {
   const id = socket.id;
+
+  socket.on("createRoom", function (info) {
+    if (info.roomName && info.playerName) {
+
+    }
+    else
+      socket.emit("createRoomResponse", {error: ""})
+  });
 
   socket.on("disconnect", function () {
 
@@ -19,5 +23,4 @@ function handleClient(socket) {
 }
 
 io.on("connection", handleClient);
-
 server.listen(8080);
