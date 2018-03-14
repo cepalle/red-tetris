@@ -1,6 +1,7 @@
 class User {
   /**
-   *
+   * Constructor of User class
+   * @param {Socket} socket
    * @param {string} username
    * @param {string} id
    * @param {number} order
@@ -44,3 +45,5 @@ class User {
   setMaster(value) { this.master = value}
 
 }
+
+module.exports = User;
