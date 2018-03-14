@@ -59,7 +59,7 @@ module.exports = {
 
   /**
    * Used to tell to the client if the room has enter in a no-waiting state.
-   * Data to sent: {error: {type, message}} || {success, room, user}
+   * Data to sent: {error: {type, message}} || {success}
    */
   START_PLAYING_RESPONSE: "startPlayingResponse",
 

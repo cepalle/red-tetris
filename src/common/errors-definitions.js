@@ -24,6 +24,10 @@ module.exports = {
   USER_NOT_IN_ROOM: {
     type: "USER_NOT_IN_ROOM",
     message: "User is not in the room."
+  },
+  USER_NOT_MASTER: {
+    type: "USER_NOT_IN_ROOM",
+    message: "User is not the master."
   }
 
 };
