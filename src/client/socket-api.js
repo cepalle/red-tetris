@@ -6,43 +6,37 @@ import {logger_sock} from "./logger";
 
 const socket = io.connect('http://localhost:4433');
 
-// packet
-socket.on(socketDefs.PACKET_PLAYER_JOIN, p => cbPacketPlayerJoin(p));
-socket.on(socketDefs.PACKET_PLAYER_QUIT, p => cbPacketPlayerQuit(p));
-socket.on(socketDefs.PACKET_PLAYER_PROMOTED, p => cbPacketPlayerPromoted(p));
-socket.on(socketDefs.PACKET_PLAYER_LOSE, p => cbPacketPlayerLose(p));
-socket.on(socketDefs.PACKET_GAME_START, p => cbPacketGameStart(p));
-socket.on(socketDefs.PACKET_GENFLOW, p => cbPacketGenFlow(p));
+//----------------------------------------------------------------------------
+//
+// PACKET
+//
+//----------------------------------------------------------------------------
 
-// response
-socket.on(socketDefs.JOIN_ROOM_RESPONSE, p => cbJoinRoomResponse(p));
-socket.on(socketDefs.QUIT_ROOM_RESPONSE, p => cbJoinRoomResponse(p));
-socket.on(socketDefs.START_PLAYING_RESPONSE, p => cbJoinRoomResponse(p));
-socket.on(socketDefs.CONNECTION_RESPONSE, () => cbConnectionResponse());
-socket.on(socketDefs.GENFLOW_RESPONSE, p => cbJoinRoomResponse(p));
+socket.on(socketDefs.PACKET_PLAYER_JOIN, arg => cbPacketPlayerJoin(arg));
+socket.on(socketDefs.PACKET_PLAYER_QUIT, arg => cbPacketPlayerQuit(arg));
+socket.on(socketDefs.PACKET_PLAYER_PROMOTED, arg => cbPacketPlayerPromoted(arg));
+socket.on(socketDefs.PACKET_PLAYER_LOSE, arg => cbPacketPlayerLose(arg));
+socket.on(socketDefs.PACKET_GAME_START, arg => cbPacketGameStart(arg));
+socket.on(socketDefs.PACKET_GENFLOW, arg => cbPacketGenFlow(arg));
 
-
-// callback socket.on
-
-// packet
-const cbPacketPlayerJoin = () => {
-  logger_sock(["recv PACKET_PLAYER_JOIN"]);
+const cbPacketPlayerJoin = (arg) => {
+  logger_sock(["recv PACKET_PLAYER_JOIN", arg]);
 };
 
-const cbPacketPlayerQuit = () => {
-  logger_sock(["recv PACKET_PLAYER_QUIT"]);
+const cbPacketPlayerQuit = (arg) => {
+  logger_sock(["recv PACKET_PLAYER_QUIT", arg]);
 };
 
-const cbPacketPlayerPromoted = () => {
-  logger_sock(["recv PACKET_PLAYER_PROMOTED"]);
+const cbPacketPlayerPromoted = (arg) => {
+  logger_sock(["recv PACKET_PLAYER_PROMOTED", arg]);
 };
 
-const cbPacketPlayerLose = () => {
-  logger_sock(["recv PACKET_PLAYER_LOSE"]);
+const cbPacketPlayerLose = (arg) => {
+  logger_sock(["recv PACKET_PLAYER_LOSE", arg]);
 };
 
-const cbPacketGameStart = () => {
-  logger_sock(["recv PACKET_GAME_START"]);
+const cbPacketGameStart = (arg) => {
+  logger_sock(["recv PACKET_GAME_START", arg]);
 };
 
 const cbPacketGenFlow = ({pieces}) => {
@@ -50,31 +44,64 @@ const cbPacketGenFlow = ({pieces}) => {
   store.dispatch(addPartsFlow(pieces));
 };
 
+//----------------------------------------------------------------------------
+//
+// RESPONSE
+//
+//----------------------------------------------------------------------------
 
+socket.on(socketDefs.JOIN_ROOM_RESPONSE, arg => cbJoinRoomResponse(arg));
+socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
+socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
+socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
+socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 
-// response
+const cbJoinRoomResponse = (arg) => {
+  logger_sock(["recv JOIN_ROOM_RESPONSE", arg]);
+};
+
+const cbQuitRoomResponse = (arg) => {
+  logger_sock(["recv QUIT_ROOM_RESPONSE", arg]);
+};
+
+const cbStartPlayingResponse = (arg) => {
+  logger_sock(["recv START_PLAYING_RESPONSE", arg]);
+};
+
 const cbConnectionResponse = () => {
-  logger_sock(["recv connection response"]);
+  logger_sock(["recv CONNECTION_RESPONSE"]);
   emitJoinRoom();
 };
 
-const cbJoinRoomResponse = (p) => {
-  logger_sock(["recv join room", p]);
+const cbGenFlowResponse = (arg) => {
+  logger_sock(["recv GENFLOW_RESPONSE", arg]);
 };
 
-// socket.emit function
+//----------------------------------------------------------------------------
+//
+// EMIT
+//
+//----------------------------------------------------------------------------
 
 const emitGenFlow = () => {
-  logger_sock(["emit genflow"]);
+  logger_sock(["emit GENFLOW"]);
   socket.emit(socketDefs.GENFLOW, {roomName: store.getState().roomName});
 };
 
+const emitQuitRoom = () => {
+  logger_sock(["emit QUIT_ROOM"]);
+};
+
+const emitStartPlaying = () => {
+  logger_sock(["emit START_PLAYING"]);
+};
+
 const emitJoinRoom = () => {
-  logger_sock(["emit join room"]);
+  logger_sock(["emit JOIN_ROOM"]);
   socket.emit(socketDefs.JOIN_ROOM, {
     roomName: store.getState().roomName,
     playerName: store.getState().playerName
   });
 };
 
-export {emitGenFlow, emitJoinRoom};
+export {emitGenFlow, emitQuitRoom, emitStartPlaying, emitJoinRoom};
