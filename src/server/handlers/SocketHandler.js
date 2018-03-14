@@ -1,4 +1,5 @@
 const RoomManager = require("../data/room/RoomsManager");
+const errorsDefs = require("../../common/errors-definitions");
 
 class SocketHandler {
   constructor(socket) {
@@ -7,7 +8,7 @@ class SocketHandler {
   }
 
   /**
-   *
+   * Check if a room is valid
    * @param {Object} data
    * @param {string} response
    * @returns {boolean}
@@ -18,6 +19,18 @@ class SocketHandler {
       return false;
     }
     return true;
+  }
+
+  /**
+   * Check if the player is master
+   * @param {string} response
+   * @returns {boolean}
+   */
+  playerIsMaster(response) {
+    if (!RoomManager.getRoomById(this.id).getUser(this.id)) {
+      this.socket.emit(response, {error: errorsDefs.USER_NOT_MASTER});
+      return false;
+    }
   }
 }
 

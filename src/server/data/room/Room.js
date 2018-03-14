@@ -93,8 +93,7 @@ class Room {
    */
   setWaiting(stateWaiting) {
     this.waiting = stateWaiting;
-
-    if (this.waiting)
+    if (!this.waiting)
       PacketSender.sendGameStart(this);
   }
 

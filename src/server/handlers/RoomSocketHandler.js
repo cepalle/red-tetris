@@ -70,6 +70,20 @@ class RoomSocketHandler extends SocketHandler {
   }
 
   /**
+   * Set the state of the room to avoid player join in a game that has already started.
+   * @param data
+   * @param response
+   */
+  startPlaying(data, response = socketDefs.START_PLAYING_RESPONSE) {
+    if (this.dataIsValid(data, response) &&
+      this.roomIsValid(data, response) &&
+      this.playerIsMaster(response)) {
+        RoomManager.getRoomById(this.id).setWaiting(false);
+        this.socket.emit(response, {success: true})
+    }
+  }
+
+  /**
    * Check if data contain data.roomName and data.playerName
    * @param {Object} data
    * @param {string} response
@@ -93,6 +107,7 @@ class RoomSocketHandler extends SocketHandler {
   sendSuccess(response, room, user) {
     this.socket.emit(response, {success: true, room, user})
   }
+
 }
 
 module.exports = RoomSocketHandler;

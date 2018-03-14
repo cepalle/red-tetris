@@ -23,6 +23,7 @@ class App {
 
     socket.on(socketDefs.JOIN_ROOM, (d) => roomSocketHandler.joinRoom(d));
     socket.on(socketDefs.QUIT_ROOM, (d) => roomSocketHandler.quitRoom(d));
+    socket.on(socketDefs.START_PLAYING, (d) => roomSocketHandler.startPlaying(d));
     socket.on(socketDefs.GENFLOW, (d) => globalSocketHandler.genFlow(d));
 
     socket.on("disconnect", () => {
