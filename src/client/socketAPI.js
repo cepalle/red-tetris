@@ -1,29 +1,32 @@
 import io from 'socket.io-client';
 import {store} from "./store"
-import {add_parts_flow} from "./action-creators"
-
+import {addPartsFlow} from "./action-creators"
+import socketDefs from "../common/socket-definitions";
 const socket = io.connect('http://localhost:4433');
 
 
 // Responce for error handling
-socket.on('packetGenFlow', ({pices}) => {
-  console.log("socket receive ");
-  store.dispatch(add_parts_flow(pices));
+socket.on(socketDefs.PACKET_GENFLOW, ({pieces}) => {
+  console.log("socket receive packetGenFlow");
+  store.dispatch(addPartsFlow(pieces));
 });
 
-socket.on('connectionReponse', () => socket.emit("joinRoom", {
-  roomName: store.getState().room_name,
-  playerName: store.getState().playerName
-}));
+socket.on(socketDefs.CONNECTION_RESPONSE, () => {
+  console.log("response con");
+  socket.emit(socketDefs.JOIN_ROOM, {
+    roomName: store.getState().roomName,
+    playerName: store.getState().playerName
+  });
+});
 
-socket.on('joinRoomResponse', (rep) => {
+socket.on(socketDefs.JOIN_ROOM_RESPONSE, (rep) => {
   console.log("joinRoomResponse receive", rep);
 });
 
-function gen_flow() {
-  console.log("socket emit gen_flow");
-  socket.emit("genFlow", {roomName: store.getState().room_name});
-  //store.dispatch(add_parts_flow([0]))
+function genFlow() {
+  console.log("socket emit genFlow");
+  socket.emit(socketDefs.GENFLOW, {roomName: store.getState().roomName});
+  //store.dispatch(addPartsFlow([0]))
 }
 
-export {gen_flow};
+export {genFlow};

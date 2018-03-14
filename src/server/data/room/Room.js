@@ -113,14 +113,6 @@ class Room {
   canJoin() {
     return this.waiting;
   }
-
-  /**
-   * Returns all user in the room
-   * @returns {Array<User>}
-   */
-  getUsers() {
-    return this.users;
-  }
 }
 
 module.exports = Room;

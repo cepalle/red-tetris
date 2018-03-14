@@ -49,9 +49,9 @@ class RoomManager {
     if (typeof roomName !== "string" || this.getRoom(roomName) === undefined)
       return false;
     const room = this.getRoom(roomName);
-    if (room.getUsers().length === 0)
+    if (room.users.length === 0)
       return false;
-    room.getUsers().forEach(e => {
+    room.users.forEach(e => {
       room.removeUser(e.username);
     });
     return true;

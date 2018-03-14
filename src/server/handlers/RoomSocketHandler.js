@@ -37,7 +37,6 @@ class RoomSocketHandler extends SocketHandler {
    * @param {string} response
    */
   joinRoom(data, response = socketDefs.JOIN_ROOM_RESPONSE) {
-
     if (this.dataIsValid(data, response)) {
       if (this.createRoom(data, response))
         return ;

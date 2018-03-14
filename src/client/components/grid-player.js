@@ -1,5 +1,5 @@
 import React from "react";
-import {add_parts_flow} from "../action-creators";
+import {addPartsFlow} from "../action-creators";
 import {connect} from 'react-redux';
 
 const GridPlayerComponent = ({grid, onClickCase}) =>
@@ -23,7 +23,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onClickCase: e => {
-      dispatch(add_parts_flow([e]));
+      dispatch(addPartsFlow([e]));
       console.log(e);
     }
   }

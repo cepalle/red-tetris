@@ -1,5 +1,5 @@
 import {PARTS} from '../common/parts';
-import {url_get_player_name, url_get_room_name} from "./url-handler"
+import {urlGetPlayerName, urlGetRoomName} from "./url-handler"
 
 const initialState = {
   grids: [
@@ -25,17 +25,17 @@ const initialState = {
         [1, 2, 7, 7, 5, 5, 3, 4, 4, 6],
         [1, 2, 2, 2, 3, 3, 3, 4, 4, 0],
       ],
-      player_name: url_get_player_name(),
+      playerName: urlGetPlayerName(),
     },
   ],
-  player_name: url_get_player_name(),
-  room_name: url_get_room_name(),
-  is_master: true,
-  parts_flow: [1, 2, 1, 5, 6, 1],
-  cur_part_pos: {x: 0, y: 5},
+  playerName: urlGetPlayerName(),
+  roomName: urlGetRoomName(),
+  isMaster: false,
+  partsFlow: [1, 2, 1, 5, 6, 1],
+  curPartPos: {x: 0, y: 5},
 };
 
-const grid_init = () => {
+const gridInit = () => {
   const grid = [];
   for (let i = 0; i < 20; i++) {
     grid.push([]);
@@ -51,7 +51,7 @@ const reducer = (state = initialState, action) => {
   console.log(state);
   switch (action.type) {
     case 'ADD_PARTS_FLOW':
-      return Object.assign({}, state, {parts_flow: state.parts_flow.concat(action.data)});
+      return Object.assign({}, state, {partsFlow: state.partsFlow.concat(action.data)});
     default:
       return state;
   }

@@ -2,6 +2,7 @@ const SocketHandler = require("./SocketHandler");
 const PacketSender = require("../packet/PacketSender");
 const socketDefs = require("../../common/socket-definitions");
 const {PARTS} = require("../../common/parts");
+const RoomManager = require("../data/room/RoomsManager");
 
 class GlobalSocketHandler extends SocketHandler {
 
@@ -17,8 +18,8 @@ class GlobalSocketHandler extends SocketHandler {
    * This is used when a client join the socket
    * @param {string} response
    */
-  connection(response = "connectionResponse") {
-    socket.emit(response);
+  connection(response = socketDefs.CONNECTION_RESPONSE) {
+    this.socket.emit(response);
   }
 
   /**
@@ -27,14 +28,14 @@ class GlobalSocketHandler extends SocketHandler {
    * @param {string} data.roomName
    * @param response
    */
-  genFlow(data, response = socketDefs.CONNECTION_RESPONSE) {
+  genFlow(data, response = socketDefs.GENFLOW_RESPONSE) {
     if (super.roomIsValid(data, response))
     {
       const tetrisPieces = [];
       for(let i = 0; i < 10; i++)
         tetrisPieces.push(PARTS[Math.floor(Math.random() * PARTS.length)]);
-      socket.emit(response, {success: true});
-      PacketSender.sendGenFlow(data.roomName, tetrisPieces);
+      this.socket.emit(response, {success: true});
+      PacketSender.sendGenFlow(RoomManager.getRoom(data.roomName), tetrisPieces);
     }
   }
 }

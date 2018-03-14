@@ -8,8 +8,8 @@ const App = () =>
     <GridPlayer/>
     <p>part flow:</p>
     <FlowTest/>
-    <p>Player name: {store.getState().player_name}</p>
-    <p>Room name: {store.getState().room_name}</p>
+    <p>Player name: {store.getState().playerName}</p>
+    <p>Room name: {store.getState().roomName}</p>
   </div>
 ;
 

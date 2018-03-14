@@ -1,3 +1,5 @@
+const RoomManager = require("../data/room/RoomsManager");
+
 class SocketHandler {
   constructor(socket) {
     this.socket = socket;

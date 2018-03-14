@@ -3,6 +3,7 @@
  */
 const socketMap = require("../App");
 const socketDefs = require("../../common/socket-definitions");
+const SocketMap = require("../data/SocketMap");
 
 class PacketSender {
   /**
@@ -40,21 +41,19 @@ class PacketSender {
    * @param {Room} room
    */
   static sendGameStart(room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, user, room, {room}, false);
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, undefined, room, {room}, false);
   }
 
   static sendGenFlow(room, pieces) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GENFLOW, user, room, {pieces}, false);
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GENFLOW, undefined, room, {pieces}, false);
   }
 
   static sendPacketToAllPlayer(packetName, user, room, data, exceptConcerned = true) {
-    room.getUsers().filter(e => exceptConcerned ? e.getId() !== user.getId() : true).forEach(e => {
-      const socket = socketMap.get(e.id);
+    room.users.filter(e => exceptConcerned ? e.getId() !== user.getId() : true).forEach(e => {
+      const socket = SocketMap.sockets.get(e.id);
       socket.emit(packetName, data);
     });
   }
 }
-
-
 
 module.exports = PacketSender;

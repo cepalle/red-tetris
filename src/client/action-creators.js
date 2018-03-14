@@ -1,8 +1,8 @@
-const add_parts_flow = data => {
+const addPartsFlow = data => {
   return {
     type: 'ADD_PARTS_FLOW',
     data: data
   };
 };
 
-export {add_parts_flow};
+export {addPartsFlow};

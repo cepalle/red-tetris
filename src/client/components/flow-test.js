@@ -1,7 +1,7 @@
 import React from "react";
-import {add_parts_flow} from "../action-creators";
+import {addPartsFlow} from "../action-creators";
 import {connect} from 'react-redux';
-import {gen_flow} from "../socketAPI"
+import {genFlow} from "../socketAPI"
 
 const Flow = ({line, onClickCase, onClickButon}) =>
   <div>
@@ -18,17 +18,17 @@ const Flow = ({line, onClickCase, onClickButon}) =>
 
 const mapStateToProps = state => {
   return {
-    line: state.parts_flow.map(e => e)
+    line: state.partsFlow.map(e => e)
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onClickCase: e => {
-      dispatch(add_parts_flow([e]));
+      dispatch(addPartsFlow([e]));
       console.log(e);
     },
-    onClickButon: () => gen_flow()
+    onClickButon: () => genFlow()
   }
 };
 
