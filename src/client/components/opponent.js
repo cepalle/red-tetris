@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 
-const GridPlayerComponent = ({states}) =>
+const OpponentComponent = ({states}) =>
   <div className={"line"}>
     {states.map((state, k) =>
       <div key={k}>
@@ -29,6 +29,6 @@ const mapStateToProps = state => {
 const Opponent = connect(
   mapStateToProps,
   undefined
-)(GridPlayerComponent);
+)(OpponentComponent);
 
 export {Opponent};
