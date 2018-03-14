@@ -12,7 +12,7 @@ const gridInit = () => {
 };
 
 const initialState = {
-  grids: [
+  playerStates: [
     {
       grid: [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -36,11 +36,11 @@ const initialState = {
         [1, 2, 2, 2, 3, 3, 3, 4, 4, 0],
       ],
       playerName: urlGetPlayerName(),
+      isMaster: false,
     },
   ],
   playerName: urlGetPlayerName(),
   roomName: urlGetRoomName(),
-  isMaster: false,
   partsFlow: [],
   curPartPos: {x: 0, y: 5},
 };

@@ -1,4 +1,9 @@
 
+.gridPlayer {
+  display: flex;
+  justify-content: center;
+}
+
 .grid {
   display: flex;
   flex-direction: column;
