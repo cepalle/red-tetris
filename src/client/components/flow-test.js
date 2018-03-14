@@ -1,5 +1,4 @@
 import React from "react";
-import {addPartsFlow} from "../redux/action-creators";
 import {connect} from 'react-redux';
 import {emitGenFlow} from "../socket/socket-api"
 

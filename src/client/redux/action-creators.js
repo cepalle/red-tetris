@@ -5,4 +5,18 @@ const addPartsFlow = data => {
   };
 };
 
-export {addPartsFlow};
+const addError = er => {
+  return {
+    type: 'ADD_ERROR',
+    data: er
+  }
+};
+
+const updateUsers = (users) => {
+  return {
+    type: 'UPDATE_USERS',
+    data: users
+  }
+};
+
+export {addPartsFlow, addError, updateUsers};

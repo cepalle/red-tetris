@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import {store} from "../redux/store"
-import {addPartsFlow} from "../redux/action-creators"
+import {addError, addPartsFlow, updateUsers} from "../redux/action-creators"
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "../logger";
 
@@ -18,17 +18,36 @@ socket.on(socketDefs.PACKET_PLAYER_PROMOTED, arg => cbPacketPlayerPromoted(arg))
 socket.on(socketDefs.PACKET_PLAYER_LOSE, arg => cbPacketPlayerLose(arg));
 socket.on(socketDefs.PACKET_GAME_START, arg => cbPacketGameStart(arg));
 socket.on(socketDefs.PACKET_GENFLOW, arg => cbPacketGenFlow(arg));
+socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(arg));
 
 const cbPacketPlayerJoin = (arg) => {
   logger_sock(["recv PACKET_PLAYER_JOIN", arg]);
+
+  if (arg.error) {
+    store.dispatch(addError(arg.error))
+  } else {
+    store.dispatch(updateUsers(arg.room.users))
+  }
 };
 
 const cbPacketPlayerQuit = (arg) => {
   logger_sock(["recv PACKET_PLAYER_QUIT", arg]);
+
+  if (arg.error) {
+    store.dispatch(addError(arg.error))
+  } else {
+    store.dispatch(updateUsers(arg.room.users))
+  }
 };
 
 const cbPacketPlayerPromoted = (arg) => {
   logger_sock(["recv PACKET_PLAYER_PROMOTED", arg]);
+
+  if (arg.error) {
+    store.dispatch(addError(arg.error))
+  } else {
+    store.dispatch(updateUsers(arg.room.users))
+  }
 };
 
 const cbPacketPlayerLose = (arg) => {
@@ -42,6 +61,10 @@ const cbPacketGameStart = (arg) => {
 const cbPacketGenFlow = ({pieces}) => {
   logger_sock(["recv PACKET_GENFLOW"]);
   store.dispatch(addPartsFlow(pieces));
+};
+
+const cbPacketTetrisPlacePiece = (arg) => {
+  logger_sock(["recv PACKET_TETRIS_PLACE_PIECE", arg]);
 };
 
 //----------------------------------------------------------------------------
@@ -58,6 +81,12 @@ socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 
 const cbJoinRoomResponse = (arg) => {
   logger_sock(["recv JOIN_ROOM_RESPONSE", arg]);
+
+  if (arg.error) {
+    store.dispatch(addError(arg.error))
+  } else {
+    store.dispatch(updateUsers(arg.room.users))
+  }
 };
 
 const cbQuitRoomResponse = (arg) => {

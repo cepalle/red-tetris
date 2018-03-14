@@ -4,15 +4,20 @@ import {connect} from 'react-redux';
 import {logger_component} from "../logger";
 
 const GridPlayerComponent = ({state, onClickCase}) =>
-  <div className={"gridPlayer"}>
-    <div className={"grid"}>
-      {state.grid.map((line, i) =>
-        <div key={i} className={"line"}>
-          {line.map((el, j) =>
-            <div key={j} className={"part" + el} onClick={() => onClickCase(el)}/>
-          )}
-        </div>
-      )}
+  <div className={"line center"}>
+    <div>
+      <div className={"grid"}>
+        {state.grid.map((line, i) =>
+          <div key={i} className={"line"}>
+            {line.map((el, j) =>
+              <div key={j} className={"part" + el} onClick={() => onClickCase(el)}/>
+            )}
+          </div>
+        )}
+      </div>
+      <div className={"line center"}>
+        <p>{state.playerName}{state.isMaster && "(Master)"}</p>
+      </div>
     </div>
   </div>
 ;
