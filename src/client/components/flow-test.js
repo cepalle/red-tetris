@@ -1,9 +1,9 @@
 import React from "react";
-import {addPartsFlow} from "../action-creators";
+import {addPartsFlow} from "../redux/action-creators";
 import {connect} from 'react-redux';
 import {emitGenFlow} from "../socket-api"
 
-const Flow = ({line, onClickCase, onClickButon}) =>
+const FlowComponent = ({line, onClickCase, onClickButon}) =>
   <div>
     <div className="line">
       {line.map((el, i) =>
@@ -35,6 +35,6 @@ const mapDispatchToProps = dispatch => {
 const FlowTest = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Flow);
+)(FlowComponent);
 
 export {FlowTest};

@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
-import {store} from "./store"
-import {addPartsFlow} from "./action-creators"
+import {store} from "./redux/store"
+import {addPartsFlow} from "./redux/action-creators"
 import socketDefs from "../common/socket-definitions";
 import {logger_sock} from "./logger";
 

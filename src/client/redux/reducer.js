@@ -1,6 +1,6 @@
-import {PARTS} from '../common/parts';
-import {urlGetPlayerName, urlGetRoomName} from "./url-handler"
-import {logger_reducer} from "./logger";
+import {PARTS} from '../../common/parts';
+import {urlGetPlayerName, urlGetRoomName} from "../url-handler"
+import {logger_reducer} from "../logger";
 
 const initialState = {
   grids: [

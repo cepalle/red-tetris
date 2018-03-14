@@ -1,7 +1,7 @@
 import React from "react";
 import {FlowTest} from "./flow-test";
 import {GridPlayer} from "./grid-player"
-import {store} from "../store"
+import {store} from "../redux/store"
 
 const App = () =>
   <div>

@@ -1,5 +1,5 @@
 import React from "react";
-import {addPartsFlow} from "../action-creators";
+import {addPartsFlow} from "../redux/action-creators";
 import {connect} from 'react-redux';
 
 const GridPlayerComponent = ({grid, onClickCase}) =>
