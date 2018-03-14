@@ -19,10 +19,8 @@ class RoomSocketHandler extends SocketHandler {
    * @param {string} data.playerName
    */
   createRoom(data, response) {
-
-    if (RoomManager.hasRoom(data.roomName)) {
+    if (RoomManager.hasRoom(data.roomName))
       return false;
-    }
     const room = RoomManager.addRoom(data.roomName);
     const user = room.addUser(data.playerName, this.id, true);
     this.sendSuccess(response, room, user);
@@ -38,8 +36,9 @@ class RoomSocketHandler extends SocketHandler {
    */
   joinRoom(data, response = socketDefs.JOIN_ROOM_RESPONSE) {
     if (this.dataIsValid(data, response)) {
-      if (this.createRoom(data, response))
-        return ;
+      if (this.createRoom(data, response)) {
+        return;
+      }
       const room = RoomManager.getRoom(data.roomName);
       if (!room.canJoin())
         this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME});

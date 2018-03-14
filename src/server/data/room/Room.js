@@ -1,15 +1,12 @@
 const User = require("../user/User");
-const RoomManager = require("./RoomsManager");
 const PacketSender = require("../../packet/PacketSender");
 
 class Room {
 
   constructor(name) {
-    this.name = name;
-    /**
-     * @type {Array<User>}
-     */
+    /** @type {Array<User>} */
     this.users = [];
+    this.name = name;
     this.waiting = true;
   }
 
@@ -32,7 +29,7 @@ class Room {
   }
 
   /**
-   * Remove
+   * Remove an user by his username.
    * @param {string} username
    * @return {User}
    */
@@ -48,7 +45,16 @@ class Room {
   }
 
   /**
-   * Remove an user from his id
+   * Get an user in the room by his id.
+   * @param {string} id
+   * @returns {User | undefined}
+   */
+  getUser(id) {
+    return this.users.find(e => e.id === id);
+  }
+
+  /**
+   * Remove an user from his id.
    * @param {string} id
    * @returns {(Object|undefined)}
    */
@@ -64,7 +70,7 @@ class Room {
   }
 
   /**
-   * Return true if this.users contain user with id
+   * Return true if this.users contain user with id.
    * @param {string} id
    * @returns {boolean}
    */
@@ -73,7 +79,7 @@ class Room {
   }
 
   /**
-   * Return true if this.users contain user with username
+   * Return true if this.users contain user with username.
    * @param {string} username
    * @returns {boolean}
    */
@@ -82,7 +88,7 @@ class Room {
   }
 
   /**
-   * Set the current state of the room to true or false, if state is true player can join else player can't join
+   * Set the current state of the room to true or false, if state is true player can join else player can't join.
    * @param {boolean} stateWaiting
    */
   setWaiting(stateWaiting) {
@@ -93,12 +99,14 @@ class Room {
   }
 
   /**
-   * Check if the player is the master, if it is assign the master role to another player
+   * Check if the player is the master, if it is assign the master role to another player.
    * @param {User} user
    */
   promoteNewUser(user) {
-    if (this.users.length === 0)
-      RoomManager.destroyRoom(this.name);
+    const RoomManager = require("./RoomsManager");
+    if (this.users.length === 0) {
+      RoomManager.deleteRoom(this.name);
+    }
     else {
       const promotedUser = this.users.sort((a, b) => a.order > b.order)[0];
       promotedUser.setMaster(true);
@@ -107,7 +115,7 @@ class Room {
   }
 
   /**
-   * Return true if players can join, false else
+   * Return true if players can join, false else.
    * @returns {boolean}
    */
   canJoin() {

@@ -3,7 +3,7 @@ const Room = require("./Room");
 class RoomManager {
 
   constructor() {
-    console.log("Initialisation of RoomManager");
+    /** @type {Array<Room>} */
     this.rooms = [];
   }
 
@@ -14,6 +14,17 @@ class RoomManager {
    */
   getRoom(roomName) {
     return this.rooms.find(e => e.name === roomName);
+  }
+
+  /**
+   * Get a room by id of socket.io
+   * @param {string} id
+   * @returns {Room | undefined}
+   */
+  getRoomById(id) {
+    return this.rooms.find(e => {
+      return e.users.some(e => e.id === id);
+    })
   }
 
   /**
@@ -30,7 +41,7 @@ class RoomManager {
   /**
    * Add a room to the RoomManager
    * @param roomName
-   * @returns {(Room, boolean)}
+   * @returns {Room | boolean}
    */
   addRoom(roomName) {
     if (this.getRoom(roomName) !== undefined)
@@ -42,20 +53,17 @@ class RoomManager {
 
   /**
    * Destroy a room with name roomName, before that, remove all user from room properly
-   * @param roomName
+   * @param {string} roomName
    * @returns {boolean}
    */
-  destroyRoom(roomName) {
-    if (typeof roomName !== "string" || this.getRoom(roomName) === undefined)
+  deleteRoom(roomName) {
+    if (this.getRoom(roomName) === undefined)
       return false;
     const room = this.getRoom(roomName);
-    if (room.users.length === 0)
-      return false;
-    room.users.forEach(e => {
-      room.removeUser(e.username);
-    });
+    this.rooms.removeObj(room);
     return true;
   }
+
 }
 
 const rm =  new RoomManager();

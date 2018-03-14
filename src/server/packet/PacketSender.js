@@ -9,31 +9,31 @@ class PacketSender {
   /**
    * This packet is sent when a new player is coming in a room.
    * The player who join will not be notified.
-   * @param {User} user
+   * @param {User} player
    * @param {Room} room
    */
-  static sendPlayerJoin(user, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_JOIN, user, room, {user, room});
+  static sendPlayerJoin(player, room) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_JOIN, player, room, {player, room});
   }
 
   /**
    * This packet is sent when a player quit the room.
    * The player who quit will not be notified.
-   * @param {User} user
+   * @param {User} player
    * @param {Room} room
    */
-  static sendPlayerQuit(user, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_QUIT, user, room, {user, room});
+  static sendPlayerQuit(player, room) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_QUIT, player, room, {player, room});
   }
 
   /**
    * This packet is sent when the master of the room quit the room.
    * A new master is promoted (the second who have join).
-   * @param {User} user
+   * @param {User} player
    * @param {Room} room
    */
-  static sendPlayerPromoted(user, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_PROMOTED, user, room, {user, room}, false);
+  static sendPlayerPromoted(player, room) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_PROMOTED, player, room, {player, room}, false);
   }
 
   /**
@@ -44,6 +44,11 @@ class PacketSender {
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, undefined, room, {room}, false);
   }
 
+  /**
+   * Sent a set of pieces for tetris game to all clients
+   * @param {Room} room
+   * @param {Array<number>} pieces
+   */
   static sendGenFlow(room, pieces) {
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GENFLOW, undefined, room, {pieces}, false);
   }
