@@ -1,39 +1,37 @@
 import React from "react";
 import {add_parts_flow} from "../action-creators";
-import {store} from "../store";
+import {connect} from 'react-redux';
 
-const Line = (props) => {
-  let line_render = [];
-  for (let i = 0; i < props.line.length; i++) {
-    let part_name = "part_" + props.line[i];
-    line_render.push(
-      <div key={i} className={part_name} onClick={() => {
-        store.dispatch(add_parts_flow([props.line[i]]));
-        console.log(props.line[i]);
-      }
-      }/>
-    );
+const GridPlayerComponent = ({grid, onClickCase}) =>
+  <div className={"grid"}>
+    {grid.map((line, i) =>
+      <div key={i} className={"line"}>
+        {line.map((el, j) =>
+          <div key={j} className={"part_" + el} onClick={() => onClickCase(el)}/>
+        )}
+      </div>
+    )}
+  </div>
+;
+
+const mapStateToProps = state => {
+  return {
+    grid: state.grids[0].grid.map(l => l.map(el => el))
   }
-  return (
-    <div className="line">
-      {line_render}
-    </div>
-  );
 };
 
-const Grid = (props) => {
-  let grid_render = [];
-  for (let i = 0; i < props.grid.length; i++) {
-    grid_render.push(
-      <Line key={i} line={props.grid[i]}/>
-    );
+const mapDispatchToProps = dispatch => {
+  return {
+    onClickCase: e => {
+      dispatch(add_parts_flow([e]));
+      console.log(e);
+    }
   }
-
-  return (
-    <div className="grid">
-      {grid_render}
-    </div>
-  );
 };
 
-export {Grid, Line};
+const GridPlayer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GridPlayerComponent);
+
+export {GridPlayer};

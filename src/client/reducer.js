@@ -1,6 +1,7 @@
 import {PARTS} from '../common/parts';
+import {url_get_player_name, url_get_room_name} from "./url-handler"
 
-const exemple = {
+const initialState = {
   grids: [
     {
       grid: [
@@ -24,13 +25,13 @@ const exemple = {
         [1, 2, 7, 7, 5, 5, 3, 4, 4, 6],
         [1, 2, 2, 2, 3, 3, 3, 4, 4, 0],
       ],
-      player_name: "name",
+      player_name: url_get_player_name(),
     },
   ],
-  player_name: "name",
-  room_name: "room",
+  player_name: url_get_player_name(),
+  room_name: url_get_room_name(),
   is_master: true,
-  parts_flow: [PARTS._1, PARTS._2, PARTS._1, PARTS._5, PARTS._6, PARTS._1],
+  parts_flow: [1, 2, 1, 5, 6, 1],
   cur_part_pos: {x: 0, y: 5},
 };
 
@@ -45,16 +46,7 @@ const grid_init = () => {
   return grid;
 };
 
-const initialState = {
-  grids: [],
-  player_name: "",
-  room_name: "",
-  is_master: true,
-  parts_flow: [],
-  cur_part_pos: undefined,
-};
-
-const reducer = (state = exemple, action) => {
+const reducer = (state = initialState, action) => {
   console.log(action);
   console.log(state);
   switch (action.type) {
