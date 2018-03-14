@@ -1,43 +1,16 @@
-
+const SocketHandler = require("./SocketHandler");
 const RoomManager = require("../data/room/RoomsManager");
 const socketDefs = require("../../common/socket-definitions");
+const errorsDefs = require("../../common/errors-definitions");
 
-const ERRORS = {
-  UNEXPECTED_DATA: {
-    type: "UNEXPECTED_DATA",
-    message: "An unknown data can not be processed."
-  },
-  ROOM_EXIST: {
-    type: "ROOM_EXIST",
-    message: "Room already exist."
-  },
-  ROOM_NOT_EXIST: {
-    type: "ROOM_NOT_EXIST",
-    message: "Room not exist."
-  },
-  ROOM_ALREADY_IN_GAME: {
-    type: "ROOM_NOT_EXIST",
-    message: "Room is already in game."
-  },
-  USER_ALREADY_IN_ROOM: {
-    type: "USER_ALREADY_IN_ROOM",
-    message: "An user with the same name is already in this room."
-  },
-  USER_NOT_IN_ROOM: {
-    type: "USER_NOT_IN_ROOM",
-    message: "User is not in the room."
-  }
-};
-
-class RoomSocketHandler {
+class RoomSocketHandler extends SocketHandler {
 
   /**
    * Constructor of RoomSocketHandler class
    * @param socket
    */
   constructor(socket) {
-    this.socket = socket;
-    this.id = socket.id;
+    super(socket);
   }
 
   /**
@@ -45,16 +18,15 @@ class RoomSocketHandler {
    * @param {string} data.roomName
    * @param {string} data.playerName
    */
-  createRoom(data, response = socketDefs.CREATE_ROOM) {
-    if (this.dataIsValid(data, response)) {
-      if (RoomManager.hasRoom(data.roomName)) {
-        this.socket.emit(response, {error: ERRORS.ROOM_EXIST});
-        return;
-      }
-      const room = RoomManager.addRoom(data.roomName);
-      const user = room.addUser(data.playerName, this.id, true);
-      this.sendSuccess(response, room, user);
+  createRoom(data, response) {
+
+    if (RoomManager.hasRoom(data.roomName)) {
+      return false;
     }
+    const room = RoomManager.addRoom(data.roomName);
+    const user = room.addUser(data.playerName, this.id, true);
+    this.sendSuccess(response, room, user);
+    return true;
   }
 
   /**
@@ -64,13 +36,16 @@ class RoomSocketHandler {
    * @param {string} data.playerName
    * @param {string} response
    */
-  joinRoom(data, response = socketDefs.CREATE_ROOM_RESPONSE) {
-    if (this.dataIsValid(data, response) && this.roomIsValid(data, response)) {
+  joinRoom(data, response = socketDefs.JOIN_ROOM_RESPONSE) {
+
+    if (this.dataIsValid(data, response)) {
+      if (this.createRoom(data, response))
+        return ;
       const room = RoomManager.getRoom(data.roomName);
       if (!room.canJoin())
-        this.socket.emit(response, {error: ERRORS.ROOM_ALREADY_IN_GAME});
+        this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME});
       if (room.containUser(data.playerName))
-        this.socket.emit(response, {error: ERRORS.USER_ALREADY_IN_ROOM});
+        this.socket.emit(response, {error: errorsDefs.USER_ALREADY_IN_ROOM});
       else {
         const user = room.addUser(data.playerName, this.id);
         this.sendSuccess(response, room, user)
@@ -88,26 +63,12 @@ class RoomSocketHandler {
     if (this.dataIsValid(data, response) && this.roomIsValid(data, response)) {
       const room = RoomManager.getRoom(data.roomName);
       if (!room.containUser(data.playerName))
-        this.socket.emit(response, {error: ERRORS.USER_NOT_IN_ROOM});
+        this.socket.emit(response, {error: errorsDefs.USER_NOT_IN_ROOM});
       else {
         const user = room.removeUser(data.playerName);
         this.sendSuccess(response, room, user);
       }
     }
-  }
-
-  /**
-   *
-   * @param {Object} data
-   * @param {string} response
-   * @returns {boolean}
-   */
-  roomIsValid(data, response) {
-    if (!RoomManager.hasRoom(data.roomName)) {
-      this.socket.emit(response, {error: ERRORS.ROOM_NOT_EXIST});
-      return false;
-    }
-    return true;
   }
 
   /**
@@ -120,7 +81,7 @@ class RoomSocketHandler {
     if (data.roomName && data.playerName)
       return true;
     else {
-      this.socket.emit(response, {error: ERRORS.UNEXPECTED_DATA});
+      this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
       return false;
     }
   }

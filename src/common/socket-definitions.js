@@ -7,12 +7,6 @@ module.exports = {
   //----------------------------------------------------------------------------
 
   /**
-   * Used to send to the backend when a player want to create a room.
-   * Data to sent: {roomName, playerName}
-   */
-  CREATE_ROOM: "createRoom",
-
-  /**
    * Used to tell to the backend when a player want to join a room.
    * Data to sent: {roomName, playerName}
    */
@@ -30,17 +24,24 @@ module.exports = {
    */
   START_PLAYING: "startPlaying",
 
+  /**
+   * Used to tell to the server that a client was connected
+   * Data to sent: {}
+   */
+  CONNECTION: "connection",
+
+  /**
+   * Used to ask to the server new pieces
+   * Data to sent: {roomName}
+   */
+  GENFLOW: "genFlow",
+
   //----------------------------------------------------------------------------
   //
   // SERVER RESPONSE -> CLIENT
   //
   //----------------------------------------------------------------------------
 
-  /**
-   * Used to tell to the client that the room is created or not.
-   * Data to sent: {error: {type, message}} || {success, room, user}
-   */
-  CREATE_ROOM_RESPONSE: "createRoomResponse",
 
   /**
    * Used to tell to the client if he has join or not the room.
@@ -61,6 +62,18 @@ module.exports = {
    * Data to sent: {error: {type, message}} || {success, room, user}
    */
   START_PLAYING_RESPONSE: "startPlayingResponse",
+
+  /**
+   * Used to tell to the client that he successful the socket.io
+   * Data to sent: {}
+   */
+  CONNECTION_RESPONSE: "connectionResponse",
+
+  /**
+   * Used to tell if the genFlow is successfull
+   * Data to sent: {}
+   */
+  GENFLOW_RESPONSE: "genFlowResponse",
 
   //----------------------------------------------------------------------------
   //
@@ -98,4 +111,11 @@ module.exports = {
    * Data to sent: {room}
    */
   PACKET_GAME_START: "packetGameStart",
+
+  /**
+   * Sent new pieces for tetris
+   * Data to sent: {[pieces]} (default 10)
+   */
+  PACKET_GENFLOW: "packetGenFlow",
+
 };

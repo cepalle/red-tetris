@@ -1,7 +1,7 @@
 /**
  * @type {Map}
  */
-const socketMap = require("../main");
+const socketMap = require("../App");
 const socketDefs = require("../../common/socket-definitions");
 
 class PacketSender {
@@ -41,6 +41,10 @@ class PacketSender {
    */
   static sendGameStart(room) {
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, user, room, {room}, false);
+  }
+
+  static sendGenFlow(room, pieces) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GENFLOW, user, room, {pieces}, false);
   }
 
   static sendPacketToAllPlayer(packetName, user, room, data, exceptConcerned = true) {

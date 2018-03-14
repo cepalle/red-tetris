@@ -5,17 +5,19 @@ const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
 const RoomSocketHandler = require("./handlers/RoomSocketHandler");
+const GlobalSocketHandler = require("./handlers/GlobalSocketHandler");
 const socketMap = new Map();
 
 class App {
 
   handleClient(socket) {
     const roomHSocketHandler = new RoomSocketHandler(socket);
+    const globalSocketHandler = new GlobalSocketHandler(socket);
     socketMap.set(socket.id, socket);
 
-    socket.on("createRoom", (d) => roomHSocketHandler.createRoom(d));
     socket.on("joinRoom", (d) => roomHSocketHandler.joinRoom(d));
     socket.on("quitRoom", (d) => roomHSocketHandler.quitRoom(d));
+    socket.on("connection", (d) => globalSocketHandler.connection());
 
     socket.on("disconnect", function () {
       socketMap.delete(socket.id);
@@ -45,14 +47,11 @@ new App().main();
 
 
 
-
-
-
-
 const socket = require('socket.io-client')('http://localhost:4433');
 
-socket.emit("createRoom", {roomName: "hey", playerName: "Alexis"});
+socket.emit("joinRoom", {roomName: "hey", playerName: "Alexis"});
 socket.emit("joinRoom", {roomName: "hey", playerName: "Alexis2"});
+
 socket.on('createRoomResponse', function (a) {
   console.log("Response: " + JSON.stringify(a))
 });
