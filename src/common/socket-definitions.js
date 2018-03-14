@@ -36,6 +36,18 @@ module.exports = {
    */
   GENFLOW: "genFlow",
 
+  /**
+   * Used to tell to other clients that a player has placed a piece
+   * Data to sent: {grid, playerName}
+   */
+  TETRIS_PLACE_PIECE: "tetrisPlacePiece",
+
+  /**
+   * Player has disconnected
+   * Data to sent: {}
+   */
+  DISCONNECT: "disconnect",
+
   //----------------------------------------------------------------------------
   //
   // SERVER RESPONSE -> CLIENT
@@ -117,5 +129,11 @@ module.exports = {
    * Data to sent: {[pieces]} (default 10)
    */
   PACKET_GENFLOW: "packetGenFlow",
+
+  /**
+   * Sent to all player that a player has placed a piece to his grid
+   * data to sent: {grid, playerName}
+   */
+  PACKET_TETRIS_PLACE_PIECE: "packetPlayerPlacePiece"
 
 };
