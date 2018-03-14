@@ -45,12 +45,25 @@ class PacketSender {
   }
 
   /**
-   * Sent a set of pieces for tetris game to all clients
+   * Sent a set of pieces for tetris game to all clients.
    * @param {Room} room
    * @param {Array<number>} pieces
    */
   static sendGenFlow(room, pieces) {
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GENFLOW, undefined, room, {pieces}, false);
+  }
+
+  /**
+   * Sent to all player that a player has place a piece.
+   * @param {Room} room
+   * @param {Array<Array<number>>}grid
+   * @param {User} user
+   */
+  static sendPlayerPlacePiece(room, grid, user) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_TETRIS_PLACE_PIECE, user, room, {
+      grid,
+      playerName: user.username
+    })
   }
 
   static sendPacketToAllPlayer(packetName, user, room, data, exceptConcerned = true) {
