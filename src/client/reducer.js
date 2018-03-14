@@ -28,10 +28,10 @@ const initialState = {
       player_name: url_get_player_name(),
     },
   ],
-  player_name: url_get_player_name(), // function
+  player_name: url_get_player_name(),
   room_name: url_get_room_name(),
   is_master: true,
-  parts_flow: [PARTS._1, PARTS._2, PARTS._1, PARTS._5, PARTS._6, PARTS._1],
+  parts_flow: [1, 2, 1, 5, 6, 1],
   cur_part_pos: {x: 0, y: 5},
 };
 
