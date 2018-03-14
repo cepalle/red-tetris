@@ -1,5 +1,6 @@
 import {PARTS} from '../common/parts';
 import {urlGetPlayerName, urlGetRoomName} from "./url-handler"
+import {logger_reducer} from "./logger";
 
 const initialState = {
   grids: [
@@ -46,12 +47,15 @@ const gridInit = () => {
   return grid;
 };
 
+const reducerPartsFlow = (state, data) => {
+  logger_reducer(["partsFlow", data]);
+  return Object.assign({}, state, {partsFlow: state.partsFlow.concat(data)});
+};
+
 const reducer = (state = initialState, action) => {
-  console.log(action);
-  console.log(state);
   switch (action.type) {
     case 'ADD_PARTS_FLOW':
-      return Object.assign({}, state, {partsFlow: state.partsFlow.concat(action.data)});
+      return reducerPartsFlow(state, action.data);
     default:
       return state;
   }

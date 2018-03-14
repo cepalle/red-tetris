@@ -7,7 +7,7 @@ const GridPlayerComponent = ({grid, onClickCase}) =>
     {grid.map((line, i) =>
       <div key={i} className={"line"}>
         {line.map((el, j) =>
-          <div key={j} className={"part_" + el} onClick={() => onClickCase(el)}/>
+          <div key={j} className={"part" + el} onClick={() => onClickCase(el)}/>
         )}
       </div>
     )}
