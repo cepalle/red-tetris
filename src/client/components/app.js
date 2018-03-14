@@ -9,9 +9,7 @@ const App = () =>
   <div>
     <Error/>
     <GridPlayer/>
-    <p>part flow:</p>
     <FlowTest/>
-    <p>Player name: {store.getState().playerName}</p>
     <p>Room name: {store.getState().roomName}</p>
     <Opponent/>
   </div>

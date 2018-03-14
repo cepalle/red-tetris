@@ -1,19 +1,9 @@
 const isInUsers = (users, username) => {
-  for (let i = 0; i < users.length;i++) {
-    if (users[i].username === username) {
-      return true;
-    }
-  }
-  return false;
+  return users.filter(e => e.username === username).length > 0;
 };
 
 const isInPlayerStates = (playerStates, playerName) => {
-  for (let i = 0; i < playerStates.length;i++) {
-    if (playerStates[i].playerName === playerName) {
-      return true;
-    }
-  }
-  return false;
+  return playerStates.filter(e => e.playerName === playerName).length > 0;
 };
 
 export {isInUsers, isInPlayerStates};
