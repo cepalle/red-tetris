@@ -4,11 +4,13 @@ import {isInUsers, isInPlayerStates} from "../utils";
 
 const reducerPartsFlow = (state, data) => {
   logger_reducer(["partsFlow", data]);
+
   return Object.assign({}, state, {partsFlow: state.partsFlow.concat(data)});
 };
 
 const reducerError = (state, data) => {
   logger_reducer(["error", data]);
+
   return Object.assign({}, state, {error: Object.assign({}, data)});
 };
 
@@ -16,12 +18,21 @@ const reducerUpdateUsers = (state, users) => {
   logger_reducer(["updateUsers", users]);
 
   let filterNotInUsers = state.playerStates.filter(el => isInUsers(users, el.playerName));
-  for (let i = 0; i < users.length; i++) {
-    if (!isInPlayerStates(filterNotInUsers, users[i].username)) {
-      filterNotInUsers.push(initPlayerState(users[i].username))
-    }
+  let newPlayerStates = filterNotInUsers.concat(
+    users.filter(el => !isInPlayerStates(filterNotInUsers, el.username)).map(el => initPlayerState(el.username))
+  );
+
+  let playerMaster = users.filter(el => el.master);
+  if (playerMaster.length !== 1) {
+    logger_reducer(["no player master!"]);
+    return undefined;
   }
-  return Object.assign({}, state, {playerStates: filterNotInUsers});
+  newPlayerStates.map(el => {
+    el.isMaster = el.playerName === playerMaster[0].username;
+    return el;
+  })
+
+  return Object.assign({}, state, {playerStates: newPlayerStates});
 };
 
 const reducer = (state = initialState, action) => {

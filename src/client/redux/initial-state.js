@@ -11,7 +11,7 @@ const gridInit = () => {
   return grid;
 };
 
-const initPlayerState = playerName => {
+const initPlayerState = (playerName, isMaster=false) => {
   return {
     grid: [
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -35,7 +35,7 @@ const initPlayerState = playerName => {
       [1, 2, 2, 2, 3, 3, 3, 4, 4, 0],
     ],
     playerName: playerName,
-    isMaster: false,
+    isMaster: isMaster,
   }
 };
 

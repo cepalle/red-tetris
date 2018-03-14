@@ -9,7 +9,7 @@ const OpponentComponent = ({states}) =>
           {state.grid.map((line, i) =>
             <div key={i} className={"line"}>
               {line.map((el, j) =>
-                <div key={j} className={"part" + el} onClick={() => onClickCase(el)}/>
+                <div key={j} className={"part" + el}/>
               )}
             </div>
           )}
