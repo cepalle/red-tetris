@@ -1,8 +1,8 @@
 import io from 'socket.io-client';
-import {store} from "./redux/store"
-import {addPartsFlow} from "./redux/action-creators"
-import socketDefs from "../common/socket-definitions";
-import {logger_sock} from "./logger";
+import {store} from "../redux/store"
+import {addPartsFlow} from "../redux/action-creators"
+import socketDefs from "../../common/socket-definitions";
+import {logger_sock} from "../logger";
 
 const socket = io.connect('http://localhost:4433');
 
