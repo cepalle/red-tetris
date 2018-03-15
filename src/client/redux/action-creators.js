@@ -1,35 +1,55 @@
-const addPartsFlow = arg => {
+/**
+ * Create action for add parts to the state.partsFlow.
+ * @param {Array<int>} parts
+ */
+const addPartsFlow = parts => {
   return {
     type: 'ADD_PARTS_FLOW',
-    data: arg
+    data: parts
   };
 };
 
-const addError = arg => {
+/**
+ * Create a action for set error to state.error.
+ * @param {type, message} error
+ */
+const addError = error => {
   return {
     type: 'ADD_ERROR',
-    data: arg
+    data: error
   }
 };
 
-const updateUsers = arg => {
+/**
+ * Create a action for synchronize players with users.
+ * @param {[user]} users
+ */
+const updateUsers = users => {
   return {
     type: 'UPDATE_USERS',
-    data: arg
+    data: users
   }
 };
 
-const movePart = arg => {
+/**
+ * Create a action for update the grid with the move of the part.
+ * @param {PARTS_MOVE} move
+ */
+const movePart = move => {
   return {
     type: 'MOVE_PART',
-    data: arg
+    data: move
   }
 };
 
-const updateGrid = arg => {
+/**
+ * Create a action for update the grid of the player that as change.
+ * @param {grid, playerName} gridAndPlayer
+ */
+const updateGrid = gridAndPlayer => {
   return {
     type: 'UPDATE_GRID',
-    data: arg
+    data: gridAndPlayer
   }
 };
 

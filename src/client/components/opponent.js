@@ -1,5 +1,6 @@
 import React from "react";
 import {connect} from 'react-redux';
+import {clonePlayerStates} from "../util/utils"
 
 const OpponentComponent = ({states}) =>
   <div className={"line"}>
@@ -23,7 +24,7 @@ const OpponentComponent = ({states}) =>
 ;
 
 const mapStateToProps = state => {
-  return {states: state.playerStates.filter(el => el.playerName !== state.playerName)};
+  return {states: clonePlayerStates(state.playerStates).filter(el => el.playerName !== state.playerName)};
 };
 
 const Opponent = connect(

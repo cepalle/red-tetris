@@ -28,7 +28,7 @@ const reducerError = (state, error) => {
 };
 
 /**
- * synchronize players with users.
+ * Synchronize players with users.
  * @param {state} state
  * @param {[user]} users
  */

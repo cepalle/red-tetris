@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from 'react-redux';
 import {emitGenFlow, emitTetrisPlacePiece} from "../socket/socket-api"
 import {movePart} from "../redux/action-creators";
-import {PARTS_MOVE_DOWN, PARTS_MOVE_LEFT, PARTS_MOVE_RIGHT, PARTS_ROT_LEFT, PARTS_ROT_RIGHT} from "../../common/parts";
+import {PARTS_MOVE} from "../../common/parts";
 
 const ButtonTestComponent = ({
                            line, grid, playerName,
@@ -55,11 +55,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onClickButtonFlow: () => emitGenFlow(),
-    onClickButtonRotRight: () => dispatch(movePart(PARTS_ROT_RIGHT)),
-    onClickButtonRotLeft: () => dispatch(movePart(PARTS_ROT_LEFT)),
-    onClickButtonMoveDown: () => dispatch(movePart(PARTS_MOVE_DOWN)),
-    onClickButtonMoveLeft: () => dispatch(movePart(PARTS_MOVE_LEFT)),
-    onClickButtonMoveRight: () => dispatch(movePart(PARTS_MOVE_RIGHT)),
+    onClickButtonRotRight: () => dispatch(movePart(PARTS_MOVE.ROT_RIGHT)),
+    onClickButtonRotLeft: () => dispatch(movePart(PARTS_MOVE.ROT_LEFT)),
+    onClickButtonMoveDown: () => dispatch(movePart(PARTS_MOVE.MOVE_DOWN)),
+    onClickButtonMoveLeft: () => dispatch(movePart(PARTS_MOVE.MOVE_LEFT)),
+    onClickButtonMoveRight: () => dispatch(movePart(PARTS_MOVE.MOVE_RIGHT)),
     onClickButtonUpdateGrid: (grid, playerName) => emitTetrisPlacePiece(grid, playerName)
   }
 };
