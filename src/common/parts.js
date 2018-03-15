@@ -3,9 +3,9 @@ const PARTS = [1, 2, 3, 4, 5, 6, 7];
 const PARTS_MOVE = {
   ROT_RIGHT: "PARTS_ROT_RIGHT",
   ROT_LEFT: "PARTS_ROT_LEFT",
-  MOVE_RIGHT: "PARTS_MOVE_RIGHT",
-  MOVE_LEFT: "PARTS_MOVE_LEFT",
-  MOVE_DOWN: "PARTS_MOVE_DOWN"
+  RIGHT: "PARTS_MOVE_RIGHT",
+  LEFT: "PARTS_MOVE_LEFT",
+  DOWN: "PARTS_MOVE_DOWN"
 }
 
 const PARTS_DESCR = [
@@ -256,10 +256,18 @@ const PARTS_DESCR = [
 const getPiece = (parts, rot = 0) => PARTS_DESCR[parts][rot].piece;
 const getPieceObj = (parts, rot = 0) => PARTS_DESCR[parts][rot];
 const getPieceMask = (parts, rot = 0) => PARTS_DESCR[parts][rot].info;
+const updateDirection = (loc, direction) => {
+  if (direction === PARTS_MOVE.DOWN)
+    loc.y++;
+  else if (direction === PARTS_MOVE.LEFT)
+    loc.x--;
+  else if (direction === PARTS_MOVE.RIGHT)
+    loc.x++;
+};
 
 module.exports = {
   PARTS,
   PARTS_DESCR,
   PARTS_MOVE,
-  getPiece, getPieceMask, getPieceObj
+  getPiece, getPieceMask, getPieceObj, updateDirection
 };

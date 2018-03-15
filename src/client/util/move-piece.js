@@ -1,43 +1,44 @@
-/**
- * Return true if can move down
- * @param {Object} state
- * @param {Array<Array<number>>} grid
- * @param {Object} loc
- * @param {number} loc.x
- * @param {number} loc.y
- * @param {Array<Array<number>>} piece
- * @param {Object} mask
- * @param {number} mask.x
- * @param {number} mask.y
- * @return {Object | boolean}
- */
-const canMoveDownAndPlace = (state, grid, loc, piece, mask) => {
-  loc.y++;
-  if (loc.y > grid.length - 1 + mask.y)
-    return false ;
-  const toReturn = {
-    grid: grid.slice(0),
-    curPartCoords: []
-  };
+import * as part from "../../common/parts";
 
-  for (let y = 0; y < piece.length; y++) {
-    let horizontal = piece[y];
-    for (let x = 0; x < horizontal.length; x++) {
-      let number = horizontal[x];
-      try {
-        if (number !== 0 && toReturn.grid[y + loc.y][x + loc.x] !== 0)
-          return false ;
-        else if(number !== 0) {
-          toReturn.grid[y + loc.y][x + loc.x] = number;
-          toReturn.curPartCoords.push({x: y + loc.y, y: x + loc.x})
-        }
-      } catch (e) {}
-    }
-  }
-
-  return toReturn;
+const COLLISION_TYPE = {
+  PIECE: "collision_piece",
+  WALL_RIGHT: "collision_wall_right",
+  WALL_LEFT: "collision_wall_left",
+  WALL_BOTTOM: "collision_wall_bottom",
+  WALL_TOP: "collision_top",
 };
 
-const eraseLastGrid = (grid, state) => state.curPartCoords.forEach(e => {grid[e.x][e.y] = 0;});
+const hasCollision = (grid, piece, loc) => {
+  let collisionType = undefined;
+  console.log(piece);
+  piece.forEach((line, y) => line.forEach((number, x) => {
+    const gx = x + loc.x;
+    const gy = y + loc.y;
+    if (gy < 0 && number !== 0)
+      collisionType = COLLISION_TYPE.WALL_TOP;
+    else if (gy >= part.GRID_HEIGHT && number !== 0)
+      collisionType = COLLISION_TYPE.WALL_BOTTOM;
+    else if (gx < 0 && number !== 0)
+      collisionType = COLLISION_TYPE.WALL_LEFT;
+    else if (gx >= part.GRID_WIDTH && number !== 0)
+      collisionType = COLLISION_TYPE.WALL_RIGHT;
+    else if (number !== 0 && grid[gy][gx] !== 0)
+      collisionType = COLLISION_TYPE.PIECE;
+  }));
+  return collisionType;
+};
 
-export { canMoveDownAndPlace, eraseLastGrid}
+const placePiece = (grid, piece, loc, state) => {
+  piece.forEach((line, y) => line.forEach((number, x) => {
+    const gx = x + loc.x;
+    const gy = y + loc.y;
+    if (number !== 0) {
+      grid[gy][gx] = number;
+      state.curPartCoords.push({x: gx, y: gy});
+    }
+  }));
+};
+
+const eraseLastPiece = (grid, state) => state.curPartCoords.forEach(e => {grid[e.y][e.x] = 0;});
+
+export { hasCollision, eraseLastPiece, placePiece, COLLISION_TYPE}

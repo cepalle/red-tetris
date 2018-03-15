@@ -57,9 +57,9 @@ const mapDispatchToProps = dispatch => {
     onClickButtonFlow: () => emitGenFlow(),
     onClickButtonRotRight: () => dispatch(movePart(PARTS_MOVE.ROT_RIGHT)),
     onClickButtonRotLeft: () => dispatch(movePart(PARTS_MOVE.ROT_LEFT)),
-    onClickButtonMoveDown: () => dispatch(movePart(PARTS_MOVE.MOVE_DOWN)),
-    onClickButtonMoveLeft: () => dispatch(movePart(PARTS_MOVE.MOVE_LEFT)),
-    onClickButtonMoveRight: () => dispatch(movePart(PARTS_MOVE.MOVE_RIGHT)),
+    onClickButtonMoveDown: () => dispatch(movePart(PARTS_MOVE.DOWN)),
+    onClickButtonMoveLeft: () => dispatch(movePart(PARTS_MOVE.LEFT)),
+    onClickButtonMoveRight: () => dispatch(movePart(PARTS_MOVE.RIGHT)),
     onClickButtonUpdateGrid: (grid, playerName) => emitTetrisPlacePiece(grid, playerName)
   }
 };
