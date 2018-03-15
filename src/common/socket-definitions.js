@@ -82,6 +82,12 @@ module.exports = {
   CONNECTION_RESPONSE: "connectionResponse",
 
   /**
+   * Used to tell if the request is ok
+   * Data to sent: {error: {type, message}} || {success}
+   */
+  TETRIS_PLACE_PIECE_RESPONSE: "tetrisPlacePieceResponse",
+
+  /**
    * Used to tell if the genFlow is successfull
    * Data to sent: {}
    */
