@@ -1,5 +1,11 @@
 const PARTS = [1, 2, 3, 4, 5, 6, 7];
 
+const PARTS_ROT_RIGHT = "PARTS_ROT_RIGHT";
+const PARTS_ROT_LEFT = "PARTS_ROT_LEFT";
+const PARTS_MOVE_RIGHT = "PARTS_MOVE_RIGHT";
+const PARTS_MOVE_LEFT = "PARTS_MOVE_LEFT";
+const PARTS_MOVE_DOWN = "PARTS_MOVE_DOWN";
+
 const PARTS_DESCR = [
   [
     [
@@ -161,4 +167,12 @@ const PARTS_DESCR = [
   ],
 ];
 
-module.exports = {PARTS};
+module.exports = {
+  PARTS,
+  PARTS_DESCR,
+  PARTS_ROT_LEFT,
+  PARTS_ROT_RIGHT,
+  PARTS_MOVE_DOWN,
+  PARTS_MOVE_LEFT,
+  PARTS_MOVE_RIGHT
+};

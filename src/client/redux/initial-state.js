@@ -1,16 +1,5 @@
 import {urlGetPlayerName, urlGetRoomName} from "../url-handler";
 
-const gridInit = () => {
-  const grid = [];
-  for (let i = 0; i < 20; i++) {
-    grid.push([]);
-    for (let j = 0; j < 10; j++) {
-      grid.push(0);
-    }
-  }
-  return grid;
-};
-
 const initPlayerState = (playerName, isMaster=false) => {
   return {
     grid: [
@@ -45,6 +34,7 @@ const initialState = {
   roomName: urlGetRoomName(),
   partsFlow: [],
   curPartPos: {x: 0, y: 5},
+  curPartRot: 0,
   error: undefined
 };
 

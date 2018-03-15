@@ -19,4 +19,11 @@ const updateUsers = users => {
   }
 };
 
-export {addPartsFlow, addError, updateUsers};
+const movePart = direction => {
+  return {
+    type: 'MOVE_PART',
+    data: direction
+  }
+};
+
+export {addPartsFlow, addError, updateUsers, movePart};

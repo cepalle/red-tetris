@@ -35,6 +35,11 @@ const reducerUpdateUsers = (state, users) => {
   return Object.assign({}, state, {playerStates: newPlayerStates});
 };
 
+const reducerMovePart = direction => {
+  logger_reducer(["movePart", direction]);
+
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PARTS_FLOW':
@@ -43,6 +48,8 @@ const reducer = (state = initialState, action) => {
       return reducerError(state, action.data);
     case 'UPDATE_USERS':
       return reducerUpdateUsers(state, action.data);
+    case 'MOVE_PART':
+      return reducerMovePart(state, action.data);
     default:
       return state;
   }
