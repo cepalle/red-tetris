@@ -24,42 +24,30 @@ socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(
  * Request: PACKET_PLAYER_JOIN
  * Data recv: {player, room}
  */
-const cbPacketPlayerJoin = arg => {
-  logger_sock(["recv PACKET_PLAYER_JOIN", arg]);
+const cbPacketPlayerJoin = ({player, room}) => {
+  logger_sock(["recv PACKET_PLAYER_JOIN", room]);
 
-  if (arg.error) {
-    store.dispatch(addError(arg.error))
-  } else {
-    store.dispatch(updateUsers(arg.room.users))
-  }
+  store.dispatch(updateUsers(room.users));
 };
 
 /**
  * Request: PACKET_PLAYER_QUIT
  * Data recv: {player, room}
  */
-const cbPacketPlayerQuit = arg => {
-  logger_sock(["recv PACKET_PLAYER_QUIT", arg]);
+const cbPacketPlayerQuit = ({player, room}) => {
+  logger_sock(["recv PACKET_PLAYER_QUIT", room]);
 
-  if (arg.error) {
-    store.dispatch(addError(arg.error))
-  } else {
-    store.dispatch(updateUsers(arg.room.users))
-  }
+  store.dispatch(updateUsers(room.users));
 };
 
 /**
  * Request: PACKET_PLAYER_PROMOTED
  * Data recv: {player, room}
  */
-const cbPacketPlayerPromoted = arg => {
-  logger_sock(["recv PACKET_PLAYER_PROMOTED", arg]);
+const cbPacketPlayerPromoted = ({player, room}) => {
+  logger_sock(["recv PACKET_PLAYER_PROMOTED", room]);
 
-  if (arg.error) {
-    store.dispatch(addError(arg.error))
-  } else {
-    store.dispatch(updateUsers(arg.room.users))
-  }
+  store.dispatch(updateUsers(room.users));
 };
 
 //TODO
@@ -94,12 +82,12 @@ const cbPacketGenFlow = ({pieces}) => {
 
 /**
  * Request: PACKET_TETRIS_PLACE_PIECE
- * Data recv: {grid, playerName}
+ * Data recv: {grid, playerName} gridAndPlayer
  */
-const cbPacketTetrisPlacePiece = arg => {
-  logger_sock(["recv PACKET_TETRIS_PLACE_PIECE", arg]);
+const cbPacketTetrisPlacePiece = gridAndPlayer => {
+  logger_sock(["recv PACKET_TETRIS_PLACE_PIECE", gridAndPlayer]);
 
-  store.dispatch(updateGrid(arg));
+  store.dispatch(updateGrid(gridAndPlayer));
 };
 
 //----------------------------------------------------------------------------
@@ -119,13 +107,13 @@ socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
  * Request: JOIN_ROOM_RESPONSE
  * Data recv: {error: {type, message}} || {success, room, user}
  */
-const cbJoinRoomResponse = arg => {
-  logger_sock(["recv JOIN_ROOM_RESPONSE", arg]);
+const cbJoinRoomResponse = ({error, room}) => {
+  logger_sock(["recv JOIN_ROOM_RESPONSE", room]);
 
-  if (arg.error) {
-    store.dispatch(addError(arg.error))
+  if (error) {
+    store.dispatch(addError(error))
   } else {
-    store.dispatch(updateUsers(arg.room.users))
+    store.dispatch(updateUsers(room.users))
   }
 };
 
@@ -161,8 +149,12 @@ const cbConnectionResponse = () => {
  * Request: TETRIS_PLACE_PIECE_RESPONSE
  * Data recv: {error: {type, message}} || {success}
  */
-const cbTetrisPlacePieceResponse = () => {
+const cbTetrisPlacePieceResponse = ({error}) => {
   logger_sock(["recv TETRIS_PLACE_PIECE_RESPONSE"]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  }
 };
 
 //TODO

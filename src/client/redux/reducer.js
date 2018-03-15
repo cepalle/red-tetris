@@ -30,7 +30,7 @@ const reducerError = (state, error) => {
 /**
  * Synchronize players with users.
  * @param {state} state
- * @param {[user]} users
+ * @param {Array<user>} users
  */
 const reducerUpdateUsers = (state, users) => {
   logger_reducer(["updateUsers", users]);

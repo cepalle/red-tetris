@@ -22,7 +22,7 @@ const addError = error => {
 
 /**
  * Create a action for synchronize players with users.
- * @param {[user]} users
+ * @param {Array<user>} users
  */
 const updateUsers = users => {
   return {
