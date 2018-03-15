@@ -1,37 +1,38 @@
 import React from "react";
-import {addPartsFlow} from "../action-creators";
 import {connect} from 'react-redux';
+import {logger_component} from "../logger";
 
-const GridPlayerComponent = ({grid, onClickCase}) =>
-  <div className={"grid"}>
-    {grid.map((line, i) =>
-      <div key={i} className={"line"}>
-        {line.map((el, j) =>
-          <div key={j} className={"part_" + el} onClick={() => onClickCase(el)}/>
+const GridPlayerComponent = ({state}) =>
+  <div className={"line center"}>
+    <div>
+      <div className={"grid"}>
+        {state.grid.map((line, i) =>
+          <div key={i} className={"line"}>
+            {line.map((el, j) =>
+              <div key={j} className={"part" + el}/>
+            )}
+          </div>
         )}
       </div>
-    )}
+      <div className={"line center"}>
+        <p>{state.playerName}{state.isMaster && "(Master)"}</p>
+      </div>
+    </div>
   </div>
 ;
 
 const mapStateToProps = state => {
-  return {
-    grid: state.grids[0].grid.map(l => l.map(el => el))
+  let playerState = state.playerStates.filter(el => el.playerName === state.playerName);
+  if (playerState.length > 0) {
+    return {state: Object.assign({}, playerState[0])}
   }
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    onClickCase: e => {
-      dispatch(addPartsFlow([e]));
-      console.log(e);
-    }
-  }
+  logger_component(["playerName note in playerStates"]);
+  return undefined;
 };
 
 const GridPlayer = connect(
   mapStateToProps,
-  mapDispatchToProps
+  undefined
 )(GridPlayerComponent);
 
 export {GridPlayer};

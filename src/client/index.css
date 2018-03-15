@@ -1,4 +1,9 @@
 
+.center {
+  display: flex;
+  justify-content: center;
+}
+
 .grid {
   display: flex;
   flex-direction: column;
@@ -9,43 +14,43 @@
   flex-direction: row;
 }
 
-.part_0 {
+.part0 {
   background-color: #eeeeee;
   padding: 12px;
 }
 
-.part_1 {
+.part1 {
   background-color: #00ffff;
   padding: 12px;
 }
 
-.part_2 {
+.part2 {
   background-color: #0000ff;
   padding: 12px;
 }
 
-.part_3 {
+.part3 {
   background-color: #ffaa00;
   padding: 12px;
 }
 
-.part_4 {
+.part4 {
   background-color: #ffff00;
   padding: 12px;
 }
 
-.part_5 {
+.part5 {
   background-color: #00ff00;
   padding: 12px;
 }
 
-.part_6 {
+.part6 {
   background-color: #9900ff;
   padding: 12px;
 }
 
-.part_7 {
+.part7 {
   background-color: #ff0000;
   padding: 12px;
 }
-s
+

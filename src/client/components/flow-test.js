@@ -1,13 +1,12 @@
 import React from "react";
-import {addPartsFlow} from "../action-creators";
 import {connect} from 'react-redux';
-import {genFlow} from "../socketAPI"
+import {emitGenFlow} from "../socket/socket-api"
 
-const Flow = ({line, onClickCase, onClickButon}) =>
+const FlowComponent = ({line, onClickButon}) =>
   <div>
     <div className="line">
       {line.map((el, i) =>
-        <div key={i} className={"part_" + el} onClick={() => onClickCase(line[i])}/>
+        <div key={i} className={"part" + el}/>
       )}
     </div>
     <div onClick={() => onClickButon()}>
@@ -24,17 +23,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onClickCase: e => {
-      dispatch(addPartsFlow([e]));
-      console.log(e);
-    },
-    onClickButon: () => genFlow()
+    onClickButon: () => emitGenFlow()
   }
 };
 
 const FlowTest = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Flow);
+)(FlowComponent);
 
 export {FlowTest};
