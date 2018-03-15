@@ -104,6 +104,7 @@ const cbStartPlayingResponse = (arg) => {
 
 const cbConnectionResponse = () => {
   logger_sock(["recv CONNECTION_RESPONSE"]);
+
   emitJoinRoom();
 };
 
@@ -117,9 +118,13 @@ const cbGenFlowResponse = (arg) => {
 //
 //----------------------------------------------------------------------------
 
-const emitGenFlow = () => {
-  logger_sock(["emit GENFLOW"]);
-  socket.emit(socketDefs.GENFLOW, {roomName: store.getState().roomName});
+const emitJoinRoom = () => {
+  logger_sock(["emit JOIN_ROOM"]);
+
+  socket.emit(socketDefs.JOIN_ROOM, {
+    roomName: store.getState().roomName,
+    playerName: store.getState().playerName
+  });
 };
 
 const emitQuitRoom = () => {
@@ -130,12 +135,16 @@ const emitStartPlaying = () => {
   logger_sock(["emit START_PLAYING"]);
 };
 
-const emitJoinRoom = () => {
-  logger_sock(["emit JOIN_ROOM"]);
-  socket.emit(socketDefs.JOIN_ROOM, {
-    roomName: store.getState().roomName,
-    playerName: store.getState().playerName
-  });
+const emitGenFlow = () => {
+  logger_sock(["emit GENFLOW"]);
+
+  socket.emit(socketDefs.GENFLOW, {roomName: store.getState().roomName});
 };
 
-export {emitGenFlow, emitQuitRoom, emitStartPlaying, emitJoinRoom};
+const emitTetrisPlacePiece = (grid, playerName) => {
+  logger_sock(["emit TETRIS_PLACE_PIECE"]);
+
+  socket.emit(socketDefs.TETRIS_PLACE_PIECE, {grid: grid, playerName: playerName});
+};
+
+export {emitJoinRoom, emitQuitRoom, emitStartPlaying, emitGenFlow, emitTetrisPlacePiece};
