@@ -1,15 +1,17 @@
 const PARTS = [1, 2, 3, 4, 5, 6, 7];
 
-const PARTS_ROT_RIGHT = "PARTS_ROT_RIGHT";
-const PARTS_ROT_LEFT = "PARTS_ROT_LEFT";
-const PARTS_MOVE_RIGHT = "PARTS_MOVE_RIGHT";
-const PARTS_MOVE_LEFT = "PARTS_MOVE_LEFT";
-const PARTS_MOVE_DOWN = "PARTS_MOVE_DOWN";
+const PARTS_MOVE = {
+  ROT_RIGHT: "PARTS_ROT_RIGHT",
+  ROT_LEFT: "PARTS_ROT_LEFT",
+  MOVE_RIGHT: "PARTS_MOVE_RIGHT",
+  MOVE_LEFT: "PARTS_MOVE_LEFT",
+  MOVE_DOWN: "PARTS_MOVE_DOWN"
+}
 
 const PARTS_DESCR = [
   [
     {
-      info: {x: 0, y:-1},
+      info: {x: 0, y: -1},
       piece: [
         [0, 0, 0, 0],
         [1, 1, 1, 1],
@@ -36,7 +38,7 @@ const PARTS_DESCR = [
       ]
     },
     {
-      info: {x: -1, y:0},
+      info: {x: -1, y: 0},
       piece: [
         [0, 1, 0, 0],
         [0, 1, 0, 0],
@@ -47,7 +49,7 @@ const PARTS_DESCR = [
   ],
   [
     {
-      info: {x: 0, y:0},
+      info: {x: 0, y: 0},
       piece: [
         [2, 0, 0],
         [2, 2, 2],
@@ -183,7 +185,7 @@ const PARTS_DESCR = [
   ],
   [
     {
-      info: {x: 0, y:0},
+      info: {x: 0, y: 0},
       piece: [
         [0, 6, 0],
         [6, 6, 6],
@@ -207,7 +209,7 @@ const PARTS_DESCR = [
       ]
     },
     {
-      info: {x: 0, y:0},
+      info: {x: 0, y: 0},
       piece: [
         [0, 6, 0],
         [6, 6, 0],
@@ -258,10 +260,6 @@ const getPieceMask = (parts, rot = 0) => PARTS_DESCR[parts][rot].info;
 module.exports = {
   PARTS,
   PARTS_DESCR,
-  PARTS_ROT_LEFT,
-  PARTS_ROT_RIGHT,
-  PARTS_MOVE_DOWN,
-  PARTS_MOVE_LEFT,
-  PARTS_MOVE_RIGHT,
+  PARTS_MOVE,
   getPiece, getPieceMask, getPieceObj
 };

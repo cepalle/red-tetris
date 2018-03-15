@@ -1,33 +1,42 @@
 import {logger_reducer} from "../logger";
 import {initialState, initPlayerState} from "./initial-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
+import {cloneState} from "../util/utils";
 
-//----------------------------------------------------------------------------
-// ADD_PARTS_FLOW
-//----------------------------------------------------------------------------
-const reducerPartsFlow = (state, data) => {
-  logger_reducer(["partsFlow", data]);
+/**
+ * Add parts to the state.partsFlow.
+ * @param {state} state
+ * @param {Array<int>} parts
+ */
+const reducerPartsFlow = (state, parts) => {
+  logger_reducer(["partsFlow", parts]);
 
-  return Object.assign({}, state, {partsFlow: state.partsFlow.concat(data)});
+  state.partsFlow = state.partsFlow.concat(parts)
+  return state;
 };
 
-//----------------------------------------------------------------------------
-// ADD_ERROR
-//----------------------------------------------------------------------------
-const reducerError = (state, data) => {
-  logger_reducer(["error", data]);
+/**
+ * Set error to state.error.
+ * @param {state} state
+ * @param {type, message} error
+ */
+const reducerError = (state, error) => {
+  logger_reducer(["error", error]);
 
-  return Object.assign({}, state, {error: Object.assign({}, data)});
+  state.error = error
+  return state;
 };
 
-//----------------------------------------------------------------------------
-// UPDATE_USERS
-//----------------------------------------------------------------------------
+/**
+ * synchronize players with users.
+ * @param {state} state
+ * @param {[user]} users
+ */
 const reducerUpdateUsers = (state, users) => {
   logger_reducer(["updateUsers", users]);
 
   let filterNotInUsers = state.playerStates.filter(el => isInUsers(users, el.playerName));
-  let newPlayerStates = filterNotInUsers.concat(
+  let filterAddNewUsers = filterNotInUsers.concat(
     users.filter(el => !isInPlayerStates(filterNotInUsers, el.username)).map(el => initPlayerState(el.username))
   );
 
@@ -36,64 +45,68 @@ const reducerUpdateUsers = (state, users) => {
     logger_reducer(["no player master!"]);
     return undefined;
   }
-  newPlayerStates.map(el => {
+  state.playerStates = filterAddNewUsers.map(el => {
     el.isMaster = el.playerName === playerMaster[0].username;
     return el;
   });
 
-  return Object.assign({}, state, {playerStates: newPlayerStates});
+  return state;
 };
 
-//----------------------------------------------------------------------------
-// MOVE_PART
-//----------------------------------------------------------------------------
-const reducerMovePart = (state, direction) => {
-  logger_reducer(["movePart", direction]);
+/**
+ * Update the grid with the move of the part.
+ * @param {state} state
+ * @param {PARTS_MOVE} move
+ */
+const reducerMovePart = (state, move) => {
+  logger_reducer(["movePart", move]);
 
-
-  let newPlayerStates = state.playerStates.map(playerState => {
+  state.playerStates = state.playerStates.map(playerState => {
     if (playerState.playerName === state.playerName) {
       playerState.grid[0][0] = 1;
     }
     return playerState;
   });
 
-
-  return Object.assign({}, state, {playerStates: newPlayerStates});
+  return state;
 };
 
-//----------------------------------------------------------------------------
-// UPDATE_GRID
-//----------------------------------------------------------------------------
+/**
+ * Update the grid of the player that as change.
+ * @param {state} state
+ * @param {grid, playerName}
+ */
 const reducerUpdateGrid = (state, {grid, playerName}) => {
   logger_reducer(["updateGrid", {grid, playerName}]);
 
-  let newPlayerStates = state.playerStates.map(el => {
+  state.playerStates = state.playerStates.map(el => {
     if (el.playerName === playerName) {
       el.grid = grid
     }
     return el;
   });
-  return Object.assign({}, state, {playerStates: newPlayerStates});
+  return state;
 };
+
 
 //----------------------------------------------------------------------------
 //
 // SWITCH REDUCER
 //
 //----------------------------------------------------------------------------
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PARTS_FLOW':
-      return reducerPartsFlow(state, action.data);
+      return reducerPartsFlow(cloneState(state), action.data);
     case 'ADD_ERROR':
-      return reducerError(state, action.data);
+      return reducerError(cloneState(state), action.data);
     case 'UPDATE_USERS':
-      return reducerUpdateUsers(state, action.data);
+      return reducerUpdateUsers(cloneState(state), action.data);
     case 'MOVE_PART':
-      return reducerMovePart(state, action.data);
+      return reducerMovePart(cloneState(state), action.data);
     case 'UPDATE_GRID':
-      return reducerUpdateGrid(state, action.data);
+      return reducerUpdateGrid(cloneState(state), action.data);
     default:
       return state;
   }
