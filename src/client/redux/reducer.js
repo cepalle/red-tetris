@@ -60,7 +60,6 @@ const reducerMovePart = (state, direction) => {
 
 
   return Object.assign({}, state, {playerStates: newPlayerStates});
-//  return ///
 };
 
 //----------------------------------------------------------------------------
