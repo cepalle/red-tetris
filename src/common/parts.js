@@ -5,6 +5,8 @@ const PARTS_ROT_LEFT = "PARTS_ROT_LEFT";
 const PARTS_MOVE_RIGHT = "PARTS_MOVE_RIGHT";
 const PARTS_MOVE_LEFT = "PARTS_MOVE_LEFT";
 const PARTS_MOVE_DOWN = "PARTS_MOVE_DOWN";
+const GRID_HEIGHT = 19;
+const GRID_WIDTH = 10;
 
 const PARTS_DESCR = [
   [
@@ -254,6 +256,14 @@ const PARTS_DESCR = [
 const getPiece = (parts, rot = 0) => PARTS_DESCR[parts][rot].piece;
 const getPieceObj = (parts, rot = 0) => PARTS_DESCR[parts][rot];
 const getPieceMask = (parts, rot = 0) => PARTS_DESCR[parts][rot].info;
+const updateDirection = (loc, direction) => {
+  if (direction === PARTS_MOVE_DOWN)
+    loc.y++;
+  else if (direction === PARTS_MOVE_LEFT)
+    loc.x--;
+  else if (direction === PARTS_MOVE_RIGHT)
+    loc.x++;
+};
 
 module.exports = {
   PARTS,
@@ -263,5 +273,6 @@ module.exports = {
   PARTS_MOVE_DOWN,
   PARTS_MOVE_LEFT,
   PARTS_MOVE_RIGHT,
-  getPiece, getPieceMask, getPieceObj
+  GRID_HEIGHT, GRID_WIDTH,
+  getPiece, getPieceMask, getPieceObj, updateDirection
 };

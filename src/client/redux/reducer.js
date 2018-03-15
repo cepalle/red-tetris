@@ -1,8 +1,10 @@
 import {logger_reducer} from "../logger";
 import {initialState, initPlayerState} from "./initial-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
-import {getPiece, getPieceMask, getPieceObj, PARTS_MOVE_DOWN} from "../../common/parts";
+import {getPiece, getPieceMask, getPieceObj, PARTS_MOVE_DOWN, updateDirection} from "../../common/parts";
 import * as utilMovePiece from "../util/move-piece";
+import {eraseLastPiece} from "../util/move-piece";
+import {placePiece} from "../util/move-piece";
 
 const reducerPartsFlow = (state, data) => {
   logger_reducer(["partsFlow", data]);
@@ -40,17 +42,20 @@ const reducerUpdateUsers = (state, users) => {
 const reducerMovePart = (state, direction) => {
   logger_reducer(["movePart", direction]);
 
-  const piece = getPiece(state.partsFlow[0] - 1,  state.curPartCoords);
-  const coord = state.curPartPos;
-  let gridCopy = state.playerStates.find(playerState => playerState.playerName === state.playerName).grid.slice(0);
-  let result;
-
-  if (direction === PARTS_MOVE_DOWN) {
-    if ((result = utilMovePiece.canMoveDownAndPlace(gridCopy, coord, piece, getPieceMask(state.partsFlow[0] - 1)))) {
-      grid = result.grid;
-      state.curPartCoords = result.curPartCoords;
-    }
+  const piece = getPiece(state.partsFlow[0] - 1, state.curPartRot);
+  const loc = Object.assign({}, state.curPartPos);
+  const grid = state.playerStates.find(playerState => playerState.playerName === state.playerName).grid;
+  const gridCopy = grid.map(l => l.map(e => e));
+  eraseLastPiece(gridCopy, state);
+  let collisionType;
+  updateDirection(loc, direction);
+  if (!(collisionType = utilMovePiece.hasCollision(gridCopy, piece, loc))) {
+    state.curPartPos = loc;
+    eraseLastPiece(grid, state);
+    placePiece(grid, piece, loc, state);
   }
+  else
+    console.log("With a colision .. " + collisionType);
 
   return Object.assign({}, state);
 };
