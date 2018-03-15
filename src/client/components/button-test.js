@@ -2,9 +2,9 @@ import React from "react";
 import {connect} from 'react-redux';
 import {emitGenFlow} from "../socket/socket-api"
 import {movePart} from "../redux/action-creators";
-import {PARTS_MOVE_DOWN} from "../../common/parts";
+import {PARTS_MOVE_DOWN, PARTS_MOVE_LEFT, PARTS_MOVE_RIGHT, PARTS_ROT_LEFT, PARTS_ROT_RIGHT} from "../../common/parts";
 
-const ButtonComponent = ({line, onClickButtonFlow, onClickButtonDown}) =>
+const ButtonComponent = ({line, onClickButtonFlow, onClickButtonRotRight, onClickButtonRotLeft, onClickButtonMoveDown, onClickButtonMoveLeft, onClickButtonMoveRight}) =>
   <div>
     <div className="line">
       {line.map((el, i) =>
@@ -14,8 +14,21 @@ const ButtonComponent = ({line, onClickButtonFlow, onClickButtonDown}) =>
     <div onClick={() => onClickButtonFlow()}>
       Buton flow socket.io
     </div>
-    <button onClick={() => onClickButtonDown()}>
-      Buton Down
+
+    <button onClick={() => onClickButtonRotRight()}>
+      onClickButtonRotRight
+    </button>
+    <button onClick={() => onClickButtonRotLeft()}>
+      onClickButtonRotLeft
+    </button>
+    <button onClick={() => onClickButtonMoveDown()}>
+      onClickButtonMoveDown
+    </button>
+    <button onClick={() => onClickButtonMoveLeft()}>
+      onClickButtonMoveLeft
+    </button>
+    <button onClick={() => onClickButtonMoveRight()}>
+      onClickButtonMoveRight
     </button>
   </div>
 ;
@@ -29,7 +42,11 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onClickButtonFlow: () => emitGenFlow(),
-    onClickButtonDown: () => dispatch(movePart(PARTS_MOVE_DOWN))
+    onClickButtonRotRight: () => dispatch(movePart(PARTS_ROT_RIGHT)),
+    onClickButtonRotLeft: () => dispatch(movePart(PARTS_ROT_LEFT)),
+    onClickButtonMoveDown: () => dispatch(movePart(PARTS_MOVE_DOWN)),
+    onClickButtonMoveLeft: () => dispatch(movePart(PARTS_MOVE_LEFT)),
+    onClickButtonMoveRight: () => dispatch(movePart(PARTS_MOVE_RIGHT))
   }
 };
 
