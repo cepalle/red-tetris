@@ -1,29 +1,36 @@
-const addPartsFlow = data => {
+const addPartsFlow = arg => {
   return {
     type: 'ADD_PARTS_FLOW',
-    data: data
+    data: arg
   };
 };
 
-const addError = er => {
+const addError = arg => {
   return {
     type: 'ADD_ERROR',
-    data: er
+    data: arg
   }
 };
 
-const updateUsers = users => {
+const updateUsers = arg => {
   return {
     type: 'UPDATE_USERS',
-    data: users
+    data: arg
   }
 };
 
-const movePart = direction => {
+const movePart = arg => {
   return {
     type: 'MOVE_PART',
-    data: direction
+    data: arg
   }
 };
 
-export {addPartsFlow, addError, updateUsers, movePart};
+const updateGrid = arg => {
+  return {
+    type: 'UPDATE_GRID',
+    data: arg
+  }
+};
+
+export {addPartsFlow, addError, updateUsers, movePart, updateGrid};
