@@ -12,7 +12,7 @@ const addError = er => {
   }
 };
 
-const updateUsers = (users) => {
+const updateUsers = users => {
   return {
     type: 'UPDATE_USERS',
     data: users

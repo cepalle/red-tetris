@@ -30,7 +30,7 @@ const reducerUpdateUsers = (state, users) => {
   newPlayerStates.map(el => {
     el.isMaster = el.playerName === playerMaster[0].username;
     return el;
-  })
+  });
 
   return Object.assign({}, state, {playerStates: newPlayerStates});
 };
