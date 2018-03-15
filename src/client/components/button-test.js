@@ -1,41 +1,55 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {emitGenFlow} from "../socket/socket-api"
+import {emitGenFlow, emitTetrisPlacePiece} from "../socket/socket-api"
 import {movePart} from "../redux/action-creators";
 import {PARTS_MOVE_DOWN, PARTS_MOVE_LEFT, PARTS_MOVE_RIGHT, PARTS_ROT_LEFT, PARTS_ROT_RIGHT} from "../../common/parts";
+import {isInPlayerStates} from "../utils";
 
-const ButtonComponent = ({line, onClickButtonFlow, onClickButtonRotRight, onClickButtonRotLeft, onClickButtonMoveDown, onClickButtonMoveLeft, onClickButtonMoveRight}) =>
+const ButtonComponent = ({
+                           line, grid, playerName,
+                           onClickButtonFlow, onClickButtonRotRight,
+                           onClickButtonRotLeft, onClickButtonMoveDown,
+                           onClickButtonMoveLeft, onClickButtonMoveRight,
+                           onClickButtonUpdateGrid
+                         }) =>
   <div>
     <div className="line">
       {line.map((el, i) =>
         <div key={i} className={"part" + el}/>
       )}
     </div>
-    <div onClick={() => onClickButtonFlow()}>
-      Buton flow socket.io
-    </div>
+    <button onClick={() => onClickButtonFlow()}>
+      GenFlow
+    </button>
 
     <button onClick={() => onClickButtonRotRight()}>
-      onClickButtonRotRight
+      RotRight
     </button>
     <button onClick={() => onClickButtonRotLeft()}>
-      onClickButtonRotLeft
+      RotLeft
     </button>
     <button onClick={() => onClickButtonMoveDown()}>
-      onClickButtonMoveDown
+      MoveDown
     </button>
     <button onClick={() => onClickButtonMoveLeft()}>
-      onClickButtonMoveLeft
+      MoveLeft
     </button>
     <button onClick={() => onClickButtonMoveRight()}>
-      onClickButtonMoveRight
+      MoveRight
+    </button>
+    <button onClick={() => onClickButtonUpdateGrid(grid, playerName)}>
+      updateGrid
     </button>
   </div>
 ;
 
 const mapStateToProps = state => {
   return {
-    line: state.partsFlow.map(e => e)
+    line: state.partsFlow.map(e => e),
+    grid: state.playerStates.filter(
+      el => el.playerName === state.playerName
+    )[0].grid.map(l => l), // just for test
+    playerName: state.playerName
   }
 };
 
@@ -46,7 +60,8 @@ const mapDispatchToProps = dispatch => {
     onClickButtonRotLeft: () => dispatch(movePart(PARTS_ROT_LEFT)),
     onClickButtonMoveDown: () => dispatch(movePart(PARTS_MOVE_DOWN)),
     onClickButtonMoveLeft: () => dispatch(movePart(PARTS_MOVE_LEFT)),
-    onClickButtonMoveRight: () => dispatch(movePart(PARTS_MOVE_RIGHT))
+    onClickButtonMoveRight: () => dispatch(movePart(PARTS_MOVE_RIGHT)),
+    onClickButtonUpdateGrid: (grid, playerName) => emitTetrisPlacePiece(grid, playerName)
   }
 };
 

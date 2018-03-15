@@ -53,11 +53,10 @@ const reducerMovePart = (state, direction) => {
 
 
   return Object.assign({}, state, {playerStates: newPlayerStates});
-//  return ///
 };
 
 const reducerUpdateGrid = (state, {grid, playerName}) => {
-  logger_reducer(["movePart", {grid, playerName}]);
+  logger_reducer(["updateGrid", {grid, playerName}]);
 
   let newPlayerStates = state.playerStates.map(el => {
     if (el.playerName === playerName) {
