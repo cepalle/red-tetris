@@ -1,6 +1,8 @@
 import {logger_reducer} from "../logger";
 import {initialState, initPlayerState} from "./initial-state";
-import {isInUsers, isInPlayerStates} from "../utils";
+import {isInUsers, isInPlayerStates} from "../util/utils";
+import {getPiece, getPieceMask, getPieceObj, PARTS_MOVE_DOWN} from "../../common/parts";
+import * as utilMovePiece from "../util/move-piece";
 
 const reducerPartsFlow = (state, data) => {
   logger_reducer(["partsFlow", data]);
@@ -38,22 +40,19 @@ const reducerUpdateUsers = (state, users) => {
 const reducerMovePart = (state, direction) => {
   logger_reducer(["movePart", direction]);
 
+  const piece = getPiece(state.partsFlow[0] - 1,  state.curPartCoords);
+  const coord = state.curPartPos;
+  let gridCopy = state.playerStates.find(playerState => playerState.playerName === state.playerName).grid.slice(0);
+  let result;
 
-  let newPlayerStates = state.playerStates.map(playerState => {
-    if (playerState.playerName === state.playerName) {
-      playerState.grid[0][0] = 1;
+  if (direction === PARTS_MOVE_DOWN) {
+    if ((result = utilMovePiece.canMoveDownAndPlace(gridCopy, coord, piece, getPieceMask(state.partsFlow[0] - 1)))) {
+      grid = result.grid;
+      state.curPartCoords = result.curPartCoords;
     }
-    return playerState;
-  });
+  }
 
-
-
-
-
-
-
-  return Object.assign({}, state, {playerStates: newPlayerStates});
-//  return ///
+  return Object.assign({}, state);
 };
 
 const reducerUpdateGrid = (state, {grid, playerName}) => {
