@@ -32,9 +32,10 @@ const initialState = {
   playerStates: [initPlayerState(urlGetPlayerName())],
   playerName: urlGetPlayerName(),
   roomName: urlGetRoomName(),
-  partsFlow: [],
-  curPartPos: {x: 0, y: 5},
+  partsFlow: [1],
+  curPartPos: {x: 5, y: 5},
   curPartRot: 0,
+  curPartCoords: [],
   error: undefined
 };
 
