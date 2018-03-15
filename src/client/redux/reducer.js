@@ -35,9 +35,16 @@ const reducerUpdateUsers = (state, users) => {
   return Object.assign({}, state, {playerStates: newPlayerStates});
 };
 
-const reducerMovePart = direction => {
+const reducerMovePart = (state, direction) => {
   logger_reducer(["movePart", direction]);
 
+
+
+
+
+
+
+//  return ///
 };
 
 const reducer = (state = initialState, action) => {
