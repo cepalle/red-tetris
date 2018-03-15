@@ -3,9 +3,8 @@ import {connect} from 'react-redux';
 import {emitGenFlow, emitTetrisPlacePiece} from "../socket/socket-api"
 import {movePart} from "../redux/action-creators";
 import {PARTS_MOVE_DOWN, PARTS_MOVE_LEFT, PARTS_MOVE_RIGHT, PARTS_ROT_LEFT, PARTS_ROT_RIGHT} from "../../common/parts";
-import {isInPlayerStates} from "../utils";
 
-const ButtonComponent = ({
+const ButtonTestComponent = ({
                            line, grid, playerName,
                            onClickButtonFlow, onClickButtonRotRight,
                            onClickButtonRotLeft, onClickButtonMoveDown,
@@ -65,9 +64,9 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-const Buton = connect(
+const ButtonTest = connect(
   mapStateToProps,
   mapDispatchToProps
-)(ButtonComponent);
+)(ButtonTestComponent);
 
-export {Buton};
+export {ButtonTest};

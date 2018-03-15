@@ -2,18 +2,27 @@ import {logger_reducer} from "../logger";
 import {initialState, initPlayerState} from "./initial-state";
 import {isInUsers, isInPlayerStates} from "../utils";
 
+//----------------------------------------------------------------------------
+// ADD_PARTS_FLOW
+//----------------------------------------------------------------------------
 const reducerPartsFlow = (state, data) => {
   logger_reducer(["partsFlow", data]);
 
   return Object.assign({}, state, {partsFlow: state.partsFlow.concat(data)});
 };
 
+//----------------------------------------------------------------------------
+// ADD_ERROR
+//----------------------------------------------------------------------------
 const reducerError = (state, data) => {
   logger_reducer(["error", data]);
 
   return Object.assign({}, state, {error: Object.assign({}, data)});
 };
 
+//----------------------------------------------------------------------------
+// UPDATE_USERS
+//----------------------------------------------------------------------------
 const reducerUpdateUsers = (state, users) => {
   logger_reducer(["updateUsers", users]);
 
@@ -35,6 +44,9 @@ const reducerUpdateUsers = (state, users) => {
   return Object.assign({}, state, {playerStates: newPlayerStates});
 };
 
+//----------------------------------------------------------------------------
+// MOVE_PART
+//----------------------------------------------------------------------------
 const reducerMovePart = (state, direction) => {
   logger_reducer(["movePart", direction]);
 
@@ -47,15 +59,13 @@ const reducerMovePart = (state, direction) => {
   });
 
 
-
-
-
-
-
   return Object.assign({}, state, {playerStates: newPlayerStates});
 //  return ///
 };
 
+//----------------------------------------------------------------------------
+// UPDATE_GRID
+//----------------------------------------------------------------------------
 const reducerUpdateGrid = (state, {grid, playerName}) => {
   logger_reducer(["movePart", {grid, playerName}]);
 
@@ -68,6 +78,11 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
   return Object.assign({}, state, {playerStates: newPlayerStates});
 };
 
+//----------------------------------------------------------------------------
+//
+// SWITCH REDUCER
+//
+//----------------------------------------------------------------------------
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PARTS_FLOW':

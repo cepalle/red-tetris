@@ -50,10 +50,12 @@ const cbPacketPlayerPromoted = (arg) => {
   }
 };
 
+//TODO
 const cbPacketPlayerLose = (arg) => {
   logger_sock(["recv PACKET_PLAYER_LOSE", arg]);
 };
 
+//TODO
 const cbPacketGameStart = (arg) => {
   logger_sock(["recv PACKET_GAME_START", arg]);
 
@@ -94,10 +96,12 @@ const cbJoinRoomResponse = (arg) => {
   }
 };
 
+//TODO
 const cbQuitRoomResponse = (arg) => {
   logger_sock(["recv QUIT_ROOM_RESPONSE", arg]);
 };
 
+//TODO
 const cbStartPlayingResponse = (arg) => {
   logger_sock(["recv START_PLAYING_RESPONSE", arg]);
 };
@@ -108,6 +112,7 @@ const cbConnectionResponse = () => {
   emitJoinRoom();
 };
 
+//TODO
 const cbGenFlowResponse = (arg) => {
   logger_sock(["recv GENFLOW_RESPONSE", arg]);
 };
@@ -127,10 +132,12 @@ const emitJoinRoom = () => {
   });
 };
 
+//TODO
 const emitQuitRoom = () => {
   logger_sock(["emit QUIT_ROOM"]);
 };
 
+//TODO
 const emitStartPlaying = () => {
   logger_sock(["emit START_PLAYING"]);
 };

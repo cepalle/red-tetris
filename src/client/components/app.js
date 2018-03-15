@@ -1,5 +1,5 @@
 import React from "react";
-import {Buton} from "./button-test";
+import {ButtonTest} from "./button-test";
 import {GridPlayer} from "./grid-player"
 import {store} from "../redux/store"
 import {Error} from "./error";
@@ -9,7 +9,7 @@ const App = () =>
   <div>
     <Error/>
     <GridPlayer/>
-    <Buton/>
+    <ButtonTest/>
     <p>Room name: {store.getState().roomName}</p>
     <Opponent/>
   </div>
