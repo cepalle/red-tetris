@@ -39,11 +39,20 @@ const reducerMovePart = (state, direction) => {
   logger_reducer(["movePart", direction]);
 
 
+  let newPlayerStates = state.playerStates.map(playerState => {
+    if (playerState.playerName === state.playerName) {
+      playerState.grid[0][0] = 1;
+    }
+    return playerState;
+  });
 
 
 
 
 
+
+
+  return Object.assign({}, state, {playerStates: newPlayerStates});
 //  return ///
 };
 
