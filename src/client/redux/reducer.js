@@ -40,6 +40,18 @@ const reducerMovePart = direction => {
 
 };
 
+const reducerUpdateGrid = (state, {grid, playerName}) => {
+  logger_reducer(["movePart", {grid, playerName}]);
+
+  let newPlayerStates = state.playerStates.map(el => {
+    if (el.playerName === playerName) {
+      el.grid = grid
+    }
+    return el;
+  });
+  return Object.assign({}, state, {playerStates: newPlayerStates});
+};
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PARTS_FLOW':
@@ -50,6 +62,8 @@ const reducer = (state = initialState, action) => {
       return reducerUpdateUsers(state, action.data);
     case 'MOVE_PART':
       return reducerMovePart(state, action.data);
+    case 'UPDATE_GRID':
+      return reducerUpdateGrid(state, action.data);
     default:
       return state;
   }
