@@ -1,6 +1,6 @@
 import {logger_reducer} from "../logger";
 import {initialState, initPlayerState} from "./initial-state";
-import {isInUsers, isInPlayerStates} from "../utils";
+import {isInUsers, isInPlayerStates} from "../util/utils";
 
 //----------------------------------------------------------------------------
 // ADD_PARTS_FLOW
@@ -67,7 +67,7 @@ const reducerMovePart = (state, direction) => {
 // UPDATE_GRID
 //----------------------------------------------------------------------------
 const reducerUpdateGrid = (state, {grid, playerName}) => {
-  logger_reducer(["movePart", {grid, playerName}]);
+  logger_reducer(["updateGrid", {grid, playerName}]);
 
   let newPlayerStates = state.playerStates.map(el => {
     if (el.playerName === playerName) {
