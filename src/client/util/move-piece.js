@@ -23,21 +23,31 @@ const hasCollision = (grid, piece, loc) => {
     const gx = x + loc.x;
     const gy = y + loc.y;
 
-    if (gy < 0 && number !== 0
-      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_TOP))
-      collisionType = COLLISION_TYPE.WALL_TOP;
-    else if (gy >= GRID_HEIGHT && number !== 0
-      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_BOTTOM))
-      collisionType = COLLISION_TYPE.WALL_BOTTOM;
-    else if (gx < 0 && number !== 0
-      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_LEFT))
-      collisionType = COLLISION_TYPE.WALL_LEFT;
-    else if (gx >= GRID_WIDTH && number !== 0
-      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_RIGHT))
-      collisionType = COLLISION_TYPE.WALL_RIGHT;
-    else if (number !== 0 && grid[gy][gx] !== 0
-      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.PIECE))
-      collisionType = COLLISION_TYPE.PIECE;
+    if (gy < 0 && number !== 0) {
+      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_TOP)) {
+        collisionType = COLLISION_TYPE.WALL_TOP;
+      }
+    }
+    else if (gy >= GRID_HEIGHT && number !== 0) {
+      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_BOTTOM)) {
+        collisionType = COLLISION_TYPE.WALL_BOTTOM;
+      }
+    }
+    else if (gx < 0 && number !== 0) {
+      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_LEFT)) {
+        collisionType = COLLISION_TYPE.WALL_LEFT;
+      }
+    }
+    else if (gx >= GRID_WIDTH && number !== 0) {
+      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_RIGHT)) {
+        collisionType = COLLISION_TYPE.WALL_RIGHT;
+      }
+    }
+    else if (number !== 0 && grid[gy][gx] !== 0) {
+      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.PIECE)) {
+        collisionType = COLLISION_TYPE.PIECE;
+      }
+    }
   }));
   return collisionType;
 };
