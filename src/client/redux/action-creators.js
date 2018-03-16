@@ -33,9 +33,9 @@ const updateUsers = users => {
 
 /**
  * Create a action for update the grid with the move of the part.
- * @param {PARTS_MOVE} move
+ * @param {string} move
  */
-const movePart = move => {
+const movePiece = move => {
   return {
     type: 'MOVE_PART',
     data: move
@@ -64,4 +64,4 @@ const startGame = pieces => {
   }
 };
 
-export {addPartsFlow, addError, updateUsers, movePart, updateGrid, startGame};
+export {addPartsFlow, addError, updateUsers, movePiece, updateGrid, startGame};

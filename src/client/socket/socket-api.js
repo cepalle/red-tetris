@@ -3,6 +3,7 @@ import {store} from "../redux/store"
 import {addError, addPartsFlow, updateUsers, updateGrid, startGame} from "../redux/action-creators"
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "../logger";
+import {animate} from "../animate";
 
 const socket = io.connect('http://localhost:4433');
 
@@ -67,9 +68,8 @@ const cbPacketPlayerLose = arg => {
 const cbPacketGameStart = ({pieces}) => {
   logger_sock(["recv PACKET_GAME_START", pieces]);
 
-
   store.dispatch(startGame(pieces));
-  // settimestamp?
+  animate.value = true;
 };
 
 /**

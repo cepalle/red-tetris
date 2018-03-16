@@ -59,16 +59,16 @@ const reducerUpdateUsers = (state, users) => {
 
 /**
  * Update the grid with the move of the part.
- * @param {State} state
+ * @param {Object} state
  * @param {Object} move
  */
 const reducerMovePiece = (state, move) => {
-  logger_reducer(["movePart", move]);
+  logger_reducer(["movePiece", move]);
 
   if (state.piecesFlow.length < 3) {
     emitGenFlow();
     if (state.piecesFlow.length === 0) {
-      logger_reducer(["movePart piecesFlow is empty"]);
+      logger_reducer(["movePiece piecesFlow is empty"]);
       return state;
     }
   }
