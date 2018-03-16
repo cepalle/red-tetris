@@ -2,7 +2,7 @@
  * @type {Map}
  */
 const socketMap = require("../App");
-const {PARTS} = require("../../common/pieces");
+const {PIECES} = require("../../common/pieces");
 const socketDefs = require("../../common/socket-definitions");
 const SocketMap = require("../data/SocketMap");
 
@@ -44,7 +44,7 @@ class PacketSender {
   static sendGameStart(room) {
     const pieces = [];
     for(let i = 0; i < 10; i++)
-      pieces.push(PARTS[Math.floor(Math.random() * PARTS.length)]);
+      pieces.push(PIECES[Math.floor(Math.random() * PIECES.length)]);
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, undefined, room, {room, pieces}, false);
   }
 

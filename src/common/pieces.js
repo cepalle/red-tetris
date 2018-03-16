@@ -253,21 +253,15 @@ const PIECES_DESCR = [
   ],
 ];
 
-const getPiece = (pieces, rot = 0) => PIECES_DESCR[pieces][rot].piece;
-const getPieceObj = (pieces, rot = 0) => PIECES_DESCR[pieces][rot];
-const getPieceMask = (pieces, rot = 0) => PIECES_DESCR[pieces][rot].info;
-const updateDirection = (loc, direction) => {
-  if (direction === PIECES_MOVE.DOWN)
-    loc.y++;
-  else if (direction === PIECES_MOVE.LEFT)
-    loc.x--;
-  else if (direction === PIECES_MOVE.RIGHT)
-    loc.x++;
-};
+const getPiece = (pieces, rot = 0) => PIECES_DESCR[pieces - 1][rot].piece;
+const getPieceObj = (pieces, rot = 0) => PIECES_DESCR[pieces - 1][rot];
+const getPieceMask = (pieces, rot = 0) => PIECES_DESCR[pieces - 1][rot].info;
 
 module.exports = {
   PIECES,
   PIECES_DESCR,
   PIECES_MOVE,
-  getPiece, getPieceMask, getPieceObj, updateDirection
+  getPiece,
+  getPieceMask,
+  getPieceObj
 };

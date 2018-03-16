@@ -1,16 +1,11 @@
-import {logger_reducer, logger_sock} from "../logger";
-import {initialState, initPlayerState, prepareNewPiece} from "./state";
+import {logger_reducer} from "../logger";
+import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
-import {
-  getPiece, PIECES_MOVE,
-  updateDirection
-} from "../../common/pieces";
-import * as utilMovePiece from "../util/move-piece";
-import {eraseLastPiece} from "../util/move-piece";
+import {eraseCurPiece, prepareAndPlaceNewPiece, updatePiecePos} from "../util/move-piece";
 import {placePiece} from "../util/move-piece";
-import {COLLISION_TYPE} from "../util/move-piece";
 import * as socketApi from "../socket/socket-api";
+import {emitGenFlow} from "../socket/socket-api";
 
 /**
  * Add pieces to the state.piecesFlow.
@@ -67,34 +62,36 @@ const reducerUpdateUsers = (state, users) => {
  * @param {State} state
  * @param {Object} move
  */
-const reducerMovePart = (state, move) => {
+const reducerMovePiece = (state, move) => {
   logger_reducer(["movePart", move]);
 
-  const piece = getPiece(state.piecesFlow[0] - 1, state.curPartRot);
-  const loc = Object.assign({}, state.curPartPos);
-  const grid = state.playerStates.find(playerState => playerState.playerName === state.playerName).grid;
-  const gridCopy = grid.map(l => l.map(e => e));
-  let collisionType;
-
-  eraseLastPiece(gridCopy, state);
-  updateDirection(loc, move);
-
-  if (move !== PIECES_MOVE.ROT_RIGHT && move !== PIECES_MOVE.ROT_LEFT) {
-    if (!(collisionType = utilMovePiece.hasCollision(gridCopy, piece, loc))) {
-      state.curPartPos = loc;
-      eraseLastPiece(grid, state);
-      placePiece(grid, piece, loc, state);
+  if (state.piecesFlow.length < 3) {
+    emitGenFlow();
+    if (state.piecesFlow.length === 0) {
+      logger_reducer(["movePart piecesFlow is empty"]);
+      return state;
     }
-    else if (collisionType && move === PIECES_MOVE.DOWN) {
-      logger_reducer(["movePart", "prepare next piece"]);
-      state.piecesFlow.shift();
-      socketApi.emitTetrisPlacePiece(grid, state.playerName);
-      prepareNewPiece(state);
-    }
+  }
+
+  if (Object.keys(state.curPiecePos).length === 0) {
+    prepareAndPlaceNewPiece(state);
+    return state;
+  }
+
+  eraseCurPiece(state);
+  let needNext = updatePiecePos(state, move);
+  placePiece(state);
+
+  if (needNext) {
+    state.piecesFlow.shift();
+    state.curPiecePos = {};
+    socketApi.emitTetrisPlacePiece(
+      state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
+      state.playerName
+    );
   }
   return state;
 };
-
 
 
 /**
@@ -120,8 +117,13 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
  * @param {Array<int>} pieces
  */
 const reducerStartGame = (state, pieces) => {
-  logger_reducer(["updateGrid", pieces]);
+  logger_reducer(["startGame", pieces]);
 
+  state.playerStates = state.playerStates.map(playerState =>
+    initPlayerState(playerState.playerName, playerState.isMaster)
+  );
+  state.piecesFlow = pieces;
+  state.curPiecePos = {};
   return state;
 };
 
@@ -141,7 +143,7 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_USERS':
       return reducerUpdateUsers(cloneState(state), action.data);
     case 'MOVE_PART':
-      return reducerMovePart(cloneState(state), action.data);
+      return reducerMovePiece(cloneState(state), action.data);
     case 'UPDATE_GRID':
       return reducerUpdateGrid(cloneState(state), action.data);
     case 'START_GAME':
