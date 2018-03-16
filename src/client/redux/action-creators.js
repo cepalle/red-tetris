@@ -1,11 +1,11 @@
 /**
- * Create action for add parts to the state.partsFlow.
- * @param {Array<int>} parts
+ * Create action for add pieces to the state.partsFlow.
+ * @param {Array<int>} pieces
  */
-const addPartsFlow = parts => {
+const addPartsFlow = pieces => {
   return {
     type: 'ADD_PARTS_FLOW',
-    data: parts
+    data: pieces
   };
 };
 
@@ -53,4 +53,15 @@ const updateGrid = gridAndPlayer => {
   }
 };
 
-export {addPartsFlow, addError, updateUsers, movePart, updateGrid};
+/**
+ * Restart grid of player and flow, set le pieces to the flow and start game.
+ * @param {Array<int>} pieces
+ */
+const startGame = pieces => {
+  return {
+    type: 'START_GAME',
+    data: pieces
+  }
+};
+
+export {addPartsFlow, addError, updateUsers, movePart, updateGrid, startGame};

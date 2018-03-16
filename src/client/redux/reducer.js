@@ -13,12 +13,12 @@ import {COLLISION_TYPE} from "../util/move-piece";
 import * as socketApi from "../socket/socket-api";
 
 /**
- * Add parts to the state.partsFlow.
+ * Add pieces to the state.piecesFlow.
  * @param {state} state
  * @param {Array<int>} parts
  */
 const reducerPartsFlow = (state, parts) => {
-  logger_reducer(["partsFlow", parts]);
+  logger_reducer(["piecesFlow", parts]);
 
   state.partsFlow = state.partsFlow.concat(parts);
   return state;
@@ -114,6 +114,17 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
   return state;
 };
 
+/**
+ * Restart grid of player and flow, set le pieces to the flow and start game.
+ * @param {state} state
+ * @param {Array<int>} pieces
+ */
+const reducerStartGame = (state, pieces) => {
+  logger_reducer(["updateGrid", pieces]);
+
+  return state;
+};
+
 
 //----------------------------------------------------------------------------
 //
@@ -133,6 +144,8 @@ const reducer = (state = initialState, action) => {
       return reducerMovePart(cloneState(state), action.data);
     case 'UPDATE_GRID':
       return reducerUpdateGrid(cloneState(state), action.data);
+    case 'START_GAME':
+      return reducerStartGame(cloneState(state), action.data);
     default:
       return state;
   }

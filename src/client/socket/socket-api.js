@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import {store} from "../redux/store"
-import {addError, addPartsFlow, updateUsers, updateGrid} from "../redux/action-creators"
+import {addError, addPartsFlow, updateUsers, updateGrid, startGame} from "../redux/action-creators"
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "../logger";
 
@@ -62,11 +62,13 @@ const cbPacketPlayerLose = arg => {
 //TODO
 /**
  * Request: PACKET_GAME_START
- * Data recv: {room}
+ * Data recv: {room, pieces}
  */
-const cbPacketGameStart = arg => {
-  logger_sock(["recv PACKET_GAME_START", arg]);
+const cbPacketGameStart = ({pieces}) => {
+  logger_sock(["recv PACKET_GAME_START", pieces]);
 
+
+  store.dispatch(startGame(pieces));
   // settimestamp?
 };
 
