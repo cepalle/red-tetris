@@ -1,7 +1,7 @@
 const SocketHandler = require("./SocketHandler");
 const PacketSender = require("../packet/PacketSender");
 const socketDefs = require("../../common/socket-definitions");
-const {PARTS} = require("../../common/pieces");
+const {PIECES} = require("../../common/pieces");
 const RoomManager = require("../data/room/RoomsManager");
 
 class GlobalSocketHandler extends SocketHandler {
@@ -33,7 +33,7 @@ class GlobalSocketHandler extends SocketHandler {
     {
       const tetrisPieces = [];
       for(let i = 0; i < 10; i++)
-        tetrisPieces.push(PARTS[Math.floor(Math.random() * PARTS.length)]);
+        tetrisPieces.push(PIECES[Math.floor(Math.random() * PIECES.length)]);
       this.socket.emit(response, {success: true});
       PacketSender.sendGenFlow(RoomManager.getRoom(data.roomName), tetrisPieces);
     }

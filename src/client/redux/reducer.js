@@ -3,7 +3,7 @@ import {initialState, initPlayerState, prepareNewPiece} from "./state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
 import {
-  getPiece, PARTS_MOVE,
+  getPiece, PIECES_MOVE,
   updateDirection
 } from "../../common/pieces";
 import * as utilMovePiece from "../util/move-piece";
@@ -20,7 +20,7 @@ import * as socketApi from "../socket/socket-api";
 const reducerPartsFlow = (state, parts) => {
   logger_reducer(["piecesFlow", parts]);
 
-  state.partsFlow = state.partsFlow.concat(parts);
+  state.piecesFlow = state.piecesFlow.concat(parts);
   return state;
 };
 
@@ -49,13 +49,13 @@ const reducerUpdateUsers = (state, users) => {
     users.filter(el => !isInPlayerStates(filterNotInUsers, el.username)).map(el => initPlayerState(el.username))
   );
 
-  let playerMaster = users.filter(el => el.master);
-  if (playerMaster.length !== 1) {
+  let playerMaster = users.find(el => el.master);
+  if (!playerMaster) {
     logger_reducer(["no player master!"]);
     return undefined;
   }
   state.playerStates = filterAddNewUsers.map(el => {
-    el.isMaster = el.playerName === playerMaster[0].username;
+    el.isMaster = el.playerName === playerMaster.username;
     return el;
   });
 
@@ -70,7 +70,7 @@ const reducerUpdateUsers = (state, users) => {
 const reducerMovePart = (state, move) => {
   logger_reducer(["movePart", move]);
 
-  const piece = getPiece(state.partsFlow[0] - 1, state.curPartRot);
+  const piece = getPiece(state.piecesFlow[0] - 1, state.curPartRot);
   const loc = Object.assign({}, state.curPartPos);
   const grid = state.playerStates.find(playerState => playerState.playerName === state.playerName).grid;
   const gridCopy = grid.map(l => l.map(e => e));
@@ -79,15 +79,15 @@ const reducerMovePart = (state, move) => {
   eraseLastPiece(gridCopy, state);
   updateDirection(loc, move);
 
-  if (move !== PARTS_MOVE.ROT_RIGHT && move !== PARTS_MOVE.ROT_LEFT) {
+  if (move !== PIECES_MOVE.ROT_RIGHT && move !== PIECES_MOVE.ROT_LEFT) {
     if (!(collisionType = utilMovePiece.hasCollision(gridCopy, piece, loc))) {
       state.curPartPos = loc;
       eraseLastPiece(grid, state);
       placePiece(grid, piece, loc, state);
     }
-    else if (collisionType && move === PARTS_MOVE.DOWN) {
+    else if (collisionType && move === PIECES_MOVE.DOWN) {
       logger_reducer(["movePart", "prepare next piece"]);
-      state.partsFlow.shift();
+      state.piecesFlow.shift();
       socketApi.emitTetrisPlacePiece(grid, state.playerName);
       prepareNewPiece(state);
     }
