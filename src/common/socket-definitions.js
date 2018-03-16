@@ -126,7 +126,7 @@ module.exports = {
 
   /**
    * Sent to all players that the game start
-   * Data to sent: {room}
+   * Data to sent: {room, pieces}
    */
   PACKET_GAME_START: "packetGameStart",
 

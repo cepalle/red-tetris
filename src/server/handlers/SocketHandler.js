@@ -27,10 +27,11 @@ class SocketHandler {
    * @returns {boolean}
    */
   playerIsMaster(response) {
-    if (!RoomManager.getRoomById(this.id).getUser(this.id)) {
+    if (!RoomManager.getRoomById(this.id).getUser(this.id).master) {
       this.socket.emit(response, {error: errorsDefs.USER_NOT_MASTER});
       return false;
     }
+    return true;
   }
 }
 

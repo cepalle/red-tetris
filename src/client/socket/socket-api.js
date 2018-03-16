@@ -201,6 +201,8 @@ const emitQuitRoom = () => {
  */
 const emitStartPlaying = () => {
   logger_sock(["emit START_PLAYING"]);
+
+  socket.emit(socketDefs.START_PLAYING, {roomName: store.getState().roomName});
 };
 
 /**

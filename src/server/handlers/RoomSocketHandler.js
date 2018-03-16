@@ -2,6 +2,7 @@ const SocketHandler = require("./SocketHandler");
 const RoomManager = require("../data/room/RoomsManager");
 const socketDefs = require("../../common/socket-definitions");
 const errorsDefs = require("../../common/errors-definitions");
+const PacketSender = require("../packet/PacketSender");
 
 class RoomSocketHandler extends SocketHandler {
 
@@ -75,11 +76,10 @@ class RoomSocketHandler extends SocketHandler {
    * @param response
    */
   startPlaying(data, response = socketDefs.START_PLAYING_RESPONSE) {
-    if (this.dataIsValid(data, response) &&
-      this.roomIsValid(data, response) &&
-      this.playerIsMaster(response)) {
+    //TODO check validation data
+    if (this.roomIsValid(data, response) && this.playerIsMaster(response)) {
         RoomManager.getRoomById(this.id).setWaiting(false);
-        this.socket.emit(response, {success: true})
+        this.socket.emit(response, {success: true});
     }
   }
 

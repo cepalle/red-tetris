@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {emitGenFlow, emitTetrisPlacePiece} from "../socket/socket-api"
+import {emitGenFlow, emitStartPlaying, emitTetrisPlacePiece} from "../socket/socket-api"
 import {movePart} from "../redux/action-creators";
 import {PARTS_MOVE} from "../../common/parts";
 
@@ -9,7 +9,7 @@ const ButtonTestComponent = ({
                            onClickButtonFlow, onClickButtonRotRight,
                            onClickButtonRotLeft, onClickButtonMoveDown,
                            onClickButtonMoveLeft, onClickButtonMoveRight,
-                           onClickButtonUpdateGrid
+                           onClickButtonUpdateGrid, onClickButtonStartGame,
                          }) =>
   <div>
     <div className="line">
@@ -19,6 +19,10 @@ const ButtonTestComponent = ({
     </div>
     <button onClick={() => onClickButtonFlow()}>
       GenFlow
+    </button>
+
+    <button onClick={() => onClickButtonStartGame()}>
+      StartGame
     </button>
 
     <button onClick={() => onClickButtonRotRight()}>
@@ -55,6 +59,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onClickButtonFlow: () => emitGenFlow(),
+    onClickButtonStartGame: () => emitStartPlaying(),
     onClickButtonRotRight: () => dispatch(movePart(PARTS_MOVE.ROT_RIGHT)),
     onClickButtonRotLeft: () => dispatch(movePart(PARTS_MOVE.ROT_LEFT)),
     onClickButtonMoveDown: () => dispatch(movePart(PARTS_MOVE.DOWN)),

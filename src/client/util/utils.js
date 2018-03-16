@@ -25,4 +25,6 @@ const cloneState = state => Object.assign({}, {
   })
 ;
 
-export {isInUsers, isInPlayerStates, cloneState, clonePlayerStates};
+const randNumber = (min, max) => Math.floor(Math.random() * max) + min;
+
+export {isInUsers, isInPlayerStates, cloneState, clonePlayerStates, randNumber};

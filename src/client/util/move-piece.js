@@ -1,4 +1,5 @@
 import * as part from "../../common/parts";
+import {GRID_HEIGHT, GRID_WIDTH} from "../redux/state";
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -10,17 +11,17 @@ const COLLISION_TYPE = {
 
 const hasCollision = (grid, piece, loc) => {
   let collisionType = undefined;
-  console.log(piece);
   piece.forEach((line, y) => line.forEach((number, x) => {
     const gx = x + loc.x;
     const gy = y + loc.y;
+
     if (gy < 0 && number !== 0)
       collisionType = COLLISION_TYPE.WALL_TOP;
-    else if (gy >= part.GRID_HEIGHT && number !== 0)
+    else if (gy >= GRID_HEIGHT && number !== 0)
       collisionType = COLLISION_TYPE.WALL_BOTTOM;
     else if (gx < 0 && number !== 0)
       collisionType = COLLISION_TYPE.WALL_LEFT;
-    else if (gx >= part.GRID_WIDTH && number !== 0)
+    else if (gx >= GRID_WIDTH && number !== 0)
       collisionType = COLLISION_TYPE.WALL_RIGHT;
     else if (number !== 0 && grid[gy][gx] !== 0)
       collisionType = COLLISION_TYPE.PIECE;
