@@ -2,7 +2,7 @@
  * @type {Map}
  */
 const socketMap = require("../App");
-const {PARTS} = require("../../common/parts");
+const {PARTS} = require("../../common/pieces");
 const socketDefs = require("../../common/socket-definitions");
 const SocketMap = require("../data/SocketMap");
 

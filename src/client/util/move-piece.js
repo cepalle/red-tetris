@@ -1,4 +1,4 @@
-import * as part from "../../common/parts";
+import * as part from "../../common/pieces";
 import {GRID_HEIGHT, GRID_WIDTH} from "../redux/state";
 
 const COLLISION_TYPE = {

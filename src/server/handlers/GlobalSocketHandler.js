@@ -1,7 +1,7 @@
 const SocketHandler = require("./SocketHandler");
 const PacketSender = require("../packet/PacketSender");
 const socketDefs = require("../../common/socket-definitions");
-const {PARTS} = require("../../common/parts");
+const {PARTS} = require("../../common/pieces");
 const RoomManager = require("../data/room/RoomsManager");
 
 class GlobalSocketHandler extends SocketHandler {

@@ -1,6 +1,6 @@
-const PARTS = [1, 2, 3, 4, 5, 6, 7];
+const PIECES = [1, 2, 3, 4, 5, 6, 7];
 
-const PARTS_MOVE = {
+const PIECES_MOVE = {
   ROT_RIGHT: "PARTS_ROT_RIGHT",
   ROT_LEFT: "PARTS_ROT_LEFT",
   RIGHT: "PARTS_MOVE_RIGHT",
@@ -8,7 +8,7 @@ const PARTS_MOVE = {
   DOWN: "PARTS_MOVE_DOWN"
 };
 
-const PARTS_DESCR = [
+const PIECES_DESCR = [
   [
     {
       info: {x: 0, y: -1},
@@ -253,21 +253,21 @@ const PARTS_DESCR = [
   ],
 ];
 
-const getPiece = (parts, rot = 0) => PARTS_DESCR[parts][rot].piece;
-const getPieceObj = (parts, rot = 0) => PARTS_DESCR[parts][rot];
-const getPieceMask = (parts, rot = 0) => PARTS_DESCR[parts][rot].info;
+const getPiece = (parts, rot = 0) => PIECES_DESCR[parts][rot].piece;
+const getPieceObj = (parts, rot = 0) => PIECES_DESCR[parts][rot];
+const getPieceMask = (parts, rot = 0) => PIECES_DESCR[parts][rot].info;
 const updateDirection = (loc, direction) => {
-  if (direction === PARTS_MOVE.DOWN)
+  if (direction === PIECES_MOVE.DOWN)
     loc.y++;
-  else if (direction === PARTS_MOVE.LEFT)
+  else if (direction === PIECES_MOVE.LEFT)
     loc.x--;
-  else if (direction === PARTS_MOVE.RIGHT)
+  else if (direction === PIECES_MOVE.RIGHT)
     loc.x++;
 };
 
 module.exports = {
-  PARTS,
-  PARTS_DESCR,
-  PARTS_MOVE,
+  PARTS: PIECES,
+  PARTS_DESCR: PIECES_DESCR,
+  PARTS_MOVE: PIECES_MOVE,
   getPiece, getPieceMask, getPieceObj, updateDirection
 };

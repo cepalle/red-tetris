@@ -1,10 +1,10 @@
 import {urlGetPlayerName, urlGetRoomName} from "../url-handler";
-import {getPieceMask} from "../../common/parts";
+import {getPieceMask} from "../../common/pieces";
 import {emitGenFlow} from "../socket/socket-api";
 import {randNumber} from "../util/utils";
 import {store} from "./store";
 import {movePart} from "./action-creators";
-import {PARTS_MOVE} from "../../common/parts";
+import {PARTS_MOVE} from "../../common/pieces";
 
 const GRID_HEIGHT = 20;
 const GRID_WIDTH = 10;

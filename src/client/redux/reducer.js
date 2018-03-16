@@ -5,7 +5,7 @@ import {cloneState} from "../util/utils";
 import {
   getPiece, PARTS_MOVE,
   updateDirection
-} from "../../common/parts";
+} from "../../common/pieces";
 import * as utilMovePiece from "../util/move-piece";
 import {eraseLastPiece} from "../util/move-piece";
 import {placePiece} from "../util/move-piece";
