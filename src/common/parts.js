@@ -6,7 +6,7 @@ const PARTS_MOVE = {
   RIGHT: "PARTS_MOVE_RIGHT",
   LEFT: "PARTS_MOVE_LEFT",
   DOWN: "PARTS_MOVE_DOWN"
-}
+};
 
 const PARTS_DESCR = [
   [
