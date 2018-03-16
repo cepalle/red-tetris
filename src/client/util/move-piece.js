@@ -10,21 +10,33 @@ const COLLISION_TYPE = {
   WALL_TOP: "collision_top",
 };
 
+const PRIO_COLLISION = [COLLISION_TYPE.WALL_TOP,
+  COLLISION_TYPE.PIECE,
+  COLLISION_TYPE.WALL_BOTTOM,
+  COLLISION_TYPE.WALL_RIGHT,
+  COLLISION_TYPE.WALL_LEFT
+];
+
 const hasCollision = (grid, piece, loc) => {
   let collisionType = undefined;
   piece.forEach((line, y) => line.forEach((number, x) => {
     const gx = x + loc.x;
     const gy = y + loc.y;
 
-    if (gy < 0 && number !== 0)
+    if (gy < 0 && number !== 0
+      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_TOP))
       collisionType = COLLISION_TYPE.WALL_TOP;
-    else if (gy >= GRID_HEIGHT && number !== 0)
+    else if (gy >= GRID_HEIGHT && number !== 0
+      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_BOTTOM))
       collisionType = COLLISION_TYPE.WALL_BOTTOM;
-    else if (gx < 0 && number !== 0)
+    else if (gx < 0 && number !== 0
+      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_LEFT))
       collisionType = COLLISION_TYPE.WALL_LEFT;
-    else if (gx >= GRID_WIDTH && number !== 0)
+    else if (gx >= GRID_WIDTH && number !== 0
+      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_RIGHT))
       collisionType = COLLISION_TYPE.WALL_RIGHT;
-    else if (number !== 0 && grid[gy][gx] !== 0)
+    else if (number !== 0 && grid[gy][gx] !== 0
+      && PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.PIECE))
       collisionType = COLLISION_TYPE.PIECE;
   }));
   return collisionType;
@@ -85,13 +97,34 @@ const updatePiecePos = (state, move) => {
   let loc = newLoc(state.curPiecePos, move);
   let needNext = false;
   const grid = state.playerStates.find(playerState => playerState.playerName === state.playerName).grid;
-  const piece = getPiece(state.piecesFlow[0], state.curPieceRot);
+  let piece = getPiece(state.piecesFlow[0], state.curPieceRot);
 
   if (move !== PIECES_MOVE.ROT_RIGHT && move !== PIECES_MOVE.ROT_LEFT) {
     if (!(collisionType = hasCollision(grid, piece, loc))) {
       state.curPiecePos = loc;
     } else if (collisionType && move === PIECES_MOVE.DOWN) {
       needNext = true;
+    }
+  } else {
+
+    if (move === PIECES_MOVE.ROT_RIGHT) {
+      state.curPieceRot = (state.curPieceRot + 1) % 4;
+    } else {
+      state.curPieceRot = (state.curPieceRot + 3) % 4;
+    }
+    piece = getPiece(state.piecesFlow[0], state.curPieceRot);
+
+    collisionType = hasCollision(grid, piece, state.curPiecePos);
+    while (collisionType === COLLISION_TYPE.PIECE || collisionType === COLLISION_TYPE.WALL_LEFT
+    || collisionType === COLLISION_TYPE.WALL_RIGHT || collisionType === COLLISION_TYPE.WALL_BOTTOM) {
+      if (collisionType === COLLISION_TYPE.WALL_LEFT) {
+        state.curPiecePos.x++;
+      } else if (collisionType === COLLISION_TYPE.WALL_RIGHT) {
+        state.curPiecePos.x--;
+      } else {
+        state.curPiecePos.y--;
+      }
+      collisionType = hasCollision(grid, piece, state.curPiecePos);
     }
   }
   return needNext;
