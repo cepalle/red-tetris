@@ -10,12 +10,12 @@ import {emitGenFlow} from "../socket/socket-api";
 /**
  * Add pieces to the state.piecesFlow.
  * @param {state} state
- * @param {Array<int>} parts
+ * @param {Array<int>} pieces
  */
-const reducerPartsFlow = (state, parts) => {
-  logger_reducer(["piecesFlow", parts]);
+const reducerPartsFlow = (state, pieces) => {
+  logger_reducer(["piecesFlow", pieces]);
 
-  state.piecesFlow = state.piecesFlow.concat(parts);
+  state.piecesFlow = state.piecesFlow.concat(pieces);
   return state;
 };
 
@@ -136,7 +136,7 @@ const reducerStartGame = (state, pieces) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'ADD_PARTS_FLOW':
+    case 'ADD_PIECES_FLOW':
       return reducerPartsFlow(cloneState(state), action.data);
     case 'ADD_ERROR':
       return reducerError(cloneState(state), action.data);

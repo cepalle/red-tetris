@@ -1,10 +1,10 @@
 /**
- * Create action for add pieces to the state.partsFlow.
+ * Create action for add pieces to the state.piecesFlow.
  * @param {Array<int>} pieces
  */
 const addPartsFlow = pieces => {
   return {
-    type: 'ADD_PARTS_FLOW',
+    type: 'ADD_PIECES_FLOW',
     data: pieces
   };
 };

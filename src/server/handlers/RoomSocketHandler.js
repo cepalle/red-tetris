@@ -77,7 +77,7 @@ class RoomSocketHandler extends SocketHandler {
    * @param response
    */
   startPlaying(data, response = socketDefs.START_PLAYING_RESPONSE) {
-    if (super.checkData("roomName", data, response) &&
+    if (this.checkData("roomName", data, response) &&
       this.roomIsValid(data, response) &&
       this.playerIsMaster(response)) {
       const room = RoomManager.getRoomById(this.id);

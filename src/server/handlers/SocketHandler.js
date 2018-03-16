@@ -14,7 +14,7 @@ class SocketHandler {
    * @returns {boolean}
    */
   roomIsValid(data, response) {
-    if (super.checkData("roomName", data, response) && !RoomManager.getRoomById(this.id)) {
+    if (!RoomManager.getRoomById(this.id)) {
       this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
       return false;
     }
@@ -60,14 +60,19 @@ class SocketHandler {
    */
   checkData(check, data, response) {
     const split = check.split(",");
-    for (let key in split) {
+    console.log(split);
+    for (let i = 0; i < split.length; i++) {
+      const key = split[i];
+      console.log(data, key);
       if (!data[key])
       {
+        console.log("here1");
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;
       }
       if (key === "roomName" && !RoomManager.getRoomById(this.id).name === data[key])
       {
+        console.log("here2");
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;
       }
