@@ -14,11 +14,29 @@ class SocketHandler {
    * @returns {boolean}
    */
   roomIsValid(data, response) {
-    if (!RoomManager.hasRoom(data.roomName)) {
+    if (super.checkData("roomName", data, response) && !RoomManager.getRoomById(this.id)) {
       this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
       return false;
     }
     return true;
+  }
+
+  playerCanPlay(data, response) {
+    if (this.roomIsValid(data, response)) {
+      const room = RoomManager.getRoomById(this.id);
+      const user = room.getUser(this.id);
+      if (data.playerName && user.username !== data.playerName)
+      {
+        this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
+        return false;
+      }
+      else {
+        if (!room.waiting && !user.loose)
+          return true;
+        this.socket.emit(response, {error: errorsDefs.USER_CANT_PLAY});
+      }
+    }
+    return false;
   }
 
   /**
@@ -30,6 +48,29 @@ class SocketHandler {
     if (!RoomManager.getRoomById(this.id).getUser(this.id).master) {
       this.socket.emit(response, {error: errorsDefs.USER_NOT_MASTER});
       return false;
+    }
+    return true;
+  }
+
+  /**
+   * Check if data was present
+   * @param {string} check - a list of string separated by a comma
+   * @param {Object} data
+   * @param {string} response
+   */
+  checkData(check, data, response) {
+    const split = check.split(",");
+    for (let key in split) {
+      if (!data[key])
+      {
+        this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
+        return false;
+      }
+      if (key === "roomName" && !RoomManager.getRoomById(this.id).name === data[key])
+      {
+        this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
+        return false;
+      }
     }
     return true;
   }

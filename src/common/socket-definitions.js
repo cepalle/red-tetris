@@ -37,6 +37,18 @@ module.exports = {
   GENFLOW: "genFlow",
 
   /**
+   * Used to tell to the server that a player has loose
+   * Data to sent: {roomName, playerName}
+   */
+  PLAYER_LOOSE: "playerLoose",
+
+  /**
+   * Used to tell to the server that a player has complete a line
+   * Data to sent: {roomName, playerName}
+   */
+  PLAYER_COMPLETE_LINE: "playerCompleteLine",
+
+  /**
    * Used to tell to other clients that a player has placed a piece
    * Data to sent: {grid, playerName}
    */
@@ -88,8 +100,20 @@ module.exports = {
   TETRIS_PLACE_PIECE_RESPONSE: "tetrisPlacePieceResponse",
 
   /**
-   * Used to tell if the genFlow is successfull
-   * Data to sent: {}
+   * Used to tell to the client that the request fail or success
+   * Data to sent: {error: {type, message}} || {success}
+   */
+  PLAYER_LOOSE_RESPONSE: "playerLooseResponse",
+
+  /**
+   * Used to tell to the client that the request fail or success
+   * Data to sent: {error: {type, message}} || {success}
+   */
+  PLAYER_COMPLETE_LINE_RESPONSE: "playerCompleteLineResponse",
+
+  /**
+   * Used to tell if the genFlow is successful
+   * Data to sent: {error: {type, message}} || {success}
    */
   GENFLOW_RESPONSE: "genFlowResponse",
 
@@ -131,15 +155,21 @@ module.exports = {
   PACKET_GAME_START: "packetGameStart",
 
   /**
-   * Sent new pieces for tetris
+   * Sent new pieces for tetris.
    * Data to sent: {[pieces]} (default 10)
    */
   PACKET_GENFLOW: "packetGenFlow",
 
   /**
-   * Sent to all player that a player has placed a piece to his grid
-   * data to sent: {grid, playerName}
+   * Sent to all player except the sender that a player complete the line.
+   * Data to sent: {player, room}
    */
-  PACKET_TETRIS_PLACE_PIECE: "packetPlayerPlacePiece"
+  PACKET_PLAYER_COMPLETE_LINE: "packetPlayerCompleteLine",
+
+  /**
+   * Sent to all player that a player has placed a piece to his grid.
+   * Data to sent: {grid, playerName}
+   */
+  PACKET_TETRIS_PLACE_PIECE: "packetPlayerPlacePiece",
 
 };

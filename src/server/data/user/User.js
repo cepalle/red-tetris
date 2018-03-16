@@ -12,6 +12,7 @@ class User {
     this.id = id;
     this.order = order;
     this.master = isMaster;
+    this.loose = false;
   }
 
   /**

@@ -7,6 +7,7 @@ const socketDefs = require("../../common/socket-definitions");
 const SocketMap = require("../data/SocketMap");
 
 class PacketSender {
+
   /**
    * This packet is sent when a new player is coming in a room.
    * The player who join will not be notified.
@@ -25,6 +26,24 @@ class PacketSender {
    */
   static sendPlayerQuit(player, room) {
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_QUIT, player, room, {player, room});
+  }
+
+  /**
+   * This packet is sent to tell to all players that a player has lose.
+   * @param {User} player
+   * @param {Room} room
+   */
+  static sendPlayerLoose(player, room) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_LOSE, player, room, {room, player})
+  }
+
+  /**
+   * This packet is sent to tell to all player that a player has complete a line
+   * @param {User} player
+   * @param {Room} room
+   */
+  static sendPlayerCompleteLine(player, room) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_COMPLETE_LINE, player, room, {room, player})
   }
 
   /**
