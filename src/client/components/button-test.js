@@ -49,9 +49,9 @@ const ButtonTestComponent = ({
 const mapStateToProps = state => {
   return {
     line: state.partsFlow.map(e => e),
-    grid: state.playerStates.filter(
+    grid: state.playerStates.find(
       el => el.playerName === state.playerName
-    )[0].grid.map(l => l), // just for test
+    ).grid.map(l => l.map(e => e)),
     playerName: state.playerName
   }
 };

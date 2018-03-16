@@ -1,9 +1,9 @@
 const isInUsers = (users, username) => {
-  return users.filter(e => e.username === username).length > 0;
+  return users.some(e => e.username === username);
 };
 
 const isInPlayerStates = (playerStates, playerName) => {
-  return playerStates.filter(e => e.playerName === playerName).length > 0;
+  return playerStates.some(e => e.playerName === playerName);
 };
 
 const clonePlayerStates = playerStates => playerStates.map(playerState => Object.assign({}, {

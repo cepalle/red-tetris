@@ -22,10 +22,11 @@ const GridPlayerComponent = ({state}) =>
 ;
 
 const mapStateToProps = state => {
-  let playerState = state.playerStates.filter(el => el.playerName === state.playerName);
-  if (playerState.length > 0) {
-    return {state: Object.assign({}, playerState[0])}
+  let playerState = state.playerStates.find(el => el.playerName === state.playerName);
+  if (playerState) {
+    return {state: Object.assign({}, playerState)};
   }
+
   logger_component(["playerName note in playerStates"]);
   return undefined;
 };

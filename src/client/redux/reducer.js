@@ -20,7 +20,7 @@ import * as socketApi from "../socket/socket-api";
 const reducerPartsFlow = (state, parts) => {
   logger_reducer(["partsFlow", parts]);
 
-  state.partsFlow = state.partsFlow.concat(parts)
+  state.partsFlow = state.partsFlow.concat(parts);
   return state;
 };
 
