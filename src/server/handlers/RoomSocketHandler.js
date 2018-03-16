@@ -72,14 +72,22 @@ class RoomSocketHandler extends SocketHandler {
 
   /**
    * Set the state of the room to avoid player join in a game that has already started.
-   * @param data
+   * @param {string} data
+   * @param {string} data.roomName
    * @param response
    */
   startPlaying(data, response = socketDefs.START_PLAYING_RESPONSE) {
-    //TODO check validation data
-    if (this.roomIsValid(data, response) && this.playerIsMaster(response)) {
-        RoomManager.getRoomById(this.id).setWaiting(false);
+    if (super.checkData("roomName", data, response) &&
+      this.roomIsValid(data, response) &&
+      this.playerIsMaster(response)) {
+      const room = RoomManager.getRoomById(this.id);
+      if (!room.waiting) {
+        this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME})
+      }
+      else {
+        room.setWaiting(false);
         this.socket.emit(response, {success: true});
+      }
     }
   }
 
