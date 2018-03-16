@@ -15,7 +15,6 @@ ReactDOM.render(
 
 
 window.addEventListener('keydown', function (event) {
-  console.log("event:", event);
   switch (event.keyCode) {
     case 37: // Left
       store.dispatch(movePiece(PIECES_MOVE.LEFT));
