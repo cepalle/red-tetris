@@ -140,4 +140,35 @@ const updatePiecePos = (state, move) => {
   return needNext;
 };
 
-export {hasCollision, eraseCurPiece, placePiece, COLLISION_TYPE, newLoc, prepareAndPlaceNewPiece, updatePiecePos}
+const gridDelLine = state => {
+  let lineToDel = [];
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+
+  player.grid.forEach((line, i) => {
+    let asEmpty = false;
+    line.forEach(el => {
+      if (el === 0) {
+        asEmpty = true;
+      }
+    })
+    if (!asEmpty) {
+      lineToDel.push(i);
+    }
+  })
+
+  player.grid = player.grid.filter((line, i) => !lineToDel.includes(i));
+  while (player.grid.length < GRID_HEIGHT) {
+    player.grid = [Array(GRID_WIDTH).fill(0), ...player.grid];
+  }
+};
+
+export {
+  hasCollision,
+  eraseCurPiece,
+  placePiece,
+  COLLISION_TYPE,
+  newLoc,
+  prepareAndPlaceNewPiece,
+  updatePiecePos,
+  gridDelLine
+}

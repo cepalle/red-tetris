@@ -2,8 +2,8 @@ import {logger_reducer} from "../logger";
 import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
-import {eraseCurPiece, prepareAndPlaceNewPiece, updatePiecePos} from "../util/move-piece";
-import {placePiece} from "../util/move-piece";
+import {eraseCurPiece, gridDelLine, prepareAndPlaceNewPiece, updatePiecePos} from "../util/grid-piece-handler";
+import {placePiece} from "../util/grid-piece-handler";
 import * as socketApi from "../socket/socket-api";
 import {emitGenFlow} from "../socket/socket-api";
 
@@ -83,6 +83,7 @@ const reducerMovePiece = (state, move) => {
   placePiece(state);
 
   if (needNext) {
+    gridDelLine(state);
     state.piecesFlow.shift();
     state.curPiecePos = {};
     socketApi.emitTetrisPlacePiece(
