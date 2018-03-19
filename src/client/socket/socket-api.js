@@ -70,7 +70,6 @@ const cbPacketGameStart = ({pieces}) => {
   logger_sock(["recv PACKET_GAME_START", pieces]);
 
   store.dispatch(startGame(pieces));
-  animate.value = true;
 };
 
 /**

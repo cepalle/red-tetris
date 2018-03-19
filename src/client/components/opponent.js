@@ -4,10 +4,10 @@ import {clonePlayerStates, getColorNum} from "../util/utils"
 
 const OpponentComponent = ({states}) =>
   <div className={"line"}>
-    {states.map((state, k) =>
+    {states.map((playerState, k) =>
       <div key={k}>
         <div className={"grid"}>
-          {state.grid.map((line, i) => i >= 4 &&
+          {playerState.grid.map((line, i) => i >= 4 &&
             <div key={i} className={"line"}>
               {line.map((el, j) =>
                 <div key={j} className={"case color" + getColorNum(el)}/>
@@ -16,7 +16,7 @@ const OpponentComponent = ({states}) =>
           )}
         </div>
         <div className={"line center"}>
-          <p>{state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}{state.hasWin && "(Win)"}</p>
+          <p>{playerState.playerName}{playerState.isMaster && "(Master)"}{playerState.hasLoose && "(loose)"}{playerState.hasWin && "(Win)"}</p>
         </div>
       </div>
     )}
