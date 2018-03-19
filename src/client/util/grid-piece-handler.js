@@ -1,7 +1,7 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../redux/init-state";
 import {getPiece, getPieceMask, PIECES_MOVE} from "../../common/pieces";
 import {randNumber} from "./utils";
-import {emitPlayerCompleteLine, emitPlayerLoose} from "../socket/socket-api";
+import {emitEndPlaying, emitPlayerCompleteLine, emitPlayerLoose} from "../socket/socket-api";
 import {animate} from "./animate";
 
 const COLLISION_TYPE = {
@@ -165,12 +165,29 @@ const gridDelLine = state => {
   }
 };
 
+const ifEndGame = state => {
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  if (player.isMaster) {
+    if (state.playerStates.length === 1) {
+      if (player.hasLoose) {
+        emitEndPlaying();
+      }
+    }
+    if (state.playerStates.length > 1) {
+      if (state.playerStates.filter(e => !e.hasLoose).length < 2) {
+        emitEndPlaying();
+      }
+    }
+  }
+};
+
 const ifLooseSet = state => {
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (player.grid[3].some(e => e !== 0)) {
     animate.value = false;
     player.hasLoose = true;
     emitPlayerLoose();
+    ifEndGame(state);
   }
 };
 
@@ -202,5 +219,6 @@ export {
   updatePiecePos,
   gridDelLine,
   gridAddWall,
-  ifLooseSet
+  ifLooseSet,
+  ifEndGame
 }

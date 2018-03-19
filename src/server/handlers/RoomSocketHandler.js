@@ -100,6 +100,7 @@ class RoomSocketHandler extends SocketHandler {
         this.socket.emit(response, {error: errorsDefs.ROOM_NOT_IN_GAME})
       }
       else {
+        RoomManager.getRoomById(this.id).users.forEach(e => e.loose = false);
         room.setWaiting(true);
         this.socket.emit(response, {success: true});
       }

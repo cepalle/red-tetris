@@ -60,19 +60,15 @@ class SocketHandler {
    */
   checkData(check, data, response) {
     const split = check.split(",");
-    console.log(split);
     for (let i = 0; i < split.length; i++) {
       const key = split[i];
-      console.log(data, key);
       if (!data[key])
       {
-        console.log("here1");
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;
       }
       if (key === "roomName" && !RoomManager.getRoomById(this.id).name === data[key])
       {
-        console.log("here2");
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;
       }

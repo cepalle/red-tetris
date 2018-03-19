@@ -68,10 +68,8 @@ class TetrisSocketHandler extends SocketHandler {
    * @param {string} response
    */
   playerCompleteLine(data, response = socketDefs.PLAYER_COMPLETE_LINE_RESPONSE) {
-    console.log("HEY COMPLETE LINE 2")
     if (this.playerCanPlay(data, response))
     {
-      console.log("HEY COMPLETE LINE 1")
       const room = RoomManager.getRoom(data.roomName);
       const user = room.getUser(this.id);
       PacketSender.sendPlayerCompleteLine(user, room);

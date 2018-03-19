@@ -3,7 +3,7 @@ import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
 import {
-  eraseCurPiece, gridAddWall, gridDelLine, ifLooseSet, prepareAndPlaceNewPiece,
+  eraseCurPiece, gridAddWall, gridDelLine, ifEndGame, ifLooseSet, prepareAndPlaceNewPiece,
   updatePiecePos
 } from "../util/grid-piece-handler";
 import {placePiece} from "../util/grid-piece-handler";
@@ -69,6 +69,8 @@ const reducerUpdateUsers = (state, users) => {
     animate.value = false;
     player.hasWin = true;
   }
+
+  ifEndGame(state);
 
   return state;
 };

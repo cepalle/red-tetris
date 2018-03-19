@@ -113,6 +113,7 @@ const cbPacketTetrisPlacePiece = gridAndPlayer => {
 socket.on(socketDefs.JOIN_ROOM_RESPONSE, arg => cbJoinRoomResponse(arg));
 socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
 socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
+socket.on(socketDefs.END_PLAYING_RESPONSE, arg => cbEndPlayingResonse(arg));
 socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
 socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, arg => cbTetrisPlacePieceResponse(arg));
 socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, arg => cbPlayerLooseResponse(arg));
@@ -149,6 +150,15 @@ const cbQuitRoomResponse = arg => {
  */
 const cbStartPlayingResponse = arg => {
   logger_sock(["recv START_PLAYING_RESPONSE", arg]);
+};
+
+//TODO
+/**
+ * Request: END_PLAYING_RESPONSE
+ * Data recv: {error: {type, message}} || {success}
+ */
+const cbEndPlayingResonse = arg => {
+  logger_sock(["recv END_PLAYING_RESPONSE", arg]);
 };
 
 /**
@@ -240,6 +250,16 @@ const emitStartPlaying = () => {
 };
 
 /**
+ * Used to tell to the backend that the game is end.
+ * Data to sent: {roomName}
+ */
+const emitEndPlaying = () => {
+  logger_sock(["emit END_PLAYING"]);
+
+  socket.emit(socketDefs.END_PLAYING, {roomName: store.getState().roomName});
+};
+
+/**
  * Used to ask to the server new pieces
  * Data to sent: {roomName}
  */
@@ -294,5 +314,6 @@ export {
   emitGenFlow,
   emitTetrisPlacePiece,
   emitPlayerLoose,
-  emitPlayerCompleteLine
+  emitPlayerCompleteLine,
+  emitEndPlaying
 };
