@@ -10,7 +10,8 @@ import {placePiece} from "../util/grid-piece-handler";
 import * as socketApi from "../socket/socket-api";
 import {emitGenFlow} from "../socket/socket-api";
 import {animate} from "../util/animate";
-import {ifEndGameEmit, ifLooseEmitSet, ifWinSet} from "../util/if-cond-emit-set"
+import {ifLooseEmitSet, ifWinSet} from "../util/end-loose-win-handler"
+
 
 /**
  * Add pieces to the state.piecesFlow.

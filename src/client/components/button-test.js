@@ -6,12 +6,12 @@ import {PIECES_MOVE} from "../../common/pieces";
 import {getColorNum} from "../util/utils"
 
 const ButtonTestComponent = ({
-                           line, grid, playerName,
-                           onClickButtonFlow, onClickButtonRotRight,
-                           onClickButtonRotLeft, onClickButtonMoveDown,
-                           onClickButtonMoveLeft, onClickButtonMoveRight,
-                           onClickButtonUpdateGrid, onClickButtonStartGame,
-                         }) =>
+                               line, grid, playerName,
+                               onClickButtonFlow, onClickButtonRotRight,
+                               onClickButtonRotLeft, onClickButtonMoveDown,
+                               onClickButtonMoveLeft, onClickButtonMoveRight,
+                               onClickButtonUpdateGrid, onClickButtonStartGame,
+                             }) =>
   <div>
     <div className="line">
       {line.map((el, i) =>
@@ -60,7 +60,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onClickButtonFlow: () => emitGenFlow(),
-    onClickButtonStartGame: () => {console.log("button start playing"); emitStartPlaying()},
+    onClickButtonStartGame: () => {
+      console.log("button start playing");
+      emitStartPlaying()
+    },
     onClickButtonRotRight: () => dispatch(movePiece(PIECES_MOVE.ROT_RIGHT)),
     onClickButtonRotLeft: () => dispatch(movePiece(PIECES_MOVE.ROT_LEFT)),
     onClickButtonMoveDown: () => dispatch(movePiece(PIECES_MOVE.DOWN)),

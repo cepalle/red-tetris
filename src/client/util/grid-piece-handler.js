@@ -2,7 +2,7 @@ import {GRID_HEIGHT, GRID_WIDTH} from "../redux/init-state";
 import {getPiece, getPieceMask, PIECES_MOVE} from "../../common/pieces";
 import {randNumber} from "./utils";
 import {emitPlayerCompleteLine} from "../socket/socket-api";
-import {ifLooseEmitSet} from "./if-cond-emit-set"
+import {ifLooseEmitSet} from "./end-loose-win-handler"
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -12,7 +12,8 @@ const COLLISION_TYPE = {
   WALL_TOP: "collision_top",
 };
 
-const PRIO_COLLISION = [COLLISION_TYPE.WALL_TOP,
+const PRIO_COLLISION = [
+  COLLISION_TYPE.WALL_TOP,
   COLLISION_TYPE.PIECE,
   COLLISION_TYPE.WALL_BOTTOM,
   COLLISION_TYPE.WALL_RIGHT,
