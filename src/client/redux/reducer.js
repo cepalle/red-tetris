@@ -88,7 +88,7 @@ const reducerMovePiece = (state, move) => {
     return state;
   }
 
-  if (state.piecesFlow.length < 3) {
+  if (state.piecesFlow.length < 4) {
     emitGenFlow();
     if (state.piecesFlow.length === 0) {
       logger_reducer(["movePiece piecesFlow is empty"]);

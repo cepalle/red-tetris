@@ -98,7 +98,7 @@ const prepareAndPlaceNewPiece = state => {
   state.curPieceRot = randNumber(0, 3);
   const mask = getPieceMask(state.piecesFlow[0], state.curPieceRot);
   state.curPiecePos = {
-    x: randNumber(mask.x, GRID_WIDTH - 1 - 4), // change with new mask
+    x: randNumber(mask.x, GRID_WIDTH - mask.width - mask.x),
     y: mask.y
   };
   placePiece(state);
