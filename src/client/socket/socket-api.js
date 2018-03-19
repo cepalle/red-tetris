@@ -19,6 +19,7 @@ socket.on(socketDefs.PACKET_PLAYER_PROMOTED, arg => cbPacketPlayerPromoted(arg))
 socket.on(socketDefs.PACKET_PLAYER_LOSE, arg => cbPacketPlayerLose(arg));
 socket.on(socketDefs.PACKET_GAME_START, arg => cbPacketGameStart(arg));
 socket.on(socketDefs.PACKET_GENFLOW, arg => cbPacketGenFlow(arg));
+socket.on(socketDefs.PACKET_PLAYER_COMPLETE_LINE, arg => cbPacketPlayerCompleteLine(arg));
 socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(arg));
 
 /**
@@ -51,7 +52,7 @@ const cbPacketPlayerPromoted = ({player, room}) => {
   store.dispatch(updateUsers(room.users));
 };
 
-//TODO
+//TODO player === playerName?
 /**
  * Request: PACKET_PLAYER_LOSE
  * Data recv: {player, room}
@@ -82,6 +83,17 @@ const cbPacketGenFlow = ({pieces}) => {
   store.dispatch(addPartsFlow(pieces));
 };
 
+//TODO
+/**
+ * Request: PACKET_PLAYER_COMPLETE_LINE
+ * Data recv: {player, room}
+ */
+const cbPacketPlayerCompleteLine = ({player, room}) => {
+  logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE", player]);
+
+  //store.dispatch();
+};
+
 /**
  * Request: PACKET_TETRIS_PLACE_PIECE
  * Data recv: {grid, playerName} gridAndPlayer
@@ -103,6 +115,8 @@ socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
 socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
 socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
 socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, arg => cbTetrisPlacePieceResponse(arg));
+socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, arg => cbPlayerLooseResponse(arg));
+socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineResponse(arg));
 socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 
 /**
@@ -157,6 +171,24 @@ const cbTetrisPlacePieceResponse = ({error}) => {
   if (error) {
     store.dispatch(addError(error))
   }
+};
+
+//TODO
+/**
+ * Request: PLAYER_LOOSE_RESPONSE
+ * Data recv: {}
+ */
+const cbPlayerLooseResponse = arg => {
+  logger_sock(["recv PLAYER_LOOSE_RESPONSE", arg]);
+};
+
+//TODO
+/**
+ * Request: PLAYER_COMPLETE_LINE_RESPONSE
+ * Data recv: {}
+ */
+const cbPlayerCompleteLineResponse = arg => {
+  logger_sock(["recv PLAYER_COMPLETE_LINE_RESPONSE", arg]);
 };
 
 //TODO
@@ -218,6 +250,34 @@ const emitGenFlow = () => {
 };
 
 /**
+ * Used to say to others player that you loose
+ * Data to sent: {roomName, playerName}
+ */
+const emitPlayerLoose = () => {
+  logger_sock(["emit PLAYER_LOOSE"]);
+
+  socket.emit(socketDefs.PLAYER_LOOSE,
+    {
+      roomName: store.getState().roomName,
+      playerName: store.getState().playerName
+    });
+};
+
+/**
+ * Used to say to others player that you completed a line
+ * Data to sent: {roomName, playerName}
+ */
+const emitPlayerCompleteLine = () => {
+  logger_sock(["emit PLAYER_COMPLETE_LINE"]);
+
+  socket.emit(socketDefs.PLAYER_COMPLETE_LINE,
+    {
+      roomName: store.getState().roomName,
+      playerName: store.getState().playerName
+    });
+};
+
+/**
  * Used to tell to other clients that a player has placed a piece
  * Data to sent: {grid, playerName}
  */
@@ -227,4 +287,12 @@ const emitTetrisPlacePiece = (grid, playerName) => {
   socket.emit(socketDefs.TETRIS_PLACE_PIECE, {grid: grid, playerName: playerName});
 };
 
-export {emitJoinRoom, emitQuitRoom, emitStartPlaying, emitGenFlow, emitTetrisPlacePiece};
+export {
+  emitJoinRoom,
+  emitQuitRoom,
+  emitStartPlaying,
+  emitGenFlow,
+  emitTetrisPlacePiece,
+  emitPlayerLoose,
+  emitPlayerCompleteLine
+};
