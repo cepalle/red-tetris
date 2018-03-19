@@ -55,6 +55,7 @@ class TetrisSocketHandler extends SocketHandler {
     {
       const room = RoomManager.getRoom(data.roomName);
       const user = room.getUser(this.id);
+      user.loose = true;
       PacketSender.sendPlayerLoose(user, room);
       this.socket.emit(response, {success: true})
     }
