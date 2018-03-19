@@ -165,7 +165,7 @@ const gridDelLine = state => {
   }
 };
 
-const ifLooseOrWinSet = state => {
+const ifLooseSet = state => {
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (player.grid[3].some(e => e !== 0)) {
     animate.value = false;
@@ -183,11 +183,11 @@ const gridAddWall = state => {
 
   eraseCurPiece(state);
   player.grid = [...player.grid, Array(GRID_WIDTH).fill(-1)];
-  player.grid.shift(); // TO TEST
+  player.grid.shift();
   if (Object.keys(state.curPiecePos).length > 0 && state.curPiecePos.y > 0) {
     state.curPiecePos.y--;
   }
-  ifLooseOrWinSet(state);
+  ifLooseSet(state);
   placePiece(state);
 };
 
@@ -202,5 +202,5 @@ export {
   updatePiecePos,
   gridDelLine,
   gridAddWall,
-  ifLooseOrWinSet
+  ifLooseSet
 }

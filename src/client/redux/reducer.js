@@ -3,7 +3,7 @@ import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
 import {
-  eraseCurPiece, gridAddWall, gridDelLine, ifLooseOrWinSet, prepareAndPlaceNewPiece,
+  eraseCurPiece, gridAddWall, gridDelLine, ifLooseSet, prepareAndPlaceNewPiece,
   updatePiecePos
 } from "../util/grid-piece-handler";
 import {placePiece} from "../util/grid-piece-handler";
@@ -59,9 +59,16 @@ const reducerUpdateUsers = (state, users) => {
   });
 
   state.playerStates = state.playerStates.map((playerState, i) => {
-    playerState.hasLoose = users[i].loose;
+    const user = users.find(e => e.username === playerState.playerName);
+    playerState.hasLoose = user.loose;
     return playerState;
   });
+
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  if (state.playerStates.length > 1 && !player.hasLoose && state.playerStates.filter(e => !e.hasLoose).length === 1) {
+    animate.value = false;
+    player.hasWin = true;
+  }
 
   return state;
 };
@@ -75,8 +82,8 @@ const reducerMovePiece = (state, move) => {
   logger_reducer(["movePiece", move]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.hasLoose || !animate.value) {
-    return;
+  if (player.hasLoose || !animate.value || player.hasWin) {
+    return state;
   }
 
   if (state.piecesFlow.length < 3) {
@@ -104,7 +111,7 @@ const reducerMovePiece = (state, move) => {
       state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
       state.playerName
     );
-    ifLooseOrWinSet(state);
+    ifLooseSet(state);
   }
   return state;
 };

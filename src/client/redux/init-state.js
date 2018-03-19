@@ -8,7 +8,8 @@ const initPlayerState = (playerName, isMaster=false) => {
     grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(0)),
     playerName: playerName,
     isMaster: isMaster,
-    hasLoose: false
+    hasLoose: false,
+    hasWin: false,
   }
 };
 
