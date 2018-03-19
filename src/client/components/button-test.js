@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {emitGenFlow, emitStartPlaying, emitTetrisPlacePiece} from "../socket/socket-api"
 import {movePiece} from "../redux/action-creators";
 import {PIECES_MOVE} from "../../common/pieces";
+import {getColorNum} from "../util/utils"
 
 const ButtonTestComponent = ({
                            line, grid, playerName,
@@ -14,7 +15,7 @@ const ButtonTestComponent = ({
   <div>
     <div className="line">
       {line.map((el, i) =>
-        <div key={i} className={"part" + el}/>
+        <div key={i} className={"case color" + getColorNum(el)}/>
       )}
     </div>
     <button onClick={() => onClickButtonFlow()}>
