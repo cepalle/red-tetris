@@ -32,6 +32,10 @@ module.exports = {
   USER_NOT_MASTER: {
     type: "USER_NOT_MASTER",
     message: "User is not the master."
+  },
+  ROOM_NOT_IN_GAME: {
+    type: "ROOM_NOT_IN_GAME",
+    message: "The room is not in a game so can't be ended."
   }
 
 };

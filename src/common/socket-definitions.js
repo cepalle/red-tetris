@@ -25,6 +25,12 @@ module.exports = {
   START_PLAYING: "startPlaying",
 
   /**
+   * Used to tell to the backend that the room enter in a no-waiting state and no player can join the room after.
+   * Data to sent: {roomName}
+   */
+  END_PLAYING: "endPlaying",
+
+  /**
    * Used to tell to the server that a client was connected
    * Data to sent: {}
    */
@@ -86,6 +92,12 @@ module.exports = {
    * Data to sent: {error: {type, message}} || {success}
    */
   START_PLAYING_RESPONSE: "startPlayingResponse",
+
+  /**
+   * Used to tell to the client if the room has enter in a no-waiting state.
+   * Data to sent: {error: {type, message}} || {success}
+   */
+  END_PLAYING_RESPONSE: "endPlayingResponse",
 
   /**
    * Used to tell to the client that he successful the socket.io
