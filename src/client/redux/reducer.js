@@ -3,12 +3,13 @@ import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
 import {
-  eraseCurPiece, gridAddWall, gridDelLine, ifLooseSetLoose, prepareAndPlaceNewPiece,
+  eraseCurPiece, gridAddWall, gridDelLine, ifLooseOrWinSet, prepareAndPlaceNewPiece,
   updatePiecePos
 } from "../util/grid-piece-handler";
 import {placePiece} from "../util/grid-piece-handler";
 import * as socketApi from "../socket/socket-api";
 import {emitGenFlow} from "../socket/socket-api";
+import {animate} from "../util/animate";
 
 /**
  * Add pieces to the state.piecesFlow.
@@ -73,6 +74,11 @@ const reducerUpdateUsers = (state, users) => {
 const reducerMovePiece = (state, move) => {
   logger_reducer(["movePiece", move]);
 
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  if (player.hasLoose || !animate.value) {
+    return;
+  }
+
   if (state.piecesFlow.length < 3) {
     emitGenFlow();
     if (state.piecesFlow.length === 0) {
@@ -98,7 +104,7 @@ const reducerMovePiece = (state, move) => {
       state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
       state.playerName
     );
-    ifLooseSetLoose(state);
+    ifLooseOrWinSet(state);
   }
   return state;
 };
