@@ -58,7 +58,7 @@ const reducerUpdateUsers = (state, users) => {
     return el;
   });
 
-  state.playerStates = state.playerStates.map((playerState, i) => {
+  state.playerStates = state.playerStates.map(playerState => {
     const user = users.find(e => e.username === playerState.playerName);
     playerState.hasLoose = user.loose;
     return playerState;
