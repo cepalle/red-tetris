@@ -14,43 +14,43 @@
   flex-direction: row;
 }
 
-.part0 {
+.case {
+  padding: 12px;
+}
+
+.color8 {
+  background-color: #000000;
+}
+
+.color0 {
   background-color: #eeeeee;
-  padding: 12px;
 }
 
-.part1 {
+.color1 {
   background-color: #00ffff;
-  padding: 12px;
 }
 
-.part2 {
+.color2 {
   background-color: #0000ff;
-  padding: 12px;
 }
 
-.part3 {
+.color3 {
   background-color: #ffaa00;
-  padding: 12px;
 }
 
-.part4 {
+.color4 {
   background-color: #ffff00;
-  padding: 12px;
 }
 
-.part5 {
+.color5 {
   background-color: #00ff00;
-  padding: 12px;
 }
 
-.part6 {
+.color6 {
   background-color: #9900ff;
-  padding: 12px;
 }
 
-.part7 {
+.color7 {
   background-color: #ff0000;
-  padding: 12px;
 }
 

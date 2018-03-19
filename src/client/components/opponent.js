@@ -1,22 +1,22 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {clonePlayerStates} from "../util/utils"
+import {clonePlayerStates, getColorNum} from "../util/utils"
 
 const OpponentComponent = ({states}) =>
   <div className={"line"}>
     {states.map((state, k) =>
       <div key={k}>
         <div className={"grid"}>
-          {state.grid.map((line, i) =>
+          {state.grid.map((line, i) => i >= 4 &&
             <div key={i} className={"line"}>
               {line.map((el, j) =>
-                <div key={j} className={"part" + el}/>
+                <div key={j} className={"case color" + getColorNum(el)}/>
               )}
             </div>
           )}
         </div>
         <div className={"line center"}>
-          <p>{state.playerName}{state.isMaster && "(Master)"}</p>
+          <p>{state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}{state.hasWin && "(Win)"}</p>
         </div>
       </div>
     )}

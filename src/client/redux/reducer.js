@@ -1,15 +1,19 @@
-import {logger_reducer} from "../logger";
+import {logger_reducer} from "../util/logger";
 import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
-import {eraseCurPiece, prepareAndPlaceNewPiece, updatePiecePos} from "../util/move-piece";
-import {placePiece} from "../util/move-piece";
+import {
+  eraseCurPiece, gridAddWall, gridDelLine, ifLooseSet, prepareAndPlaceNewPiece,
+  updatePiecePos
+} from "../util/grid-piece-handler";
+import {placePiece} from "../util/grid-piece-handler";
 import * as socketApi from "../socket/socket-api";
 import {emitGenFlow} from "../socket/socket-api";
+import {animate} from "../util/animate";
 
 /**
  * Add pieces to the state.piecesFlow.
- * @param {state} state
+ * @param {Object} state
  * @param {Array<int>} pieces
  */
 const reducerPartsFlow = (state, pieces) => {
@@ -21,7 +25,7 @@ const reducerPartsFlow = (state, pieces) => {
 
 /**
  * Set error to state.error.
- * @param {state} state
+ * @param {Object} state
  * @param {type, message} error
  */
 const reducerError = (state, error) => {
@@ -33,7 +37,7 @@ const reducerError = (state, error) => {
 
 /**
  * Synchronize players with users.
- * @param {state} state
+ * @param {Object} state
  * @param {Array<user>} users
  */
 const reducerUpdateUsers = (state, users) => {
@@ -54,6 +58,18 @@ const reducerUpdateUsers = (state, users) => {
     return el;
   });
 
+  state.playerStates = state.playerStates.map(playerState => {
+    const user = users.find(e => e.username === playerState.playerName);
+    playerState.hasLoose = user.loose;
+    return playerState;
+  });
+
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  if (state.playerStates.length > 1 && !player.hasLoose && state.playerStates.filter(e => !e.hasLoose).length === 1) {
+    animate.value = false;
+    player.hasWin = true;
+  }
+
   return state;
 };
 
@@ -64,6 +80,11 @@ const reducerUpdateUsers = (state, users) => {
  */
 const reducerMovePiece = (state, move) => {
   logger_reducer(["movePiece", move]);
+
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  if (player.hasLoose || !animate.value || player.hasWin) {
+    return state;
+  }
 
   if (state.piecesFlow.length < 3) {
     emitGenFlow();
@@ -83,20 +104,21 @@ const reducerMovePiece = (state, move) => {
   placePiece(state);
 
   if (needNext) {
+    gridDelLine(state);
     state.piecesFlow.shift();
     state.curPiecePos = {};
     socketApi.emitTetrisPlacePiece(
       state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
       state.playerName
     );
+    ifLooseSet(state);
   }
   return state;
 };
 
-
 /**
  * Update the grid of the player that as change.
- * @param {state} state
+ * @param {Object} state
  * @param {grid, playerName}
  */
 const reducerUpdateGrid = (state, {grid, playerName}) => {
@@ -113,7 +135,7 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
 
 /**
  * Restart grid of player and flow, set le pieces to the flow and start game.
- * @param {state} state
+ * @param {Object} state
  * @param {Array<int>} pieces
  */
 const reducerStartGame = (state, pieces) => {
@@ -124,6 +146,17 @@ const reducerStartGame = (state, pieces) => {
   );
   state.piecesFlow = pieces;
   state.curPiecePos = {};
+  return state;
+};
+
+/**
+ * Add a line unbreakable.
+ * @param {Object} state
+ */
+const reducerAddWallLine = state => {
+  logger_reducer(["addWallLine", state]);
+
+  gridAddWall(state);
   return state;
 };
 
@@ -148,6 +181,8 @@ const reducer = (state = initialState, action) => {
       return reducerUpdateGrid(cloneState(state), action.data);
     case 'START_GAME':
       return reducerStartGame(cloneState(state), action.data);
+    case 'ADD_WALL_LINE':
+      return reducerAddWallLine(cloneState(state));
     default:
       return state;
   }

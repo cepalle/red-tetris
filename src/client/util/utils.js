@@ -10,6 +10,8 @@ const clonePlayerStates = playerStates => playerStates.map(playerState => Object
     grid: playerState.grid.map(l => l.map(e => e)),
     playerName: playerState.playerName,
     isMaster: playerState.isMaster,
+  hasLoose: playerState.hasLoose,
+  hasWin: playerState.hasWin
   }))
 ;
 
@@ -26,4 +28,6 @@ const cloneState = state => Object.assign({}, {
 
 const randNumber = (min, max) => Math.floor(Math.random() * max) + min;
 
-export {isInUsers, isInPlayerStates, cloneState, clonePlayerStates, randNumber};
+const getColorNum = c => (c + 9) % 9;
+
+export {isInUsers, isInPlayerStates, cloneState, clonePlayerStates, randNumber, getColorNum};
