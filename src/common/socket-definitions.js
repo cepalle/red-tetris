@@ -25,7 +25,7 @@ module.exports = {
   START_PLAYING: "startPlaying",
 
   /**
-   * Used to tell to the backend that the room enter in a no-waiting state and no player can join the room after.
+   * Used to tell to the backend that the room enter in a waiting state and no player can join the room after.
    * Data to sent: {roomName}
    */
   END_PLAYING: "endPlaying",
@@ -94,7 +94,7 @@ module.exports = {
   START_PLAYING_RESPONSE: "startPlayingResponse",
 
   /**
-   * Used to tell to the client if the room has enter in a no-waiting state.
+   * Used to tell to the client if the room has enter in a waiting state.
    * Data to sent: {error: {type, message}} || {success}
    */
   END_PLAYING_RESPONSE: "endPlayingResponse",
