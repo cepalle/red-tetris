@@ -2,8 +2,8 @@ import io from 'socket.io-client';
 import {store} from "../redux/store"
 import {addError, addPartsFlow, updateUsers, updateGrid, startGame} from "../redux/action-creators"
 import socketDefs from "../../common/socket-definitions";
-import {logger_sock} from "../logger";
-import {animate} from "../animate";
+import {logger_sock} from "../util/logger";
+import {animate} from "../util/animate";
 
 const socket = io.connect('http://localhost:4433');
 

@@ -7,7 +7,7 @@ const OpponentComponent = ({states}) =>
     {states.map((state, k) =>
       <div key={k}>
         <div className={"grid"}>
-          {state.grid.map((line, i) =>
+          {state.grid.map((line, i) => i >= 4 &&
             <div key={i} className={"line"}>
               {line.map((el, j) =>
                 <div key={j} className={"case color" + getColorNum(el)}/>

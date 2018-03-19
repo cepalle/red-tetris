@@ -1,4 +1,4 @@
-import {logger_reducer} from "../logger";
+import {logger_reducer} from "../util/logger";
 import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
@@ -9,7 +9,7 @@ import {emitGenFlow} from "../socket/socket-api";
 
 /**
  * Add pieces to the state.piecesFlow.
- * @param {state} state
+ * @param {Object} state
  * @param {Array<int>} pieces
  */
 const reducerPartsFlow = (state, pieces) => {
@@ -21,7 +21,7 @@ const reducerPartsFlow = (state, pieces) => {
 
 /**
  * Set error to state.error.
- * @param {state} state
+ * @param {Object} state
  * @param {type, message} error
  */
 const reducerError = (state, error) => {
@@ -33,7 +33,7 @@ const reducerError = (state, error) => {
 
 /**
  * Synchronize players with users.
- * @param {state} state
+ * @param {Object} state
  * @param {Array<user>} users
  */
 const reducerUpdateUsers = (state, users) => {
@@ -97,7 +97,7 @@ const reducerMovePiece = (state, move) => {
 
 /**
  * Update the grid of the player that as change.
- * @param {state} state
+ * @param {Object} state
  * @param {grid, playerName}
  */
 const reducerUpdateGrid = (state, {grid, playerName}) => {
@@ -114,7 +114,7 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
 
 /**
  * Restart grid of player and flow, set le pieces to the flow and start game.
- * @param {state} state
+ * @param {Object} state
  * @param {Array<int>} pieces
  */
 const reducerStartGame = (state, pieces) => {

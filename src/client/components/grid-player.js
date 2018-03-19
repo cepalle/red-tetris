@@ -1,13 +1,13 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {logger_component} from "../logger";
+import {logger_component} from "../util/logger";
 import {getColorNum} from "../util/utils"
 
 const GridPlayerComponent = ({state}) =>
   <div className={"line center"}>
     <div>
       <div className={"grid"}>
-        {state.grid.map((line, i) =>
+        {state.grid.map((line, i) => i >= 4 &&
           <div key={i} className={"line"}>
             {line.map((el, j) =>
               <div key={j} className={"case color" + getColorNum(el)}/>
