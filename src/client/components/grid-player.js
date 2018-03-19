@@ -1,6 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {logger_component} from "../logger";
+import {getColorNum} from "../util/utils"
 
 const GridPlayerComponent = ({state}) =>
   <div className={"line center"}>
@@ -9,13 +10,13 @@ const GridPlayerComponent = ({state}) =>
         {state.grid.map((line, i) =>
           <div key={i} className={"line"}>
             {line.map((el, j) =>
-              <div key={j} className={"part" + el}/>
+              <div key={j} className={"case color" + getColorNum(el)}/>
             )}
           </div>
         )}
       </div>
       <div className={"line center"}>
-        <p>{state.playerName}{state.isMaster && "(Master)"}</p>
+        <p>{state.playerName}{state.isMaster && "(Master)"}{state.asLoose && "(loose)"}</p>
       </div>
     </div>
   </div>

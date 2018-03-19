@@ -29,6 +29,7 @@ const initPlayerState = (playerName, isMaster=false) => {
     ],
     playerName: playerName,
     isMaster: isMaster,
+    asLoose: false
   }
 };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {clonePlayerStates} from "../util/utils"
+import {clonePlayerStates, getColorNum} from "../util/utils"
 
 const OpponentComponent = ({states}) =>
   <div className={"line"}>
@@ -10,7 +10,7 @@ const OpponentComponent = ({states}) =>
           {state.grid.map((line, i) =>
             <div key={i} className={"line"}>
               {line.map((el, j) =>
-                <div key={j} className={"part" + el}/>
+                <div key={j} className={"case color" + getColorNum(el)}/>
               )}
             </div>
           )}
