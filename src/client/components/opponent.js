@@ -16,7 +16,7 @@ const OpponentComponent = ({states}) =>
           )}
         </div>
         <div className={"line center"}>
-          <p>{state.playerName}{state.isMaster && "(Master)"}</p>
+          <p>{state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}</p>
         </div>
       </div>
     )}

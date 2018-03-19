@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import {store} from "../redux/store"
-import {addError, addPartsFlow, updateUsers, updateGrid, startGame} from "../redux/action-creators"
+import {addError, addPartsFlow, updateUsers, updateGrid, startGame, addWallLine} from "../redux/action-creators"
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "../util/logger";
 import {animate} from "../util/animate";
@@ -52,16 +52,16 @@ const cbPacketPlayerPromoted = ({player, room}) => {
   store.dispatch(updateUsers(room.users));
 };
 
-//TODO player === playerName?
 /**
  * Request: PACKET_PLAYER_LOSE
  * Data recv: {player, room}
  */
-const cbPacketPlayerLose = arg => {
-  logger_sock(["recv PACKET_PLAYER_LOSE", arg]);
+const cbPacketPlayerLose = ({player, room}) => {
+  logger_sock(["recv PACKET_PLAYER_LOSE", room]);
+
+  store.dispatch(updateUsers(room.users));
 };
 
-//TODO
 /**
  * Request: PACKET_GAME_START
  * Data recv: {room, pieces}
@@ -91,7 +91,7 @@ const cbPacketGenFlow = ({pieces}) => {
 const cbPacketPlayerCompleteLine = ({player, room}) => {
   logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE", player]);
 
-  //store.dispatch();
+  store.dispatch(addWallLine());
 };
 
 /**

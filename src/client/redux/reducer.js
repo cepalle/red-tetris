@@ -2,7 +2,10 @@ import {logger_reducer} from "../util/logger";
 import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
-import {eraseCurPiece, gridDelLine, prepareAndPlaceNewPiece, updatePiecePos} from "../util/grid-piece-handler";
+import {
+  eraseCurPiece, gridAddWall, gridDelLine, ifLooseSetLoose, prepareAndPlaceNewPiece,
+  updatePiecePos
+} from "../util/grid-piece-handler";
 import {placePiece} from "../util/grid-piece-handler";
 import * as socketApi from "../socket/socket-api";
 import {emitGenFlow} from "../socket/socket-api";
@@ -54,6 +57,11 @@ const reducerUpdateUsers = (state, users) => {
     return el;
   });
 
+  state.playerStates = state.playerStates.map((playerState, i) => {
+    playerState.hasLoose = users[i].loose;
+    return playerState;
+  });
+
   return state;
 };
 
@@ -90,10 +98,10 @@ const reducerMovePiece = (state, move) => {
       state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
       state.playerName
     );
+    ifLooseSetLoose(state);
   }
   return state;
 };
-
 
 /**
  * Update the grid of the player that as change.
@@ -128,6 +136,17 @@ const reducerStartGame = (state, pieces) => {
   return state;
 };
 
+/**
+ * Add a line unbreakable.
+ * @param {Object} state
+ */
+const reducerAddWallLine = state => {
+  logger_reducer(["addWallLine", state]);
+
+  gridAddWall(state);
+  return state;
+};
+
 
 //----------------------------------------------------------------------------
 //
@@ -149,6 +168,8 @@ const reducer = (state = initialState, action) => {
       return reducerUpdateGrid(cloneState(state), action.data);
     case 'START_GAME':
       return reducerStartGame(cloneState(state), action.data);
+    case 'ADD_WALL_LINE':
+      return reducerAddWallLine(cloneState(state));
     default:
       return state;
   }

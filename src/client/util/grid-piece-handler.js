@@ -1,6 +1,8 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../redux/init-state";
 import {getPiece, getPieceMask, PIECES_MOVE} from "../../common/pieces";
 import {randNumber} from "./utils";
+import {emitPlayerCompleteLine, emitPlayerLoose} from "../socket/socket-api";
+import {animate} from "./animate";
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -150,17 +152,40 @@ const gridDelLine = state => {
       if (el <= 0) {
         asEmpty = true;
       }
-    })
+    });
     if (!asEmpty) {
       lineToDel.push(i);
     }
-  })
+  });
 
   player.grid = player.grid.filter((line, i) => !lineToDel.includes(i));
   while (player.grid.length < GRID_HEIGHT) {
+    emitPlayerCompleteLine();
     player.grid = [Array(GRID_WIDTH).fill(0), ...player.grid];
   }
 };
+
+const ifLooseSetLoose = state => {
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  if (player.grid[3].some(e => e !== 0)) {
+    animate.value = false;
+    player.hasLoose = true;
+    emitPlayerLoose();
+  }
+};
+
+const gridAddWall = state => {
+  eraseCurPiece(state);
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  player.grid = [...player.grid, Array(GRID_WIDTH).fill(-1)];
+  player.grid.shift(); // TO TEST
+  if (Object.keys(state.curPiecePos).length > 0 && state.curPiecePos.y > 0) {
+    state.curPiecePos.y--;
+  }
+  ifLooseSetLoose(state);
+  placePiece(state);
+};
+
 
 export {
   hasCollision,
@@ -170,5 +195,7 @@ export {
   newLoc,
   prepareAndPlaceNewPiece,
   updatePiecePos,
-  gridDelLine
+  gridDelLine,
+  gridAddWall,
+  ifLooseSetLoose
 }

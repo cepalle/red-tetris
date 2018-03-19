@@ -16,7 +16,7 @@ const GridPlayerComponent = ({state}) =>
         )}
       </div>
       <div className={"line center"}>
-        <p>{state.playerName}{state.isMaster && "(Master)"}{state.asLoose && "(loose)"}</p>
+        <p>{state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}</p>
       </div>
     </div>
   </div>

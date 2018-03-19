@@ -43,6 +43,7 @@ class PacketSender {
    * @param {Room} room
    */
   static sendPlayerCompleteLine(player, room) {
+    console.log("HEY COMPLETE LINE 3")
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_COMPLETE_LINE, player, room, {room, player})
   }
 

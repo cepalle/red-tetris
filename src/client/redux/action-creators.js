@@ -64,4 +64,14 @@ const startGame = pieces => {
   }
 };
 
-export {addPartsFlow, addError, updateUsers, movePiece, updateGrid, startGame};
+/**
+ * Add a line unbreakable.
+ */
+const addWallLine = () => {
+  return {
+    type: 'ADD_WALL_LINE'
+  }
+};
+
+
+export {addPartsFlow, addError, updateUsers, movePiece, updateGrid, startGame, addWallLine};
