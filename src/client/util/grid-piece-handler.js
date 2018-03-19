@@ -99,7 +99,7 @@ const prepareAndPlaceNewPiece = state => {
   const mask = getPieceMask(state.piecesFlow[0], state.curPieceRot);
   state.curPiecePos = {
     x: randNumber(mask.x, GRID_WIDTH - mask.width - mask.x),
-    y: mask.y
+    y: 0
   };
   placePiece(state);
 };
@@ -112,7 +112,14 @@ const updatePiecePos = (state, move) => {
   let piece = getPiece(state.piecesFlow[0], state.curPieceRot);
 
   if (move !== PIECES_MOVE.ROT_RIGHT && move !== PIECES_MOVE.ROT_LEFT) {
-    if (!(collisionType = hasCollision(grid, piece, loc))) {
+    if (move === PIECES_MOVE.DROP) {
+      needNext = true;
+      while (!hasCollision(grid, piece, loc)) {
+        loc.y++;
+      }
+      loc.y--;
+      state.curPiecePos = loc;
+    } else if (!(collisionType = hasCollision(grid, piece, loc))) {
       state.curPiecePos = loc;
     } else if (collisionType && move === PIECES_MOVE.DOWN) {
       needNext = true;

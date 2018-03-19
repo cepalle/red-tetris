@@ -13,14 +13,14 @@ const socket = io.connect('http://localhost:4433');
 //
 //----------------------------------------------------------------------------
 
-socket.on(socketDefs.PACKET_PLAYER_JOIN, arg => cbPacketPlayerJoin(arg));
-socket.on(socketDefs.PACKET_PLAYER_QUIT, arg => cbPacketPlayerQuit(arg));
-socket.on(socketDefs.PACKET_PLAYER_PROMOTED, arg => cbPacketPlayerPromoted(arg));
-socket.on(socketDefs.PACKET_PLAYER_LOSE, arg => cbPacketPlayerLose(arg));
-socket.on(socketDefs.PACKET_GAME_START, arg => cbPacketGameStart(arg));
-socket.on(socketDefs.PACKET_GENFLOW, arg => cbPacketGenFlow(arg));
+socket.on(socketDefs.PACKET_PLAYER_JOIN,          arg => cbPacketPlayerJoin(arg));
+socket.on(socketDefs.PACKET_PLAYER_QUIT,          arg => cbPacketPlayerQuit(arg));
+socket.on(socketDefs.PACKET_PLAYER_PROMOTED,      arg => cbPacketPlayerPromoted(arg));
+socket.on(socketDefs.PACKET_PLAYER_LOSE,          arg => cbPacketPlayerLose(arg));
+socket.on(socketDefs.PACKET_GAME_START,           arg => cbPacketGameStart(arg));
+socket.on(socketDefs.PACKET_GENFLOW,              arg => cbPacketGenFlow(arg));
 socket.on(socketDefs.PACKET_PLAYER_COMPLETE_LINE, arg => cbPacketPlayerCompleteLine(arg));
-socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(arg));
+socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE,   arg => cbPacketTetrisPlacePiece(arg));
 
 /**
  * Request: PACKET_PLAYER_JOIN
@@ -110,15 +110,15 @@ const cbPacketTetrisPlacePiece = gridAndPlayer => {
 //
 //----------------------------------------------------------------------------
 
-socket.on(socketDefs.JOIN_ROOM_RESPONSE, arg => cbJoinRoomResponse(arg));
-socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
-socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
-socket.on(socketDefs.END_PLAYING_RESPONSE, arg => cbEndPlayingResonse(arg));
-socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
-socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, arg => cbTetrisPlacePieceResponse(arg));
-socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, arg => cbPlayerLooseResponse(arg));
+socket.on(socketDefs.JOIN_ROOM_RESPONSE,            arg => cbJoinRoomResponse(arg));
+socket.on(socketDefs.QUIT_ROOM_RESPONSE,            arg => cbQuitRoomResponse(arg));
+socket.on(socketDefs.START_PLAYING_RESPONSE,        arg => cbStartPlayingResponse(arg));
+socket.on(socketDefs.END_PLAYING_RESPONSE,          arg => cbEndPlayingResonse(arg));
+socket.on(socketDefs.CONNECTION_RESPONSE,           arg => cbConnectionResponse(arg));
+socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE,   arg => cbTetrisPlacePieceResponse(arg));
+socket.on(socketDefs.PLAYER_LOOSE_RESPONSE,         arg => cbPlayerLooseResponse(arg));
 socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineResponse(arg));
-socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
+socket.on(socketDefs.GENFLOW_RESPONSE,              arg => cbGenFlowResponse(arg));
 
 /**
  * Request: JOIN_ROOM_RESPONSE

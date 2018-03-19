@@ -60,7 +60,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onClickButtonFlow: () => emitGenFlow(),
-    onClickButtonStartGame: () => emitStartPlaying(),
+    onClickButtonStartGame: () => {console.log("button start playing"); emitStartPlaying()},
     onClickButtonRotRight: () => dispatch(movePiece(PIECES_MOVE.ROT_RIGHT)),
     onClickButtonRotLeft: () => dispatch(movePiece(PIECES_MOVE.ROT_LEFT)),
     onClickButtonMoveDown: () => dispatch(movePiece(PIECES_MOVE.DOWN)),
