@@ -147,7 +147,7 @@ const gridDelLine = state => {
   player.grid.forEach((line, i) => {
     let asEmpty = false;
     line.forEach(el => {
-      if (el === 0) {
+      if (el <= 0) {
         asEmpty = true;
       }
     })
