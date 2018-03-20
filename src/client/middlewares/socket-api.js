@@ -4,7 +4,7 @@ import {addError, addPartsFlow, updateUsers, updateGrid, startGame, addWallLine}
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "../util/logger";
 
-const socket = io.connect('http://le-101.tk:443');
+const socket = io.connect('http://localhost:4433');
 
 //----------------------------------------------------------------------------
 //
