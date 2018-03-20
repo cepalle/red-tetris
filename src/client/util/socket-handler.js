@@ -86,7 +86,7 @@ const emitPlayerCompleteLine = (roomName, playerName) => {
  * Used to tell to other clients that a player has placed a piece
  * Data to sent: {grid, playerName}
  */
-const emitTetrisPlacePiece = (grid, roomName, playerName) => {
+const emitTetrisPlacePiece = (roomName, playerName, grid) => {
   logger_sock(["emit TETRIS_PLACE_PIECE"]);
 
   socket.emit(socketDefs.TETRIS_PLACE_PIECE, {

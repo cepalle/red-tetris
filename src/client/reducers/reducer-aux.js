@@ -6,17 +6,19 @@ import {ifLooseEmitSet, ifWinSet} from "../util/end-loose-win-handler";
 import {animate} from "../util/animate-handler";
 import {emitGenFlow} from "../util/socket-handler";
 import {eraseCurPiece, placePiece} from "../util/grid-piece-handler";
+import {cloneState} from "../util/clone-handler";
 
 /**
  * Add pieces to the state.piecesFlow.
  * @param {Object} state
  * @param {Array<int>} pieces
  */
-const reducerPartsFlow = (state, pieces) => {
+const reducerPartsFlow = (state, {pieces}) => {
   logger_reducer(["piecesFlow", pieces]);
 
-  state.piecesFlow = state.piecesFlow.concat(pieces);
-  return state;
+  const newState = cloneState(state);
+  newState.piecesFlow = newState.piecesFlow.concat(pieces);
+  return newState;
 };
 
 /**
@@ -24,55 +26,59 @@ const reducerPartsFlow = (state, pieces) => {
  * @param {Object} state
  * @param {type, message} error
  */
-const reducerError = (state, error) => {
+const reducerError = (state, {error}) => {
   logger_reducer(["error", error]);
 
-  state.error = error;
-  return state;
+  const newState = cloneState(state);
+  newState.error = error;
+  return newState;
 };
 
 /**
  * Synchronize players with players.
  * @param {Object} state
- * @param {Array<user>} users
+ * @param {Array<user>} players
  */
-const reducerUpdateUsers = (state, users) => {
-  logger_reducer(["updateUsers", users]);
+const reducerUpdateUsers = (state, {players}) => {
+  logger_reducer(["updateUsers", players]);
 
-  let filterNotInUsers = state.playerStates.filter(el => users.some(e => e.playerName === el.playerName));
+  const newState = cloneState(state);
+
+  let filterNotInUsers = newState.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
   let filterAddNewUsers = filterNotInUsers.concat(
-    users.filter(el => !filterNotInUsers.some(e => e.playerName === el.playerName)).map(el =>
+    players.filter(el => !filterNotInUsers.some(e => e.playerName === el.playerName)).map(el =>
       initPlayerState(el.playerName)
     )
   );
 
-  let playerMaster = users.find(el => el.master);
+  let playerMaster = players.find(el => el.master);
   if (!playerMaster) {
     logger_reducer(["no player master!"]);
     return undefined;
   }
-  state.playerStates = filterAddNewUsers.map(el => {
+  newState.playerStates = filterAddNewUsers.map(el => {
     el.isMaster = el.playerName === playerMaster.playerName;
     return el;
   });
 
-  state.playerStates = state.playerStates.map(playerState => {
-    const user = users.find(e => e.playerName === playerState.playerName);
+  newState.playerStates = newState.playerStates.map(playerState => {
+    const user = players.find(e => e.playerName === playerState.playerName);
     playerState.hasLoose = user.loose;
     return playerState;
   });
 
-  ifWinSet(state);
+  ifWinSet(newState);
 
-  return state;
+  return newState;
 };
 
+// TODO NEED TO BE PURE
 /**
  * Update the grid with the move of the part.
  * @param {Object} state
  * @param {Object} move
  */
-const reducerMovePiece = (state, move) => {
+const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece", move]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
@@ -81,27 +87,30 @@ const reducerMovePiece = (state, move) => {
   }
 
   if (state.piecesFlow.length < 4) {
-    emitGenFlow();
+    emitGenFlow(state.roomName);
     if (state.piecesFlow.length === 0) {
       logger_reducer(["movePiece piecesFlow is empty"]);
       return state;
     }
   }
 
-  eraseCurPiece(state);
-  let needNext = updatePiecePos(state, move);
-  placePiece(state);
+  const newState = cloneState(state);
+
+  eraseCurPiece(newState);
+  let needNext = updatePiecePos(newState, move);
+  placePiece(newState);
 
   if (needNext) {
-    gridDelLine(state);
-    state.piecesFlow.shift();
+    gridDelLine(newState);
+    newState.piecesFlow.shift();
     socketApi.emitTetrisPlacePiece(
-      state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
-      state.playerName
+      newState.roomName,
+      newState.playerName,
+      newState.playerStates.find(e => e.playerName === newState.playerName).grid
     );
-    ifLooseEmitSet(state);
+    ifLooseEmitSet(newState);
   }
-  return state;
+  return newState;
 };
 
 /**
@@ -112,13 +121,15 @@ const reducerMovePiece = (state, move) => {
 const reducerUpdateGrid = (state, {grid, playerName}) => {
   logger_reducer(["updateGrid", {grid, playerName}]);
 
-  state.playerStates = state.playerStates.map(el => {
+  const newState = cloneState(state);
+
+  newState.playerStates = newState.playerStates.map(el => {
     if (el.playerName === playerName) {
       el.grid = grid
     }
     return el;
   });
-  return state;
+  return newState;
 };
 
 /**
@@ -129,15 +140,17 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
 const reducerStartGame = (state, pieces) => {
   logger_reducer(["startGame", pieces]);
 
-  state.playerStates = state.playerStates.map(playerState =>
+  const newState = cloneState(state);
+
+  newState.playerStates = newState.playerStates.map(playerState =>
     initPlayerState(playerState.playerName, playerState.isMaster)
   );
-  state.piecesFlow = pieces;
-  state.curPiecePos = {};
+  newState.piecesFlow = pieces;
   animate.value = true;
-  return state;
+  return newState;
 };
 
+//TODO NEED TO BE PURE
 /**
  * Add a line unbreakable.
  * @param {Object} state
@@ -145,8 +158,10 @@ const reducerStartGame = (state, pieces) => {
 const reducerAddWallLine = state => {
   logger_reducer(["addWallLine", state]);
 
-  gridAddWall(state);
-  return state;
+  const newState = cloneState(state);
+
+  gridAddWall(newState);
+  return newState;
 };
 
 

@@ -16,7 +16,7 @@ const ifLooseEmitSet = state => {
     player.hasLoose = true;
 
     animate.value = false;
-    emitPlayerLoose();
+    emitPlayerLoose(state.roomName, state.playerName);
     ifWinSet(state);
   }
 };

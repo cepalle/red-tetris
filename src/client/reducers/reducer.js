@@ -7,8 +7,9 @@ import {
   reducerStartGame,
   reducerUpdateGrid,
   reducerUpdateUsers
-} from "reducer-aux";
+} from "./reducer-aux";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
+import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
 
 
 const initPlayerState = (playerName, isMaster = false) => {
@@ -39,19 +40,19 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PIECES_FLOW':
-      return reducerPartsFlow(cloneState(state), action.data);
+      return reducerPartsFlow(state, action);
     case 'ADD_ERROR':
-      return reducerError(cloneState(state), action.data);
+      return reducerError(state, action);
     case 'UPDATE_PLAYERS':
-      return reducerUpdateUsers(cloneState(state), action.data);
+      return reducerUpdateUsers(state, action);
     case 'PIECES_MOVE':
-      return reducerMovePiece(cloneState(state), action.data);
+      return reducerMovePiece(state, action);
     case 'UPDATE_GRID':
-      return reducerUpdateGrid(cloneState(state), action.data);
+      return reducerUpdateGrid(state, action);
     case 'START_GAME':
-      return reducerStartGame(cloneState(state), action.data);
+      return reducerStartGame(state, action);
     case 'ADD_WALL_LINE':
-      return reducerAddWallLine(cloneState(state));
+      return reducerAddWallLine(state);
     default:
       return state;
   }

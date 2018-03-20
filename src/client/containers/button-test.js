@@ -1,9 +1,10 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {emitGenFlow, emitStartPlaying, emitTetrisPlacePiece} from "../util/socket-handler"
+import {emitGenFlow, emitStartPlaying} from "../util/socket-handler"
 import {movePiece} from "../actions/action-creators";
 import {PIECES_MOVE} from "../../common/pieces";
 import {getColorNum} from "../util/css-handler";
+import {store} from "../middlewares/store";
 
 const ButtonTestComponent = ({
                                line,
@@ -52,10 +53,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onClickButtonFlow: () => emitGenFlow(),
+    onClickButtonFlow: () => emitGenFlow(store.getState().roomName),
     onClickButtonStartGame: () => {
       console.log("button start playing");
-      emitStartPlaying()
+      emitStartPlaying(store.getState().roomName);
     },
     onClickButtonRotRight: () => dispatch(movePiece(PIECES_MOVE.ROT_RIGHT)),
     onClickButtonRotLeft: () => dispatch(movePiece(PIECES_MOVE.ROT_LEFT)),

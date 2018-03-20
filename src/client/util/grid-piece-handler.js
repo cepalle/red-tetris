@@ -156,7 +156,7 @@ const gridDelLine = state => {
 
   player.grid = player.grid.filter((line, i) => !lineToDel.includes(i));
   while (player.grid.length < GRID_HEIGHT) {
-    emitPlayerCompleteLine();
+    emitPlayerCompleteLine(state.roomName, state.playerName);
     player.grid = [Array(GRID_WIDTH).fill(0), ...player.grid];
   }
 };
