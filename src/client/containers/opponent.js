@@ -21,7 +21,7 @@ const OpponentComponent = ({states}) => {
         }
 
         return <div key={k}>
-          <div className={"grid"}>
+          <div className={"grid opponent"}>
             {grid.map((line, i) => i >= 4 &&
               <div key={i} className={"line"}>
                 {line.map((el, j) =>

@@ -18,6 +18,10 @@
   padding: 12px;
 }
 
+.opponent {
+  padding: 10px;
+}
+
 .color8 {
   background-color: #000000;
 }
