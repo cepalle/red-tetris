@@ -10,13 +10,13 @@ module.exports = {
    * Used to tell to the backend when a player want to join a room.
    * Data to sent: {roomName, playerName}
    */
-  JOIN_ROOM: "joinRoom",
+  JOIN_GAME: "joinGame",
 
   /**
    * Used to tell when a player leave a room manually.
    * Data to sent: {roomName, playerName}
    */
-  QUIT_ROOM: "quitRoom",
+  QUIT_GAME: "quitGame",
 
   /**
    * Used to tell to the backend that the room enter in a no-waiting state and no player can join the room after.
@@ -69,16 +69,16 @@ module.exports = {
 
   /**
    * Used to tell to the client if he has join or not the room.
-   * Data to sent: {error: {type, message}} || {success, room, player} -- before user
+   * Data to sent: {error: {type, message}} || {success, game, player} -- before user
    */
-  JOIN_ROOM_RESPONSE: "joinRoomResponse",
+  JOIN_GAME_RESPONSE: "joinGameResponse",
 
 
   /**
    * Used to tell to the client if he has successfully quit the room.
-   * Data to sent: {error: {type, message}} || {success, room, player} -- before user
+   * Data to sent: {error: {type, message}} || {success, game, player} -- before user
    */
-  QUIT_ROOM_RESPONSE: "quitRoomResponse",
+  QUIT_ROOM_RESPONSE: "quitGameResponse",
 
 
   /**
@@ -125,32 +125,32 @@ module.exports = {
 
   /**
    * Sent to all player that a player has joined the room. Except to the player that join the room.
-   * Data to sent: {player, room}
+   * Data to sent: {player, game}
    */
   PACKET_PLAYER_JOIN: "packetPlayerJoin",
 
   /**
    * Sent to all player that a player has quit the room. Except to the player that left the room.
-   * Data to sent: {player, room}
+   * Data to sent: {player, game}
    */
   PACKET_PLAYER_QUIT: "packetPlayerQuit",
 
   /**
    * When a player leave the room if the player was master, a new player need to be promoted as master. This packet tell
    * to all players that a new player is now promoted as master.
-   * Data to sent: {player, room}
+   * Data to sent: {player, game}
    */
   PACKET_PLAYER_PROMOTED: "packetPlayerPromoted",
 
   /**
    * Sent to all players except the player who lose that a player has loose the game.
-   * Data to sent: {player, room}
+   * Data to sent: {player, game}
    */
   PACKET_PLAYER_LOSE: "packetPlayerLose",
 
   /**
    * Sent to all players that the game start
-   * Data to sent: {room, pieces}
+   * Data to sent: {game, pieces}
    */
   PACKET_GAME_START: "packetGameStart",
 
@@ -162,7 +162,7 @@ module.exports = {
 
   /**
    * Sent to all player except the sender that a player complete the line.
-   * Data to sent: {player, room}
+   * Data to sent: {player, game}
    */
   PACKET_PLAYER_COMPLETE_LINE: "packetPlayerCompleteLine",
 

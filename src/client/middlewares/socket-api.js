@@ -25,40 +25,40 @@ socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(
  * Request: PACKET_PLAYER_JOIN
  * Data recv: {player, room}
  */
-const cbPacketPlayerJoin = ({player, room}) => {
-  logger_sock(["recv PACKET_PLAYER_JOIN", room]);
+const cbPacketPlayerJoin = ({player, game}) => {
+  logger_sock(["recv PACKET_PLAYER_JOIN", game]);
 
-  store.dispatch(updateUsers(room.players));
+  store.dispatch(updateUsers(game.players));
 };
 
 /**
  * Request: PACKET_PLAYER_QUIT
  * Data recv: {player, room}
  */
-const cbPacketPlayerQuit = ({player, room}) => {
-  logger_sock(["recv PACKET_PLAYER_QUIT", room]);
+const cbPacketPlayerQuit = ({player, game}) => {
+  logger_sock(["recv PACKET_PLAYER_QUIT", game]);
 
-  store.dispatch(updateUsers(room.players));
+  store.dispatch(updateUsers(game.players));
 };
 
 /**
  * Request: PACKET_PLAYER_PROMOTED
  * Data recv: {player, room}
  */
-const cbPacketPlayerPromoted = ({player, room}) => {
-  logger_sock(["recv PACKET_PLAYER_PROMOTED", room]);
+const cbPacketPlayerPromoted = ({player, game}) => {
+  logger_sock(["recv PACKET_PLAYER_PROMOTED", game]);
 
-  store.dispatch(updateUsers(room.players));
+  store.dispatch(updateUsers(game.players));
 };
 
 /**
  * Request: PACKET_PLAYER_LOSE
  * Data recv: {player, room}
  */
-const cbPacketPlayerLose = ({player, room}) => {
-  logger_sock(["recv PACKET_PLAYER_LOSE", room]);
+const cbPacketPlayerLose = ({player, game}) => {
+  logger_sock(["recv PACKET_PLAYER_LOSE", game]);
 
-  store.dispatch(updateUsers(room.players));
+  store.dispatch(updateUsers(game.players));
 };
 
 /**
@@ -108,7 +108,7 @@ const cbPacketTetrisPlacePiece = gridAndPlayer => {
 //
 //----------------------------------------------------------------------------
 
-socket.on(socketDefs.JOIN_ROOM_RESPONSE, arg => cbJoinRoomResponse(arg));
+socket.on(socketDefs.JOIN_GAME_RESPONSE, arg => cbJoinRoomResponse(arg));
 socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
 socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
 socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
@@ -118,16 +118,16 @@ socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineR
 socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 
 /**
- * Request: JOIN_ROOM_RESPONSE
+ * Request: JOIN_GAME_RESPONSE
  * Data recv: {error: {type, message}} || {success, room, user}
  */
-const cbJoinRoomResponse = ({error, room}) => {
-  logger_sock(["recv JOIN_ROOM_RESPONSE", room]);
+const cbJoinRoomResponse = ({error, game}) => {
+  logger_sock(["recv JOIN_GAME_RESPONSE", game]);
 
   if (error) {
     store.dispatch(addError(error))
   } else {
-    store.dispatch(updateUsers(room.players))
+    store.dispatch(updateUsers(game.players))
   }
 };
 
@@ -209,9 +209,9 @@ const cbGenFlowResponse = arg => {
  * Data to sent: {roomName, playerName}
  */
 const emitJoinRoom = () => {
-  logger_sock(["emit JOIN_ROOM"]);
+  logger_sock(["emit JOIN_GAME"]);
 
-  socket.emit(socketDefs.JOIN_ROOM, {
+  socket.emit(socketDefs.JOIN_GAME, {
     roomName: store.getState().roomName,
     playerName: store.getState().playerName
   });
@@ -223,7 +223,7 @@ const emitJoinRoom = () => {
  * Data to sent: {roomName, playerName}
  */
 const emitQuitRoom = () => {
-  logger_sock(["emit QUIT_ROOM"]);
+  logger_sock(["emit QUIT_GAME"]);
 };
 
 //TODO

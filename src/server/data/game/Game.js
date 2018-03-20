@@ -1,8 +1,8 @@
 import Player from "../player/Player";
 import PacketSender from "../../packet/PacketSender";
-import RoomManager from "./RoomsManager";
+import RoomManager from "./GameManager";
 
-class Room {
+class Game {
 
   constructor(name) {
     /** @type {Array<Player>} */
@@ -19,7 +19,7 @@ class Room {
    * @return {Player}
    */
   addPlayer(playerName, id, master = false) {
-    if (!this.containPlayer(playerName) && this.waiting) {
+    if (!this.containId(id) && this.waiting) {
       const player = new Player(playerName, id, Date.now(), master);
       this.players.push(player);
 
@@ -110,7 +110,7 @@ class Room {
    */
   promoteNewPlayer() {
     if (this.players.length === 0) {
-      RoomManager.deleteRoom(this.name);
+      RoomManager.deleteGame(this.name);
     }
     else {
       const promotedPlayer = this.players.sort((a, b) => a.order > b.order)[0];
@@ -128,4 +128,4 @@ class Room {
   }
 }
 
-export default Room;
+export default Game;
