@@ -171,8 +171,8 @@ const gridAddWall = state => {
   eraseCurPiece(state);
   player.grid = [...player.grid, Array(GRID_WIDTH).fill(-1)];
   player.grid.shift();
-  if (Object.keys(state.curPiecePos).length > 0 && state.curPiecePos.y > 0) {
-    state.curPiecePos.y--;
+  if (state.piecesFlow[0].pos.y > 0) {
+    state.piecesFlow[0].pos.y--;
   }
   ifLooseEmitSet(state);
   placePiece(state);
