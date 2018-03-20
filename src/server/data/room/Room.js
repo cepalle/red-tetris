@@ -88,6 +88,14 @@ class Room {
     return this.users.find(e => e.username === username) !== undefined;
   }
 
+  gameHasEnd() {
+    if (this.users.length === 1 && this.users[0].loose ||
+      this.users.length > 1 && this.users.reduce((u, i) => !u.loose ? i + 1 : i, 0) === 1) {
+      this.setWaiting(true);
+    }
+  }
+
+
   /**
    * Set the current state of the room to true or false, if state is true player can join else player can't join.
    * @param {boolean} stateWaiting

@@ -91,22 +91,6 @@ class RoomSocketHandler extends SocketHandler {
     }
   }
 
-  endPlaying(data, response = socketDefs.END_PLAYING_RESPONSE) {
-    if (this.checkData("roomName", data, response) &&
-      this.roomIsValid(data, response) &&
-      this.playerIsMaster(response)) {
-      const room = RoomManager.getRoomById(this.id);
-      if (room.waiting) {
-        this.socket.emit(response, {error: errorsDefs.ROOM_NOT_IN_GAME})
-      }
-      else {
-        RoomManager.getRoomById(this.id).users.forEach(e => e.loose = false);
-        room.setWaiting(true);
-        this.socket.emit(response, {success: true});
-      }
-    }
-  }
-
   /**
    * Check if data contain data.roomName and data.playerName
    * @param {Object} data

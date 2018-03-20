@@ -57,6 +57,7 @@ class TetrisSocketHandler extends SocketHandler {
       user.loose = true;
       PacketSender.sendPlayerLoose(user, room);
       this.socket.emit(response, {success: true})
+      room.gameHasEnd();
     }
   }
 
