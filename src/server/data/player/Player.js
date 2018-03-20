@@ -1,14 +1,14 @@
-class User {
+class Player {
   /**
-   * Constructor of User class
+   * Constructor of Player class
    * @param {Socket} socket
-   * @param {string} username
+   * @param {string} playerName
    * @param {string} id
    * @param {number} order
    * @param {boolean} isMaster
    */
-  constructor(username, id, order, isMaster = false) {
-    this.username = username;
+  constructor(playerName, id, order, isMaster = false) {
+    this.playerName = playerName;
     this.id = id;
     this.order = order;
     this.master = isMaster;
@@ -16,10 +16,10 @@ class User {
   }
 
   /**
-   * Return username of the user
+   * Return playerName of the player
    * @returns {string}
    */
-  getUsername() { return this.username }
+  getPlayerName() { return this.playerName }
 
   /**
    * Return the unique id provided by socket.io
@@ -40,11 +40,11 @@ class User {
   isMaster() { return this.master }
 
   /**
-   * Set the new master value for the user
+   * Set the new master value for the player
    * @param {boolean} value
    */
   setMaster(value) { this.master = value}
 
 }
 
-export default User;
+export default Player;

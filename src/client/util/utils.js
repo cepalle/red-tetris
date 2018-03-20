@@ -1,5 +1,5 @@
 const isInUsers = (users, username) => {
-  return users.some(e => e.username === username);
+  return users.some(e => e.playerName === username);
 };
 
 const isInPlayerStates = (playerStates, playerName) => {

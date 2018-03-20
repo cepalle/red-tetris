@@ -36,7 +36,7 @@ const reducerError = (state, error) => {
 };
 
 /**
- * Synchronize players with users.
+ * Synchronize players with players.
  * @param {Object} state
  * @param {Array<user>} users
  */
@@ -45,7 +45,7 @@ const reducerUpdateUsers = (state, users) => {
 
   let filterNotInUsers = state.playerStates.filter(el => isInUsers(users, el.playerName));
   let filterAddNewUsers = filterNotInUsers.concat(
-    users.filter(el => !isInPlayerStates(filterNotInUsers, el.username)).map(el => initPlayerState(el.username))
+    users.filter(el => !isInPlayerStates(filterNotInUsers, el.playerName)).map(el => initPlayerState(el.playerName))
   );
 
   let playerMaster = users.find(el => el.master);
@@ -54,12 +54,12 @@ const reducerUpdateUsers = (state, users) => {
     return undefined;
   }
   state.playerStates = filterAddNewUsers.map(el => {
-    el.isMaster = el.playerName === playerMaster.username;
+    el.isMaster = el.playerName === playerMaster.playerName;
     return el;
   });
 
   state.playerStates = state.playerStates.map(playerState => {
-    const user = users.find(e => e.username === playerState.playerName);
+    const user = users.find(e => e.playerName === playerState.playerName);
     playerState.hasLoose = user.loose;
     return playerState;
   });

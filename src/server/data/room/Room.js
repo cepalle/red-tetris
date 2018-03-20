@@ -1,100 +1,99 @@
-import User from "../user/User";
+import Player from "../player/Player";
 import PacketSender from "../../packet/PacketSender";
 import RoomManager from "./RoomsManager";
 
 class Room {
 
   constructor(name) {
-    /** @type {Array<User>} */
-    this.users = [];
+    /** @type {Array<Player>} */
+    this.players = [];
     this.name = name;
     this.waiting = true;
   }
 
   /**
-   * Add an user with username and id
-   * @param {string} username
+   * Add an player with playerName and id
+   * @param {string} playerName
    * @param {string} id
    * @param {boolean} [master]
-   * @return {User}
+   * @return {Player}
    */
-  addUser(username, id, master = false) {
-    if (!this.containUser(username) && this.waiting) {
-      const user = new User(username, id, Date.now(), master);
-      this.users.push(user);
+  addPlayer(playerName, id, master = false) {
+    if (!this.containPlayer(playerName) && this.waiting) {
+      const player = new Player(playerName, id, Date.now(), master);
+      this.players.push(player);
 
-      PacketSender.sendPlayerJoin(user, this);
+      PacketSender.sendPlayerJoin(player, this);
 
-      return user;
+      return player;
     }
   }
 
   /**
-   * Remove an user by his username.
-   * @param {string} username
-   * @return {User}
+   * Remove an player by his playerName.
+   * @param {string} playerName
+   * @return {Player}
    */
-  removeUser(username) {
-    const user = this.users.find(e => e.username === username);
-    this.users.removeObj(user);
-    if (user.isMaster())
-      this.promoteNewUser(user);
+  removePlayer(playerName) {
+    const player = this.players.find(e => e.playerName === playerName);
+    this.players.removeObj(player);
+    if (player.isMaster())
+      this.promoteNewPlayer();
 
-    PacketSender.sendPlayerQuit(user, this);
+    PacketSender.sendPlayerQuit(player, this);
 
-    return user;
+    return player;
   }
 
   /**
-   * Get an user in the room by his id.
+   * Get an player in the room by his id.
    * @param {string} id
-   * @returns {User | undefined}
+   * @returns {Player | undefined}
    */
-  getUser(id) {
-    return this.users.find(e => e.id === id);
+  getPlayer(id) {
+    return this.players.find(e => e.id === id);
   }
 
   /**
-   * Remove an user from his id.
+   * Remove an player from his id.
    * @param {string} id
    * @returns {(Object|undefined)}
    */
   removeFromId(id) {
-    const user = this.users.find(e => e.id === id);
-    this.users.removeObj(user);
-    if (user.isMaster())
-      this.promoteNewUser(user);
+    const player = this.players.find(e => e.id === id);
+    this.players.removeObj(player);
+    if (player.isMaster())
+      this.promoteNewPlayer(player);
 
-    PacketSender.sendPlayerQuit(user, this);
+    PacketSender.sendPlayerQuit(player, this);
 
-    return user;
+    return player;
   }
 
   /**
-   * Return true if this.users contain user with id.
+   * Return true if this.players contain player with id.
    * @param {string} id
    * @returns {boolean}
    */
   containId(id) {
-    return this.users.find(e => e.id === id) !== undefined;
+    return this.players.find(e => e.id === id) !== undefined;
   }
 
   /**
-   * Return true if this.users contain user with username.
-   * @param {string} username
+   * Return true if this.players contain player with playerName.
+   * @param {string} playerName
    * @returns {boolean}
    */
-  containUser(username) {
-    return this.users.find(e => e.username === username) !== undefined;
+  containPlayer(playerName) {
+    return this.players.find(e => e.playerName === playerName) !== undefined;
   }
 
   gameHasEnd() {
-    if (this.users.length === 1 && this.users[0].loose ||
-      this.users.length > 1 && this.users.reduce((u, i) => !u.loose ? i + 1 : i, 0) === 1) {
+    if (this.players.length === 1 && this.players[0].loose ||
+      this.players.length > 1 && this.players.reduce((u, i) => !u.loose ? i + 1 : i, 0) === 1) {
       this.setWaiting(true);
     }
   }
-
 
   /**
    * Set the current state of the room to true or false, if state is true player can join else player can't join.
@@ -108,16 +107,15 @@ class Room {
 
   /**
    * Check if the player is the master, if it is assign the master role to another player.
-   * @param {User} user
    */
-  promoteNewUser(user) {
-    if (this.users.length === 0) {
+  promoteNewPlayer() {
+    if (this.players.length === 0) {
       RoomManager.deleteRoom(this.name);
     }
     else {
-      const promotedUser = this.users.sort((a, b) => a.order > b.order)[0];
-      promotedUser.setMaster(true);
-      PacketSender.sendPlayerPromoted(promotedUser, this);
+      const promotedPlayer = this.players.sort((a, b) => a.order > b.order)[0];
+      promotedPlayer.setMaster(true);
+      PacketSender.sendPlayerPromoted(promotedPlayer, this);
     }
   }
 

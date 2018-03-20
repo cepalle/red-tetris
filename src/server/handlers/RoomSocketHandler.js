@@ -23,8 +23,8 @@ class RoomSocketHandler extends SocketHandler {
     if (RoomManager.hasRoom(data.roomName))
       return false;
     const room = RoomManager.addRoom(data.roomName);
-    const user = room.addUser(data.playerName, this.id, true);
-    this.sendSuccess(response, room, user);
+    const player = room.addPlayer(data.playerName, this.id, true);
+    this.sendSuccess(response, room, player);
     return true;
   }
 
@@ -43,11 +43,11 @@ class RoomSocketHandler extends SocketHandler {
       const room = RoomManager.getRoom(data.roomName);
       if (!room.canJoin())
         this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME});
-      if (room.containUser(data.playerName))
-        this.socket.emit(response, {error: errorsDefs.USER_ALREADY_IN_ROOM});
+      if (room.containPlayer(data.playerName))
+        this.socket.emit(response, {error: errorsDefs.PLAYER_ALREADY_IN_ROOM});
       else {
-        const user = room.addUser(data.playerName, this.id);
-        this.sendSuccess(response, room, user)
+        const player = room.addPlayer(data.playerName, this.id);
+        this.sendSuccess(response, room, player)
       }
     }
   }
@@ -61,11 +61,11 @@ class RoomSocketHandler extends SocketHandler {
   quitRoom(data, response = socketDefs.QUIT_ROOM) {
     if (this.dataIsValid(data, response) && this.roomIsValid(data, response)) {
       const room = RoomManager.getRoom(data.roomName);
-      if (!room.containUser(data.playerName))
-        this.socket.emit(response, {error: errorsDefs.USER_NOT_IN_ROOM});
+      if (!room.containPlayer(data.playerName))
+        this.socket.emit(response, {error: errorsDefs.PLAYER_NOT_IN_ROOM});
       else {
-        const user = room.removeUser(data.playerName);
-        this.sendSuccess(response, room, user);
+        const player = room.removePlayer(data.playerName);
+        this.sendSuccess(response, room, player);
       }
     }
   }
@@ -110,10 +110,10 @@ class RoomSocketHandler extends SocketHandler {
    * Send success message to the client
    * @param {string} response
    * @param {Room} room
-   * @param {User} user
+   * @param {Player} player
    */
-  sendSuccess(response, room, user) {
-    this.socket.emit(response, {success: true, room, user})
+  sendSuccess(response, room, player) {
+    this.socket.emit(response, {success: true, room, player})
   }
 
 }

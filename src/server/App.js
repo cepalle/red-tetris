@@ -35,8 +35,8 @@ class App {
     socket.on(socketDefs.DISCONNECT, () => {
       const room = RoomManager.getRoomById(socket.id);
       if (room) {
-        const user = room.getUser(socket.id);
-        roomSocketHandler.quitRoom({roomName: room.name, playerName: user.getUsername()});
+        const player = room.getPlayer(socket.id);
+        roomSocketHandler.quitRoom({roomName: room.name, playerName: player.getPlayerName()});
       }
     });
   }

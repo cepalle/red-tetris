@@ -69,14 +69,14 @@ module.exports = {
 
   /**
    * Used to tell to the client if he has join or not the room.
-   * Data to sent: {error: {type, message}} || {success, room, user}
+   * Data to sent: {error: {type, message}} || {success, room, player} -- before user
    */
   JOIN_ROOM_RESPONSE: "joinRoomResponse",
 
 
   /**
    * Used to tell to the client if he has successfully quit the room.
-   * Data to sent: {error: {type, message}} || {success, room, user}
+   * Data to sent: {error: {type, message}} || {success, room, player} -- before user
    */
   QUIT_ROOM_RESPONSE: "quitRoomResponse",
 

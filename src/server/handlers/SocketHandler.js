@@ -24,16 +24,16 @@ class SocketHandler {
   playerCanPlay(data, response) {
     if (this.roomIsValid(data, response)) {
       const room = RoomManager.getRoomById(this.id);
-      const user = room.getUser(this.id);
-      if (data.playerName && user.username !== data.playerName)
+      const player = room.getPlayer(this.id);
+      if (data.playerName && player.playerName !== data.playerName)
       {
         this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
         return false;
       }
       else {
-        if (!room.waiting && !user.loose)
+        if (!room.waiting && !player.loose)
           return true;
-        this.socket.emit(response, {error: errorsDefs.USER_CANT_PLAY});
+        this.socket.emit(response, {error: errorsDefs.PLAYER_CANT_PLAY});
       }
     }
     return false;
@@ -45,8 +45,8 @@ class SocketHandler {
    * @returns {boolean}
    */
   playerIsMaster(response) {
-    if (!RoomManager.getRoomById(this.id).getUser(this.id).master) {
-      this.socket.emit(response, {error: errorsDefs.USER_NOT_MASTER});
+    if (!RoomManager.getRoomById(this.id).getPlayer(this.id).master) {
+      this.socket.emit(response, {error: errorsDefs.PLAYER_NOT_MASTER});
       return false;
     }
     return true;
