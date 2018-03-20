@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "client-prod": "webpack-dev-server --mode production ./src/client/index.js --open",
     "client-dev": "webpack-dev-server --mode development ./src/client/index.js --open",
+    "build": "webpack ./src/client/index.js ",
     "srv-prod": "node ./src/server/App.js",
     "srv-dev": "babel-watch -w src src/server/App.js"
   },
@@ -35,7 +36,6 @@
     "babel-core": "^6.26.0",
     "babel-watch": "^2.0.7",
     "file-loader": "^1.1.11",
-    "gh-pages": "^1.1.0",
     "style-loader": "^0.20.3"
   }
 }
