@@ -1,13 +1,9 @@
-import {gridAddWall, gridDelLine, updatePiecePos} from "../util/grid-piece-handler";
-import * as socketApi from "../util/socket-handler";
+import {gridAddWall, gridDelLine, updatePiecePos, eraseCurPiece, placePiece} from "../util/grid-piece-handler";
 import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
-import {ifLooseEmitSet, ifWinSet} from "../util/end-loose-win-handler";
-import {animate} from "../util/animate-handler";
-import {emitGenFlow} from "../util/socket-handler";
-import {eraseCurPiece, placePiece} from "../util/grid-piece-handler";
+import {ifLooseSet, ifWinSet} from "../util/end-loose-win-handler";
 import {cloneState} from "../util/clone-handler";
-import {emitPlayerCompleteLine} from "../util/socket-handler"
+import {animate} from "../util/animate-handler"
 
 /**
  * Add pieces to the state.piecesFlow.
@@ -86,14 +82,6 @@ const reducerMovePiece = (state, {move}) => {
     return state;
   }
 
-  if (state.piecesFlow.length < 6) {
-    emitGenFlow(state.roomName);
-    if (state.piecesFlow.length === 0) {
-      logger_reducer(["movePiece piecesFlow is empty"]);
-      return state;
-    }
-  }
-
   let needNext;
   let newState = eraseCurPiece(state);
   [needNext, newState] = updatePiecePos(newState, move);
@@ -102,16 +90,11 @@ const reducerMovePiece = (state, {move}) => {
   if (needNext) {
     let nbLineDel;
     [newState, nbLineDel] = gridDelLine(newState);
-    for (let i = 0; i < nbLineDel; i++) {
-      emitPlayerCompleteLine(newState.roomName, newState.playerName);
-    }
     newState.piecesFlow.shift();
-    socketApi.emitTetrisPlacePiece(
-      newState.roomName,
-      newState.playerName,
-      newState.playerStates.find(e => e.playerName === newState.playerName).grid
-    );
-    ifLooseEmitSet(newState);
+
+    newState.EmitCompleteLine = nbLineDel;
+    newState.EmitUpdateGrid = true;
+    ifLooseSet(newState);
   }
   return newState;
 };
@@ -149,7 +132,7 @@ const reducerStartGame = (state, {pieces}) => {
     initPlayerState(playerState.playerName, playerState.isMaster)
   );
   newState.piecesFlow = pieces;
-  animate.value = true;
+  newState.SetAnimateTrue = true;
   return newState;
 };
 
@@ -161,15 +144,7 @@ const reducerAddWallLine = state => {
   logger_reducer(["addWallLine", state]);
 
   let newState = gridAddWall(state)
-  newState = eraseCurPiece(newState);
-  ifLooseEmitSet(newState);
-  socketApi.emitTetrisPlacePiece(
-    newState.roomName,
-    newState.playerName,
-    newState.playerStates.find(e => e.playerName === newState.playerName).grid
-  );
-  newState = placePiece(newState);
-
+  newState.EmitUpdateGrid = true;
   return newState;
 };
 
