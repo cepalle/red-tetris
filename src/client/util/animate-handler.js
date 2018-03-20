@@ -1,4 +1,4 @@
-import {store} from "../redux/store";
+import {store} from "../middlewares/store";
 import {movePiece} from "../actions/action-creators";
 import {PIECES_MOVE} from "../../common/pieces";
 

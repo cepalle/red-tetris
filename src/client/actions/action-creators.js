@@ -1,11 +1,11 @@
 /**
  * Create action for add pieces to the state.piecesFlow.
- * @param {Array<int>} pieces
+ * @param {[pieces]} pieces
  */
-const addPartsFlow = pieces => {
+const addPiecesFlow = pieces => {
   return {
     type: 'ADD_PIECES_FLOW',
-    data: pieces
+    pieces: pieces
   };
 };
 
@@ -16,18 +16,18 @@ const addPartsFlow = pieces => {
 const addError = error => {
   return {
     type: 'ADD_ERROR',
-    data: error
+    error: error
   }
 };
 
 /**
  * Create a action for synchronize players with users.
- * @param {Array<user>} users
+ * @param {Array<player>} players
  */
-const updateUsers = users => {
+const updateUsers = players => {
   return {
-    type: 'UPDATE_USERS',
-    data: users
+    type: 'UPDATE_PLAYERS',
+    players: players
   }
 };
 
@@ -37,30 +37,32 @@ const updateUsers = users => {
  */
 const movePiece = move => {
   return {
-    type: 'MOVE_PART',
-    data: move
+    type: 'PIECES_MOVE',
+    move: move
   }
 };
 
 /**
  * Create a action for update the grid of the player that as change.
- * @param {grid, playerName} gridAndPlayer
+ * @param {string} playerName
+ * @param {Array<Array<int>>} grid
  */
-const updateGrid = gridAndPlayer => {
+const updateGrid = (grid, playerName) => {
   return {
     type: 'UPDATE_GRID',
-    data: gridAndPlayer
+    grid: grid,
+    playerName: playerName
   }
 };
 
 /**
  * Restart grid of player and flow, set le pieces to the flow and start game.
- * @param {Array<int>} pieces
+ * @param {[pieces]} pieces
  */
 const startGame = pieces => {
   return {
     type: 'START_GAME',
-    data: pieces
+    pieces: pieces
   }
 };
 
@@ -73,5 +75,14 @@ const addWallLine = () => {
   }
 };
 
+/**
+ * Add a line unbreakable.
+ */
+const connectionResponse = () => {
+  return {
+    type: 'CONNECTION_RESPONSE'
+  }
+};
 
-export {addPartsFlow, addError, updateUsers, movePiece, updateGrid, startGame, addWallLine};
+
+export {addPiecesFlow, addError, updateUsers, movePiece, updateGrid, startGame, addWallLine, connectionResponse};

@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {logger_component} from "../util/logger";
-import {getColorNum} from "../util/utils"
+import {logger_component} from "../util/logger-handler";
+import {getColorNum} from "../util/css-handler";
 
 const GridPlayerComponent = ({state: playerState}) =>
   <div className={"line center"}>
@@ -32,9 +32,9 @@ const mapStateToProps = state => {
   return undefined;
 };
 
-const GridPlayerContainer = connect(
+const GridPlayer = connect(
   mapStateToProps,
   undefined
 )(GridPlayerComponent);
 
-export {GridPlayerContainer};
+export {GridPlayer};

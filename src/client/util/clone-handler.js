@@ -16,8 +16,5 @@ const cloneState = state => Object.assign({}, {
   })
 ;
 
-const randNumber = (min, max) => Math.floor(Math.random() * max) + min;
 
-const getColorNum = c => (c + 9) % 9;
-
-export {cloneState, clonePlayerStates, randNumber, getColorNum};
+export {cloneState, clonePlayerStates};

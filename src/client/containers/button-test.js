@@ -1,16 +1,16 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {emitGenFlow, emitStartPlaying, emitTetrisPlacePiece} from "../middlewares/socket-api"
+import {emitGenFlow, emitStartPlaying, emitTetrisPlacePiece} from "../util/socket-handler"
 import {movePiece} from "../actions/action-creators";
 import {PIECES_MOVE} from "../../common/pieces";
-import {getColorNum} from "../util/utils"
+import {getColorNum} from "../util/css-handler";
 
 const ButtonTestComponent = ({
-                               line, playerName,
+                               line,
                                onClickButtonFlow, onClickButtonRotRight,
                                onClickButtonRotLeft, onClickButtonMoveDown,
                                onClickButtonMoveLeft, onClickButtonMoveRight,
-                               onClickButtonUpdateGrid, onClickButtonStartGame,
+                               onClickButtonStartGame,
                              }) =>
   <div>
     <div className="line">
@@ -41,9 +41,6 @@ const ButtonTestComponent = ({
     <button onClick={() => onClickButtonMoveRight()}>
       MoveRight
     </button>
-    <button onClick={() => onClickButtonUpdateGrid(grid, playerName)}>
-      updateGrid
-    </button>
   </div>
 ;
 
@@ -65,13 +62,12 @@ const mapDispatchToProps = dispatch => {
     onClickButtonMoveDown: () => dispatch(movePiece(PIECES_MOVE.DOWN)),
     onClickButtonMoveLeft: () => dispatch(movePiece(PIECES_MOVE.LEFT)),
     onClickButtonMoveRight: () => dispatch(movePiece(PIECES_MOVE.RIGHT)),
-    onClickButtonUpdateGrid: (grid, playerName) => emitTetrisPlacePiece(grid, playerName)
   }
 };
 
-const ButtonTestContainer = connect(
+const ButtonTest = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ButtonTestComponent);
 
-export {ButtonTestContainer};
+export {ButtonTest};

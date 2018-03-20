@@ -1,7 +1,8 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {clonePlayerStates, getColorNum} from "../util/utils"
+import {clonePlayerStates} from "../util/clone-handler"
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
+import {getColorNum} from "../util/css-handler";
 
 const OpponentComponent = ({states}) => {
   return <div className={"line"}>
@@ -45,9 +46,9 @@ const mapStateToProps = state => {
   return {states: clonePlayerStates(state.playerStates).filter(el => el.playerName !== state.playerName)};
 };
 
-const OpponentContainer = connect(
+const Opponent = connect(
   mapStateToProps,
   undefined
 )(OpponentComponent);
 
-export {OpponentContainer};
+export {Opponent};

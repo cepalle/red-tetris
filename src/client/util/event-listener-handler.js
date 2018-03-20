@@ -1,5 +1,5 @@
 import {PIECES_MOVE} from "../../common/pieces"
-import {store} from "../redux/store"
+import {store} from "../middlewares/store"
 import {movePiece} from "../actions/action-creators"
 
 const keyLeft = 37;
