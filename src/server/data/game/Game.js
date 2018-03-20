@@ -91,6 +91,7 @@ class Game {
   gameHasEnd() {
     if (this.players.length === 1 && this.players[0].loose ||
       this.players.length > 1 && this.players.filter(p => !p.loose).length === 1) {
+      this.players.forEach(e => e.loose = false);
       this.setWaiting(true);
     }
   }
