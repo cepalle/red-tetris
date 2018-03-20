@@ -61,7 +61,7 @@ const updateGrid = (grid, playerName) => {
  */
 const startGame = pieces => {
   return {
-    type: 'START_GAME',
+    type: 'RECV_START_GAME',
     pieces: pieces
   }
 };
@@ -84,5 +84,24 @@ const connectionResponse = () => {
   }
 };
 
+/**
+ * Add a line unbreakable.
+ */
+const sendStartGame = () => {
+  return {
+    type: 'SEND_START_GAME'
+  }
+};
 
-export {addPiecesFlow, addError, updateUsers, movePiece, updateGrid, startGame, addWallLine, connectionResponse};
+
+export {
+  addPiecesFlow,
+  addError,
+  updateUsers,
+  movePiece,
+  updateGrid,
+  startGame,
+  addWallLine,
+  connectionResponse,
+  sendStartGame
+};

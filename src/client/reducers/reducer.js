@@ -49,7 +49,7 @@ const reducer = (state = initialState, action) => {
       return reducerMovePiece(state, action);
     case 'UPDATE_GRID':
       return reducerUpdateGrid(state, action);
-    case 'START_GAME':
+    case 'RECV_START_GAME':
       return reducerStartGame(state, action);
     case 'ADD_WALL_LINE':
       return reducerAddWallLine(state);
