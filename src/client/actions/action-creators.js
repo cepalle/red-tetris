@@ -24,7 +24,7 @@ const addError = error => {
  * Create a action for synchronize players with users.
  * @param {Array<player>} players
  */
-const updateUsers = players => {
+const updatePlayers = players => {
   return {
     type: 'UPDATE_PLAYERS',
     players: players
@@ -97,7 +97,7 @@ const sendStartGame = () => {
 export {
   addPiecesFlow,
   addError,
-  updateUsers,
+  updatePlayers,
   movePiece,
   updateGrid,
   startGame,

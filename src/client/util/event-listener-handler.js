@@ -11,22 +11,27 @@ const keySpace = 32;
 window.addEventListener('keydown', function (event) {
   switch (event.keyCode) {
     case keyLeft:
+      event.preventDefault();
       store.dispatch(movePiece(PIECES_MOVE.LEFT));
       break;
 
     case keyUp:
+      event.preventDefault();
       store.dispatch(movePiece(PIECES_MOVE.ROT_RIGHT));
       break;
 
     case keyRight:
+      event.preventDefault();
       store.dispatch(movePiece(PIECES_MOVE.RIGHT));
       break;
 
     case keyDown:
+      event.preventDefault();
       store.dispatch(movePiece(PIECES_MOVE.DOWN));
       break;
 
     case keySpace:
+      event.preventDefault();
       store.dispatch(movePiece(PIECES_MOVE.DROP));
       break;
   }

@@ -2,16 +2,221 @@ import io from 'socket.io-client';
 import {store} from "../middlewares/store"
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "./logger-handler";
+import {
+  addError, addPiecesFlow, addWallLine, connectionResponse, startGame, updateGrid,
+  updatePlayers
+} from "../actions/action-creators"
 
 const socket = io.connect('http://localhost:4433');
 
+
 //----------------------------------------------------------------------------
 //
-// ON
+// PACKET
 //
 //----------------------------------------------------------------------------
 
-socket.on(socketDefs.ACTION, act => store.dispatch(act));
+socket.on(socketDefs.PACKET_PLAYER_JOIN, arg => cbPacketPlayerJoin(arg));
+socket.on(socketDefs.PACKET_PLAYER_QUIT, arg => cbPacketPlayerQuit(arg));
+socket.on(socketDefs.PACKET_PLAYER_PROMOTED, arg => cbPacketPlayerPromoted(arg));
+socket.on(socketDefs.PACKET_PLAYER_LOSE, arg => cbPacketPlayerLose(arg));
+socket.on(socketDefs.PACKET_GAME_START, arg => cbPacketGameStart(arg));
+socket.on(socketDefs.PACKET_GENFLOW, arg => cbPacketGenFlow(arg));
+socket.on(socketDefs.PACKET_PLAYER_COMPLETE_LINE, arg => cbPacketPlayerCompleteLine(arg));
+socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(arg));
+
+/**
+ * Request: PACKET_PLAYER_JOIN
+ * Data recv: {player, room}
+ */
+const cbPacketPlayerJoin = ({game}) => {
+  logger_sock(["recv PACKET_PLAYER_JOIN", game]);
+
+  store.dispatch(updatePlayers(game.players));
+};
+
+/**
+ * Request: PACKET_PLAYER_QUIT
+ * Data recv: {player, room}
+ */
+const cbPacketPlayerQuit = ({game}) => {
+  logger_sock(["recv PACKET_PLAYER_QUIT", game]);
+
+  store.dispatch(updatePlayers(game.players));
+};
+
+/**
+ * Request: PACKET_PLAYER_PROMOTED
+ * Data recv: {player, room}
+ */
+const cbPacketPlayerPromoted = ({game}) => {
+  logger_sock(["recv PACKET_PLAYER_PROMOTED", game]);
+
+  store.dispatch(updatePlayers(game.players));
+};
+
+/**
+ * Request: PACKET_PLAYER_LOSE
+ * Data recv: {player, room}
+ */
+const cbPacketPlayerLose = ({game}) => {
+  logger_sock(["recv PACKET_PLAYER_LOSE", game]);
+
+  store.dispatch(updatePlayers(game.players));
+};
+
+/**
+ * Request: PACKET_GAME_START
+ * Data recv: {room, pieces}
+ */
+const cbPacketGameStart = ({pieces}) => {
+  logger_sock(["recv PACKET_GAME_START", pieces]);
+
+  store.dispatch(startGame(pieces));
+};
+
+/**
+ * Request: PACKET_GENFLOW
+ * Data recv: {[pieces]} (default 10)
+ */
+const cbPacketGenFlow = ({pieces}) => {
+  logger_sock(["recv PACKET_GENFLOW"]);
+
+  store.dispatch(addPiecesFlow(pieces));
+};
+
+/**
+ * Request: PACKET_PLAYER_COMPLETE_LINE
+ * Data recv: {player, room}
+ */
+const cbPacketPlayerCompleteLine = () => {
+  logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE"]);
+
+  store.dispatch(addWallLine());
+};
+
+/**
+ * Request: PACKET_TETRIS_PLACE_PIECE
+ * Data recv: {grid, playerName} gridAndPlayer
+ */
+const cbPacketTetrisPlacePiece = ({grid, playerName}) => {
+  logger_sock(["recv PACKET_TETRIS_PLACE_PIECE", grid, playerName]);
+
+  store.dispatch(updateGrid(grid, playerName));
+};
+
+//----------------------------------------------------------------------------
+//
+// RESPONSE
+//
+//----------------------------------------------------------------------------
+
+socket.on(socketDefs.JOIN_GAME_RESPONSE, arg => cbJoinRoomResponse(arg));
+socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
+socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
+socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
+socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, arg => cbTetrisPlacePieceResponse(arg));
+socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, arg => cbPlayerLooseResponse(arg));
+socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineResponse(arg));
+socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
+
+/**
+ * Request: JOIN_GAME_RESPONSE
+ * Data recv: {error: {type, message}} || {success, game, user}
+ */
+const cbJoinRoomResponse = ({error, game}) => {
+  logger_sock(["recv JOIN_GAME_RESPONSE", game]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  } else {
+    store.dispatch(updatePlayers(game.players))
+  }
+};
+
+/**
+ * Request: QUIT_ROOM_RESPONSE
+ * Data recv: {error: {type, message}} || {success, game, user}
+ */
+const cbQuitRoomResponse = ({error, game}) => {
+  logger_sock(["recv QUIT_ROOM_RESPONSE", game]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  } else {
+    store.dispatch(updatePlayers(game.players))
+  }
+};
+
+/**
+ * Request: START_PLAYING_RESPONSE
+ * Data recv: {error: {type, message}} || {success}
+ */
+const cbStartPlayingResponse = ({error}) => {
+  logger_sock(["recv START_PLAYING_RESPONSE", error]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  }
+};
+
+/**
+ * Request: CONNECTION_RESPONSE
+ * Data recv: {}
+ */
+const cbConnectionResponse = () => {
+  logger_sock(["recv CONNECTION_RESPONSE"]);
+
+  store.dispatch(connectionResponse())
+};
+
+/**
+ * Request: TETRIS_PLACE_PIECE_RESPONSE
+ * Data recv: {error: {type, message}} || {success}
+ */
+const cbTetrisPlacePieceResponse = ({error}) => {
+  logger_sock(["recv TETRIS_PLACE_PIECE_RESPONSE"]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  }
+};
+
+/**
+ * Request: PLAYER_LOOSE_RESPONSE
+ * Data recv: {}
+ */
+const cbPlayerLooseResponse = ({error}) => {
+  logger_sock(["recv PLAYER_LOOSE_RESPONSE", error]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  }
+};
+
+/**
+ * Request: PLAYER_COMPLETE_LINE_RESPONSE
+ * Data recv: {}
+ */
+const cbPlayerCompleteLineResponse = ({error}) => {
+  logger_sock(["recv PLAYER_COMPLETE_LINE_RESPONSE", error]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  }
+};
+
+/**
+ * Request: GENFLOW_RESPONSE
+ * Data recv: {}
+ */
+const cbGenFlowResponse = ({error}) => {
+  logger_sock(["recv GENFLOW_RESPONSE", error]);
+
+  if (error) {
+    store.dispatch(addError(error))
+  }
+};
 
 //----------------------------------------------------------------------------
 //

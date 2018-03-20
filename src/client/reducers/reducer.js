@@ -1,4 +1,3 @@
-import {cloneState} from "../util/clone-handler";
 import {
   reducerPartsFlow,
   reducerAddWallLine,

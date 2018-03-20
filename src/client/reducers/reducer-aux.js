@@ -40,7 +40,7 @@ const reducerError = (state, {error}) => {
  * @param {Array<user>} players
  */
 const reducerUpdateUsers = (state, {players}) => {
-  logger_reducer(["updateUsers", players]);
+  logger_reducer(["updatePlayers", players]);
 
   const newState = cloneState(state);
 
@@ -86,7 +86,7 @@ const reducerMovePiece = (state, {move}) => {
     return state;
   }
 
-  if (state.piecesFlow.length < 4) {
+  if (state.piecesFlow.length < 6) {
     emitGenFlow(state.roomName);
     if (state.piecesFlow.length === 0) {
       logger_reducer(["movePiece piecesFlow is empty"]);
@@ -137,7 +137,7 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
  * @param {Object} state
  * @param {Array<int>} pieces
  */
-const reducerStartGame = (state, pieces) => {
+const reducerStartGame = (state, {pieces}) => {
   logger_reducer(["startGame", pieces]);
 
   const newState = cloneState(state);
