@@ -19,9 +19,7 @@ const cloneState = state => Object.assign({}, {
     playerStates: clonePlayerStates(state.playerStates),
     playerName: state.playerName,
     roomName: state.roomName,
-    piecesFlow: state.piecesFlow.map(e => e),
-    curPiecePos: Object.assign({}, state.curPiecePos),
-    curPieceRot: state.curPieceRot,
+    piecesFlow: state.piecesFlow.map(e => Object.assign({}, e, {pos: Object.assign({}, e.pos)})),
     error: Object.assign({}, state.error)
   })
 ;

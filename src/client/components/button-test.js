@@ -6,7 +6,7 @@ import {PIECES_MOVE} from "../../common/pieces";
 import {getColorNum} from "../util/utils"
 
 const ButtonTestComponent = ({
-                               line, grid, playerName,
+                               line, playerName,
                                onClickButtonFlow, onClickButtonRotRight,
                                onClickButtonRotLeft, onClickButtonMoveDown,
                                onClickButtonMoveLeft, onClickButtonMoveRight,
@@ -49,11 +49,7 @@ const ButtonTestComponent = ({
 
 const mapStateToProps = state => {
   return {
-    line: state.piecesFlow.map(e => e),
-    grid: state.playerStates.find(
-      el => el.playerName === state.playerName
-    ).grid.map(l => l.map(e => e)),
-    playerName: state.playerName
+    line: state.piecesFlow.map(e => e.num),
   }
 };
 

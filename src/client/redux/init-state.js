@@ -1,7 +1,5 @@
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
-
-const GRID_HEIGHT = 24;
-const GRID_WIDTH = 10;
+import {GRID_WIDTH, GRID_HEIGHT} from "../../common/grid";
 
 const initPlayerState = (playerName, isMaster = false) => {
   return {
@@ -15,12 +13,10 @@ const initPlayerState = (playerName, isMaster = false) => {
 
 const initialState = {
   playerStates: [initPlayerState(urlGetPlayerName())],
+  piecesFlow: [],
   playerName: urlGetPlayerName(),
   roomName: urlGetRoomName(),
-  piecesFlow: [],
-  curPiecePos: {},
-  curPieceRot: 0,
   error: undefined,
 };
 
-export {initialState, initPlayerState, GRID_HEIGHT, GRID_WIDTH};
+export {initialState, initPlayerState};

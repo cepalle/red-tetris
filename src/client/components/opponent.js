@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {clonePlayerStates, getColorNum} from "../util/utils"
-import {GRID_HEIGHT, GRID_WIDTH} from "../redux/init-state";
+import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 
 const OpponentComponent = ({states}) => {
   return <div className={"line"}>
@@ -33,7 +33,8 @@ const OpponentComponent = ({states}) => {
           <div className={"line center"}>
             <p>{state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}{state.hasWin && "(Win)"}</p>
           </div>
-        </div>;
+        </div>
+          ;
       }
     )}
   </div>

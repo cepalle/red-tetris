@@ -3,7 +3,7 @@ import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
 import {
-  eraseCurPiece, gridAddWall, gridDelLine, prepareAndPlaceNewPiece,
+  eraseCurPiece, gridAddWall, gridDelLine,
   updatePiecePos
 } from "../util/grid-piece-handler";
 import {placePiece} from "../util/grid-piece-handler";
@@ -92,11 +92,6 @@ const reducerMovePiece = (state, move) => {
     }
   }
 
-  if (Object.keys(state.curPiecePos).length === 0) {
-    prepareAndPlaceNewPiece(state);
-    return state;
-  }
-
   eraseCurPiece(state);
   let needNext = updatePiecePos(state, move);
   placePiece(state);
@@ -104,7 +99,6 @@ const reducerMovePiece = (state, move) => {
   if (needNext) {
     gridDelLine(state);
     state.piecesFlow.shift();
-    state.curPiecePos = {};
     socketApi.emitTetrisPlacePiece(
       state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
       state.playerName

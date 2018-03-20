@@ -17,8 +17,8 @@ class Piece {
    * @return {Piece}
    */
   static generatePiece() {
-    const num = (Math.random() * PIECES.length) + 1;
-    const rot = Piece.randNumber(num, 3);
+    const num = Piece.randNumber(1, 7);
+    const rot = Piece.randNumber(0, 3);
     const mask = getPieceMask(num, rot);
     const pos = {
       x: Piece.randNumber(mask.x, GRID_WIDTH - mask.width - mask.x),
