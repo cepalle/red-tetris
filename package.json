@@ -35,6 +35,7 @@
     "babel-core": "^6.26.0",
     "babel-watch": "^2.0.7",
     "file-loader": "^1.1.11",
+    "gh-pages": "^1.1.0",
     "style-loader": "^0.20.3"
   }
 }
