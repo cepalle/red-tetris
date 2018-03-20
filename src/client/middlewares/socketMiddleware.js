@@ -1,9 +1,8 @@
 import {
   emitGenFlow, emitJoinRoom, emitPlayerCompleteLine, emitPlayerLoose,
-  emitStartPlaying
+  emitStartPlaying, emitTetrisPlacePiece
 } from "../util/socket-handler";
-import {logger_middleware, logger_reducer} from "../util/logger-handler";
-import * as socketApi from "../util/socket-handler"
+import {logger_middleware} from "../util/logger-handler";
 import {eraseCurPiece} from "../util/grid-piece-handler"
 
 
@@ -20,6 +19,7 @@ const socketMiddleware = store => next => action => {
     default:
       break;
   }
+
   const result = next(action);
   const state = store.getState()
 
@@ -41,7 +41,7 @@ const socketMiddleware = store => next => action => {
     state.EmitUpdateGrid = false;
 
     const stateErased = eraseCurPiece(state);
-    socketApi.emitTetrisPlacePiece(
+    emitTetrisPlacePiece(
       stateErased.roomName,
       stateErased.playerName,
       stateErased.playerStates.find(e => e.playerName === stateErased.playerName).grid
