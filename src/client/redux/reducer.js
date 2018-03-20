@@ -45,9 +45,11 @@ const reducerError = (state, error) => {
 const reducerUpdateUsers = (state, users) => {
   logger_reducer(["updateUsers", users]);
 
-  let filterNotInUsers = state.playerStates.filter(el => isInUsers(users, el.playerName));
+  let filterNotInUsers = state.playerStates.filter(el => users.some(e => e.playerName === el.playerName));
   let filterAddNewUsers = filterNotInUsers.concat(
-    users.filter(el => !isInPlayerStates(filterNotInUsers, el.playerName)).map(el => initPlayerState(el.playerName))
+    users.filter(el => !filterNotInUsers.some(e => e.playerName === el.playerName)).map(el =>
+      initPlayerState(el.playerName)
+    )
   );
 
   let playerMaster = users.find(el => el.master);

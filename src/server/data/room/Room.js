@@ -90,7 +90,7 @@ class Room {
 
   gameHasEnd() {
     if (this.players.length === 1 && this.players[0].loose ||
-      this.players.length > 1 && this.players.reduce((u, i) => !u.loose ? i + 1 : i, 0) === 1) {
+      this.players.length > 1 && this.players.filter(p => !p.loose).length === 1) {
       this.setWaiting(true);
     }
   }
