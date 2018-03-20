@@ -1,4 +1,4 @@
-const Room = require("./Room");
+import Room from "./Room";
 
 class RoomManager {
 
@@ -68,4 +68,4 @@ class RoomManager {
 
 const rm =  new RoomManager();
 
-module.exports = rm;
+export default rm;

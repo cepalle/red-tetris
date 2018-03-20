@@ -1,8 +1,5 @@
-const SocketHandler = require("./SocketHandler");
-const PacketSender = require("../packet/PacketSender");
-const socketDefs = require("../../common/socket-definitions");
-const {PIECES} = require("../../common/pieces");
-const RoomManager = require("../data/room/RoomsManager");
+import SocketHandler from "./SocketHandler";
+import socketDefs from "../../common/socket-definitions";
 
 class GlobalSocketHandler extends SocketHandler {
 
@@ -23,4 +20,4 @@ class GlobalSocketHandler extends SocketHandler {
   }
 }
 
-module.exports = GlobalSocketHandler;
+export default GlobalSocketHandler;

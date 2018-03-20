@@ -1,5 +1,5 @@
-const RoomManager = require("../data/room/RoomsManager");
-const errorsDefs = require("../../common/errors-definitions");
+import RoomManager from "../data/room/RoomsManager";
+import errorsDefs from "../../common/errors-definitions";
 
 class SocketHandler {
   constructor(socket) {
@@ -77,4 +77,4 @@ class SocketHandler {
   }
 }
 
-module.exports = SocketHandler;
+export default SocketHandler;

@@ -1,15 +1,16 @@
-require("./util/ArraysUtil");
+import util from "./util/ArraysUtil";
+import express from "express";
+import {Server} from "http";
+import RoomSocketHandler from "./handlers/RoomSocketHandler";
+import RoomManager from "./data/room/RoomsManager";
+import GlobalSocketHandler from "./handlers/GlobalSocketHandler";
+import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
+import SocketMap from "./data/SocketMap";
+import socketDefs from "../common/socket-definitions";
 
-const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
-
-const RoomSocketHandler = require("./handlers/RoomSocketHandler");
-const GlobalSocketHandler = require("./handlers/GlobalSocketHandler");
-const TetrisSocketHandler = require("./handlers/TetrisSocketHandler");
-const SocketMap = require("./data/SocketMap");
-const socketDefs = require("../common/socket-definitions");
-const RoomManager = require("./data/room/RoomsManager");
+const app = express();
+const http = Server(app);
+const io = require("socket.io")(http);
 
 class App {
 

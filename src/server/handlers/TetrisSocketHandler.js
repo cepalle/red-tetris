@@ -1,9 +1,10 @@
-const {PIECES} = require("../../common/pieces");
-const SocketHandler = require("./SocketHandler");
-const RoomManager = require("../data/room/RoomsManager");
-const PacketSender = require("../packet/PacketSender");
-const socketDefs = require("../../common/socket-definitions");
-const errorsDefs = require("../../common/errors-definitions");
+import {PIECES} from "../../common/pieces";
+import SocketHandler from "./SocketHandler";
+import RoomManager from "../data/room/RoomsManager";
+import PacketSender from "../packet/PacketSender";
+import socketDefs from "../../common/socket-definitions";
+import errorsDefs from "../../common/errors-definitions";
+import Piece from "../data/piece/Piece";
 
 class TetrisSocketHandler extends SocketHandler {
 
@@ -36,9 +37,7 @@ class TetrisSocketHandler extends SocketHandler {
   genFlow(data, response = socketDefs.GENFLOW_RESPONSE) {
     if (this.roomIsValid(data, response))
     {
-      const tetrisPieces = [];
-      for(let i = 0; i < 10; i++)
-        tetrisPieces.push(PIECES[Math.floor(Math.random() * PIECES.length)]);
+      const tetrisPieces = Piece.generatePieces(10);
       this.socket.emit(response, {success: true});
       PacketSender.sendGenFlow(RoomManager.getRoom(data.roomName), tetrisPieces);
     }
@@ -79,4 +78,4 @@ class TetrisSocketHandler extends SocketHandler {
 
 }
 
-module.exports =  TetrisSocketHandler;
+export default TetrisSocketHandler;
