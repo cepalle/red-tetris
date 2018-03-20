@@ -11,7 +11,7 @@ class PacketSender {
   /**
    * This packet is sent when a new player is coming in a room.
    * The player who join will not be notified.
-   * @param {User} player
+   * @param {Player} player
    * @param {Room} room
    */
   static sendPlayerJoin(player, room) {
@@ -21,7 +21,7 @@ class PacketSender {
   /**
    * This packet is sent when a player quit the room.
    * The player who quit will not be notified.
-   * @param {User} player
+   * @param {Player} player
    * @param {Room} room
    */
   static sendPlayerQuit(player, room) {
@@ -30,7 +30,7 @@ class PacketSender {
 
   /**
    * This packet is sent to tell to all players that a player has lose.
-   * @param {User} player
+   * @param {Player} player
    * @param {Room} room
    */
   static sendPlayerLoose(player, room) {
@@ -39,7 +39,7 @@ class PacketSender {
 
   /**
    * This packet is sent to tell to all player that a player has complete a line
-   * @param {User} player
+   * @param {Player} player
    * @param {Room} room
    */
   static sendPlayerCompleteLine(player, room) {
@@ -49,7 +49,7 @@ class PacketSender {
   /**
    * This packet is sent when the master of the room quit the room.
    * A new master is promoted (the second who have join).
-   * @param {User} player
+   * @param {Player} player
    * @param {Room} room
    */
   static sendPlayerPromoted(player, room) {
@@ -78,17 +78,17 @@ class PacketSender {
    * Sent to all player that a player has place a piece.
    * @param {Room} room
    * @param {Array<Array<number>>}grid
-   * @param {User} user
+   * @param {Player} player
    */
-  static sendPlayerPlacePiece(room, grid, user) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_TETRIS_PLACE_PIECE, user, room, {
+  static sendPlayerPlacePiece(room, grid, player) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_TETRIS_PLACE_PIECE, player, room, {
       grid,
-      playerName: user.username
+      playerName: player.playerName
     })
   }
 
-  static sendPacketToAllPlayer(packetName, user, room, data, exceptConcerned = true) {
-    room.users.filter(e => exceptConcerned ? e.getId() !== user.getId() : true).forEach(e => {
+  static sendPacketToAllPlayer(packetName, player, room, data, exceptConcerned = true) {
+    room.players.filter(e => exceptConcerned ? e.getId() !== player.getId() : true).forEach(e => {
       const socket = SocketMap.sockets.get(e.id);
       socket.emit(packetName, data);
     });

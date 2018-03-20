@@ -27,7 +27,6 @@ class App {
     socket.on(socketDefs.JOIN_ROOM,             (d) => roomSocketHandler.joinRoom(d));
     socket.on(socketDefs.QUIT_ROOM,             (d) => roomSocketHandler.quitRoom(d));
     socket.on(socketDefs.START_PLAYING,         (d) => roomSocketHandler.startPlaying(d));
-    socket.on(socketDefs.END_PLAYING,           (d) => roomSocketHandler.endPlaying(d));
     socket.on(socketDefs.GENFLOW,               (d) => tetrisSocketHandler.genFlow(d));
     socket.on(socketDefs.TETRIS_PLACE_PIECE,    (d) => tetrisSocketHandler.placePiece(d));
     socket.on(socketDefs.PLAYER_LOOSE,          (d) => tetrisSocketHandler.playerLoose(d));
@@ -36,8 +35,8 @@ class App {
     socket.on(socketDefs.DISCONNECT, () => {
       const room = RoomManager.getRoomById(socket.id);
       if (room) {
-        const user = room.getUser(socket.id);
-        roomSocketHandler.quitRoom({roomName: room.name, playerName: user.getUsername()});
+        const player = room.getPlayer(socket.id);
+        roomSocketHandler.quitRoom({roomName: room.name, playerName: player.getPlayerName()});
       }
     });
   }

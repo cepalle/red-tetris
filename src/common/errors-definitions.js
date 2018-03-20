@@ -16,21 +16,21 @@ module.exports = {
     type: "ROOM_ALREADY_IN_GAME",
     message: "Room is already in game."
   },
-  USER_ALREADY_IN_ROOM: {
-    type: "USER_ALREADY_IN_ROOM",
-    message: "An user with the same name is already in this room."
+  PLAYER_ALREADY_IN_ROOM: {
+    type: "PLAYER_ALREADY_IN_ROOM",
+    message: "An player with the same name is already in this room."
   },
-  USER_NOT_IN_ROOM: {
-    type: "USER_NOT_IN_ROOM",
-    message: "User is not in the room."
+  PLAYER_NOT_IN_ROOM: {
+    type: "PLAYER_NOT_IN_ROOM",
+    message: "Player is not in the room."
   },
-  USER_CANT_PLAY: {
-    type: "USER_CANT_PLAY",
-    message: "User can't play."
+  PLAYER_CANT_PLAY: {
+    type: "PLAYER_CANT_PLAY",
+    message: "Player can't play."
   },
-  USER_NOT_MASTER: {
-    type: "USER_NOT_MASTER",
-    message: "User is not the master."
+  PLAYER_NOT_MASTER: {
+    type: "PLAYER_NOT_MASTER",
+    message: "Player is not the master."
   },
   ROOM_NOT_IN_GAME: {
     type: "ROOM_NOT_IN_GAME",

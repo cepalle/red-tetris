@@ -23,7 +23,7 @@ class RoomManager {
    */
   getRoomById(id) {
     return this.rooms.find(e => {
-      return e.users.some(e => e.id === id);
+      return e.players.some(e => e.id === id);
     })
   }
 
@@ -52,7 +52,7 @@ class RoomManager {
   }
 
   /**
-   * Destroy a room with name roomName, before that, remove all user from room properly
+   * Destroy a room with name roomName, before that, remove all player from room properly
    * @param {string} roomName
    * @returns {boolean}
    */

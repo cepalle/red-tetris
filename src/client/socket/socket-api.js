@@ -28,7 +28,7 @@ socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(
 const cbPacketPlayerJoin = ({player, room}) => {
   logger_sock(["recv PACKET_PLAYER_JOIN", room]);
 
-  store.dispatch(updateUsers(room.users));
+  store.dispatch(updateUsers(room.players));
 };
 
 /**
@@ -38,7 +38,7 @@ const cbPacketPlayerJoin = ({player, room}) => {
 const cbPacketPlayerQuit = ({player, room}) => {
   logger_sock(["recv PACKET_PLAYER_QUIT", room]);
 
-  store.dispatch(updateUsers(room.users));
+  store.dispatch(updateUsers(room.players));
 };
 
 /**
@@ -48,7 +48,7 @@ const cbPacketPlayerQuit = ({player, room}) => {
 const cbPacketPlayerPromoted = ({player, room}) => {
   logger_sock(["recv PACKET_PLAYER_PROMOTED", room]);
 
-  store.dispatch(updateUsers(room.users));
+  store.dispatch(updateUsers(room.players));
 };
 
 /**
@@ -58,7 +58,7 @@ const cbPacketPlayerPromoted = ({player, room}) => {
 const cbPacketPlayerLose = ({player, room}) => {
   logger_sock(["recv PACKET_PLAYER_LOSE", room]);
 
-  store.dispatch(updateUsers(room.users));
+  store.dispatch(updateUsers(room.players));
 };
 
 /**
@@ -127,7 +127,7 @@ const cbJoinRoomResponse = ({error, room}) => {
   if (error) {
     store.dispatch(addError(error))
   } else {
-    store.dispatch(updateUsers(room.users))
+    store.dispatch(updateUsers(room.players))
   }
 };
 

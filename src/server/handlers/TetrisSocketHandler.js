@@ -20,8 +20,8 @@ class TetrisSocketHandler extends SocketHandler {
     if (this.checkData("grid", data, response)) {
       const room = RoomManager.getRoomById(this.id);
       if (room) {
-        const user = room.getUser(this.id);
-        PacketSender.sendPlayerPlacePiece(room, data.grid, user);
+        const player = room.getPlayer(this.id);
+        PacketSender.sendPlayerPlacePiece(room, data.grid, player);
       }
       else
         this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
@@ -53,10 +53,11 @@ class TetrisSocketHandler extends SocketHandler {
     if (this.playerCanPlay(data, response))
     {
       const room = RoomManager.getRoom(data.roomName);
-      const user = room.getUser(this.id);
-      user.loose = true;
-      PacketSender.sendPlayerLoose(user, room);
+      const player = room.getPlayer(this.id);
+      player.loose = true;
+      PacketSender.sendPlayerLoose(player, room);
       this.socket.emit(response, {success: true})
+      room.gameHasEnd();
     }
   }
 
@@ -70,8 +71,8 @@ class TetrisSocketHandler extends SocketHandler {
     if (this.playerCanPlay(data, response))
     {
       const room = RoomManager.getRoom(data.roomName);
-      const user = room.getUser(this.id);
-      PacketSender.sendPlayerCompleteLine(user, room);
+      const player = room.getPlayer(this.id);
+      PacketSender.sendPlayerCompleteLine(player, room);
       this.socket.emit(response, {success: true});
     }
   }
