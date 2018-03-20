@@ -1,5 +1,6 @@
-const User = require("../user/User");
-const PacketSender = require("../../packet/PacketSender");
+import User from "../user/User";
+import PacketSender from "../../packet/PacketSender";
+import RoomManager from "./RoomsManager";
 
 class Room {
 
@@ -102,7 +103,6 @@ class Room {
    * @param {User} user
    */
   promoteNewUser(user) {
-    const RoomManager = require("./RoomsManager");
     if (this.users.length === 0) {
       RoomManager.deleteRoom(this.name);
     }
@@ -122,4 +122,4 @@ class Room {
   }
 }
 
-module.exports = Room;
+export default Room;

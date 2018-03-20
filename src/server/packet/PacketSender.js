@@ -1,10 +1,10 @@
 /**
  * @type {Map}
  */
-const socketMap = require("../App");
-const {PIECES} = require("../../common/pieces");
-const socketDefs = require("../../common/socket-definitions");
-const SocketMap = require("../data/SocketMap");
+import SocketMap from "../data/SocketMap";
+import {PIECES} from "../../common/pieces";
+import socketDefs from "../../common/socket-definitions";
+import Piece from "../data/piece/Piece";
 
 class PacketSender {
 
@@ -61,9 +61,7 @@ class PacketSender {
    * @param {Room} room
    */
   static sendGameStart(room) {
-    const pieces = [];
-    for(let i = 0; i < 10; i++)
-      pieces.push(PIECES[Math.floor(Math.random() * PIECES.length)]);
+    const pieces = Piece.generatePieces(10);
     PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, undefined, room, {room, pieces}, false);
   }
 
@@ -97,4 +95,4 @@ class PacketSender {
   }
 }
 
-module.exports = PacketSender;
+export default PacketSender;

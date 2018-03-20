@@ -6,4 +6,4 @@ class SocketMap {
 
 const socketMap = new SocketMap();
 
-module.exports = socketMap;
+export default socketMap;

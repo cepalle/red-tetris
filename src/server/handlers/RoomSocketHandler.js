@@ -1,8 +1,8 @@
-const SocketHandler = require("./SocketHandler");
-const RoomManager = require("../data/room/RoomsManager");
-const socketDefs = require("../../common/socket-definitions");
-const errorsDefs = require("../../common/errors-definitions");
-const PacketSender = require("../packet/PacketSender");
+import SocketHandler from "./SocketHandler";
+import RoomManager from "../data/room/RoomsManager";
+import socketDefs from "../../common/socket-definitions";
+import errorsDefs from "../../common/errors-definitions";
+import PacketSender from "../packet/PacketSender";
 
 class RoomSocketHandler extends SocketHandler {
 
@@ -134,4 +134,4 @@ class RoomSocketHandler extends SocketHandler {
 
 }
 
-module.exports = RoomSocketHandler;
+export default RoomSocketHandler;
