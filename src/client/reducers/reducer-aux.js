@@ -7,6 +7,7 @@ import {animate} from "../util/animate-handler";
 import {emitGenFlow} from "../util/socket-handler";
 import {eraseCurPiece, placePiece} from "../util/grid-piece-handler";
 import {cloneState} from "../util/clone-handler";
+import {emitPlayerCompleteLine} from "../util/socket-handler"
 
 /**
  * Add pieces to the state.piecesFlow.
@@ -72,7 +73,6 @@ const reducerUpdateUsers = (state, {players}) => {
   return newState;
 };
 
-// TODO NEED TO BE PURE
 /**
  * Update the grid with the move of the part.
  * @param {Object} state
@@ -94,14 +94,17 @@ const reducerMovePiece = (state, {move}) => {
     }
   }
 
-  const newState = cloneState(state);
-
-  eraseCurPiece(newState);
-  let needNext = updatePiecePos(newState, move);
-  placePiece(newState);
+  let needNext;
+  let newState = eraseCurPiece(state);
+  [needNext, newState] = updatePiecePos(newState, move);
+  newState = placePiece(newState);
 
   if (needNext) {
-    gridDelLine(newState);
+    let nbLineDel;
+    [newState, nbLineDel] = gridDelLine(newState);
+    for (let i = 0; i < nbLineDel; i++) {
+      emitPlayerCompleteLine(newState.roomName, newState.playerName);
+    }
     newState.piecesFlow.shift();
     socketApi.emitTetrisPlacePiece(
       newState.roomName,
@@ -150,7 +153,6 @@ const reducerStartGame = (state, {pieces}) => {
   return newState;
 };
 
-//TODO NEED TO BE PURE
 /**
  * Add a line unbreakable.
  * @param {Object} state
@@ -158,9 +160,16 @@ const reducerStartGame = (state, {pieces}) => {
 const reducerAddWallLine = state => {
   logger_reducer(["addWallLine", state]);
 
-  const newState = cloneState(state);
+  let newState = gridAddWall(state)
+  newState = eraseCurPiece(newState);
+  ifLooseEmitSet(newState);
+  socketApi.emitTetrisPlacePiece(
+    newState.roomName,
+    newState.playerName,
+    newState.playerStates.find(e => e.playerName === newState.playerName).grid
+  );
+  newState = placePiece(newState);
 
-  gridAddWall(newState);
   return newState;
 };
 
