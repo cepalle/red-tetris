@@ -1,4 +1,3 @@
-
 module.exports = {
 
   UNEXPECTED_DATA: {

@@ -3,13 +3,15 @@ import {initialState, initPlayerState} from "./init-state";
 import {isInUsers, isInPlayerStates} from "../util/utils";
 import {cloneState} from "../util/utils";
 import {
-  eraseCurPiece, gridAddWall, gridDelLine, ifEndGame, ifLooseSet, prepareAndPlaceNewPiece,
+  eraseCurPiece, gridAddWall, gridDelLine, prepareAndPlaceNewPiece,
   updatePiecePos
 } from "../util/grid-piece-handler";
 import {placePiece} from "../util/grid-piece-handler";
 import * as socketApi from "../socket/socket-api";
 import {emitGenFlow} from "../socket/socket-api";
 import {animate} from "../util/animate";
+import {ifLooseEmitSet, ifWinSet} from "../util/end-loose-win-handler"
+
 
 /**
  * Add pieces to the state.piecesFlow.
@@ -64,13 +66,7 @@ const reducerUpdateUsers = (state, users) => {
     return playerState;
   });
 
-  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (state.playerStates.length > 1 && !player.hasLoose && state.playerStates.filter(e => !e.hasLoose).length === 1) {
-    animate.value = false;
-    player.hasWin = true;
-  }
-
-  ifEndGame(state);
+  ifWinSet(state);
 
   return state;
 };
@@ -113,7 +109,7 @@ const reducerMovePiece = (state, move) => {
       state.playerStates.find(playerState => playerState.playerName === state.playerName).grid,
       state.playerName
     );
-    ifLooseSet(state);
+    ifLooseEmitSet(state);
   }
   return state;
 };
@@ -148,6 +144,7 @@ const reducerStartGame = (state, pieces) => {
   );
   state.piecesFlow = pieces;
   state.curPiecePos = {};
+  animate.value = true;
   return state;
 };
 

@@ -10,8 +10,8 @@ const clonePlayerStates = playerStates => playerStates.map(playerState => Object
     grid: playerState.grid.map(l => l.map(e => e)),
     playerName: playerState.playerName,
     isMaster: playerState.isMaster,
-  hasLoose: playerState.hasLoose,
-  hasWin: playerState.hasWin
+    hasLoose: playerState.hasLoose,
+    hasWin: playerState.hasWin
   }))
 ;
 

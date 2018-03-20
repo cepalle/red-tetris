@@ -1,8 +1,8 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../redux/init-state";
 import {getPiece, getPieceMask, PIECES_MOVE} from "../../common/pieces";
 import {randNumber} from "./utils";
-import {emitEndPlaying, emitPlayerCompleteLine, emitPlayerLoose} from "../socket/socket-api";
-import {animate} from "./animate";
+import {emitPlayerCompleteLine} from "../socket/socket-api";
+import {ifLooseEmitSet} from "./end-loose-win-handler"
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -12,7 +12,8 @@ const COLLISION_TYPE = {
   WALL_TOP: "collision_top",
 };
 
-const PRIO_COLLISION = [COLLISION_TYPE.WALL_TOP,
+const PRIO_COLLISION = [
+  COLLISION_TYPE.WALL_TOP,
   COLLISION_TYPE.PIECE,
   COLLISION_TYPE.WALL_BOTTOM,
   COLLISION_TYPE.WALL_RIGHT,
@@ -172,32 +173,6 @@ const gridDelLine = state => {
   }
 };
 
-const ifEndGame = state => {
-  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.isMaster) {
-    if (state.playerStates.length === 1) {
-      if (player.hasLoose) {
-        emitEndPlaying();
-      }
-    }
-    if (state.playerStates.length > 1) {
-      if (state.playerStates.filter(e => !e.hasLoose).length < 2) {
-        emitEndPlaying();
-      }
-    }
-  }
-};
-
-const ifLooseSet = state => {
-  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.grid[3].some(e => e !== 0)) {
-    animate.value = false;
-    player.hasLoose = true;
-    emitPlayerLoose();
-    ifEndGame(state);
-  }
-};
-
 const gridAddWall = state => {
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
 
@@ -211,7 +186,7 @@ const gridAddWall = state => {
   if (Object.keys(state.curPiecePos).length > 0 && state.curPiecePos.y > 0) {
     state.curPiecePos.y--;
   }
-  ifLooseSet(state);
+  ifLooseEmitSet(state);
   placePiece(state);
 };
 
@@ -225,7 +200,5 @@ export {
   prepareAndPlaceNewPiece,
   updatePiecePos,
   gridDelLine,
-  gridAddWall,
-  ifLooseSet,
-  ifEndGame
+  gridAddWall
 }
