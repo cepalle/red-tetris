@@ -1,4 +1,4 @@
-import RoomManager from "../data/room/RoomsManager";
+import GameManager from "../data/game/GameManager";
 import errorsDefs from "../../common/errors-definitions";
 
 class SocketHandler {
@@ -13,8 +13,8 @@ class SocketHandler {
    * @param {string} response
    * @returns {boolean}
    */
-  roomIsValid(data, response) {
-    if (!RoomManager.getRoomById(this.id)) {
+  gameIsValid(data, response) {
+    if (!GameManager.getGameById(this.id)) {
       this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
       return false;
     }
@@ -22,16 +22,16 @@ class SocketHandler {
   }
 
   playerCanPlay(data, response) {
-    if (this.roomIsValid(data, response)) {
-      const room = RoomManager.getRoomById(this.id);
-      const player = room.getPlayer(this.id);
+    if (this.gameIsValid(data, response)) {
+      const game = GameManager.getGameById(this.id);
+      const player = game.getPlayer(this.id);
       if (data.playerName && player.playerName !== data.playerName)
       {
         this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
         return false;
       }
       else {
-        if (!room.waiting && !player.loose)
+        if (!game.waiting && !player.loose)
           return true;
         this.socket.emit(response, {error: errorsDefs.PLAYER_CANT_PLAY});
       }
@@ -45,7 +45,7 @@ class SocketHandler {
    * @returns {boolean}
    */
   playerIsMaster(response) {
-    if (!RoomManager.getRoomById(this.id).getPlayer(this.id).master) {
+    if (!GameManager.getGameById(this.id).getPlayer(this.id).master) {
       this.socket.emit(response, {error: errorsDefs.PLAYER_NOT_MASTER});
       return false;
     }
@@ -67,7 +67,7 @@ class SocketHandler {
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;
       }
-      if (key === "roomName" && !RoomManager.getRoomById(this.id).name === data[key])
+      if (key === "roomName" && !GameManager.getGameById(this.id).name === data[key])
       {
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;

@@ -1,5 +1,5 @@
 import SocketHandler from "./SocketHandler";
-import RoomManager from "../data/room/RoomsManager";
+import GameManager from "../data/game/GameManager";
 import socketDefs from "../../common/socket-definitions";
 import errorsDefs from "../../common/errors-definitions";
 import PacketSender from "../packet/PacketSender";
@@ -20,11 +20,11 @@ class RoomSocketHandler extends SocketHandler {
    * @param {string} data.playerName
    */
   createRoom(data, response) {
-    if (RoomManager.hasRoom(data.roomName))
+    if (GameManager.hasGame(data.roomName))
       return false;
-    const room = RoomManager.addRoom(data.roomName);
-    const player = room.addPlayer(data.playerName, this.id, true);
-    this.sendSuccess(response, room, player);
+    const game = GameManager.addGame(data.roomName);
+    const player = game.addPlayer(data.playerName, this.id, true);
+    this.sendSuccess(response, game, player);
     return true;
   }
 
@@ -35,19 +35,19 @@ class RoomSocketHandler extends SocketHandler {
    * @param {string} data.playerName
    * @param {string} response
    */
-  joinRoom(data, response = socketDefs.JOIN_ROOM_RESPONSE) {
+  joinGame(data, response = socketDefs.JOIN_GAME_RESPONSE) {
     if (this.dataIsValid(data, response)) {
       if (this.createRoom(data, response)) {
         return;
       }
-      const room = RoomManager.getRoom(data.roomName);
-      if (!room.canJoin())
+      const game = GameManager.getGame(data.roomName);
+      if (!game.canJoin())
         this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME});
-      if (room.containPlayer(data.playerName))
+      if (game.containId(this.id))
         this.socket.emit(response, {error: errorsDefs.PLAYER_ALREADY_IN_ROOM});
       else {
-        const player = room.addPlayer(data.playerName, this.id);
-        this.sendSuccess(response, room, player)
+        const player = game.addPlayer(data.playerName, this.id);
+        this.sendSuccess(response, game, player)
       }
     }
   }
@@ -58,14 +58,14 @@ class RoomSocketHandler extends SocketHandler {
    * @param {string} data.playerName
    * @param {string} response
    */
-  quitRoom(data, response = socketDefs.QUIT_ROOM) {
-    if (this.dataIsValid(data, response) && this.roomIsValid(data, response)) {
-      const room = RoomManager.getRoom(data.roomName);
-      if (!room.containPlayer(data.playerName))
+  quitGame(data, response = socketDefs.QUIT_GAME) {
+    if (this.dataIsValid(data, response) && this.gameIsValid(data, response)) {
+      const game = GameManager.getGame(data.roomName);
+      if (!game.containId(this.id))
         this.socket.emit(response, {error: errorsDefs.PLAYER_NOT_IN_ROOM});
       else {
-        const player = room.removePlayer(data.playerName);
-        this.sendSuccess(response, room, player);
+        const player = game.removePlayer(data.playerName);
+        this.sendSuccess(response, game, player);
       }
     }
   }
@@ -78,14 +78,14 @@ class RoomSocketHandler extends SocketHandler {
    */
   startPlaying(data, response = socketDefs.START_PLAYING_RESPONSE) {
     if (this.checkData("roomName", data, response) &&
-      this.roomIsValid(data, response) &&
+      this.gameIsValid(data, response) &&
       this.playerIsMaster(response)) {
-      const room = RoomManager.getRoomById(this.id);
-      if (!room.waiting) {
+      const game = GameManager.getGameById(this.id);
+      if (!game.waiting) {
         this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME})
       }
       else {
-        room.setWaiting(false);
+        game.setWaiting(false);
         this.socket.emit(response, {success: true});
       }
     }
@@ -109,11 +109,11 @@ class RoomSocketHandler extends SocketHandler {
   /**
    * Send success message to the client
    * @param {string} response
-   * @param {Room} room
+   * @param {Game} game
    * @param {Player} player
    */
-  sendSuccess(response, room, player) {
-    this.socket.emit(response, {success: true, room, player})
+  sendSuccess(response, game, player) {
+    this.socket.emit(response, {success: true, game, player})
   }
 
 }

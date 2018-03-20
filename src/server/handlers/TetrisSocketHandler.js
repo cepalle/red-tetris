@@ -1,6 +1,6 @@
 import {PIECES} from "../../common/pieces";
 import SocketHandler from "./SocketHandler";
-import RoomManager from "../data/room/RoomsManager";
+import GameManager from "../data/game/GameManager";
 import PacketSender from "../packet/PacketSender";
 import socketDefs from "../../common/socket-definitions";
 import errorsDefs from "../../common/errors-definitions";
@@ -18,10 +18,10 @@ class TetrisSocketHandler extends SocketHandler {
    */
   placePiece(data, response = socketDefs.TETRIS_PLACE_PIECE_RESPONSE) {
     if (this.checkData("grid", data, response)) {
-      const room = RoomManager.getRoomById(this.id);
-      if (room) {
-        const player = room.getPlayer(this.id);
-        PacketSender.sendPlayerPlacePiece(room, data.grid, player);
+      const game = GameManager.getGameById(this.id);
+      if (game) {
+        const player = game.getPlayer(this.id);
+        PacketSender.sendPlayerPlacePiece(game, data.grid, player);
       }
       else
         this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
@@ -35,11 +35,11 @@ class TetrisSocketHandler extends SocketHandler {
    * @param response
    */
   genFlow(data, response = socketDefs.GENFLOW_RESPONSE) {
-    if (this.roomIsValid(data, response))
+    if (this.gameIsValid(data, response))
     {
       const tetrisPieces = Piece.generatePieces(10);
       this.socket.emit(response, {success: true});
-      PacketSender.sendGenFlow(RoomManager.getRoom(data.roomName), tetrisPieces);
+      PacketSender.sendGenFlow(GameManager.getGame(data.roomName), tetrisPieces);
     }
   }
 
@@ -52,12 +52,12 @@ class TetrisSocketHandler extends SocketHandler {
   playerLoose(data, response = socketDefs.PLAYER_LOOSE_RESPONSE) {
     if (this.playerCanPlay(data, response))
     {
-      const room = RoomManager.getRoom(data.roomName);
-      const player = room.getPlayer(this.id);
+      const game = GameManager.getGame(data.roomName);
+      const player = game.getPlayer(this.id);
       player.loose = true;
-      PacketSender.sendPlayerLoose(player, room);
+      PacketSender.sendPlayerLoose(player, game);
       this.socket.emit(response, {success: true})
-      room.gameHasEnd();
+      game.gameHasEnd();
     }
   }
 
@@ -70,9 +70,9 @@ class TetrisSocketHandler extends SocketHandler {
   playerCompleteLine(data, response = socketDefs.PLAYER_COMPLETE_LINE_RESPONSE) {
     if (this.playerCanPlay(data, response))
     {
-      const room = RoomManager.getRoom(data.roomName);
-      const player = room.getPlayer(this.id);
-      PacketSender.sendPlayerCompleteLine(player, room);
+      const game = GameManager.getGame(data.roomName);
+      const player = game.getPlayer(this.id);
+      PacketSender.sendPlayerCompleteLine(player, game);
       this.socket.emit(response, {success: true});
     }
   }

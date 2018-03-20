@@ -2,7 +2,7 @@ import util from "./util/ArraysUtil";
 import express from "express";
 import {Server} from "http";
 import RoomSocketHandler from "./handlers/RoomSocketHandler";
-import RoomManager from "./data/room/RoomsManager";
+import GameManager from "./data/game/GameManager";
 import GlobalSocketHandler from "./handlers/GlobalSocketHandler";
 import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
 import SocketMap from "./data/SocketMap";
@@ -15,7 +15,6 @@ const io = require("socket.io")(http);
 class App {
 
   handleClient(socket) {
-
     const roomSocketHandler = new RoomSocketHandler(socket);
     const globalSocketHandler = new GlobalSocketHandler(socket);
     const tetrisSocketHandler = new TetrisSocketHandler(socket);
@@ -24,8 +23,8 @@ class App {
 
     globalSocketHandler.connection();
 
-    socket.on(socketDefs.JOIN_ROOM,             (d) => roomSocketHandler.joinRoom(d));
-    socket.on(socketDefs.QUIT_ROOM,             (d) => roomSocketHandler.quitRoom(d));
+    socket.on(socketDefs.JOIN_GAME,             (d) => roomSocketHandler.joinGame(d));
+    socket.on(socketDefs.QUIT_GAME,             (d) => roomSocketHandler.quitGame(d));
     socket.on(socketDefs.START_PLAYING,         (d) => roomSocketHandler.startPlaying(d));
     socket.on(socketDefs.GENFLOW,               (d) => tetrisSocketHandler.genFlow(d));
     socket.on(socketDefs.TETRIS_PLACE_PIECE,    (d) => tetrisSocketHandler.placePiece(d));
@@ -33,10 +32,10 @@ class App {
     socket.on(socketDefs.PLAYER_COMPLETE_LINE,  (d) => tetrisSocketHandler.playerCompleteLine(d));
 
     socket.on(socketDefs.DISCONNECT, () => {
-      const room = RoomManager.getRoomById(socket.id);
+      const room = GameManager.getGameById(socket.id);
       if (room) {
         const player = room.getPlayer(socket.id);
-        roomSocketHandler.quitRoom({roomName: room.name, playerName: player.getPlayerName()});
+        roomSocketHandler.quitGame({roomName: room.name, playerName: player.getPlayerName()});
       }
     });
   }

@@ -6,15 +6,15 @@ module.exports = {
   },
   ROOM_EXIST: {
     type: "ROOM_EXIST",
-    message: "Room already exist."
+    message: "Game already exist."
   },
   ROOM_NOT_EXIST: {
     type: "ROOM_NOT_EXIST",
-    message: "Room not exist."
+    message: "Game not exist."
   },
   ROOM_ALREADY_IN_GAME: {
     type: "ROOM_ALREADY_IN_GAME",
-    message: "Room is already in game."
+    message: "Game is already in game."
   },
   PLAYER_ALREADY_IN_ROOM: {
     type: "PLAYER_ALREADY_IN_ROOM",

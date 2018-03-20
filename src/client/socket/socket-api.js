@@ -108,7 +108,7 @@ const cbPacketTetrisPlacePiece = gridAndPlayer => {
 //
 //----------------------------------------------------------------------------
 
-socket.on(socketDefs.JOIN_ROOM_RESPONSE, arg => cbJoinRoomResponse(arg));
+socket.on(socketDefs.JOIN_GAME_RESPONSE, arg => cbJoinRoomResponse(arg));
 socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
 socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
 socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
@@ -118,11 +118,11 @@ socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineR
 socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 
 /**
- * Request: JOIN_ROOM_RESPONSE
+ * Request: JOIN_GAME_RESPONSE
  * Data recv: {error: {type, message}} || {success, room, user}
  */
 const cbJoinRoomResponse = ({error, room}) => {
-  logger_sock(["recv JOIN_ROOM_RESPONSE", room]);
+  logger_sock(["recv JOIN_GAME_RESPONSE", room]);
 
   if (error) {
     store.dispatch(addError(error))
@@ -209,9 +209,9 @@ const cbGenFlowResponse = arg => {
  * Data to sent: {roomName, playerName}
  */
 const emitJoinRoom = () => {
-  logger_sock(["emit JOIN_ROOM"]);
+  logger_sock(["emit JOIN_GAME"]);
 
-  socket.emit(socketDefs.JOIN_ROOM, {
+  socket.emit(socketDefs.JOIN_GAME, {
     roomName: store.getState().roomName,
     playerName: store.getState().playerName
   });
@@ -223,7 +223,7 @@ const emitJoinRoom = () => {
  * Data to sent: {roomName, playerName}
  */
 const emitQuitRoom = () => {
-  logger_sock(["emit QUIT_ROOM"]);
+  logger_sock(["emit QUIT_GAME"]);
 };
 
 //TODO

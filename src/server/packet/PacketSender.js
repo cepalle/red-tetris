@@ -2,93 +2,100 @@
  * @type {Map}
  */
 import SocketMap from "../data/SocketMap";
-import {PIECES} from "../../common/pieces";
 import socketDefs from "../../common/socket-definitions";
 import Piece from "../data/piece/Piece";
 
 class PacketSender {
 
   /**
-   * This packet is sent when a new player is coming in a room.
+   * This packet is sent when a new player is coming in a game.
    * The player who join will not be notified.
    * @param {Player} player
-   * @param {Room} room
+   * @param {Game} game
    */
-  static sendPlayerJoin(player, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_JOIN, player, room, {player, room});
+  static sendPlayerJoin(player, game) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_JOIN, player, game, {player, game});
   }
 
   /**
-   * This packet is sent when a player quit the room.
+   * This packet is sent when a player quit the game.
    * The player who quit will not be notified.
    * @param {Player} player
-   * @param {Room} room
+   * @param {Game} game
    */
-  static sendPlayerQuit(player, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_QUIT, player, room, {player, room});
+  static sendPlayerQuit(player, game) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_QUIT, player, game, {player, game});
   }
 
   /**
    * This packet is sent to tell to all players that a player has lose.
    * @param {Player} player
-   * @param {Room} room
+   * @param {Game} game
    */
-  static sendPlayerLoose(player, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_LOSE, player, room, {room, player})
+  static sendPlayerLoose(player, game) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_LOSE, player, game, {game, player})
   }
 
   /**
    * This packet is sent to tell to all player that a player has complete a line
    * @param {Player} player
-   * @param {Room} room
+   * @param {Game} game
    */
-  static sendPlayerCompleteLine(player, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_COMPLETE_LINE, player, room, {room, player})
+  static sendPlayerCompleteLine(player, game) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_COMPLETE_LINE, player, game, {game, player})
   }
 
   /**
-   * This packet is sent when the master of the room quit the room.
+   * This packet is sent when the master of the game quit the game.
    * A new master is promoted (the second who have join).
    * @param {Player} player
-   * @param {Room} room
+   * @param {Game} game
    */
-  static sendPlayerPromoted(player, room) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_PROMOTED, player, room, {player, room}, false);
+  static sendPlayerPromoted(player, game) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_PROMOTED, player, game, {player, game}, false);
   }
 
   /**
-   * This packet is sent when the game start, will be sent to all players in the room.
-   * @param {Room} room
+   * This packet is sent when the game start, will be sent to all players in the game.
+   * @param {Game} game
    */
-  static sendGameStart(room) {
+  static sendGameStart(game) {
     const pieces = Piece.generatePieces(10);
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, undefined, room, {room, pieces}, false);
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GAME_START, undefined, game, {game, pieces}, false);
   }
 
   /**
    * Sent a set of pieces for tetris game to all clients.
-   * @param {Room} room
+   * @param {Game} game
    * @param {Array<number>} pieces
    */
-  static sendGenFlow(room, pieces) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GENFLOW, undefined, room, {pieces}, false);
+  static sendGenFlow(game, pieces) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_GENFLOW, undefined, game, {pieces}, false);
   }
 
   /**
    * Sent to all player that a player has place a piece.
-   * @param {Room} room
+   * @param {Game} game
    * @param {Array<Array<number>>}grid
    * @param {Player} player
    */
-  static sendPlayerPlacePiece(room, grid, player) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_TETRIS_PLACE_PIECE, player, room, {
+  static sendPlayerPlacePiece(game, grid, player) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_TETRIS_PLACE_PIECE, player, game, {
       grid,
       playerName: player.playerName
     })
   }
 
-  static sendPacketToAllPlayer(packetName, player, room, data, exceptConcerned = true) {
-    room.players.filter(e => exceptConcerned ? e.getId() !== player.getId() : true).forEach(e => {
+  /**
+   *
+   * @param {string} packetName
+   * @param player
+   * @param game
+   * @param data
+   * @param exceptConcerned
+   */
+  static sendPacketToAllPlayer(packetName, player, game, data, exceptConcerned = true) {
+    game.players.filter(e => exceptConcerned ? e.getId() !== player.getId() : true).forEach(e => {
       const socket = SocketMap.sockets.get(e.id);
       socket.emit(packetName, data);
     });
