@@ -13,9 +13,9 @@ const mapStateToProps = state => {
   }
 };
 
-const Error = connect(
+const ErrorContainer = connect(
   mapStateToProps,
   undefined
 )(ErrorComponent);
 
-export {Error};
+export {ErrorContainer};

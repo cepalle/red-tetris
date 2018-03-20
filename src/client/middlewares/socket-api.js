@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 import {store} from "../redux/store"
-import {addError, addPartsFlow, updateUsers, updateGrid, startGame, addWallLine} from "../redux/action-creators"
+import {addError, addPartsFlow, updateUsers, updateGrid, startGame, addWallLine} from "../actions/action-creators"
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "../util/logger";
 

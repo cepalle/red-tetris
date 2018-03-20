@@ -1,5 +1,5 @@
 import {animate} from "./animate"
-import {emitPlayerLoose} from "../socket/socket-api"
+import {emitPlayerLoose} from "../middlewares/socket-api"
 
 const ifWinSet = state => {
   const playersNotLoose = state.playerStates.filter(e => !e.hasLoose);

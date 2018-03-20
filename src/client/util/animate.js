@@ -1,5 +1,5 @@
 import {store} from "../redux/store";
-import {movePiece} from "../redux/action-creators";
+import {movePiece} from "../actions/action-creators";
 import {PIECES_MOVE} from "../../common/pieces";
 
 let animate = {

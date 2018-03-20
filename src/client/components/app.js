@@ -1,17 +1,17 @@
 import React from "react";
-import {ButtonTest} from "./button-test";
-import {GridPlayer} from "./grid-player"
+import {ButtonTestContainer} from "../containers/button-test";
+import {GridPlayerContainer} from "../containers/grid-player"
 import {store} from "../redux/store"
-import {Error} from "./error";
-import {Opponent} from "./opponent";
+import {ErrorContainer} from "../containers/error";
+import {OpponentContainer} from "../containers/opponent";
 
 const App = () =>
   <div>
-    <Error/>
-    <GridPlayer/>
-    <ButtonTest/>
+    <ErrorContainer/>
+    <GridPlayerContainer/>
+    <ButtonTestContainer/>
     <p>Room name: {store.getState().roomName}</p>
-    <Opponent/>
+    <OpponentContainer/>
   </div>
 ;
 

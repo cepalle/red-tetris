@@ -45,9 +45,9 @@ const mapStateToProps = state => {
   return {states: clonePlayerStates(state.playerStates).filter(el => el.playerName !== state.playerName)};
 };
 
-const Opponent = connect(
+const OpponentContainer = connect(
   mapStateToProps,
   undefined
 )(OpponentComponent);
 
-export {Opponent};
+export {OpponentContainer};

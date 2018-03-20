@@ -1,14 +1,13 @@
 import {logger_reducer} from "../util/logger";
-import {initialState, initPlayerState} from "./init-state";
-import {isInUsers, isInPlayerStates} from "../util/utils";
+import {initialState, initPlayerState} from "../redux/init-state";
 import {cloneState} from "../util/utils";
 import {
   eraseCurPiece, gridAddWall, gridDelLine,
   updatePiecePos
 } from "../util/grid-piece-handler";
 import {placePiece} from "../util/grid-piece-handler";
-import * as socketApi from "../socket/socket-api";
-import {emitGenFlow} from "../socket/socket-api";
+import * as socketApi from "../middlewares/socket-api";
+import {emitGenFlow} from "../middlewares/socket-api";
 import {animate} from "../util/animate";
 import {ifLooseEmitSet, ifWinSet} from "../util/end-loose-win-handler"
 

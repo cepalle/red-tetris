@@ -1,6 +1,6 @@
 import {PIECES_MOVE} from "../../common/pieces"
 import {store} from "../redux/store"
-import {movePiece} from "../redux/action-creators"
+import {movePiece} from "../actions/action-creators"
 
 const keyLeft = 37;
 const keyUp = 38;

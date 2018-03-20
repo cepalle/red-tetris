@@ -1,6 +1,6 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_MOVE} from "../../common/pieces";
-import {emitPlayerCompleteLine} from "../socket/socket-api";
+import {emitPlayerCompleteLine} from "../middlewares/socket-api";
 import {ifLooseEmitSet} from "./end-loose-win-handler"
 
 const COLLISION_TYPE = {

@@ -32,9 +32,9 @@ const mapStateToProps = state => {
   return undefined;
 };
 
-const GridPlayer = connect(
+const GridPlayerContainer = connect(
   mapStateToProps,
   undefined
 )(GridPlayerComponent);
 
-export {GridPlayer};
+export {GridPlayerContainer};

@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {emitGenFlow, emitStartPlaying, emitTetrisPlacePiece} from "../socket/socket-api"
-import {movePiece} from "../redux/action-creators";
+import {emitGenFlow, emitStartPlaying, emitTetrisPlacePiece} from "../middlewares/socket-api"
+import {movePiece} from "../actions/action-creators";
 import {PIECES_MOVE} from "../../common/pieces";
 import {getColorNum} from "../util/utils"
 
@@ -69,9 +69,9 @@ const mapDispatchToProps = dispatch => {
   }
 };
 
-const ButtonTest = connect(
+const ButtonTestContainer = connect(
   mapStateToProps,
   mapDispatchToProps
 )(ButtonTestComponent);
 
-export {ButtonTest};
+export {ButtonTestContainer};
