@@ -34,7 +34,7 @@ const reducerError = (state, {error}) => {
 /**
  * Synchronize players with players.
  * @param {Object} state
- * @param {Array<user>} players
+ * @param {Array<player>} players
  */
 const reducerUpdateUsers = (state, {players}) => {
   logger_reducer(["updatePlayers", players]);
@@ -143,8 +143,11 @@ const reducerStartGame = (state, {pieces}) => {
 const reducerAddWallLine = state => {
   logger_reducer(["addWallLine", state]);
 
-  let newState = gridAddWall(state)
+  let newState = gridAddWall(state);
   newState.EmitUpdateGrid = true;
+  newState = eraseCurPiece(newState);
+  ifLooseSet(newState);
+  newState = placePiece(newState);
   return newState;
 };
 

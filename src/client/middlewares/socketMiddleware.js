@@ -4,6 +4,7 @@ import {
 } from "../util/socket-handler";
 import {logger_middleware} from "../util/logger-handler";
 import {eraseCurPiece} from "../util/grid-piece-handler"
+import {animate} from "../util/animate-handler";
 
 
 const socketMiddleware = store => next => action => {
@@ -21,9 +22,9 @@ const socketMiddleware = store => next => action => {
   }
 
   const result = next(action);
-  const state = store.getState()
+  const state = store.getState();
 
-  if (state.piecesFlow.length < 6) {
+  if (state.piecesFlow.length < 6 && animate.value) {
     logger_middleware(["emitGenFlow"]);
 
     emitGenFlow(state.roomName);
