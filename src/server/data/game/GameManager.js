@@ -52,7 +52,7 @@ class GameManager {
   }
 
   /**
-   * Destroy a game with name roomName, before that, remove all player from room properly
+   * Destroy a game with name roomName
    * @param {string} roomName
    * @returns {boolean}
    */
