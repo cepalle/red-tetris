@@ -1,5 +1,5 @@
 import {
-  reducerPartsFlow,
+  reducerPiecesFlow,
   reducerAddWallLine,
   reducerError,
   reducerMovePiece,
@@ -44,7 +44,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PIECES_FLOW':
-      return reducerPartsFlow(state, action);
+      return reducerPiecesFlow(state, action);
     case 'ADD_ERROR':
       return reducerError(state, action);
     case 'UPDATE_PLAYERS':

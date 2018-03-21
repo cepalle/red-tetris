@@ -10,7 +10,7 @@ import {animate} from "../util/animate-handler"
  * @param {Object} state
  * @param {Array<int>} pieces
  */
-const reducerPartsFlow = (state, {pieces}) => {
+const reducerPiecesFlow = (state, {pieces}) => {
   logger_reducer(["piecesFlow", pieces]);
 
   const newState = cloneState(state);
@@ -153,7 +153,7 @@ const reducerAddWallLine = state => {
 
 
 export {
-  reducerPartsFlow,
+  reducerPiecesFlow,
   reducerAddWallLine,
   reducerError,
   reducerMovePiece,

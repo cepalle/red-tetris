@@ -3,7 +3,6 @@ import {
   addError, addPiecesFlow, addWallLine, connectionResponse, movePiece, sendStartGame, startGame, updateGrid,
   updatePlayers
 } from "../../../src/client/actions/action-creators";
-import {getColorNum} from "../../../src/client/util/css-handler";
 
 describe('action-creators', () => {
   describe('#addPiecesFlow', () => {
