@@ -35,7 +35,7 @@ class App {
       const room = GameManager.getGameById(socket.id);
       if (room) {
         const player = room.getPlayer(socket.id);
-        roomSocketHandler.quitGame({roomName: room.name, playerName: player.getPlayerName()});
+        roomSocketHandler.quitGame({roomName: room.name, playerName: player.playerName});
       }
     });
   }
