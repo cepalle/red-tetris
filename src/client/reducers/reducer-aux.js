@@ -1,7 +1,7 @@
 import {gridAddWall, gridDelLine, updatePiecePos, eraseCurPiece, placePiece} from "../util/grid-piece-handler";
 import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
-import {ifLooseSet, ifWinSet} from "../util/end-loose-win-handler";
+import {ifLooseSet, ifWinSet} from "../util/loose-win-handler";
 import {cloneState} from "../util/clone-handler";
 import {animate} from "../util/animate-handler"
 
