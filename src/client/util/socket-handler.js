@@ -238,7 +238,7 @@ const emitJoinRoom = (roomName, playerName) => {
 };
 
 /**
- * Used to tell to the backend that the room enter in a no-waiting state and no player can join the room after.
+ * Used to tell to the backend that the room enter in a no-waiting getState and no player can join the room after.
  * Data to sent: {roomName}
  */
 const emitStartPlaying = roomName => {

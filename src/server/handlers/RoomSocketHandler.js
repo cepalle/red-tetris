@@ -71,7 +71,7 @@ class RoomSocketHandler extends SocketHandler {
   }
 
   /**
-   * Set the state of the room to avoid player join in a game that has already started.
+   * Set the getState of the room to avoid player join in a game that has already started.
    * @param {string} data
    * @param {string} data.roomName
    * @param response

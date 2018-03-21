@@ -5,48 +5,10 @@ import {
 } from "../../../src/client/util/grid-piece-handler";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../../src/common/grid";
 import {PIECES_MOVE} from "../../../src/common/pieces";
+import {getState} from "../state.test";
 
 
 describe('grid-piece-handler', () => {
-  const state = {
-    playerStates: [
-      {
-        grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(0)),
-        playerName: "playerName",
-        isMaster: true,
-        hasLoose: false,
-        hasWin: false,
-      },
-      {
-        grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(0)),
-        playerName: "playerName2",
-        isMaster: false,
-        hasLoose: false,
-        hasWin: false,
-      },
-    ],
-    piecesFlow: [
-      {
-        num: 1,
-        rot: 0,
-        pos: {x: 0, y: 0},
-      },
-      {
-        num: 5,
-        rot: 3,
-        pos: {x: 1, y: 2},
-      },
-    ],
-    error: {message: "rererer", type: "dff"},
-    playerName: "playerName",
-    roomName: "roonName",
-    EmitLoose: false,
-    EmitUpdateGrid: false,
-    EmitCompleteLine: 0,
-    SetAnimateTrue: false,
-    SetAnimateFalse: false,
-  };
-
   describe('#hasCollision', () => {
     it('should detect good COLLISION', () => {
 
@@ -78,7 +40,7 @@ describe('grid-piece-handler', () => {
   describe('#placePiece and eraseCurPiece', () => {
     it('should place piece and erase piece', () => {
 
-      let newState = placePiece(state);
+      let newState = placePiece(getState());
       expect(newState.playerStates[0].grid[1][0]).to.equal(1);
       expect(newState.playerStates[0].grid[1][1]).to.equal(1);
       expect(newState.playerStates[0].grid[1][2]).to.equal(1);
@@ -109,10 +71,10 @@ describe('grid-piece-handler', () => {
 
   describe('#gridDelLine', () => {
     it('should del a line', () => {
-      state.playerStates[0].grid[0] = Array(GRID_WIDTH).fill(1);
-      let newState;
+      let newState = getState();
+      newState.playerStates[0].grid[0] = Array(GRID_WIDTH).fill(1);
       let nbLineDel;
-      [newState, nbLineDel] = gridDelLine(state);
+      [newState, nbLineDel] = gridDelLine(newState);
       expect(newState.playerStates[0].grid[0][0]).to.equal(0);
       expect(nbLineDel).to.equal(1);
     });
@@ -120,8 +82,9 @@ describe('grid-piece-handler', () => {
 
   describe('#gridAddWall', () => {
     it('should a wall line', () => {
-      state.playerStates[0].grid[0] = Array(GRID_WIDTH).fill(1);
-      let newState = gridAddWall(state);
+      let newState = getState();
+      newState.playerStates[0].grid[0] = Array(GRID_WIDTH).fill(1);
+      newState = gridAddWall(newState);
       expect(newState.playerStates[0].grid[GRID_HEIGHT - 1][0]).to.equal(-1);
     });
   });
@@ -130,16 +93,16 @@ describe('grid-piece-handler', () => {
     it('should update the piece', () => {
       let newState;
       let needNext;
-      [needNext, newState] = updatePiecePos(state, PIECES_MOVE.DOWN);
+      [needNext, newState] = updatePiecePos(getState(), PIECES_MOVE.DOWN);
       expect(newState.piecesFlow[0].pos.y).to.equal(1);
       expect(needNext).to.equal(false);
-      [needNext, newState] = updatePiecePos(state, PIECES_MOVE.ROT_RIGHT);
+      [needNext, newState] = updatePiecePos(getState(), PIECES_MOVE.ROT_RIGHT);
       expect(newState.piecesFlow[0].rot).to.equal(1);
       expect(needNext).to.equal(false);
-      [needNext, newState] = updatePiecePos(state, PIECES_MOVE.ROT_LEFT);
+      [needNext, newState] = updatePiecePos(getState(), PIECES_MOVE.ROT_LEFT);
       expect(newState.piecesFlow[0].rot).to.equal(3);
       expect(needNext).to.equal(false);
-      [needNext, newState] = updatePiecePos(state, PIECES_MOVE.DROP);
+      [needNext, newState] = updatePiecePos(getState(), PIECES_MOVE.DROP);
       expect(newState.piecesFlow[0].pos.y).to.equal(GRID_HEIGHT - 2);
       expect(needNext).to.equal(true);
       [needNext, newState] = updatePiecePos(newState, PIECES_MOVE.DOWN);

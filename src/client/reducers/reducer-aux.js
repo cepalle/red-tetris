@@ -6,7 +6,7 @@ import {cloneState} from "../util/clone-handler";
 import {animate} from "../util/animate-handler"
 
 /**
- * Add pieces to the state.piecesFlow.
+ * Add pieces to the getState.piecesFlow.
  * @param {Object} state
  * @param {Array<int>} pieces
  */
@@ -19,7 +19,7 @@ const reducerPiecesFlow = (state, {pieces}) => {
 };
 
 /**
- * Set error to state.error.
+ * Set error to getState.error.
  * @param {Object} state
  * @param {type, message} error
  */

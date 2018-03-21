@@ -10,7 +10,7 @@ const addPiecesFlow = pieces => {
 };
 
 /**
- * Create a action for set error to state.error.
+ * Create a action for set error to getState.error.
  * @param {type, message} error
  */
 const addError = error => {

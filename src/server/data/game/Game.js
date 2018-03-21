@@ -91,7 +91,7 @@ class Game {
   }
 
   /**
-   * Set the current state of the room to true or false, if state is true player can join else player can't join.
+   * Set the current getState of the room to true or false, if getState is true player can join else player can't join.
    * @param {boolean} stateWaiting
    */
   setWaiting(stateWaiting) {

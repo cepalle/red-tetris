@@ -179,7 +179,7 @@ describe('Game', function () {
 
 
   describe('#setWaiting', function () {
-    it('should set waiting state to the waiting state desired', function () {
+    it('should set waiting getState to the waiting getState desired', function () {
       const g = new Game("newGame");
       g.setWaiting(true);
       assert.equal(g.waiting, true);
@@ -211,7 +211,7 @@ describe('Game', function () {
   });
 
   describe('#canJoin', function () {
-    it('should return waiting state', function () {
+    it('should return waiting getState', function () {
       const g = new Game("hey");
       assert.equal(g.canJoin(), true);
       g.setWaiting(false);
