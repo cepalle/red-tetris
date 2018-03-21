@@ -43,7 +43,7 @@ class App {
   main() {
     io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
     http.listen(4433, function () {
-      console.log('Server on port :' + 4433);
+      console.log('Server on port : 4433');
     });
   }
 }
