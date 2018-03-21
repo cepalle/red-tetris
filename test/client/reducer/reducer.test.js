@@ -1,31 +1,21 @@
-/*
-import {
-  addError, addPiecesFlow, addWallLine, movePiece, startGame, updateGrid,
-  updatePlayers
-} from "../../../src/client/actions/action-creators";
-import {GRID_HEIGHT, GRID_WIDTH} from "../../../src/common/grid";
-import {reducer} from "../../../src/client/reducers/reducer";
+import {store} from "../../../src/client/middlewares/store";
+import {addPiecesFlow} from "../../../src/client/actions/action-creators";
+import Piece from "../../../src/server/data/piece/Piece";
 import {expect} from "chai";
-import {PIECES_MOVE} from "../../../src/common/pieces";
-import {getState} from "../state.test";
 
 describe('reducer', () => {
   describe('#reducerPiecesFlow', () => {
     it('should reduce action ', () => {
 
-      store.dispatch(addPiecesFlow([{
-        num: 2,
-        rot: 3,
-        pos: {x: 2, y: 10},
-      }]));
+      store.dispatch(addPiecesFlow([new Piece(2, 1, {x:0, y:0})]));
+      expect(store.getState().piecesFlow[0].num).to.equal(2);
 
+      /*
       let newState = reducer(getState(), addPiecesFlow([{
         num: 2,
         rot: 3,
         pos: {x: 2, y: 10},
       }]));
-      expect(newState.piecesFlow[2].num).to.equal(2);
-
       newState = reducer(getState(), addError({
         message: "msg",
         type: "type",
@@ -56,7 +46,7 @@ describe('reducer', () => {
 
       newState = reducer(getState(), addWallLine());
       //expect(newState.piecesFlow[2].num).to.equal(2);
+      */
     });
   });
 });
-*/
