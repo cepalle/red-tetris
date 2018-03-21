@@ -255,7 +255,6 @@ const PIECES_DESCR = [
 ];
 
 const getPiece = (pieces, rot = 0) => PIECES_DESCR[pieces - 1][rot].piece;
-const getPieceObj = (pieces, rot = 0) => PIECES_DESCR[pieces - 1][rot];
 const getPieceMask = (pieces, rot = 0) => PIECES_DESCR[pieces - 1][rot].info;
 
 module.exports = {
@@ -263,6 +262,5 @@ module.exports = {
   PIECES_DESCR,
   PIECES_MOVE,
   getPiece,
-  getPieceMask,
-  getPieceObj
+  getPieceMask
 };

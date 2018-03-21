@@ -4,7 +4,7 @@ import {
   placePiece, updatePiecePos
 } from "../../../src/client/util/grid-piece-handler";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../../src/common/grid";
-import {PIECES_MOVE} from "../../../src/common/pieces";
+import {getPiece, getPieceMask, PIECES_MOVE} from "../../../src/common/pieces";
 import {getState} from "../state.test";
 
 
@@ -110,5 +110,8 @@ describe('grid-piece-handler', () => {
       expect(needNext).to.equal(true);
     });
   });
+
+  getPiece(1);
+  getPieceMask(1);
 
 });
