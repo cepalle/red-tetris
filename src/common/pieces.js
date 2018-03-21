@@ -152,7 +152,7 @@ const PIECES_DESCR = [
   ],
   [
     {
-      info: {x: 0, y: 0, width: 4},
+      info: {x: 0, y: 0, width: 3},
       piece: [
         [0, 5, 5],
         [5, 5, 0],
@@ -168,7 +168,7 @@ const PIECES_DESCR = [
       ]
     },
     {
-      info: {x: 0, y: -1, width: 4},
+      info: {x: 0, y: -1, width: 3},
       piece: [
         [0, 0, 0],
         [0, 5, 5],
@@ -220,7 +220,7 @@ const PIECES_DESCR = [
   ],
   [
     {
-      info: {x: 0, y: 0, width: 4},
+      info: {x: 0, y: 0, width: 3},
       piece: [
         [7, 7, 0],
         [0, 7, 7],
@@ -236,7 +236,7 @@ const PIECES_DESCR = [
       ]
     },
     {
-      info: {x: 0, y: -1, width: 4},
+      info: {x: 0, y: -1, width: 3},
       piece: [
         [0, 0, 0],
         [7, 7, 0],
