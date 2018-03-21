@@ -1,6 +1,5 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../../../src/common/grid";
 import {ifLooseSet} from "../../../src/client/util/loose-win-handler";
-import {getColorNum} from "../../../src/client/util/css-handler";
 import {expect} from "chai";
 
 describe('end-loose-win-handler', () => {
