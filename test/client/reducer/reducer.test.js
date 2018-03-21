@@ -1,12 +1,13 @@
 import {store} from "../../../src/client/middlewares/store";
 import {
-  addError, addPiecesFlow, addWallLine, movePiece, startGame, updateGrid,
+  addError, addPiecesFlow, addWallLine, connectionResponse, movePiece, sendStartGame, startGame, updateGrid,
   updatePlayers
 } from "../../../src/client/actions/action-creators";
 import Piece from "../../../src/server/data/piece/Piece";
 import {expect} from "chai";
 import {GRID_WIDTH, GRID_HEIGHT} from "../../../src/common/grid";
 import {PIECES_MOVE} from "../../../src/common/pieces";
+import Player from "../../../src/server/data/player/Player";
 
 describe('reducer', () => {
   describe('#reducerPiecesFlow', () => {
@@ -22,8 +23,10 @@ describe('reducer', () => {
       expect(store.getState().error.message).to.equal("msg");
       expect(store.getState().error.type).to.equal("type");
 
-      //store.dispatch(updatePlayers());
-      //expect(store.getState()).to.equal(2);
+      store.dispatch(updatePlayers([new Player(
+        store.getState().playerName, "", 0, true
+      )]));
+      expect(store.getState().playerStates[0].playerName).to.equal(store.getState().playerName);
 
       store.dispatch(movePiece(PIECES_MOVE.DOWN));
       //need expect
@@ -41,6 +44,10 @@ describe('reducer', () => {
 
       store.dispatch(addWallLine());
       expect(store.getState().playerStates[0].grid[GRID_HEIGHT - 1][0]).to.equal(-1);
+
+      store.dispatch(connectionResponse());
+      store.dispatch(sendStartGame());
+
     });
   });
 });
