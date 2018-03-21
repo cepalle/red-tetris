@@ -1,16 +1,16 @@
 import {gridAddWall, gridDelLine, updatePiecePos, eraseCurPiece, placePiece} from "../util/grid-piece-handler";
 import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
-import {ifLooseSet, ifWinSet} from "../util/end-loose-win-handler";
+import {ifLooseSet, ifWinSet} from "../util/loose-win-handler";
 import {cloneState} from "../util/clone-handler";
 import {animate} from "../util/animate-handler"
 
 /**
- * Add pieces to the state.piecesFlow.
+ * Add pieces to the getState.piecesFlow.
  * @param {Object} state
  * @param {Array<int>} pieces
  */
-const reducerPartsFlow = (state, {pieces}) => {
+const reducerPiecesFlow = (state, {pieces}) => {
   logger_reducer(["piecesFlow", pieces]);
 
   const newState = cloneState(state);
@@ -19,7 +19,7 @@ const reducerPartsFlow = (state, {pieces}) => {
 };
 
 /**
- * Set error to state.error.
+ * Set error to getState.error.
  * @param {Object} state
  * @param {type, message} error
  */
@@ -34,7 +34,7 @@ const reducerError = (state, {error}) => {
 /**
  * Synchronize players with players.
  * @param {Object} state
- * @param {Array<user>} players
+ * @param {Array<player>} players
  */
 const reducerUpdateUsers = (state, {players}) => {
   logger_reducer(["updatePlayers", players]);
@@ -78,7 +78,7 @@ const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece", move]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.hasLoose || !animate.value || player.hasWin) {
+  if (player.hasLoose || !animate.value || player.hasWin || state.piecesFlow.length < 1) {
     return state;
   }
 
@@ -143,14 +143,17 @@ const reducerStartGame = (state, {pieces}) => {
 const reducerAddWallLine = state => {
   logger_reducer(["addWallLine", state]);
 
-  let newState = gridAddWall(state)
+  let newState = gridAddWall(state);
   newState.EmitUpdateGrid = true;
+  newState = eraseCurPiece(newState);
+  ifLooseSet(newState);
+  newState = placePiece(newState);
   return newState;
 };
 
 
 export {
-  reducerPartsFlow,
+  reducerPiecesFlow,
   reducerAddWallLine,
   reducerError,
   reducerMovePiece,

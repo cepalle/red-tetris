@@ -27,7 +27,7 @@ socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(
 
 /**
  * Request: PACKET_PLAYER_JOIN
- * Data recv: {player, room}
+ * Data recv: {player, game}
  */
 const cbPacketPlayerJoin = ({game}) => {
   logger_sock(["recv PACKET_PLAYER_JOIN", game]);
@@ -238,7 +238,7 @@ const emitJoinRoom = (roomName, playerName) => {
 };
 
 /**
- * Used to tell to the backend that the room enter in a no-waiting state and no player can join the room after.
+ * Used to tell to the backend that the room enter in a no-waiting getState and no player can join the room after.
  * Data to sent: {roomName}
  */
 const emitStartPlaying = roomName => {
@@ -307,5 +307,21 @@ export {
   emitGenFlow,
   emitTetrisPlacePiece,
   emitPlayerLoose,
-  emitPlayerCompleteLine
+  emitPlayerCompleteLine,
+  cbPacketPlayerJoin,
+  cbPacketPlayerQuit,
+  cbPacketPlayerPromoted,
+  cbPacketPlayerLose,
+  cbPacketGameStart,
+  cbPacketGenFlow,
+  cbPacketPlayerCompleteLine,
+  cbPacketTetrisPlacePiece,
+  cbJoinRoomResponse,
+  cbQuitRoomResponse,
+  cbStartPlayingResponse,
+  cbConnectionResponse,
+  cbTetrisPlacePieceResponse,
+  cbPlayerLooseResponse,
+  cbPlayerCompleteLineResponse,
+  cbGenFlowResponse,
 };

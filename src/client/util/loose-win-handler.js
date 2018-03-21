@@ -1,6 +1,6 @@
 const ifWinSet = state => {
   const playersNotLoose = state.playerStates.filter(e => !e.hasLoose);
-  if (state.playerStates.length > 1 && state.playerStates.filter(e => !e.hasLoose).length === 1) {
+  if (state.playerStates.length > 1 && playersNotLoose.length === 1) {
     playersNotLoose[0].hasWin = true;
 
     state.SetAnimateFalse = true;

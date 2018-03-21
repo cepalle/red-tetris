@@ -35,7 +35,7 @@ class App {
       const room = GameManager.getGameById(socket.id);
       if (room) {
         const player = room.getPlayer(socket.id);
-        roomSocketHandler.quitGame({roomName: room.name, playerName: player.getPlayerName()});
+        roomSocketHandler.quitGame({roomName: room.name, playerName: player.playerName});
       }
     });
   }
@@ -43,7 +43,7 @@ class App {
   main() {
     io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
     http.listen(4433, function () {
-      console.log('Server on port :' + 4433);
+      console.log('Server on port : 4433');
     });
   }
 }

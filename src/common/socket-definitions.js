@@ -19,7 +19,7 @@ module.exports = {
   QUIT_GAME: "quitGame",
 
   /**
-   * Used to tell to the backend that the room enter in a no-waiting state and no player can join the room after.
+   * Used to tell to the backend that the room enter in a no-waiting getState and no player can join the room after.
    * Data to sent: {roomName}
    */
   START_PLAYING: "startPlaying",
@@ -82,7 +82,7 @@ module.exports = {
 
 
   /**
-   * Used to tell to the client if the room has enter in a no-waiting state.
+   * Used to tell to the client if the room has enter in a no-waiting getState.
    * Data to sent: {error: {type, message}} || {success}
    */
   START_PLAYING_RESPONSE: "startPlayingResponse",

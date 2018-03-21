@@ -6,20 +6,12 @@ let animate = {
   value: false
 };
 
-let nbFarme = 0;
-
 const animateClock = () => {
   if (animate.value) {
-    nbFarme++;
-  } else {
-    nbFarme = 0;
-  }
-  if (nbFarme === 30) {
     store.dispatch(movePiece(PIECES_MOVE.DOWN));
-    nbFarme = 0;
   }
 
-  requestAnimationFrame(animateClock);
+    window.setTimeout(() => animateClock(), 500);
 };
 
 animateClock();

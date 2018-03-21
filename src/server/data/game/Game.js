@@ -16,10 +16,12 @@ class Game {
    * @param {string} playerName
    * @param {string} id
    * @param {boolean} [master]
-   * @return {Player}
+   * @return {Player | undefined}
    */
   addPlayer(playerName, id, master = false) {
-    if (!this.containId(id) && this.waiting) {
+    if (!playerName || !id)
+      return undefined;
+    if (!this.containPlayer(playerName) && !this.containId(id) && this.waiting) {
       const player = new Player(playerName, id, Date.now(), master);
       this.players.push(player);
 
@@ -36,13 +38,15 @@ class Game {
    */
   removePlayer(playerName) {
     const player = this.players.find(e => e.playerName === playerName);
-    this.players.removeObj(player);
-    if (player.isMaster())
-      this.promoteNewPlayer();
+    if (player) {
+      this.players.removeObj(player);
+      if (player.master)
+        this.promoteNewPlayer();
 
-    PacketSender.sendPlayerQuit(player, this);
+      PacketSender.sendPlayerQuit(player, this);
 
-    return player;
+      return player;
+    }
   }
 
   /**
@@ -52,22 +56,6 @@ class Game {
    */
   getPlayer(id) {
     return this.players.find(e => e.id === id);
-  }
-
-  /**
-   * Remove an player from his id.
-   * @param {string} id
-   * @returns {(Object|undefined)}
-   */
-  removeFromId(id) {
-    const player = this.players.find(e => e.id === id);
-    this.players.removeObj(player);
-    if (player.isMaster())
-      this.promoteNewPlayer(player);
-
-    PacketSender.sendPlayerQuit(player, this);
-
-    return player;
   }
 
   /**
@@ -88,16 +76,22 @@ class Game {
     return this.players.find(e => e.playerName === playerName) !== undefined;
   }
 
+  /**
+   * Check if a player is alone and he has lose or on multiples players, there is only player that not has loose.
+   * @return {boolean}
+   */
   gameHasEnd() {
     if (this.players.length === 1 && this.players[0].loose ||
       this.players.length > 1 && this.players.filter(p => !p.loose).length === 1) {
       this.players.forEach(e => e.loose = false);
       this.setWaiting(true);
+      return true;
     }
+    return false;
   }
 
   /**
-   * Set the current state of the room to true or false, if state is true player can join else player can't join.
+   * Set the current getState of the room to true or false, if getState is true player can join else player can't join.
    * @param {boolean} stateWaiting
    */
   setWaiting(stateWaiting) {
@@ -113,9 +107,9 @@ class Game {
     if (this.players.length === 0) {
       RoomManager.deleteGame(this.name);
     }
-    else {
+    else if (!this.players.some(e => e.master)) {
       const promotedPlayer = this.players.sort((a, b) => a.order > b.order)[0];
-      promotedPlayer.setMaster(true);
+      promotedPlayer.master = true;
       PacketSender.sendPlayerPromoted(promotedPlayer, this);
     }
   }

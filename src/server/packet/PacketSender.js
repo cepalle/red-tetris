@@ -95,9 +95,10 @@ class PacketSender {
    * @param exceptConcerned
    */
   static sendPacketToAllPlayer(packetName, player, game, data, exceptConcerned = true) {
-    game.players.filter(e => exceptConcerned ? e.getId() !== player.getId() : true).forEach(e => {
+    game.players.filter(e => exceptConcerned ? e.id !== player.id : true).forEach(e => {
       const socket = SocketMap.sockets.get(e.id);
-      socket.emit(packetName, data);
+      if (socket)
+        socket.emit(packetName, data);
     });
   }
 }
