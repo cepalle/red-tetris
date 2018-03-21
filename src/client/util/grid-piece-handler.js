@@ -54,6 +54,10 @@ const hasCollision = (grid, piece, loc) => {
 };
 
 const placePiece = state => {
+  if (state.piecesFlow.length < 1) {
+    return state
+  }
+
   const newState = cloneState(state);
 
   const grid = newState.playerStates.find(playerState => playerState.playerName === newState.playerName).grid;
@@ -73,6 +77,10 @@ const placePiece = state => {
 };
 
 const eraseCurPiece = state => {
+  if (state.piecesFlow.length < 1) {
+    return state
+  }
+
   const newState = cloneState(state);
 
   const grid = newState.playerStates.find(playerState => playerState.playerName === newState.playerName).grid;
@@ -100,6 +108,10 @@ const newLoc = (loc, move) => {
 };
 
 const updatePiecePos = (state, move) => {
+  if (state.piecesFlow.length < 1) {
+    return state
+  }
+
   const newState = cloneState(state);
 
   let collisionType;
@@ -171,6 +183,10 @@ const gridDelLine = state => {
 };
 
 const gridAddWall = state => {
+  if (state.piecesFlow.length < 1) {
+    return state
+  }
+
 
   let player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
 

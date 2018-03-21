@@ -8,7 +8,7 @@ const keyRight = 39;
 const keyDown = 40;
 const keySpace = 32;
 
-window.addEventListener('keydown', function (event) {
+const eventHandler = (event) => {
   switch (event.keyCode) {
     case keyLeft:
       event.preventDefault();
@@ -35,4 +35,6 @@ window.addEventListener('keydown', function (event) {
       store.dispatch(movePiece(PIECES_MOVE.DROP));
       break;
   }
-}, false);
+};
+
+export {eventHandler};

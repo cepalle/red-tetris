@@ -11,7 +11,7 @@ const animateClock = () => {
     store.dispatch(movePiece(PIECES_MOVE.DOWN));
   }
 
-  window.setTimeout(() => animateClock(), 500);
+    window.setTimeout(() => animateClock(), 500);
 };
 
 animateClock();

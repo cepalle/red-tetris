@@ -78,7 +78,7 @@ const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece", move]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.hasLoose || !animate.value || player.hasWin) {
+  if (player.hasLoose || !animate.value || player.hasWin || state.piecesFlow.length < 1) {
     return state;
   }
 
