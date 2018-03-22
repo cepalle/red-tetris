@@ -1,10 +1,15 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {getColorNum} from "../util/css-handler";
-import {placePiece} from "../util/grid-piece-handler";
+import {placePiece, placePiecePreview} from "../util/grid-piece-handler";
+import {cloneState} from "../util/clone-handler";
 
 const GridPlayerComponent = ({state}) => {
   const playerState = state.playerStates.find(e => e.playerName === state.playerName);
+  if (state.piecesFlow.length > 0 && !playerState.hasLoose && !playerState.hasWin) {
+    playerState.grid = placePiecePreview(playerState.grid, state.piecesFlow[0]);
+    playerState.grid = placePiece(playerState.grid, state.piecesFlow[0]);
+  }
   return <div className={"line center"}>
     <div>
       <div className={"grid"}>
@@ -28,7 +33,7 @@ const GridPlayerComponent = ({state}) => {
 
 const mapStateToProps = state => {
   return {
-    state: placePiece(state),
+    state: cloneState(state),
   }
 };
 

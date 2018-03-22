@@ -82,14 +82,15 @@ const reducerMovePiece = (state, {move}) => {
     return state;
   }
 
+  const newState = cloneState(state);
+  const newPlayer = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
   let needNext;
-  let newState;
-  [needNext, newState] = updatePiecePos(state, move);
+  [needNext, newState.piecesFlow[0]] = updatePiecePos(newPlayer.grid, newState.piecesFlow[0], move);
 
   if (needNext) {
-    newState = placePiece(newState);
+    newPlayer.grid = placePiece(newPlayer.grid, newState.piecesFlow[0]);
     let nbLineDel;
-    [newState, nbLineDel] = gridDelLine(newState);
+    [newPlayer.grid, nbLineDel] = gridDelLine(newPlayer.grid);
     newState.piecesFlow.shift();
 
     newState.EmitCompleteLine = nbLineDel;
