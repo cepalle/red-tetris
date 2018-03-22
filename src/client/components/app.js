@@ -1,8 +1,7 @@
 import React from "react";
-import {ButtonStart} from "../containers/button-start";
 import {GridPlayer} from "../containers/grid-player"
 import {store} from "../middlewares/store"
-import {Error} from "../containers/error";
+import {Messages} from "../containers/error";
 import {Opponents} from "../containers/opponents";
 import {PreviewFlow} from "../containers/preview-flow"
 import mp3 from '../asserts/Original_Tetris_theme.mp3'
@@ -12,11 +11,7 @@ const App = () =>
     <div className={"row center wrap"}>
       <div className={"column width_info end"}>
         <div className={"row center"}>
-          <Error/>
-        </div>
-
-        <div className={"row center"}>
-          <ButtonStart/>
+          <Messages/>
         </div>
 
         <div className={"row center"}>
