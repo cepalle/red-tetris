@@ -4,12 +4,12 @@
   justify-content: center;
 }
 
-.grid {
+.column {
   display: flex;
   flex-direction: column;
 }
 
-.line {
+.row {
   display: flex;
   flex-direction: row;
 }
@@ -25,8 +25,21 @@
   border: 2px solid #cccccc;
 }
 
-.opponent {
+.pad {
   padding: 10px;
+}
+
+.width_preview {
+  width: 150px;
+}
+
+.width_info {
+  width: 300px;
+}
+
+.end {
+  display: flex;
+  justify-content: flex-end
 }
 
 .color8 {

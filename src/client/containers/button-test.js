@@ -1,40 +1,14 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {movePiece, sendStartGame} from "../actions/action-creators";
-import {PIECES_MOVE} from "../../common/pieces";
-import {getColorNum} from "../util/css-handler";
+import {sendStartGame} from "../actions/action-creators";
 
-const ButtonTestComponent = ({
-                               line,
-                               onClickButtonRotRight,
-                               onClickButtonRotLeft,
-                               onClickButtonStartGame,
-                             }) =>
+const ButtonStartComponent = ({onClickButtonStartGame}) =>
   <div>
-    <div className="line">
-      {line.map((el, i) =>
-        <div key={i} className={"case color" + getColorNum(el)}/>
-      )}
-    </div>
-
     <button onClick={() => onClickButtonStartGame()}>
       StartGame
     </button>
-
-    <button onClick={() => onClickButtonRotRight()}>
-      RotRight
-    </button>
-    <button onClick={() => onClickButtonRotLeft()}>
-      RotLeft
-    </button>
   </div>
 ;
-
-const mapStateToProps = state => {
-  return {
-    line: state.piecesFlow.map(e => e.num),
-  }
-};
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -42,14 +16,12 @@ const mapDispatchToProps = dispatch => {
       console.log("button start playing");
       dispatch(sendStartGame());
     },
-    onClickButtonRotRight: () => dispatch(movePiece(PIECES_MOVE.ROT_RIGHT)),
-    onClickButtonRotLeft: () => dispatch(movePiece(PIECES_MOVE.ROT_LEFT)),
   }
 };
 
-const ButtonTest = connect(
-  mapStateToProps,
+const ButtonStart = connect(
+  undefined,
   mapDispatchToProps
-)(ButtonTestComponent);
+)(ButtonStartComponent);
 
-export {ButtonTest};
+export {ButtonStart};

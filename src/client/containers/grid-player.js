@@ -10,11 +10,11 @@ const GridPlayerComponent = ({state}) => {
     playerState.grid = placePiecePreview(playerState.grid, state.piecesFlow[0]);
     playerState.grid = placePiece(playerState.grid, state.piecesFlow[0]);
   }
-  return <div className={"line center"}>
+  return <div className={"row center"}>
     <div>
-      <div className={"grid"}>
+      <div className={"column pad"}>
         {playerState.grid.map((line, i) => i >= 4 &&
-          <div key={i} className={"line"}>
+          <div key={i} className={"row"}>
             {line.map((el, j) => {
                 let cssClass = "color" + getColorNum(el);
                 cssClass += (el > 0 ? " casePiece" : " case");
@@ -24,7 +24,7 @@ const GridPlayerComponent = ({state}) => {
           </div>
         )}
       </div>
-      <div className={"line center"}>
+      <div className={"row center"}>
         <p>{playerState.playerName}{playerState.isMaster && "(Master)"}{playerState.hasLoose && "(loose)"}{playerState.hasWin && "(Win)"}</p>
       </div>
     </div>
