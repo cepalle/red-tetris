@@ -30,7 +30,7 @@ socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(
  * Data recv: {player, game}
  */
 const cbPacketPlayerJoin = ({game}) => {
-  logger_sock(["recv PACKET_PLAYER_JOIN", game]);
+  logger_sock(["recv PACKET_PLAYER_JOIN"]);
 
   store.dispatch(updatePlayers(game.players));
 };
@@ -40,7 +40,7 @@ const cbPacketPlayerJoin = ({game}) => {
  * Data recv: {player, room}
  */
 const cbPacketPlayerQuit = ({game}) => {
-  logger_sock(["recv PACKET_PLAYER_QUIT", game]);
+  logger_sock(["recv PACKET_PLAYER_QUIT"]);
 
   store.dispatch(updatePlayers(game.players));
 };
@@ -50,7 +50,7 @@ const cbPacketPlayerQuit = ({game}) => {
  * Data recv: {player, room}
  */
 const cbPacketPlayerPromoted = ({game}) => {
-  logger_sock(["recv PACKET_PLAYER_PROMOTED", game]);
+  logger_sock(["recv PACKET_PLAYER_PROMOTED"]);
 
   store.dispatch(updatePlayers(game.players));
 };
@@ -60,7 +60,7 @@ const cbPacketPlayerPromoted = ({game}) => {
  * Data recv: {player, room}
  */
 const cbPacketPlayerLose = ({game}) => {
-  logger_sock(["recv PACKET_PLAYER_LOSE", game]);
+  logger_sock(["recv PACKET_PLAYER_LOSE"]);
 
   store.dispatch(updatePlayers(game.players));
 };
@@ -70,7 +70,7 @@ const cbPacketPlayerLose = ({game}) => {
  * Data recv: {room, pieces}
  */
 const cbPacketGameStart = ({pieces}) => {
-  logger_sock(["recv PACKET_GAME_START", pieces]);
+  logger_sock(["recv PACKET_GAME_START"]);
 
   store.dispatch(startGame(pieces));
 };
@@ -100,7 +100,7 @@ const cbPacketPlayerCompleteLine = () => {
  * Data recv: {grid, playerName} gridAndPlayer
  */
 const cbPacketTetrisPlacePiece = ({grid, playerName}) => {
-  logger_sock(["recv PACKET_TETRIS_PLACE_PIECE", grid, playerName]);
+  logger_sock(["recv PACKET_TETRIS_PLACE_PIECE"]);
 
   store.dispatch(updateGrid(grid, playerName));
 };
@@ -125,7 +125,7 @@ socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
  * Data recv: {error: {type, message}} || {success, game, user}
  */
 const cbJoinRoomResponse = ({error, game}) => {
-  logger_sock(["recv JOIN_GAME_RESPONSE", game]);
+  logger_sock(["recv JOIN_GAME_RESPONSE"]);
 
   if (error) {
     store.dispatch(addError(error))
@@ -139,7 +139,7 @@ const cbJoinRoomResponse = ({error, game}) => {
  * Data recv: {error: {type, message}} || {success, game, user}
  */
 const cbQuitRoomResponse = ({error, game}) => {
-  logger_sock(["recv QUIT_ROOM_RESPONSE", game]);
+  logger_sock(["recv QUIT_ROOM_RESPONSE"]);
 
   if (error) {
     store.dispatch(addError(error))
@@ -153,7 +153,7 @@ const cbQuitRoomResponse = ({error, game}) => {
  * Data recv: {error: {type, message}} || {success}
  */
 const cbStartPlayingResponse = ({error}) => {
-  logger_sock(["recv START_PLAYING_RESPONSE", error]);
+  logger_sock(["recv START_PLAYING_RESPONSE"]);
 
   if (error) {
     store.dispatch(addError(error))
@@ -187,7 +187,7 @@ const cbTetrisPlacePieceResponse = ({error}) => {
  * Data recv: {}
  */
 const cbPlayerLooseResponse = ({error}) => {
-  logger_sock(["recv PLAYER_LOOSE_RESPONSE", error]);
+  logger_sock(["recv PLAYER_LOOSE_RESPONSE"]);
 
   if (error) {
     store.dispatch(addError(error))
@@ -199,7 +199,7 @@ const cbPlayerLooseResponse = ({error}) => {
  * Data recv: {}
  */
 const cbPlayerCompleteLineResponse = ({error}) => {
-  logger_sock(["recv PLAYER_COMPLETE_LINE_RESPONSE", error]);
+  logger_sock(["recv PLAYER_COMPLETE_LINE_RESPONSE"]);
 
   if (error) {
     store.dispatch(addError(error))
@@ -211,7 +211,7 @@ const cbPlayerCompleteLineResponse = ({error}) => {
  * Data recv: {}
  */
 const cbGenFlowResponse = ({error}) => {
-  logger_sock(["recv GENFLOW_RESPONSE", error]);
+  logger_sock(["recv GENFLOW_RESPONSE"]);
 
   if (error) {
     store.dispatch(addError(error))
@@ -242,7 +242,7 @@ const emitJoinRoom = (roomName, playerName) => {
  * Data to sent: {roomName}
  */
 const emitStartPlaying = roomName => {
-  logger_sock(["emit START_PLAYING", roomName]);
+  logger_sock(["emit START_PLAYING"]);
 
   socket.emit(socketDefs.START_PLAYING, {
     roomName: roomName
@@ -254,7 +254,7 @@ const emitStartPlaying = roomName => {
  * Data to sent: {roomName}
  */
 const emitGenFlow = roomName => {
-  logger_sock(["emit GENFLOW", roomName]);
+  logger_sock(["emit GENFLOW"]);
 
   socket.emit(socketDefs.GENFLOW, {
     roomName: roomName

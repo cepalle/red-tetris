@@ -19,6 +19,7 @@ const ifLooseSet = state => {
     newPlayer.grid[3].some(e => e !== 0)) {
     player.hasLoose = true;
 
+    console.log("player loose grid:", newPlayer.grid);
     state.SetAnimateFalse = true;
     state.EmitLoose = true;
     ifWinSet(state);
