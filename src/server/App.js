@@ -1,4 +1,3 @@
-import util from "./util/ArraysUtil";
 import express from "express";
 import {Server} from "http";
 import RoomSocketHandler from "./handlers/RoomSocketHandler";
@@ -7,6 +6,7 @@ import GlobalSocketHandler from "./handlers/GlobalSocketHandler";
 import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
 import SocketMap from "./data/SocketMap";
 import socketDefs from "../common/socket-definitions";
+import "./util/ArraysUtil";
 
 const app = express();
 const http = Server(app);

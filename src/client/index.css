@@ -15,7 +15,14 @@
 }
 
 .case {
-  padding: 12px;
+  height: 20px;
+  width: 20px;
+}
+
+.casePiece {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #cccccc;
 }
 
 .opponent {
@@ -27,7 +34,7 @@
 }
 
 .color0 {
-  background-color: #eeeeee;
+  background-color: #666666;
 }
 
 .color1 {

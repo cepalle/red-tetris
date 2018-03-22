@@ -9,8 +9,11 @@ const GridPlayerComponent = ({state: playerState}) =>
       <div className={"grid"}>
         {playerState.grid.map((line, i) => i >= 4 &&
           <div key={i} className={"line"}>
-            {line.map((el, j) =>
-              <div key={j} className={"case color" + getColorNum(el)}/>
+            {line.map((el, j) => {
+                let cssClass = "color" + getColorNum(el);
+                cssClass += (el > 0 ? " casePiece" : "case");
+                return <div key={j} className={cssClass}/>;
+            }
             )}
           </div>
         )}
