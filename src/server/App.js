@@ -8,11 +8,12 @@ import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
 import SocketMap from "./data/SocketMap";
 import socketDefs from "../common/socket-definitions";
 
-const app = express();
-const http = Server(app);
+const ex = express();
+const http = Server(ex);
 const io = require("socket.io")(http);
 
 class App {
+
 
   handleClient(socket) {
     const roomSocketHandler = new RoomSocketHandler(socket);
@@ -43,10 +44,10 @@ class App {
   main() {
     io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
     http.listen(4433, function () {
-      console.log('Server on port : 4433');
+      console.log(`Server on port : 4433`);
     });
   }
 }
+const app = new App();
+app.main();
 
-
-new App().main();

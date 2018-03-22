@@ -67,7 +67,7 @@ class SocketHandler {
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;
       }
-      if (key === "roomName" && !GameManager.getGameById(this.id).name === data[key])
+      if (key === "roomName" && !GameManager.getGame(data.roomName).name === data[key])
       {
         this.socket.emit(response, {error: errorsDefs.UNEXPECTED_DATA});
         return false;

@@ -10,6 +10,7 @@
     "srv-prod": "node ./src/server/App.js",
     "srv-dev": "babel-watch -w src src/server/App.js",
     "test": "mocha -r jsdom-global/register --recursive --require babel-core/register --reporter spec",
+    "test-server": "mocha --recursive --require babel-core/register --reporter spec \"test/server/\"",
     "coverage": "nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha --recursive -r jsdom-global/register"
   },
   "keywords": [],

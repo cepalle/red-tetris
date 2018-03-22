@@ -4,19 +4,19 @@ const log_component = true;
 const log_middleware = true;
 
 const logger_sock = arg => {
-  log_sock && console.log("socket:", ...arg);
+  // log_sock && console.log("socket:", ...arg);
 };
 
 const logger_reducer = arg => {
-  log_reducer && console.log("reducer:", ...arg);
+  // log_reducer && console.log("reducer:", ...arg);
 };
 
 const logger_component = arg => {
-  log_component && console.log("store:", ...arg);
+  // log_component && console.log("store:", ...arg);
 };
 
 const logger_middleware = arg => {
-  log_middleware && console.log("middleware:", ...arg);
+  // log_middleware && console.log("middleware:", ...arg);
 };
 
 export {logger_sock, logger_reducer, logger_component, logger_middleware};
