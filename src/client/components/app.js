@@ -1,9 +1,9 @@
 import React from "react";
 import {GridPlayer} from "../containers/grid-player"
-import {store} from "../middlewares/store"
-import {Messages} from "../containers/error";
+import {Messages} from "../containers/messages";
 import {Opponents} from "../containers/opponents";
 import {PreviewFlow} from "../containers/preview-flow"
+import {InfoPlayer} from "../containers/info-player"
 import mp3 from '../asserts/Original_Tetris_theme.mp3'
 
 const App = () =>
@@ -15,11 +15,7 @@ const App = () =>
         </div>
 
         <div className={"row center"}>
-          {store.getState().roomName && "Room name: " + store.getState().roomName}
-        </div>
-
-        <div className={"row center"}>
-          {store.getState().playerName && "Your name: " + store.getState().playerName}
+          <InfoPlayer/>
         </div>
 
         <audio loop controls autoPlay src={mp3}/>
