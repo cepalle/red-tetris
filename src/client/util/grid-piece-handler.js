@@ -76,27 +76,6 @@ const placePiece = state => {
   return newState;
 };
 
-const eraseCurPiece = state => {
-  if (state.piecesFlow.length < 1) {
-    return state
-  }
-
-  const newState = cloneState(state);
-
-  const grid = newState.playerStates.find(playerState => playerState.playerName === newState.playerName).grid;
-  const pieceDescr = getPiece(newState.piecesFlow[0].num, newState.piecesFlow[0].rot);
-  const loc = newState.piecesFlow[0].pos;
-  pieceDescr.forEach((line, i) =>
-    line.forEach((p, j) => {
-        if (p !== 0) {
-          grid[loc.y + i][loc.x + j] = 0;
-        }
-      }
-    )
-  );
-  return newState;
-};
-
 const newLoc = (loc, move) => {
   if (move === PIECES_MOVE.DOWN)
     return {x: loc.x, y: loc.y + 1};
@@ -194,7 +173,7 @@ const gridAddWall = state => {
     return state;
   }
 
-  let newState = eraseCurPiece(state);
+  let newState = cloneState(state);
   player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
 
   player.grid = [...player.grid, Array(GRID_WIDTH).fill(-1)];
@@ -202,14 +181,13 @@ const gridAddWall = state => {
   if (newState.piecesFlow[0].pos.y > 0) {
     newState.piecesFlow[0].pos.y--;
   }
-  newState = placePiece(newState);
+
   return newState;
 };
 
 
 export {
   hasCollision,
-  eraseCurPiece,
   placePiece,
   COLLISION_TYPE,
   newLoc,

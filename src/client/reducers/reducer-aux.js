@@ -1,4 +1,4 @@
-import {gridAddWall, gridDelLine, updatePiecePos, eraseCurPiece, placePiece} from "../util/grid-piece-handler";
+import {gridAddWall, gridDelLine, updatePiecePos, placePiece} from "../util/grid-piece-handler";
 import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
 import {ifLooseSet, ifWinSet} from "../util/loose-win-handler";
@@ -83,11 +83,11 @@ const reducerMovePiece = (state, {move}) => {
   }
 
   let needNext;
-  let newState = eraseCurPiece(state);
-  [needNext, newState] = updatePiecePos(newState, move);
-  newState = placePiece(newState);
+  let newState;
+  [needNext, newState] = updatePiecePos(state, move);
 
   if (needNext) {
+    newState = placePiece(newState);
     let nbLineDel;
     [newState, nbLineDel] = gridDelLine(newState);
     newState.piecesFlow.shift();
@@ -145,9 +145,7 @@ const reducerAddWallLine = state => {
 
   let newState = gridAddWall(state);
   newState.EmitUpdateGrid = true;
-  newState = eraseCurPiece(newState);
   ifLooseSet(newState);
-  newState = placePiece(newState);
   return newState;
 };
 
