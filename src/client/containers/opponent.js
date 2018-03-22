@@ -26,7 +26,7 @@ const OpponentComponent = ({states}) => {
             {grid.map((line, i) => i >= 4 &&
               <div key={i} className={"line"}>
                 {line.map((el, j) =>
-                  <div key={j} className={"case color" + getColorNum(el)}/>
+                  <div key={j} className={(el > 0 ? "piece" + el : "case" + -el)}/>
                 )}
               </div>
             )}

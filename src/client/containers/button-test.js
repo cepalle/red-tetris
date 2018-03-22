@@ -13,7 +13,7 @@ const ButtonTestComponent = ({
   <div>
     <div className="line">
       {line.map((el, i) =>
-        <div key={i} className={"case color" + getColorNum(el)}/>
+        <div key={i} className={(el > 0 ? "piece" + el : "case" + -el)}/>
       )}
     </div>
 

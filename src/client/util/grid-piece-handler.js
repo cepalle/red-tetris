@@ -84,7 +84,7 @@ const placePiecePreview = (grid, piece) => {
         const gx = x + loc.x;
         const gy = y + loc.y;
         if (number !== 0) {
-          newGrid[gy][gx] = 9;
+          newGrid[gy][gx] = -2;
         }
       }
     )
