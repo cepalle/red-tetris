@@ -24,9 +24,6 @@ const GridPlayerComponent = ({state}) => {
           </div>
         )}
       </div>
-      <div className={"row center"}>
-        <p>{playerState.playerName}{playerState.isMaster && "(Master)"}{playerState.hasLoose && "(loose)"}{playerState.hasWin && "(Win)"}</p>
-      </div>
     </div>
   </div>;
 };

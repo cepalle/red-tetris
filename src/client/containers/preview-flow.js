@@ -8,20 +8,22 @@ const PreviewFlowComponent = ({pieceFlow}) =>
     {pieceFlow.map((p, i) => {
         if (i > 0 && i < 4) {
           let pieceDscr = getPiece(p.num, p.rot);
-          return <div key={i} className="column pad">
-            {
-              pieceDscr.map((l, j) =>
-                <div key={j} className="row">
-                  {
-                    l.map((el, k) => {
-                      let cssClass = "color" + getColorNum(el);
-                      cssClass += (el > 0 ? " casePiece" : " case");
-                      return <div key={k} className={cssClass}/>;
-                    })
-                  }
-                </div>
-              )
-            }
+          return <div key={i} className="row center">
+            <div className="column pad">
+              {
+                pieceDscr.map((l, j) =>
+                  <div key={j} className="row">
+                    {
+                      l.map((el, k) => {
+                        let cssClass = "color" + getColorNum(el);
+                        cssClass += (el > 0 ? " casePiece" : " case");
+                        return <div key={k} className={cssClass}/>;
+                      })
+                    }
+                  </div>
+                )
+              }
+            </div>
           </div>;
         }
       }

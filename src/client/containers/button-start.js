@@ -3,11 +3,9 @@ import {connect} from 'react-redux';
 import {sendStartGame} from "../actions/action-creators";
 
 const ButtonStartComponent = ({onClickButtonStartGame}) =>
-  <div>
-    <button onClick={() => onClickButtonStartGame()}>
-      StartGame
-    </button>
-  </div>
+  <button onClick={() => onClickButtonStartGame()}>
+    StartGame
+  </button>
 ;
 
 const mapDispatchToProps = dispatch => {

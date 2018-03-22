@@ -5,7 +5,7 @@ import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {getColorNum} from "../util/css-handler";
 
 const OpponentComponent = ({states}) => {
-  return <div className={"row"}>
+  return <div className={"row wrap"}>
     {states.map((state, k) => {
         const grid = state.grid.map(l => l.map(e => e));
 
@@ -46,9 +46,9 @@ const mapStateToProps = state => {
   return {states: clonePlayerStates(state.playerStates).filter(el => el.playerName !== state.playerName)};
 };
 
-const Opponent = connect(
+const Opponents = connect(
   mapStateToProps,
   undefined
 )(OpponentComponent);
 
-export {Opponent};
+export {Opponents};
