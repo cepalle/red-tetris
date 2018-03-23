@@ -20,9 +20,16 @@ const OpponentComponent = ({states}) => {
           }
         }
 
+        const gridRender = [];
+        grid.forEach((l, i) => {
+          gridRender.push([-1, ...l, -1]);
+        });
+        gridRender[3] = Array(GRID_WIDTH + 2).fill(-1);
+        gridRender.push(Array(GRID_WIDTH + 2).fill(-1));
+
         return <div key={k}>
           <div className={"column pad"}>
-            {grid.map((line, i) => i >= 4 &&
+            {gridRender.map((line, i) => i > 2 &&
               <div key={i} className={"row"}>
                 {line.map((el, j) =>
                   <div key={j} className={(el > 0 ? "piece" + el : "case" + -el)}/>

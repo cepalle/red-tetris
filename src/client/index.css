@@ -28,93 +28,96 @@
 /* PIECE */
 
 .case {
-  height: 20px;
-  width: 20px;
+  height: 30px;
+  width: 30px;
 }
 
 .case2 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #cccccc;
-  background-color: #777777;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #cccccc;
+  background-color: #14152B;
 }
 
 .case1 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #666666;
-  border-bottom-color: #000000;
-  border-right-color: #000000;
-  background-color: #333333;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #404376;
+  border-bottom-color: #101228;
+  border-right-color: #101228;
+  background-color: #222343;
 }
 
 .case0 {
-  height: 20px;
-  width: 20px;
-  background-color: #777777;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #171830;
+  border-bottom-color: #111328;
+  border-right-color: #111328;
+  background-color: #14152B;
 }
 
 .piece1 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #00ffff;
-  border-bottom-color: #009999;
-  border-right-color: #009999;
-  background-color: #00cccc;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #56A340;
+  border-bottom-color: #396A2C;
+  border-right-color: #396A2C;
+  background-color: #4D923A;
 }
 
 .piece2 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #0000ff;
-  border-bottom-color: #000099;
-  border-right-color: #000099;
-  background-color: #0000cc;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #434C9D;
+  border-bottom-color: #2E336A;
+  border-right-color: #2E336A;
+  background-color: #3D458F;
 }
 
 .piece3 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #ff8800;
-  border-bottom-color: #996600;
-  border-right-color: #996600;
-  background-color: #cc7700;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #933FAC;
+  border-bottom-color: #622875;
+  border-right-color: #622875;
+  background-color: #85389B;
 }
 
 .piece4 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #ffff00;
-  border-bottom-color: #999900;
-  border-right-color: #999900;
-  background-color: #cccc00;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #CDA827;
+  border-bottom-color: #8C7518;
+  border-right-color: #8C7518;
+  background-color: #BA9823;
 }
 
 .piece5 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #00ff00;
-  border-bottom-color: #009900;
-  border-right-color: #009900;
-  background-color: #00cc00;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #B3562F;
+  border-bottom-color: #7C3B20;
+  border-right-color: #7C3B20;
+  background-color: #A24E2A;
 }
 
 .piece6 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #8800ff;
-  border-bottom-color: #660099;
-  border-right-color: #660099;
-  background-color: #7700cc;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #4DB2A5;
+  border-bottom-color: #337A70;
+  border-right-color: #337A70;
+  background-color: #459F94;
 }
 
 .piece7 {
-  height: 16px;
-  width: 16px;
-  border: 2px solid #ff0000;
-  border-bottom-color: #990000;
-  border-right-color: #990000;
-  background-color: #cc0000;
+  height: 24px;
+  width: 24px;
+  border: 3px solid #A9383E;
+  border-bottom-color: #76262B;
+  border-right-color: #76262B;
+  background-color: #993339;
 }
 
 /* OTHER CSS */
@@ -131,3 +134,16 @@
   width: 500px;
 }
 
+@font-face {
+  font-family: 'saboFilled';
+  src: url('./assets/Sabo-Filled.otf');
+}
+
+.font_retro {
+  font-family:'saboFilled';
+  color: yellow;
+}
+
+body {
+  background-image: url("./assets/background.jpg");
+}
