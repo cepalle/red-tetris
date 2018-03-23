@@ -1,3 +1,4 @@
+import "./util/ArraysUtil";
 import express from "express";
 import RoomSocketHandler from "./handlers/RoomSocketHandler";
 import GameManager from "./data/game/GameManager";
@@ -5,7 +6,6 @@ import GlobalSocketHandler from "./handlers/GlobalSocketHandler";
 import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
 import SocketMap from "./data/SocketMap";
 import socketDefs from "../common/socket-definitions";
-import "./util/ArraysUtil";
 import https from "https";
 import {Server} from "http";
 import * as fs from "fs";
