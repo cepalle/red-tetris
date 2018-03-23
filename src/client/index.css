@@ -136,14 +136,12 @@
 
 @font-face {
   font-family: 'saboFilled';
-  src: url('./assets/Sabo-Filled.otf');
-}
-
-.font_retro {
-  font-family:'saboFilled';
-  color: yellow;
+  src: url('./assets/arcade.ttf');
 }
 
 body {
+  font-family:'saboFilled';
+  font-size: 30px;
+  color: white;
   background-image: url("./assets/background.jpg");
 }

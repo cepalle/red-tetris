@@ -19,7 +19,7 @@ const GridPlayerComponent = ({state}) => {
   gridRender[3] = Array(GRID_WIDTH + 2).fill(-1);
   gridRender.push(Array(GRID_WIDTH + 2).fill(-1));
 
-  return <div className={"row center"}>
+  return <div className={"column center"}>
     <div>
       <div className={"column pad"}>
         {gridRender.map((line, i) => i > 2 &&
@@ -32,6 +32,9 @@ const GridPlayerComponent = ({state}) => {
           </div>
         )}
       </div>
+    </div>
+    <div className={"row center"}>
+      <p>YOU!{playerState.isMaster && "(Master)"}{playerState.hasLoose && "(loose)"}{playerState.hasWin && "(Win)"}</p>
     </div>
   </div>;
 };
