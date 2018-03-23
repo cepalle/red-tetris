@@ -284,7 +284,7 @@ const emitPlayerCompleteLine = (roomName, playerName) => {
 
   socket.emit(socketDefs.PLAYER_COMPLETE_LINE, {
     roomName: roomName,
-    playerName: playerName
+    playerName: playerName // TODO ADD nb line
   });
 };
 

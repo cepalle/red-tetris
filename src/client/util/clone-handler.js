@@ -7,17 +7,19 @@ const clonePlayerStates = playerStates => playerStates.map(playerState =>
   )
 ;
 
+const clonePiece = piece => Object.assign({}, piece, {pos: Object.assign({}, piece.pos)});
+
 const cloneState = state =>
   Object.assign(
     {},
     state,
     {
       playerStates: clonePlayerStates(state.playerStates),
-      piecesFlow: state.piecesFlow.map(e => Object.assign({}, e, {pos: Object.assign({}, e.pos)})),
+      piecesFlow: state.piecesFlow.map(p => clonePiece(p)),
       error: Object.assign({}, state.error)
     }
   )
 ;
 
 
-export {cloneState, clonePlayerStates};
+export {cloneState, clonePlayerStates, clonePiece};
