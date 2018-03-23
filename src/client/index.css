@@ -27,97 +27,84 @@
 
 /* PIECE */
 
-.case {
-  height: 30px;
-  width: 30px;
+.casePlayer {
+  height: 20px;
+  width: 20px;
+  border: 3px;
 }
 
-.case2 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #cccccc;
-  background-color: #14152B;
+.caseOpponent {
+  height: 16px;
+  width: 16px;
+  border: 2.5px;
 }
 
-.case1 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #404376;
-  border-bottom-color: #101228;
-  border-right-color: #101228;
-  background-color: #222343;
-}
-
-.case0 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #171830;
+.color0 {
+  border: solid #171830;
   border-bottom-color: #111328;
   border-right-color: #111328;
   background-color: #14152B;
 }
 
-.piece1 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #56A340;
+.color1 {
+  border: solid #56A340;
   border-bottom-color: #396A2C;
   border-right-color: #396A2C;
   background-color: #4D923A;
 }
 
-.piece2 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #434C9D;
+.color2 {
+  border: solid #434C9D;
   border-bottom-color: #2E336A;
   border-right-color: #2E336A;
   background-color: #3D458F;
 }
 
-.piece3 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #933FAC;
+.color3 {
+  border: solid #933FAC;
   border-bottom-color: #622875;
   border-right-color: #622875;
   background-color: #85389B;
 }
 
-.piece4 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #CDA827;
+.color4 {
+  border: solid #CDA827;
   border-bottom-color: #8C7518;
   border-right-color: #8C7518;
   background-color: #BA9823;
 }
 
-.piece5 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #B3562F;
+.color5 {
+  border: solid #B3562F;
   border-bottom-color: #7C3B20;
   border-right-color: #7C3B20;
   background-color: #A24E2A;
 }
 
-.piece6 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #4DB2A5;
+.color6 {
+  border: solid #4DB2A5;
   border-bottom-color: #337A70;
   border-right-color: #337A70;
   background-color: #459F94;
 }
 
-.piece7 {
-  height: 24px;
-  width: 24px;
-  border: 3px solid #A9383E;
+.color7 {
+  border: solid #A9383E;
   border-bottom-color: #76262B;
   border-right-color: #76262B;
   background-color: #993339;
+}
+
+.color8 {
+  border: solid #404376;
+  border-bottom-color: #101228;
+  border-right-color: #101228;
+  background-color: #222343;
+}
+
+.color9 {
+  border: solid #cccccc;
+  background-color: #14152B;
 }
 
 /* OTHER CSS */

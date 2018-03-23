@@ -95,7 +95,7 @@ const placePiecePreview = (grid, piece) => {
         if (number !== 0) {
           if (gx >= 0 && gy >= 0 &&
             gy < newGrid.length && gx < newGrid[gy].length) {
-            newGrid[gy][gx] = -2;
+            newGrid[gy][gx] = 9;
           } else {
             logger(["invalide placement:", grid, piece]);
           }

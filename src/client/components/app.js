@@ -20,15 +20,13 @@ import mp3 from '../assets/tetris_remix.mp3'
 const App = () =>
   <div className={"column"}>
     <audio loop autoPlay src={mp3}/>
-    <div className={"row center wrap"}>
-      <div className={"row center"}>
-        <GridPlayer/>
-        <div className={"width_preview center"}>
-          <PreviewFlow/>
-        </div>
+    <div className={"row center"}>
+      <div className={"width_preview center"}>
+        <PreviewFlow/>
       </div>
-      <Opponents/>
+      <GridPlayer/>
     </div>
+    <Opponents/>
   </div>
 ;
 

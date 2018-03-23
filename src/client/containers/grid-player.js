@@ -13,22 +13,18 @@ const GridPlayerComponent = ({state}) => {
 
   const gridRender = [];
   playerState.grid.forEach((l, i) => {
-    gridRender.push([-1, ...l, -1]);
+    gridRender.push([8, ...l, 8]);
 
   });
-  gridRender[3] = Array(GRID_WIDTH + 2).fill(-1);
-  gridRender.push(Array(GRID_WIDTH + 2).fill(-1));
+  gridRender[3] = Array(GRID_WIDTH + 2).fill(8);
+  gridRender.push(Array(GRID_WIDTH + 2).fill(8));
 
   return <div className={"column center"}>
     <div>
       <div className={"column pad"}>
         {gridRender.map((line, i) => i > 2 &&
           <div key={i} className={"row"}>
-            {line.map((el, j) => {
-                let cssClass = (el > 0 ? "piece" + el : "case" + -el);
-                return <div key={j} className={cssClass}/>;
-              }
-            )}
+            {line.map((el, j) => <div key={j} className={"casePlayer + color" + el}/>)}
           </div>
         )}
       </div>
