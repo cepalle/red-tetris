@@ -18,7 +18,7 @@ const App = () =>
           <InfoPlayer/>
         </div>
 
-        <audio loop controls autoPlay src={mp3}/>
+        <audio loop controls src={mp3}/>
       </div>
 
       <div className={"row center"}>
