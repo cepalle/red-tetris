@@ -1,5 +1,12 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path');
+
 module.exports = {
+  entry: './src/client/index.js',
+  output: {
+    path: path.resolve(__dirname, 'build'),
+    filename: 'bundle.js'
+  },
   module: {
     rules: [
       {
@@ -24,6 +31,10 @@ module.exports = {
           {loader: "style-loader/url"},
           {loader: "file-loader"}
         ]
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader'
       }
     ]
   },

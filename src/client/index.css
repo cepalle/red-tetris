@@ -1,60 +1,133 @@
+/* FLEX BOX */
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.wrap {
+  display: flex;
+  flex-wrap: wrap
+}
+
+.end {
+  display: flex;
+  justify-content: flex-end
+}
 
 .center {
   display: flex;
   justify-content: center;
 }
 
-.grid {
-  display: flex;
-  flex-direction: column;
-}
-
-.line {
-  display: flex;
-  flex-direction: row;
-}
+/* PIECE */
 
 .case {
-  padding: 12px;
+  height: 20px;
+  width: 20px;
 }
 
-.opponent {
+.case2 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #cccccc;
+  background-color: #777777;
+}
+
+.case1 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #666666;
+  border-bottom-color: #000000;
+  border-right-color: #000000;
+  background-color: #333333;
+}
+
+.case0 {
+  height: 20px;
+  width: 20px;
+  background-color: #777777;
+}
+
+.piece1 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #00ffff;
+  border-bottom-color: #009999;
+  border-right-color: #009999;
+  background-color: #00cccc;
+}
+
+.piece2 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #0000ff;
+  border-bottom-color: #000099;
+  border-right-color: #000099;
+  background-color: #0000cc;
+}
+
+.piece3 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #ff8800;
+  border-bottom-color: #996600;
+  border-right-color: #996600;
+  background-color: #cc7700;
+}
+
+.piece4 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #ffff00;
+  border-bottom-color: #999900;
+  border-right-color: #999900;
+  background-color: #cccc00;
+}
+
+.piece5 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #00ff00;
+  border-bottom-color: #009900;
+  border-right-color: #009900;
+  background-color: #00cc00;
+}
+
+.piece6 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #8800ff;
+  border-bottom-color: #660099;
+  border-right-color: #660099;
+  background-color: #7700cc;
+}
+
+.piece7 {
+  height: 16px;
+  width: 16px;
+  border: 2px solid #ff0000;
+  border-bottom-color: #990000;
+  border-right-color: #990000;
+  background-color: #cc0000;
+}
+
+/* OTHER CSS */
+
+.pad {
   padding: 10px;
 }
 
-.color8 {
-  background-color: #000000;
+.width_preview {
+  width: 100px;
 }
 
-.color0 {
-  background-color: #eeeeee;
-}
-
-.color1 {
-  background-color: #00ffff;
-}
-
-.color2 {
-  background-color: #0000ff;
-}
-
-.color3 {
-  background-color: #ffaa00;
-}
-
-.color4 {
-  background-color: #ffff00;
-}
-
-.color5 {
-  background-color: #00ff00;
-}
-
-.color6 {
-  background-color: #9900ff;
-}
-
-.color7 {
-  background-color: #ff0000;
+.width_info {
+  width: 500px;
 }
 

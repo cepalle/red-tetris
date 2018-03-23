@@ -1,22 +1,19 @@
 import "./util/ArraysUtil";
 import express from "express";
-import {Server} from "http";
 import RoomSocketHandler from "./handlers/RoomSocketHandler";
 import GameManager from "./data/game/GameManager";
 import GlobalSocketHandler from "./handlers/GlobalSocketHandler";
 import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
 import SocketMap from "./data/SocketMap";
 import socketDefs from "../common/socket-definitions";
-
-const ex = express();
-const http = Server(ex);
-const io = require("socket.io")(http);
-
+import https from "https";
+import {Server} from "http";
+import * as fs from "fs";
 
 class App {
 
-
   handleClient(socket) {
+
     const roomSocketHandler = new RoomSocketHandler(socket);
     const globalSocketHandler = new GlobalSocketHandler(socket);
     const tetrisSocketHandler = new TetrisSocketHandler(socket);
@@ -43,12 +40,27 @@ class App {
   }
 
   main() {
+    const app = express();
+    let server;
+
+    if (process.env.NODE_ENV && process.env.NODE_ENV === "production") {
+      server = https.createServer(
+        {
+          key: fs.readFileSync('/home/ssl/privkey.pem'),
+          cert: fs.readFileSync('/home/ssl/cert.pem')
+        }, app
+      );
+    }
+    else
+      server = Server(app);
+
+    const io = require("socket.io")(server);
     io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
-    http.listen(4433, function () {
-      console.log(`Server on port : 4433`);
+    server.listen(4433, function () {
+      console.log('Server on port : 4433');
     });
   }
 }
-const app = new App();
-app.main();
 
+
+const app = new App().main();

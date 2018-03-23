@@ -1,4 +1,4 @@
-import {eraseCurPiece} from "./grid-piece-handler";
+import {logger} from "./logger-handler"
 
 const ifWinSet = state => {
   const playersNotLoose = state.playerStates.filter(e => !e.hasLoose);
@@ -10,15 +10,14 @@ const ifWinSet = state => {
 };
 
 const ifLooseSet = state => {
-  const newState = eraseCurPiece(state);
-  const newPlayer = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (newPlayer.grid[0].some(e => e !== 0) ||
-    newPlayer.grid[1].some(e => e !== 0) ||
-    newPlayer.grid[2].some(e => e !== 0) ||
-    newPlayer.grid[3].some(e => e !== 0)) {
+  if (player.grid[0].some(e => e !== 0) ||
+    player.grid[1].some(e => e !== 0) ||
+    player.grid[2].some(e => e !== 0) ||
+    player.grid[3].some(e => e !== 0)) {
     player.hasLoose = true;
 
+    logger(["player loose grid:", player.grid]);
     state.SetAnimateFalse = true;
     state.EmitLoose = true;
     ifWinSet(state);

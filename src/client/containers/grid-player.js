@@ -1,35 +1,36 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {logger_component} from "../util/logger-handler";
 import {getColorNum} from "../util/css-handler";
+import {placePiece, placePiecePreview} from "../util/grid-piece-handler";
+import {cloneState} from "../util/clone-handler";
 
-const GridPlayerComponent = ({state: playerState}) =>
-  <div className={"line center"}>
+const GridPlayerComponent = ({state}) => {
+  const playerState = state.playerStates.find(e => e.playerName === state.playerName);
+  if (state.piecesFlow.length > 0 && !playerState.hasLoose && !playerState.hasWin) {
+    playerState.grid = placePiecePreview(playerState.grid, state.piecesFlow[0]);
+    playerState.grid = placePiece(playerState.grid, state.piecesFlow[0]);
+  }
+  return <div className={"row center"}>
     <div>
-      <div className={"grid"}>
+      <div className={"column pad"}>
         {playerState.grid.map((line, i) => i >= 4 &&
-          <div key={i} className={"line"}>
-            {line.map((el, j) =>
-              <div key={j} className={"case color" + getColorNum(el)}/>
+          <div key={i} className={"row"}>
+            {line.map((el, j) => {
+                let cssClass = (el > 0 ? "piece" + el : "case" + -el);
+                return <div key={j} className={cssClass}/>;
+              }
             )}
           </div>
         )}
       </div>
-      <div className={"line center"}>
-        <p>{playerState.playerName}{playerState.isMaster && "(Master)"}{playerState.hasLoose && "(loose)"}{playerState.hasWin && "(Win)"}</p>
-      </div>
     </div>
-  </div>
-;
+  </div>;
+};
 
 const mapStateToProps = state => {
-  let playerState = state.playerStates.find(el => el.playerName === state.playerName);
-  if (playerState) {
-    return {state: Object.assign({}, playerState)};
+  return {
+    state: cloneState(state),
   }
-
-  logger_component(["playerName note in playerStates"]);
-  return undefined;
 };
 
 const GridPlayer = connect(

@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import {
-  COLLISION_TYPE, eraseCurPiece, gridAddWall, gridDelLine, hasCollision, newLoc,
+  COLLISION_TYPE, gridAddWall, gridDelLine, hasCollision, newLoc,
   placePiece, updatePiecePos
 } from "../../../src/client/util/grid-piece-handler";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../../src/common/grid";
@@ -37,20 +37,14 @@ describe('grid-piece-handler', () => {
     });
   });
 
-  describe('#placePiece and eraseCurPiece', () => {
-    it('should place piece and erase piece', () => {
+  describe('#placePiece', () => {
+    it('should place piece piece', () => {
 
       let newState = placePiece(getState());
       expect(newState.playerStates[0].grid[1][0]).to.equal(1);
       expect(newState.playerStates[0].grid[1][1]).to.equal(1);
       expect(newState.playerStates[0].grid[1][2]).to.equal(1);
       expect(newState.playerStates[0].grid[1][3]).to.equal(1);
-
-      newState = eraseCurPiece(newState);
-      expect(newState.playerStates[0].grid[1][0]).to.equal(0);
-      expect(newState.playerStates[0].grid[1][1]).to.equal(0);
-      expect(newState.playerStates[0].grid[1][2]).to.equal(0);
-      expect(newState.playerStates[0].grid[1][3]).to.equal(0);
     });
   });
 

@@ -1,6 +1,7 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_MOVE} from "../../common/pieces";
 import {cloneState} from "./clone-handler"
+import {logger} from "./logger-handler"
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -53,48 +54,56 @@ const hasCollision = (grid, piece, loc) => {
   return collisionType;
 };
 
-const placePiece = state => {
-  if (state.piecesFlow.length < 1) {
-    return state
+const placePiece = (grid, piece) => {
+  const newGrid = grid.map(l => l.map(e => e));
+  const pieceDescr = getPiece(piece.num, piece.rot);
+  pieceDescr.forEach((line, y) => {
+      return line.forEach((number, x) => {
+          const gx = x + piece.pos.x;
+          const gy = y + piece.pos.y;
+          if (number !== 0) {
+            if (gx >= 0 && gy >= 0 &&
+              gy < newGrid.length && gx < newGrid[gy].length) {
+              newGrid[gy][gx] = number;
+            } else {
+              logger(["invalide placement:", grid, piece]);
+            }
+          }
+        }
+      )
+    }
+  );
+  return newGrid;
+};
+
+const placePiecePreview = (grid, piece) => {
+  const newGrid = grid.map(l => l.map(e => e));
+  const pieceDescr = getPiece(piece.num, piece.rot);
+  const loc = newLoc(piece.pos);
+
+  while (!hasCollision(grid, pieceDescr, loc)) {
+    loc.y++;
+  }
+  if (loc.y > 0) {
+    loc.y--;
   }
 
-  const newState = cloneState(state);
-
-  const grid = newState.playerStates.find(playerState => playerState.playerName === newState.playerName).grid;
-  const pieceDescr = getPiece(newState.piecesFlow[0].num, newState.piecesFlow[0].rot);
-  const loc = newState.piecesFlow[0].pos;
   pieceDescr.forEach((line, y) =>
     line.forEach((number, x) => {
         const gx = x + loc.x;
         const gy = y + loc.y;
         if (number !== 0) {
-          grid[gy][gx] = number;
+          if (gx >= 0 && gy >= 0 &&
+            gy < newGrid.length && gx < newGrid[gy].length) {
+            newGrid[gy][gx] = -2;
+          } else {
+            logger(["invalide placement:", grid, piece]);
+          }
         }
       }
     )
   );
-  return newState;
-};
-
-const eraseCurPiece = state => {
-  if (state.piecesFlow.length < 1) {
-    return state
-  }
-
-  const newState = cloneState(state);
-
-  const grid = newState.playerStates.find(playerState => playerState.playerName === newState.playerName).grid;
-  const pieceDescr = getPiece(newState.piecesFlow[0].num, newState.piecesFlow[0].rot);
-  const loc = newState.piecesFlow[0].pos;
-  pieceDescr.forEach((line, i) =>
-    line.forEach((p, j) => {
-        if (p !== 0) {
-          grid[loc.y + i][loc.x + j] = 0;
-        }
-      }
-    )
-  );
-  return newState;
+  return newGrid;
 };
 
 const newLoc = (loc, move) => {
@@ -107,63 +116,67 @@ const newLoc = (loc, move) => {
   return {x: loc.x, y: loc.y};
 };
 
-const updatePiecePos = (state, move) => {
-  if (state.piecesFlow.length < 1) {
-    return state
+const newRot = (rot, move) => {
+  if (move === PIECES_MOVE.ROT_RIGHT) {
+    return (rot + 1) % 4;
   }
+  if (move === PIECES_MOVE.ROT_LEFT) {
+    return (rot + 3) % 4;
+  }
+  return rot;
+};
 
-  const newState = cloneState(state);
+const updatePiecePos = (grid, piece, move) => {
 
   let collisionType;
-  let needNext = false;
-  let loc = newLoc(newState.piecesFlow[0].pos, move);
-  let pieceDescr = getPiece(newState.piecesFlow[0].num, newState.piecesFlow[0].rot);
-  const grid = newState.playerStates.find(playerState => playerState.playerName === newState.playerName).grid;
+
+  let newPiece = {
+    num: piece.num,
+    rot: newRot(piece.rot, move),
+    pos: newLoc(piece.pos, move)
+  };
+
+  let newPieceDescr = getPiece(newPiece.num, newPiece.rot);
 
   if (move !== PIECES_MOVE.ROT_RIGHT && move !== PIECES_MOVE.ROT_LEFT) {
     if (move === PIECES_MOVE.DROP) {
-      needNext = true;
-      while (!hasCollision(grid, pieceDescr, loc)) {
-        loc.y++;
+      while (!hasCollision(grid, newPieceDescr, newPiece.pos)) {
+        newPiece.pos.y++;
       }
-      loc.y--;
-      newState.piecesFlow[0].pos = loc;
-    } else if (!(collisionType = hasCollision(grid, pieceDescr, loc))) {
-      newState.piecesFlow[0].pos = loc;
-    } else if (collisionType && move === PIECES_MOVE.DOWN) {
-      needNext = true;
+      newPiece.pos.y--;
+      return [true, newPiece];
     }
+    if (!(collisionType = hasCollision(grid, newPieceDescr, newPiece.pos))) {
+      return [false, newPiece];
+    }
+    if (collisionType && move === PIECES_MOVE.DOWN) {
+      return [true, piece];
+    }
+    return [false, piece];
   } else {
-    if (move === PIECES_MOVE.ROT_RIGHT) {
-      newState.piecesFlow[0].rot = (newState.piecesFlow[0].rot + 1) % 4;
-    } else {
-      newState.piecesFlow[0].rot = (newState.piecesFlow[0].rot + 3) % 4;
-    }
-    pieceDescr = getPiece(newState.piecesFlow[0].num, newState.piecesFlow[0].rot);
+    collisionType = hasCollision(grid, newPieceDescr, newPiece.pos);
 
-    collisionType = hasCollision(grid, pieceDescr, newState.piecesFlow[0].pos);
     while (collisionType === COLLISION_TYPE.PIECE || collisionType === COLLISION_TYPE.WALL_LEFT
     || collisionType === COLLISION_TYPE.WALL_RIGHT || collisionType === COLLISION_TYPE.WALL_BOTTOM) {
       if (collisionType === COLLISION_TYPE.WALL_LEFT) {
-        newState.piecesFlow[0].pos.x++;
+        newPiece.pos.x++;
       } else if (collisionType === COLLISION_TYPE.WALL_RIGHT) {
-        newState.piecesFlow[0].pos.x--;
+        newPiece.pos.x--;
       } else {
-        newState.piecesFlow[0].pos.y--;
+        newPiece.pos.y--;
       }
-      collisionType = hasCollision(grid, pieceDescr, newState.piecesFlow[0].pos);
+      collisionType = hasCollision(grid, newPieceDescr, newPiece.pos);
     }
+    return [false, newPiece];
   }
-  return [needNext, newState];
 };
 
-const gridDelLine = state => {
-  const newState = cloneState(state);
+const gridDelLine = grid => {
 
   let lineToDel = [];
-  const player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
+  let newGrid = grid.map(l => l.map(e => e));
 
-  player.grid.forEach((line, i) => {
+  newGrid.forEach((line, i) => {
     let asEmpty = false;
     line.forEach(el => {
       if (el <= 0) {
@@ -175,11 +188,11 @@ const gridDelLine = state => {
     }
   });
 
-  player.grid = player.grid.filter((line, i) => !lineToDel.includes(i));
-  while (player.grid.length < GRID_HEIGHT) {
-    player.grid = [Array(GRID_WIDTH).fill(0), ...player.grid];
+  newGrid = newGrid.filter((line, i) => !lineToDel.includes(i));
+  while (newGrid.length < GRID_HEIGHT) {
+    newGrid = [Array(GRID_WIDTH).fill(0), ...newGrid];
   }
-  return [newState, lineToDel.length];
+  return [newGrid, lineToDel.length];
 };
 
 const gridAddWall = state => {
@@ -194,7 +207,7 @@ const gridAddWall = state => {
     return state;
   }
 
-  let newState = eraseCurPiece(state);
+  let newState = cloneState(state);
   player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
 
   player.grid = [...player.grid, Array(GRID_WIDTH).fill(-1)];
@@ -202,18 +215,18 @@ const gridAddWall = state => {
   if (newState.piecesFlow[0].pos.y > 0) {
     newState.piecesFlow[0].pos.y--;
   }
-  newState = placePiece(newState);
+
   return newState;
 };
 
 
 export {
   hasCollision,
-  eraseCurPiece,
   placePiece,
   COLLISION_TYPE,
   newLoc,
   updatePiecePos,
   gridDelLine,
-  gridAddWall
+  gridAddWall,
+  placePiecePreview
 }

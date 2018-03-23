@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 
-const ErrorComponent = ({error}) =>
+const MessageComponent = ({error}) =>
   <div>
     {error.type && error.message && <p>errorType: {error.type} <br/> errorMessage: {error.message}</p>}
   </div>
@@ -13,9 +13,9 @@ const mapStateToProps = state => {
   }
 };
 
-const Error = connect(
+const Messages = connect(
   mapStateToProps,
   undefined
-)(ErrorComponent);
+)(MessageComponent);
 
-export {Error};
+export {Messages};

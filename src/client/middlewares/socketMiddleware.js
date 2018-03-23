@@ -3,7 +3,6 @@ import {
   emitStartPlaying, emitTetrisPlacePiece
 } from "../util/socket-handler";
 import {logger_middleware} from "../util/logger-handler";
-import {eraseCurPiece} from "../util/grid-piece-handler"
 import {animate} from "../util/animate-handler";
 
 
@@ -11,11 +10,15 @@ const socketMiddleware = store => next => action => {
   switch (action.type) {
     case 'CONNECTION_RESPONSE':
       logger_middleware(["CONNECTION_RESPONSE"]);
+
       emitJoinRoom(store.getState().roomName, store.getState().playerName);
       break;
     case 'SEND_START_GAME':
       logger_middleware(["SEND_START_GAME"]);
-      emitStartPlaying(store.getState().roomName);
+
+      if (!animate.value) {
+        emitStartPlaying(store.getState().roomName);
+      }
       break;
     default:
       break;
@@ -41,11 +44,10 @@ const socketMiddleware = store => next => action => {
     logger_middleware(["EmitUpdateGrid"]);
     state.EmitUpdateGrid = false;
 
-    const stateErased = eraseCurPiece(state);
     emitTetrisPlacePiece(
-      stateErased.roomName,
-      stateErased.playerName,
-      stateErased.playerStates.find(e => e.playerName === stateErased.playerName).grid
+      state.roomName,
+      state.playerName,
+      state.playerStates.find(e => e.playerName === state.playerName).grid
     );
   }
 

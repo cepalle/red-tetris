@@ -1,4 +1,5 @@
 dist/
+build/
 false/
 node_modules/
 .idea/

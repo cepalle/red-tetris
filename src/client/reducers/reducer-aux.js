@@ -1,4 +1,4 @@
-import {gridAddWall, gridDelLine, updatePiecePos, eraseCurPiece, placePiece} from "../util/grid-piece-handler";
+import {gridAddWall, gridDelLine, updatePiecePos, placePiece} from "../util/grid-piece-handler";
 import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
 import {ifLooseSet, ifWinSet} from "../util/loose-win-handler";
@@ -11,7 +11,7 @@ import {animate} from "../util/animate-handler"
  * @param {Array<int>} pieces
  */
 const reducerPiecesFlow = (state, {pieces}) => {
-  logger_reducer(["piecesFlow", pieces]);
+  logger_reducer(["piecesFlow"]);
 
   const newState = cloneState(state);
   newState.piecesFlow = newState.piecesFlow.concat(pieces);
@@ -24,7 +24,7 @@ const reducerPiecesFlow = (state, {pieces}) => {
  * @param {type, message} error
  */
 const reducerError = (state, {error}) => {
-  logger_reducer(["error", error]);
+  logger_reducer(["error"]);
 
   const newState = cloneState(state);
   newState.error = error;
@@ -37,7 +37,7 @@ const reducerError = (state, {error}) => {
  * @param {Array<player>} players
  */
 const reducerUpdateUsers = (state, {players}) => {
-  logger_reducer(["updatePlayers", players]);
+  logger_reducer(["updatePlayers"]);
 
   const newState = cloneState(state);
 
@@ -75,21 +75,22 @@ const reducerUpdateUsers = (state, {players}) => {
  * @param {Object} move
  */
 const reducerMovePiece = (state, {move}) => {
-  logger_reducer(["movePiece", move]);
+  logger_reducer(["movePiece"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (player.hasLoose || !animate.value || player.hasWin || state.piecesFlow.length < 1) {
     return state;
   }
 
+  const newState = cloneState(state);
+  const newPlayer = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
   let needNext;
-  let newState = eraseCurPiece(state);
-  [needNext, newState] = updatePiecePos(newState, move);
-  newState = placePiece(newState);
+  [needNext, newState.piecesFlow[0]] = updatePiecePos(newPlayer.grid, newState.piecesFlow[0], move);
 
   if (needNext) {
+    newPlayer.grid = placePiece(newPlayer.grid, newState.piecesFlow[0]);
     let nbLineDel;
-    [newState, nbLineDel] = gridDelLine(newState);
+    [newPlayer.grid, nbLineDel] = gridDelLine(newPlayer.grid);
     newState.piecesFlow.shift();
 
     newState.EmitCompleteLine = nbLineDel;
@@ -105,7 +106,7 @@ const reducerMovePiece = (state, {move}) => {
  * @param {grid, playerName}
  */
 const reducerUpdateGrid = (state, {grid, playerName}) => {
-  logger_reducer(["updateGrid", {grid, playerName}]);
+  logger_reducer(["updateGrid"]);
 
   const newState = cloneState(state);
 
@@ -124,7 +125,7 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
  * @param {Array<int>} pieces
  */
 const reducerStartGame = (state, {pieces}) => {
-  logger_reducer(["startGame", pieces]);
+  logger_reducer(["startGame"]);
 
   const newState = cloneState(state);
 
@@ -141,13 +142,11 @@ const reducerStartGame = (state, {pieces}) => {
  * @param {Object} state
  */
 const reducerAddWallLine = state => {
-  logger_reducer(["addWallLine", state]);
+  logger_reducer(["addWallLine"]);
 
   let newState = gridAddWall(state);
   newState.EmitUpdateGrid = true;
-  newState = eraseCurPiece(newState);
   ifLooseSet(newState);
-  newState = placePiece(newState);
   return newState;
 };
 
