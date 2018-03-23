@@ -173,18 +173,26 @@ const updatePiecePos = (grid, piece, move) => {
 
 const gridDelLine = grid => {
 
+  let nbWall = 0;
   let lineToDel = [];
   let newGrid = grid.map(l => l.map(e => e));
 
   newGrid.forEach((line, i) => {
     let asEmpty = false;
+    let asWall = false;
     line.forEach(el => {
-      if (el <= 0) {
+      if (el === 0) {
         asEmpty = true;
+      }
+      if (el === 8) {
+        asWall = true;
       }
     });
     if (!asEmpty) {
       lineToDel.push(i);
+      if (asWall) {
+        nbWall++;
+      }
     }
   });
 
@@ -192,7 +200,8 @@ const gridDelLine = grid => {
   while (newGrid.length < GRID_HEIGHT) {
     newGrid = [Array(GRID_WIDTH).fill(0), ...newGrid];
   }
-  return [newGrid, lineToDel.length];
+
+  return [newGrid, lineToDel.length - nbWall];
 };
 
 const gridAddWall = state => {
@@ -210,8 +219,9 @@ const gridAddWall = state => {
   let newState = cloneState(state);
   player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
 
-  player.grid = [...player.grid, Array(GRID_WIDTH).fill(-1)];
+  player.grid = [...player.grid, Array(GRID_WIDTH).fill(8)];
   player.grid.shift();
+  player.grid[GRID_HEIGHT - 1][Math.floor(Math.random() * GRID_WIDTH)] = 0;
   if (newState.piecesFlow[0].pos.y > 0) {
     newState.piecesFlow[0].pos.y--;
   }
