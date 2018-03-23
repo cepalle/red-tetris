@@ -8,8 +8,8 @@ class Piece {
     this.pos = pos;
   }
 
-  static randNumber(min, max) {
-    return Math.floor(Math.random() * max) + min;
+  static randNumber(min, len) {
+    return Math.floor(Math.random() * len) + min;
   }
 
   /**
@@ -18,10 +18,10 @@ class Piece {
    */
   static generatePiece() {
     const num = Piece.randNumber(1, 7);
-    const rot = Piece.randNumber(0, 3);
+    const rot = Piece.randNumber(0, 4);
     const mask = getPieceMask(num, rot);
     const pos = {
-      x: Piece.randNumber(mask.x, GRID_WIDTH - mask.width - mask.x),
+      x: Piece.randNumber(mask.x, GRID_WIDTH - mask.width + 1),
       y: 0
     };
     return new Piece(num, pos, rot);

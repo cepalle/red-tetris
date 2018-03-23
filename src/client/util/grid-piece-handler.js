@@ -1,6 +1,7 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_MOVE} from "../../common/pieces";
 import {cloneState} from "./clone-handler"
+import {logger} from "./logger-handler"
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -56,15 +57,21 @@ const hasCollision = (grid, piece, loc) => {
 const placePiece = (grid, piece) => {
   const newGrid = grid.map(l => l.map(e => e));
   const pieceDescr = getPiece(piece.num, piece.rot);
-  pieceDescr.forEach((line, y) =>
-    line.forEach((number, x) => {
-        const gx = x + piece.pos.x;
-        const gy = y + piece.pos.y;
-        if (number !== 0) {
-          newGrid[gy][gx] = number;
+  pieceDescr.forEach((line, y) => {
+      return line.forEach((number, x) => {
+          const gx = x + piece.pos.x;
+          const gy = y + piece.pos.y;
+          if (number !== 0) {
+            if (gx >= 0 && gy >= 0 &&
+              gy < newGrid.length && gx < newGrid[gy].length) {
+              newGrid[gy][gx] = number;
+            } else {
+              logger(["invalide placement:", grid, piece]);
+            }
+          }
         }
-      }
-    )
+      )
+    }
   );
   return newGrid;
 };
@@ -77,14 +84,21 @@ const placePiecePreview = (grid, piece) => {
   while (!hasCollision(grid, pieceDescr, loc)) {
     loc.y++;
   }
-  loc.y--;
+  if (loc.y > 0) {
+    loc.y--;
+  }
 
   pieceDescr.forEach((line, y) =>
     line.forEach((number, x) => {
         const gx = x + loc.x;
         const gy = y + loc.y;
         if (number !== 0) {
-          newGrid[gy][gx] = -2;
+          if (gx >= 0 && gy >= 0 &&
+            gy < newGrid.length && gx < newGrid[gy].length) {
+            newGrid[gy][gx] = -2;
+          } else {
+            logger(["invalide placement:", grid, piece]);
+          }
         }
       }
     )

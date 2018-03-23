@@ -1,7 +1,8 @@
 import {PIECES_MOVE} from "../../common/pieces"
 import {store} from "../middlewares/store"
-import {movePiece} from "../actions/action-creators"
+import {movePiece, sendStartGame} from "../actions/action-creators"
 
+const keyEnter = 13;
 const keyLeft = 37;
 const keyUp = 38;
 const keyRight = 39;
@@ -33,6 +34,11 @@ const eventHandler = (event) => {
     case keySpace:
       event.preventDefault();
       store.dispatch(movePiece(PIECES_MOVE.DROP));
+      break;
+
+    case keyEnter:
+      event.preventDefault();
+      store.dispatch(sendStartGame());
       break;
   }
 };

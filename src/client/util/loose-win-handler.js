@@ -1,3 +1,5 @@
+import {logger} from "./logger-handler"
+
 const ifWinSet = state => {
   const playersNotLoose = state.playerStates.filter(e => !e.hasLoose);
   if (state.playerStates.length > 1 && playersNotLoose.length === 1) {
@@ -15,7 +17,7 @@ const ifLooseSet = state => {
     player.grid[3].some(e => e !== 0)) {
     player.hasLoose = true;
 
-    console.log("player loose grid:", player.grid);
+    logger(["player loose grid:", player.grid]);
     state.SetAnimateFalse = true;
     state.EmitLoose = true;
     ifWinSet(state);
