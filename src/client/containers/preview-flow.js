@@ -10,10 +10,8 @@ const PreviewFlowComponent = ({pieceFlow}) => {
 
   let gridRender = [];
 
-  if (piecesRender.length > 0) {
-    gridRender.push(Array(4 + 2).fill(PIECES_NUM.wall))
-  }
-  for (let i = 0; i < piecesRender.length; i++) {
+  gridRender.push(Array(4 + 2).fill(PIECES_NUM.wall));
+  for (let i = 0; i < 3; i++) {
     gridRender.push([PIECES_NUM.wall, ...(Array(4).fill(PIECES_NUM.empty)), PIECES_NUM.wall]);
     gridRender.push([PIECES_NUM.wall, ...(Array(4).fill(PIECES_NUM.empty)), PIECES_NUM.wall]);
     gridRender.push([PIECES_NUM.wall, ...(Array(4).fill(PIECES_NUM.empty)), PIECES_NUM.wall]);
