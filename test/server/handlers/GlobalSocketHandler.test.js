@@ -1,3 +1,4 @@
+import "../../../src/server/App"
 import GlobalSocketHandler from "../../../src/server/handlers/GlobalSocketHandler";
 import {expect, assert} from "chai";
 import io from 'socket.io-client';
