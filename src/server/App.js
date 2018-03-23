@@ -7,22 +7,13 @@ import SocketMap from "./data/SocketMap";
 import socketDefs from "../common/socket-definitions";
 import "./util/ArraysUtil";
 import https from "https";
+import {Server} from "http";
 import * as fs from "fs";
-
-
-const app = express();
-const server = https.createServer(
-  {
-    key: fs.readFileSync('/home/ssl/privkey.pem'),
-    cert: fs.readFileSync('/home/ssl/cert.pem')
-  },
-  app
-);
-const io = require("socket.io")(server);
 
 class App {
 
   handleClient(socket) {
+
     const roomSocketHandler = new RoomSocketHandler(socket);
     const globalSocketHandler = new GlobalSocketHandler(socket);
     const tetrisSocketHandler = new TetrisSocketHandler(socket);
@@ -49,6 +40,21 @@ class App {
   }
 
   main() {
+    const app = express();
+    let server;
+
+    if (process.env.NODE_ENV && process.env.NODE_ENV === "production") {
+      server = https.createServer(
+        {
+          key: fs.readFileSync('/home/ssl/privkey.pem'),
+          cert: fs.readFileSync('/home/ssl/cert.pem')
+        }, app
+      );
+    }
+    else
+      server = Server(app);
+
+    const io = require("socket.io")(server);
     io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
     server.listen(4433, function () {
       console.log('Server on port : 4433');
@@ -57,4 +63,4 @@ class App {
 }
 
 
-new App().main();
+const app = new App().main();
