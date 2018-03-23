@@ -1,4 +1,4 @@
-import util from "./util/ArraysUtil";
+import "./util/ArraysUtil";
 import express from "express";
 import {Server} from "http";
 import RoomSocketHandler from "./handlers/RoomSocketHandler";
@@ -11,6 +11,7 @@ import socketDefs from "../common/socket-definitions";
 const ex = express();
 const http = Server(ex);
 const io = require("socket.io")(http);
+
 
 class App {
 
