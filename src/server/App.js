@@ -1,5 +1,4 @@
 import express from "express";
-import {Server} from "http";
 import RoomSocketHandler from "./handlers/RoomSocketHandler";
 import GameManager from "./data/game/GameManager";
 import GlobalSocketHandler from "./handlers/GlobalSocketHandler";
@@ -7,10 +6,19 @@ import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
 import SocketMap from "./data/SocketMap";
 import socketDefs from "../common/socket-definitions";
 import "./util/ArraysUtil";
+import https from "https";
+import * as fs from "fs";
+
 
 const app = express();
-const http = Server(app);
-const io = require("socket.io")(http);
+const server = https.createServer(
+  {
+    key: fs.readFileSync('/home/ssl/privkey.pem'),
+    cert: fs.readFileSync('/home/ssl/cert.pem')
+  },
+  app
+);
+const io = require("socket.io")(server);
 
 class App {
 
@@ -42,7 +50,7 @@ class App {
 
   main() {
     io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
-    http.listen(4433, function () {
+    server.listen(4433, function () {
       console.log('Server on port : 4433');
     });
   }
