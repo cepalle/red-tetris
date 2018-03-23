@@ -1,5 +1,5 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
-import {getPiece, PIECES_MOVE} from "../../common/pieces";
+import {getPiece, PIECES_MOVE, PIECES_NUM} from "../../common/pieces";
 import {cloneState} from "./clone-handler"
 import {logger} from "./logger-handler"
 
@@ -95,7 +95,7 @@ const placePiecePreview = (grid, piece) => {
         if (number !== 0) {
           if (gx >= 0 && gy >= 0 &&
             gy < newGrid.length && gx < newGrid[gy].length) {
-            newGrid[gy][gx] = 9;
+            newGrid[gy][gx] = PIECES_NUM.preview;
           } else {
             logger(["invalide placement:", grid, piece]);
           }
@@ -181,10 +181,10 @@ const gridDelLine = grid => {
     let asEmpty = false;
     let asWall = false;
     line.forEach(el => {
-      if (el === 0) {
+      if (el === PIECES_NUM.empty) {
         asEmpty = true;
       }
-      if (el === 8) {
+      if (el === PIECES_NUM.wall) {
         asWall = true;
       }
     });
@@ -198,7 +198,7 @@ const gridDelLine = grid => {
 
   newGrid = newGrid.filter((line, i) => !lineToDel.includes(i));
   while (newGrid.length < GRID_HEIGHT) {
-    newGrid = [Array(GRID_WIDTH).fill(0), ...newGrid];
+    newGrid = [Array(GRID_WIDTH).fill(PIECES_NUM.empty), ...newGrid];
   }
 
   return [newGrid, lineToDel.length - nbWall];
@@ -219,9 +219,9 @@ const gridAddWall = state => {
   let newState = cloneState(state);
   player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
 
-  player.grid = [...player.grid, Array(GRID_WIDTH).fill(8)];
+  player.grid = [...player.grid, Array(GRID_WIDTH).fill(PIECES_NUM.wall)];
   player.grid.shift();
-  player.grid[GRID_HEIGHT - 1][Math.floor(Math.random() * GRID_WIDTH)] = 0;
+  player.grid[GRID_HEIGHT - 1][Math.floor(Math.random() * GRID_WIDTH)] = PIECES_NUM.empty;
   if (newState.piecesFlow[0].pos.y > 0) {
     newState.piecesFlow[0].pos.y--;
   }

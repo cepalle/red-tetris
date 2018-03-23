@@ -1,5 +1,18 @@
 const PIECES = [1, 2, 3, 4, 5, 6, 7];
 
+const PIECES_NUM = {
+  empty: 0,
+  _1:1,
+  _2:2,
+  _3:3,
+  _4:4,
+  _5:5,
+  _6:6,
+  _7:7,
+  wall:8,
+  preview:9
+};
+
 const PIECES_MOVE = {
   ROT_RIGHT: "PIECES_ROT_RIGHT",
   ROT_LEFT: "PIECES_ROT_LEFT",
@@ -262,5 +275,6 @@ module.exports = {
   PIECES_DESCR,
   PIECES_MOVE,
   getPiece,
-  getPieceMask
+  getPieceMask,
+  PIECES_NUM
 };

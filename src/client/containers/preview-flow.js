@@ -1,6 +1,5 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {getColorNum} from "../util/css-handler";
 import {getPiece} from "../../common/pieces"
 
 const PreviewFlowComponent = ({pieceFlow}) =>
@@ -10,17 +9,11 @@ const PreviewFlowComponent = ({pieceFlow}) =>
           let pieceDscr = getPiece(p.num, p.rot);
           return <div key={i} className="row center">
             <div className="column pad">
-              {
-                pieceDscr.map((l, j) =>
-                  <div key={j} className="row">
-                    {
-                      l.map((el, k) =>
-                        <div key={k} className={(el > 0 ? "piece" + el : "case" + -el)}/>
-                      )
-                    }
-                  </div>
-                )
-              }
+              {pieceDscr.map((l, j) =>
+                <div key={j} className="row">
+                  {l.map((el, k) => <div key={k} className={"casePlayer + color" + el}/>)}
+                </div>
+              )}
             </div>
           </div>;
         }

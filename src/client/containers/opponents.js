@@ -2,6 +2,7 @@ import React from "react";
 import {connect} from 'react-redux';
 import {clonePlayerStates} from "../util/clone-handler"
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
+import {PIECES_NUM} from "../../common/pieces";
 
 const OpponentComponent = ({states}) => {
   return <div className={"row wrap"}>
@@ -11,21 +12,21 @@ const OpponentComponent = ({states}) => {
         for (let i = 0; i < GRID_WIDTH; i++) {
           let obstacle = false;
           for (let j = 0; j < GRID_HEIGHT; j++) {
-            if (grid[j][i] !== 0) {
+            if (grid[j][i] !== PIECES_NUM.empty) {
               obstacle = true;
             }
             if (obstacle) {
-              grid[j][i] = 7;
+              grid[j][i] = PIECES_NUM._7;
             }
           }
         }
 
         const gridRender = [];
         grid.forEach((l, i) => {
-          gridRender.push([8, ...l, 8]);
+          gridRender.push([PIECES_NUM.wall, ...l, PIECES_NUM.wall]);
         });
-        gridRender[3] = Array(GRID_WIDTH + 2).fill(8);
-        gridRender.push(Array(GRID_WIDTH + 2).fill(8));
+        gridRender[3] = Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall);
+        gridRender.push(Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall));
 
         return <div key={k}>
           <div className={"column pad"}>

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {placePiece, placePiecePreview} from "../util/grid-piece-handler";
 import {cloneState} from "../util/clone-handler";
 import {GRID_WIDTH} from "../../common/grid";
+import {PIECES_NUM} from "../../common/pieces";
 
 const GridPlayerComponent = ({state}) => {
   const playerState = state.playerStates.find(e => e.playerName === state.playerName);
@@ -12,12 +13,12 @@ const GridPlayerComponent = ({state}) => {
   }
 
   const gridRender = [];
-  playerState.grid.forEach((l, i) => {
-    gridRender.push([8, ...l, 8]);
+  playerState.grid.forEach(l => {
+    gridRender.push([PIECES_NUM.wall, ...l, PIECES_NUM.wall]);
 
   });
-  gridRender[3] = Array(GRID_WIDTH + 2).fill(8);
-  gridRender.push(Array(GRID_WIDTH + 2).fill(8));
+  gridRender[3] = Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall);
+  gridRender.push(Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall));
 
   return <div className={"column center"}>
     <div>

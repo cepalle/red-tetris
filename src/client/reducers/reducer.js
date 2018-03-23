@@ -9,11 +9,12 @@ import {
 } from "./reducer-aux";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
+import {PIECES_NUM} from "../../common/pieces";
 
 
 const initPlayerState = (playerName, isMaster = false) => {
   return {
-    grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(0)),
+    grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(PIECES_NUM.empty)),
     playerName: playerName,
     isMaster: isMaster,
     hasLoose: false,
