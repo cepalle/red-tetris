@@ -4,7 +4,7 @@ import {Messages} from "../containers/messages";
 import {Opponents} from "../containers/opponents";
 import {PreviewFlow} from "../containers/preview-flow"
 import {InfoPlayer} from "../containers/info-player"
-import mp3 from '../assets/tetris_remix.mp3'
+import mp3 from '../assets/Original_Tetris_theme.mp3'
 
 /*
         <div className={"column width_info end"}>
