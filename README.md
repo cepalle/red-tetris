@@ -10,7 +10,7 @@ Le projet doit être écrit totalement en Javascript et particulièrement dans s
 
 Le code client doit être écrit sans appel à "this" dans le but de vous pousser à utiliser des constructions fonctionnelles et non objet. Vous avez le choix de la librairie fonctionnelle à utiliser ou pas. La logique de manipulation du tas et des pièces doit être implémentée sous forme de "pure functions".
 
-A l’inverse le code serveur doit utiliser de la programmation orientée objet (prototype). Nous voulons y retrouver au minimum les classes (ES6) Player, Piece et Game.
+A l’inverse le code serveur doit utiliser de la programmation orientée prototype. Nous voulons y retrouver au minimum les classes Player, Piece et Game.
 
 L’application client doit être construite à partir des librairies React et Redux.
 Le code HTML ne doit pas utiliser d’éléments \<TABLE/>, mais doit être exclusivement construit à partir d’un layout flexbox.
