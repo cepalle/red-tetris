@@ -10,7 +10,9 @@ const socketMiddleware = store => next => action => {
     case 'CONNECTION_RESPONSE':
       logger_middleware(["CONNECTION_RESPONSE"]);
 
-      emitJoinRoom(store.getState().roomName, store.getState().playerName);
+      if (store.getState().roomName && store.getState().playerName) {
+        emitJoinRoom(store.getState().roomName, store.getState().playerName);
+      }
       break;
     case 'SEND_START_GAME':
       logger_middleware(["SEND_START_GAME"]);
