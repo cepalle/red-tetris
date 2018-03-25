@@ -145,7 +145,7 @@
 }
 
 .width_info_panel {
-  width: 700px;
+  width: 600px;
 }
 
 @font-face {
@@ -163,8 +163,17 @@ body {
 
 .font_info {
   font-size: 15px;
-  color: white;
 }
 
+.font_white {
+  color: #fefefe;
+}
 
+.font_red {
+  color: red;
+}
+
+.font_green {
+  color: green;
+}
 

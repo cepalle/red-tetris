@@ -3,7 +3,6 @@ import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
 import {ifLooseSet, ifWinSet} from "../util/loose-win-handler";
 import {cloneState} from "../util/clone-handler";
-import {animate} from "../util/animate-handler"
 
 /**
  * Add pieces to the getState.piecesFlow.
@@ -78,7 +77,7 @@ const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.hasLoose || !animate.value || player.hasWin || state.piecesFlow.length < 1) {
+  if (player.hasLoose || !state.animate || player.hasWin || state.piecesFlow.length < 1) {
     return state;
   }
 
@@ -133,7 +132,7 @@ const reducerStartGame = (state, {pieces}) => {
     initPlayerState(playerState.playerName, playerState.isMaster)
   );
   newState.piecesFlow = pieces;
-  newState.SetAnimateTrue = true;
+  newState.animate = true;
   return newState;
 };
 

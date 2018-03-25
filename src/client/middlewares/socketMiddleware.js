@@ -3,7 +3,6 @@ import {
   emitStartPlaying, emitTetrisPlacePiece
 } from "../util/socket-handler";
 import {logger_middleware} from "../util/logger-handler";
-import {animate} from "../util/animate-handler";
 
 
 const socketMiddleware = store => next => action => {
@@ -16,7 +15,7 @@ const socketMiddleware = store => next => action => {
     case 'SEND_START_GAME':
       logger_middleware(["SEND_START_GAME"]);
 
-      if (!animate.value) {
+      if (!store.getState().animate) {
         emitStartPlaying(store.getState().roomName);
       }
       break;
@@ -27,7 +26,7 @@ const socketMiddleware = store => next => action => {
   const result = next(action);
   const state = store.getState();
 
-  if (state.piecesFlow.length < 6 && animate.value) {
+  if (state.piecesFlow.length < 8 && state.animate) {
     logger_middleware(["emitGenFlow"]);
 
     emitGenFlow(state.roomName);

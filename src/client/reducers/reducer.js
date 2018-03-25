@@ -28,11 +28,10 @@ const initialState = {
   error: undefined,
   playerName: urlGetPlayerName(),
   roomName: urlGetRoomName(),
+  animate: false,
   EmitLoose: false,
   EmitUpdateGrid: false,
   EmitCompleteLine: 0,
-  SetAnimateTrue: false,
-  SetAnimateFalse: false,
 };
 
 

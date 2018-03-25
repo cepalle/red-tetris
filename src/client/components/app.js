@@ -8,7 +8,7 @@ const App = () =>
   <div className={"column"}>
     <audio loop autoPlay src={mp3}/>
     <div className={"row center"}>
-      <div className={"row color0"}>
+      <div className={"row color8 pad"}>
         <InfoPanel/>
         <GridPlayer/>
       </div>

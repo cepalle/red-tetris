@@ -5,7 +5,7 @@ import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {PIECES_NUM} from "../../common/pieces";
 
 const OpponentComponent = ({states}) => {
-  return <div className={"row wrap"}>
+  return <div className={"row wrap center"}>
     {states.map((state, k) => {
         const grid = state.grid.map(l => l.map(e => e));
 
@@ -28,7 +28,7 @@ const OpponentComponent = ({states}) => {
         gridRender[3] = Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall);
         gridRender.push(Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall));
 
-        return <div key={k}>
+        return <div key={k} className={"color8 pad"}>
           <div className={"column"}>
             {gridRender.map((line, i) => i > 2 &&
               <div key={i} className={"row"}>
@@ -37,8 +37,8 @@ const OpponentComponent = ({states}) => {
               </div>
             )}
           </div>
-          <div className={"row center color0"}>
-            <p className={"pad color0"}>
+          <div className={"row center"}>
+            <p className={"pad font_white font_retro"}>
               {state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}{state.hasWin && "(Win)"}
             </p>
           </div>

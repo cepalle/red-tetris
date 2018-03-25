@@ -6,7 +6,7 @@ const ifWinSet = state => {
   if (state.playerStates.length > 1 && playersNotLoose.length === 1) {
     playersNotLoose[0].hasWin = true;
 
-    state.SetAnimateFalse = true;
+    state.animate = false;
   }
 };
 
@@ -19,7 +19,7 @@ const ifLooseSet = state => {
     player.hasLoose = true;
 
     logger(["player loose grid:", player.grid]);
-    state.SetAnimateFalse = true;
+    state.animate = false;
     state.EmitLoose = true;
     ifWinSet(state);
   }
