@@ -44,7 +44,7 @@ module.exports = {
 
   /**
    * Used to tell to the server that a player has complete a line
-   * Data to sent: {roomName, playerName}
+   * Data to sent: {roomName, playerName, amount}
    */
   PLAYER_COMPLETE_LINE: "playerCompleteLine",
 
@@ -107,7 +107,7 @@ module.exports = {
 
   /**
    * Used to tell to the client that the request fail or success
-   * Data to sent: {error: {type, message}} || {success}
+   * Data to sent: {error: {type, message}} || {success, game}
    */
   PLAYER_COMPLETE_LINE_RESPONSE: "playerCompleteLineResponse",
 

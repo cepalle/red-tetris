@@ -6,6 +6,8 @@ import socketDefs from "../../common/socket-definitions";
 import errorsDefs from "../../common/errors-definitions";
 import Piece from "../data/piece/Piece";
 
+const LINE_SCORE = [40,100,300,1200,2500,3500];
+
 class TetrisSocketHandler extends SocketHandler {
 
   constructor(socket) {
@@ -65,6 +67,7 @@ class TetrisSocketHandler extends SocketHandler {
    * Send to all player that a player has complete a line.
    * @param {Object} data
    * @param {string} data.roomName
+   * @param {number} data.amount
    * @param {string} response
    */
   playerCompleteLine(data, response = socketDefs.PLAYER_COMPLETE_LINE_RESPONSE) {
@@ -72,11 +75,12 @@ class TetrisSocketHandler extends SocketHandler {
     {
       const game = GameManager.getGame(data.roomName);
       const player = game.getPlayer(this.id);
+      player.lines += data.amount || 1;
+      player.score += LINE_SCORE[(data.amount || 1) - 1];
       PacketSender.sendPlayerCompleteLine(player, game);
-      this.socket.emit(response, {success: true});
+      this.socket.emit(response, {success: true, game});
     }
   }
-
 }
 
 export default TetrisSocketHandler;

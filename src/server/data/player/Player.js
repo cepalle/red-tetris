@@ -13,6 +13,8 @@ class Player {
     this.order = order;
     this.master = isMaster;
     this.loose = false;
+    this.score = 0;
+    this.lines = 0;
   }
 }
 
