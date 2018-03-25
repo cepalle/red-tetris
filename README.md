@@ -13,7 +13,7 @@ Le code client doit être écrit sans appel à "this" dans le but de vous pousse
 A l’inverse le code serveur doit utiliser de la programmation orientée objet (prototype). Nous voulons y retrouver au minimum les classes (ES6) Player, Piece et Game.
 
 L’application client doit être construite à partir des librairies React et Redux.
-Le code HTML ne doit pas utiliser d’éléments "<TABLE/>", mais doit être exclusivement construit à partir d’un layout flexbox.
+Le code HTML ne doit pas utiliser d’éléments <TABLE/>, mais doit être exclusivement construit à partir d’un layout flexbox.
 
 Interdiction d’utiliser :
 • Une librairie de manipulation du DOM comme jQuery
