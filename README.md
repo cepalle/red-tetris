@@ -14,8 +14,3 @@ A l’inverse le code serveur doit utiliser de la programmation orientée protot
 
 L’application client doit être construite à partir des librairies React et Redux.
 Le code HTML ne doit pas utiliser d’éléments \<TABLE/>, mais doit être exclusivement construit à partir d’un layout flexbox.
-
-Interdiction d’utiliser :
-• Une librairie de manipulation du DOM comme jQuery
-• Des canvas
-• Du SVG (Scalable Vector Graphics)
