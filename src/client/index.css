@@ -127,6 +127,13 @@
   background-color: #223345;
 }
 
+.color10 {
+  border: solid #888888;
+  border-bottom-color: #666666;
+  border-right-color: #666666;
+  background-color: #777777;
+}
+
 /* OTHER CSS */
 
 .pad {

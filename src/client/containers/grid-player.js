@@ -58,7 +58,7 @@ const GridPlayerComponent = ({state}) => {
       </div>
     </div>
     <div className={"row center color0"}>
-      <p className={"color8"}>
+      <p className={"pad color0"}>
         YOU!{playerState.isMaster && "(Master)"}{playerState.hasLoose && "(loose)"}{playerState.hasWin && "(Win)"}
       </p>
     </div>

@@ -184,7 +184,7 @@ const gridDelLine = grid => {
       if (el === PIECES_NUM.empty) {
         asEmpty = true;
       }
-      if (el === PIECES_NUM.wall) {
+      if (el === PIECES_NUM.wall_malus) {
         asWall = true;
       }
     });
@@ -219,7 +219,7 @@ const gridAddWall = state => {
   let newState = cloneState(state);
   player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
 
-  player.grid = [...player.grid, Array(GRID_WIDTH).fill(PIECES_NUM.wall)];
+  player.grid = [...player.grid, Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus)];
   player.grid.shift();
   player.grid[GRID_HEIGHT - 1][Math.floor(Math.random() * GRID_WIDTH)] = PIECES_NUM.empty;
   if (newState.piecesFlow[0].pos.y > 0) {

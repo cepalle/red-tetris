@@ -10,7 +10,8 @@ const PIECES_NUM = {
   _6:6,
   _7:7,
   wall:8,
-  preview:9
+  preview:9,
+  wall_malus:10,
 };
 
 const PIECES_MOVE = {
