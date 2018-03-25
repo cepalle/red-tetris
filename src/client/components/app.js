@@ -2,7 +2,6 @@ import React from "react";
 import {GridPlayer} from "../containers/grid-player"
 import {Messages} from "../containers/messages";
 import {Opponents} from "../containers/opponents";
-import {PreviewFlow} from "../containers/preview-flow"
 import {InfoPlayer} from "../containers/info-player"
 import mp3 from '../assets/Original_Tetris_theme.mp3'
 
@@ -21,9 +20,6 @@ const App = () =>
   <div className={"column"}>
     <audio loop autoPlay src={mp3}/>
     <div className={"row center"}>
-      <div className={"width_preview center"}>
-        <PreviewFlow/>
-      </div>
       <GridPlayer/>
     </div>
     <Opponents/>
