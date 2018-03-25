@@ -58,10 +58,10 @@
 }
 
 .color0 {
-  border: solid #171830;
-  border-bottom-color: #111328;
-  border-right-color: #111328;
-  background-color: #14152B;
+  border: solid #223345;
+  border-bottom-color: #394A56;
+  border-right-color: #394A56;
+  background-color: #2D3E50;
 }
 
 .color1 {
@@ -121,8 +121,10 @@
 }
 
 .color9 {
-  border: solid #cccccc;
-  background-color: #14152B;
+  border: solid #394A56;
+  border-bottom-color: #223345;
+  border-right-color: #223345;
+  background-color: #2D3E50;
 }
 
 /* OTHER CSS */
