@@ -40,7 +40,7 @@ const GridPlayerComponent = ({state}) => {
 
   for (let i = 0; i < piecesRender.length; i++) {
     const pieceCp = clonePiece(piecesRender[i]);
-    pieceCp.pos.x = 1;
+    pieceCp.pos.x = 0;
     pieceCp.pos.y = 1 + i * 5;
     previewRender = placePiece(previewRender, pieceCp);
   }
