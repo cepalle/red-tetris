@@ -25,6 +25,10 @@
   justify-content: center;
 }
 
+.selfEnd {
+  align-self: flex-end;
+}
+
 /* PIECE */
 
 .casePlayer {
@@ -140,12 +144,8 @@
   padding: 10px;
 }
 
-.width_preview {
-  width: 150px;
-}
-
-.width_info {
-  width: 500px;
+.width_info_panel {
+  width: 700px;
 }
 
 @font-face {
@@ -154,8 +154,17 @@
 }
 
 body {
-  font-family:'saboFilled';
-  font-size: 30px;
-  color: white;
   background-image: url("assets/monstres-pixels-joyeux.jpg");
 }
+
+.font_retro {
+  font-family:'saboFilled';
+}
+
+.font_info {
+  font-size: 15px;
+  color: white;
+}
+
+
+

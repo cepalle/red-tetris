@@ -29,7 +29,7 @@ const OpponentComponent = ({states}) => {
         gridRender.push(Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall));
 
         return <div key={k}>
-          <div className={"column pad"}>
+          <div className={"column"}>
             {gridRender.map((line, i) => i > 2 &&
               <div key={i} className={"row"}>
                 {line.map((el, j) => <div key={j} className={"caseOpponent color" + el}/>
@@ -37,8 +37,10 @@ const OpponentComponent = ({states}) => {
               </div>
             )}
           </div>
-          <div className={"row center"}>
-            <p>{state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}{state.hasWin && "(Win)"}</p>
+          <div className={"row center color0"}>
+            <p className={"pad color0"}>
+              {state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}{state.hasWin && "(Win)"}
+            </p>
           </div>
         </div>
           ;

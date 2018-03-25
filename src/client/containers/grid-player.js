@@ -47,9 +47,9 @@ const GridPlayerComponent = ({state}) => {
 
   previewRender.forEach((l, i) => gridRender[i + 3].push(...l));
 
-  return <div className={"column center"}>
+  return <div className={"column"}>
     <div>
-      <div className={"column pad"}>
+      <div className={"column"}>
         {gridRender.map((line, i) => i > 2 &&
           <div key={i} className={"row"}>
             {line.map((el, j) => <div key={j} className={"casePlayer + color" + el}/>)}
