@@ -77,7 +77,7 @@ class TetrisSocketHandler extends SocketHandler {
       const player = game.getPlayer(this.id);
       player.lines += data.amount || 1;
       player.score += LINE_SCORE[(data.amount || 1) - 1];
-      PacketSender.sendPlayerCompleteLine(player, game);
+      PacketSender.sendPlayerCompleteLine(player, game, data.amount || 1);
       this.socket.emit(response, {success: true, game});
     }
   }
