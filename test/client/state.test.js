@@ -6,16 +6,16 @@ const state = {
     {
       grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(0)),
       playerName: "playerName",
-      isMaster: true,
-      hasLoose: false,
-      hasWin: false,
+      master: true,
+      loose: false,
+      win: false,
     },
     {
       grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(0)),
       playerName: "playerName2",
-      isMaster: false,
-      hasLoose: false,
-      hasWin: false,
+      master: false,
+      loose: false,
+      win: false,
     },
   ],
   piecesFlow: [

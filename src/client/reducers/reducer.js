@@ -12,13 +12,15 @@ import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
 import {PIECES_NUM} from "../../common/pieces";
 
 
-const initPlayerState = (playerName, isMaster = false) => {
+const initPlayerState = (playerName, master = false) => {
   return {
     grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(PIECES_NUM.empty)),
+    win: false,
     playerName: playerName,
-    isMaster: isMaster,
-    hasLoose: false,
-    hasWin: false,
+    master: master,
+    loose: false,
+    score: 0,
+    lines: 0
   }
 };
 
@@ -56,7 +58,7 @@ const reducer = (state = initialState, action) => {
     case 'RECV_START_GAME':
       return reducerStartGame(state, action);
     case 'ADD_WALL_LINE':
-      return reducerAddWallLine(state);
+      return reducerAddWallLine(state, action);
     default:
       return state;
   }

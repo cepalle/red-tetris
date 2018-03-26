@@ -47,20 +47,10 @@ const reducerUpdateUsers = (state, {players}) => {
     )
   );
 
-  let playerMaster = players.find(el => el.master);
-  if (!playerMaster) {
-    logger_reducer(["no player master!"]);
-    return undefined;
-  }
-  newState.playerStates = filterAddNewUsers.map(el => {
-    el.isMaster = el.playerName === playerMaster.playerName;
-    return el;
-  });
-
-  newState.playerStates = newState.playerStates.map(playerState => {
-    const user = players.find(e => e.playerName === playerState.playerName);
-    playerState.hasLoose = user.loose;
-    return playerState;
+  /* UPDATE */
+  newState.playerStates = filterAddNewUsers.map(playerState => {
+    const player = players.find(e => e.playerName === playerState.playerName);
+    return Object.assign(playerState, player);
   });
 
   ifWinSet(newState);
@@ -77,7 +67,7 @@ const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.hasLoose || !state.animate || player.hasWin || state.piecesFlow.length < 1) {
+  if (player.loose || !state.animate || player.win || state.piecesFlow.length < 1) {
     return state;
   }
 
@@ -129,7 +119,7 @@ const reducerStartGame = (state, {pieces}) => {
   const newState = cloneState(state);
 
   newState.playerStates = newState.playerStates.map(playerState =>
-    initPlayerState(playerState.playerName, playerState.isMaster)
+    initPlayerState(playerState.playerName, playerState.master)
   );
   newState.piecesFlow = pieces;
   newState.animate = true;
@@ -139,14 +129,16 @@ const reducerStartGame = (state, {pieces}) => {
 /**
  * Add a line unbreakable.
  * @param {Object} state
+ * @param {int} amount
  */
-const reducerAddWallLine = state => {
+const reducerAddWallLine = (state, {amount}) => {
   logger_reducer(["addWallLine"]);
 
-  let newState = gridAddWall(state);
-  newState.EmitUpdateGrid = true;
-  ifLooseSet(newState);
-  return newState;
+  if (state.piecesFlow.length < 1 || !state.animate || amount <= 0) {
+    return state
+  }
+
+  return gridAddWall(state, amount);
 };
 
 

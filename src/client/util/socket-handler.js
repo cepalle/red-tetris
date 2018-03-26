@@ -88,12 +88,13 @@ const cbPacketGenFlow = ({pieces}) => {
 
 /**
  * Request: PACKET_PLAYER_COMPLETE_LINE
- * Data recv: {player, room}
+ * Data recv: {player, game, amount}
  */
-const cbPacketPlayerCompleteLine = () => {
+const cbPacketPlayerCompleteLine = ({game, amount}) => {
   logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE"]);
 
-  store.dispatch(addWallLine());
+  store.dispatch(addWallLine(amount));
+  store.dispatch(updatePlayers(game.players));
 };
 
 /**
@@ -199,11 +200,13 @@ const cbPlayerLooseResponse = ({error}) => {
  * Request: PLAYER_COMPLETE_LINE_RESPONSE
  * Data recv: {}
  */
-const cbPlayerCompleteLineResponse = ({error}) => {
+const cbPlayerCompleteLineResponse = ({error, game}) => {
   logger_sock(["recv PLAYER_COMPLETE_LINE_RESPONSE"]);
 
   if (error) {
-    store.dispatch(addError(error))
+    store.dispatch(addError(error));
+  } else if (game) {
+    store.dispatch(updatePlayers(game.players));
   }
 };
 
@@ -215,7 +218,7 @@ const cbGenFlowResponse = ({error}) => {
   logger_sock(["recv GENFLOW_RESPONSE"]);
 
   if (error) {
-    store.dispatch(addError(error))
+    store.dispatch(addError(error));
   }
 };
 
@@ -279,12 +282,13 @@ const emitPlayerLoose = (roomName, playerName) => {
  * Used to say to others player that you completed a line
  * Data to sent: {roomName, playerName}
  */
-const emitPlayerCompleteLine = (roomName, playerName) => {
+const emitPlayerCompleteLine = (roomName, playerName, amount) => {
   logger_sock(["emit PLAYER_COMPLETE_LINE"]);
 
   socket.emit(socketDefs.PLAYER_COMPLETE_LINE, {
     roomName: roomName,
-    playerName: playerName // TODO ADD nb line
+    playerName: playerName,
+    amount: amount,
   });
 };
 

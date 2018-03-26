@@ -18,9 +18,9 @@ describe('clone-handler', () => {
           }
         }
         expect(getState().playerStates[i].playerName === newState.playerStates[i].playerName).to.equal(true);
-        expect(getState().playerStates[i].isMaster === newState.playerStates[i].isMaster).to.equal(true);
-        expect(getState().playerStates[i].hasLoose === newState.playerStates[i].hasLoose).to.equal(true);
-        expect(getState().playerStates[i].hasWin === newState.playerStates[i].hasWin).to.equal(true);
+        expect(getState().playerStates[i].master === newState.playerStates[i].master).to.equal(true);
+        expect(getState().playerStates[i].loose === newState.playerStates[i].loose).to.equal(true);
+        expect(getState().playerStates[i].win === newState.playerStates[i].win).to.equal(true);
       }
       expect(getState.piecesFlow === newState.piecesFlow).to.equal(false);
       for (let i = 0; i < getState().piecesFlow; i++) {

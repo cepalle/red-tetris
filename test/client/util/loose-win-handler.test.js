@@ -7,17 +7,17 @@ describe('end-loose-win-handler', () => {
     it('should getCorrectColorNum', () => {
       let newState = getState();
       ifLooseSet(newState);
-      expect(newState.playerStates[0].hasLoose).to.equal(false);
-      expect(newState.playerStates[0].hasWin).to.equal(false);
-      expect(newState.playerStates[1].hasLoose).to.equal(false);
-      expect(newState.playerStates[1].hasWin).to.equal(false);
+      expect(newState.playerStates[0].loose).to.equal(false);
+      expect(newState.playerStates[0].win).to.equal(false);
+      expect(newState.playerStates[1].loose).to.equal(false);
+      expect(newState.playerStates[1].win).to.equal(false);
 
       newState.playerStates[0].grid[3][0] = 1;
       ifLooseSet(newState);
-      expect(newState.playerStates[0].hasLoose).to.equal(true);
-      expect(newState.playerStates[0].hasWin).to.equal(false);
-      expect(newState.playerStates[1].hasLoose).to.equal(false);
-      expect(newState.playerStates[1].hasWin).to.equal(true);
+      expect(newState.playerStates[0].loose).to.equal(true);
+      expect(newState.playerStates[0].win).to.equal(false);
+      expect(newState.playerStates[1].loose).to.equal(false);
+      expect(newState.playerStates[1].win).to.equal(true);
       expect(newState.SetAnimateFalse).to.equal(true);
       expect(newState.EmitLoose).to.equal(true);
     });

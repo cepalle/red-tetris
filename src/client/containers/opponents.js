@@ -4,10 +4,10 @@ import {clonePlayerStates} from "../util/clone-handler"
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {PIECES_NUM} from "../../common/pieces";
 
-const OpponentComponent = ({states}) => {
+const OpponentComponent = ({playerStates}) => {
   return <div className={"row wrap center"}>
-    {states.map((state, k) => {
-        const grid = state.grid.map(l => l.map(e => e));
+    {playerStates.map((playerState, k) => {
+        const grid = playerState.grid.map(l => l.map(e => e));
 
         for (let i = 0; i < GRID_WIDTH; i++) {
           let obstacle = false;
@@ -39,7 +39,13 @@ const OpponentComponent = ({states}) => {
           </div>
           <div className={"row center"}>
             <p className={"pad font_white font_retro"}>
-              {state.playerName}{state.isMaster && "(Master)"}{state.hasLoose && "(loose)"}{state.hasWin && "(Win)"}
+              {playerState.playerName}{playerState.master && "(Master)"}{playerState.loose && "(loose)"}{playerState.win && "(Win)"}
+            </p>
+            <p className={"pad font_white font_retro"}>
+              score:{playerState.score}
+            </p>
+            <p className={"pad font_white font_retro"}>
+              lines completed:{playerState.lines}
             </p>
           </div>
         </div>
@@ -51,7 +57,7 @@ const OpponentComponent = ({states}) => {
 };
 
 const mapStateToProps = state => {
-  return {states: clonePlayerStates(state.playerStates).filter(el => el.playerName !== state.playerName)};
+  return {playerStates: clonePlayerStates(state.playerStates).filter(el => el.playerName !== state.playerName)};
 };
 
 const Opponents = connect(

@@ -21,11 +21,16 @@ const InfoPanelComponent = ({error, animate, isMaster, playerName, roomName}) =>
       <p className={"font_green"}>{"You are currently waiting for other players"}<br/></p>}
       {playerName && roomName && !animate && !isMaster &&
       <p className={"font_green"}>{"You are currently waiting for master player"}<br/></p>}
-      {error.type === "PLAYER_ALREADY_IN_ROOM" &&
-      <p className={"font_red"}>{"A player as already your pseudo in this room"}<br/></p>}
       {(!playerName || !roomName) &&
       <p className={"font_red"}>{"You need to join a room and take a pseudo"}<br/>
         {"(The room will be created if doesn't exist)"}<br/></p>}
+      {error.type === "PLAYER_ALREADY_IN_ROOM" &&
+      <p className={"font_red"}>{"A player as already your pseudo in this room"}<br/></p>}
+      {error.type && error.type === "PLAYER_NOT_MASTER" &&
+      <p className={"font_red"}>{"You need to be master for start the game"}<br/></p>}
+      {error.type && error.type !== "PLAYER_ALREADY_IN_ROOM" &&
+      error.type !== "PLAYER_NOT_MASTER" &&
+      <p className={"font_red"}>{error.type}<br/></p>}
     </div>
   </div>
 ;
@@ -34,7 +39,7 @@ const mapStateToProps = state => {
   return {
     error: Object.assign({}, state.error),
     animate: state.animate,
-    isMaster: state.playerStates.find(e => e.playerName === state.playerName).isMaster,
+    master: state.playerStates.find(e => e.playerName === state.playerName).master,
     playerName: state.playerName,
     roomName: state.roomName,
   }

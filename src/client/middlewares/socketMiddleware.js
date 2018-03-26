@@ -53,9 +53,7 @@ const socketMiddleware = store => next => action => {
   }
 
   if (state.EmitCompleteLine > 0) {
-    for (let i = 0; i < state.EmitCompleteLine; i++) {
-      emitPlayerCompleteLine(state.roomName, state.playerName);
-    }
+    emitPlayerCompleteLine(state.roomName, state.playerName, state.EmitCompleteLine);
     state.EmitCompleteLine = 0;
   }
 

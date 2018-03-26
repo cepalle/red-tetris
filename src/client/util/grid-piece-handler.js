@@ -2,6 +2,7 @@ import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_MOVE, PIECES_NUM} from "../../common/pieces";
 import {cloneState} from "./clone-handler"
 import {logger} from "./logger-handler"
+import {ifLooseSet} from "./loose-win-handler";
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -204,28 +205,22 @@ const gridDelLine = grid => {
   return [newGrid, lineToDel.length - nbWall];
 };
 
-const gridAddWall = state => {
-  if (state.piecesFlow.length < 1) {
-    return state
-  }
-
-
-  let player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-
-  if (player.hasLoose) {
-    return state;
-  }
-
+const gridAddWall = (state, amount) => {
   let newState = cloneState(state);
-  player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
+  const player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
+  const pos_x = Math.floor(Math.random() * GRID_WIDTH);
 
-  player.grid = [...player.grid, Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus)];
-  player.grid.shift();
-  player.grid[GRID_HEIGHT - 1][Math.floor(Math.random() * GRID_WIDTH)] = PIECES_NUM.empty;
-  if (newState.piecesFlow[0].pos.y > 0) {
-    newState.piecesFlow[0].pos.y--;
+  for (let i = 0; i < amount; i++) {
+    player.grid.push(Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus));
+    player.grid.shift();
+    player.grid[GRID_HEIGHT - 1][pos_x] = PIECES_NUM.empty;
+    if (newState.piecesFlow[0].pos.y > 0) {
+      newState.piecesFlow[0].pos.y--;
+    }
   }
 
+  ifLooseSet(newState);
+  newState.EmitUpdateGrid = true;
   return newState;
 };
 

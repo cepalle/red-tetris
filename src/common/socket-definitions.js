@@ -162,7 +162,7 @@ module.exports = {
 
   /**
    * Sent to all player except the sender that a player complete the line.
-   * Data to sent: {player, game}
+   * Data to sent: {player, game, amount}
    */
   PACKET_PLAYER_COMPLETE_LINE: "packetPlayerCompleteLine",
 

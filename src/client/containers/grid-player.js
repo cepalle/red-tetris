@@ -10,7 +10,7 @@ const GridPlayerComponent = ({state}) => {
   /* PLAYERGRID */
 
   const playerState = state.playerStates.find(e => e.playerName === state.playerName);
-  if (state.piecesFlow.length > 0 && !playerState.hasLoose && !playerState.hasWin) {
+  if (state.piecesFlow.length > 0 && !playerState.loose && !playerState.win) {
     playerState.grid = placePiecePreview(playerState.grid, state.piecesFlow[0]);
     playerState.grid = placePiece(playerState.grid, state.piecesFlow[0]);
   }
@@ -59,7 +59,13 @@ const GridPlayerComponent = ({state}) => {
     </div>
     <div className={"row center"}>
       <p className={"pad font_white font_retro"}>
-        YOU!{playerState.isMaster && "(Master)"}{playerState.hasLoose && "(loose)"}{playerState.hasWin && "(Win)"}
+        YOU!{playerState.master && "(Master)"}{playerState.loose && "(loose)"}{playerState.win && "(Win)"}
+      </p>
+      <p className={"pad font_white font_retro"}>
+        score:{playerState.score}
+      </p>
+      <p className={"pad font_white font_retro"}>
+        lines completed:{playerState.lines}
       </p>
     </div>
   </div>;

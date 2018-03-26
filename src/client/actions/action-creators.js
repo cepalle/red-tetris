@@ -69,9 +69,10 @@ const startGame = pieces => {
 /**
  * Add a line unbreakable.
  */
-const addWallLine = () => {
+const addWallLine = (amount) => {
   return {
-    type: 'ADD_WALL_LINE'
+    type: 'ADD_WALL_LINE',
+    amount: amount
   }
 };
 
