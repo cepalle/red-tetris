@@ -38,14 +38,18 @@ const OpponentComponent = ({playerStates}) => {
             )}
           </div>
           <div className={"row center"}>
-            <p className={"pad font_white font_retro"}>
+            <p className={"font_white font_retro"}>
               {playerState.playerName}{playerState.master && "(Master)"}{playerState.loose && "(loose)"}{playerState.win && "(Win)"}
             </p>
-            <p className={"pad font_white font_retro"}>
-              score:{playerState.score}
+          </div>
+          <div className={"row center"}>
+            <p className={"font_white font_retro"}>
+              {"score:" + playerState.score}
             </p>
-            <p className={"pad font_white font_retro"}>
-              lines completed:{playerState.lines}
+          </div>
+          <div className={"row center"}>
+            <p className={"font_white font_retro"}>
+              {"lines completed:" + playerState.lines}
             </p>
           </div>
         </div>
