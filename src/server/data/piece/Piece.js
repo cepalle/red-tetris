@@ -34,8 +34,21 @@ class Piece {
    */
   static generatePieces(n) {
     const pieces = [];
-    for (let i = 0; i < n; i++)
-      pieces.push(Piece.generatePiece());
+    let lastPiece = undefined;
+
+    for (let i = 0; i < n; i++) {
+      const piece = Piece.generatePiece();
+      if (!lastPiece || canPlace(lastPiece, piece.num)) {
+        lastPiece = piece;
+        pieces.push(piece);
+      }
+      else i--;
+    }
+    function canPlace(lastPiece, num) {
+      return !(lastPiece === num || Piece.randNumber(1, 10) > 5);
+
+    }
+
     return pieces;
   }
 }
