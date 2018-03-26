@@ -139,17 +139,17 @@
 }
 
 .color11 {
-  border: solid #A9383E;
-  border-bottom-color: #76262B;
-  border-right-color: #76262B;
-  background-color: #993339;
+  border: solid #594A56;
+  border-bottom-color: #423345;
+  border-right-color: #423345;
+  background-color: #4D3E50;
 }
 
 .color12 {
-  border: solid #CDA827;
-  border-bottom-color: #8C7518;
-  border-right-color: #8C7518;
-  background-color: #BA9823;
+  border: solid #596A56;
+  border-bottom-color: #425345;
+  border-right-color: #425345;
+  background-color: #4D5E50;
 }
 
 /* OTHER CSS */
@@ -168,7 +168,7 @@
 }
 
 body {
-  background-image: url("assets/monstres-pixels-joyeux.jpg");
+  background-image: url("assets/2018_03_26 01_28 PM.png");
 }
 
 .font_retro {

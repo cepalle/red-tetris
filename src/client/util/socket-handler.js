@@ -1,7 +1,7 @@
 import io from 'socket.io-client';
 import {store} from "../middlewares/store"
 import socketDefs from "../../common/socket-definitions";
-import {logger_sock} from "./logger-handler";
+import {logger, logger_sock} from "./logger-handler";
 import {
   addError, addPiecesFlow, addWallLine, connectionResponse, startGame, updateGrid,
   updatePlayers
@@ -129,10 +129,13 @@ socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 const cbJoinRoomResponse = ({error, game}) => {
   logger_sock(["recv JOIN_GAME_RESPONSE"]);
 
+  //logger([arg]);
   if (error) {
-    store.dispatch(addError(error))
+    store.dispatch(addError(error));
+    logger(error);
   } else {
-    store.dispatch(updatePlayers(game.players))
+    store.dispatch(updatePlayers(game.players));
+    logger(game);
   }
 };
 
