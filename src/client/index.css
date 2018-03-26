@@ -29,6 +29,10 @@
   align-self: flex-end;
 }
 
+.spaceBetween {
+  justify-content: space-between;
+}
+
 /* PIECE */
 
 .casePlayer {
@@ -178,16 +182,16 @@
 }
 
 @font-face {
-  font-family: 'saboFilled';
+  font-family: 'arcade';
   src: url('./assets/arcade.ttf');
 }
 
 body {
-  background-image: url("assets/Image collée le -  2018_03_26 01_28 PM-iloveimg-cropped (5).png");
+  background-image: url("assets/space.png");
 }
 
 .font_retro {
-  font-family:'saboFilled';
+  font-family:'arcade';
 }
 
 .font_info {
@@ -208,4 +212,3 @@ body {
 .font_green {
   color: green;
 }
-
