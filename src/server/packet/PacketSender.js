@@ -41,8 +41,8 @@ class PacketSender {
    * @param {Player} player
    * @param {Game} game
    */
-  static sendPlayerCompleteLine(player, game) {
-    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_COMPLETE_LINE, player, game, {game, player})
+  static sendPlayerCompleteLine(player, game, amount) {
+    PacketSender.sendPacketToAllPlayer(socketDefs.PACKET_PLAYER_COMPLETE_LINE, player, game, {game, player, amount})
   }
 
   /**
