@@ -43,6 +43,12 @@ module.exports = {
   PLAYER_LOOSE: "playerLoose",
 
   /**
+   * Retrieve information about rooms
+   * Data to sent: {}
+   */
+  HOME: "home",
+
+  /**
    * Used to tell to the server that a player has complete a line
    * Data to sent: {roomName, playerName, amount}
    */
@@ -73,6 +79,11 @@ module.exports = {
    */
   JOIN_GAME_RESPONSE: "joinGameResponse",
 
+  /**
+   * Retrieve information about rooms
+   * Data to sent: {games}
+   */
+  HOME_RESPONSE: "homeResponse",
 
   /**
    * Used to tell to the client if he has successfully quit the room.

@@ -22,6 +22,7 @@ class App {
 
     globalSocketHandler.connection();
 
+    socket.on(socketDefs.HOME,                  (d) => globalSocketHandler.home());
     socket.on(socketDefs.JOIN_GAME,             (d) => roomSocketHandler.joinGame(d));
     socket.on(socketDefs.QUIT_GAME,             (d) => roomSocketHandler.quitGame(d));
     socket.on(socketDefs.START_PLAYING,         (d) => roomSocketHandler.startPlaying(d));
