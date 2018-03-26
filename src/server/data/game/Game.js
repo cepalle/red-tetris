@@ -96,8 +96,10 @@ class Game {
    */
   setWaiting(stateWaiting) {
     this.waiting = stateWaiting;
-    if (!this.waiting)
+    if (!this.waiting) {
+      this.players.forEach(e => {e.lines = 0 ; e.score = 0});
       PacketSender.sendGameStart(this);
+    }
   }
 
   /**

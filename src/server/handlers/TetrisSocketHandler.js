@@ -58,7 +58,7 @@ class TetrisSocketHandler extends SocketHandler {
       const player = game.getPlayer(this.id);
       player.loose = true;
       PacketSender.sendPlayerLoose(player, game);
-      this.socket.emit(response, {success: true})
+      this.socket.emit(response, {success: true});
       game.gameHasEnd();
     }
   }
