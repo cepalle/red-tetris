@@ -152,6 +152,21 @@
   background-color: #4D5E50;
 }
 
+.buttonPlay {
+  border: solid #394A56;
+  border-bottom-color: #223345;
+  border-right-color: #223345;
+  background-color: #2D3E50;
+}
+
+.buttonPlay:hover {
+  border: solid #223345;
+  border-bottom-color: #394A56;
+  border-right-color: #394A56;
+  background-color: #2D3E50;
+}
+
+
 /* OTHER CSS */
 
 .pad {
@@ -168,7 +183,7 @@
 }
 
 body {
-  background-image: url("assets/2018_03_26 01_28 PM.png");
+  background-image: url("assets/Image collée le -  2018_03_26 01_28 PM-iloveimg-cropped (5).png");
 }
 
 .font_retro {
@@ -179,6 +194,9 @@ body {
   font-size: 15px;
 }
 
+.font_button {
+  font-size: 30px;
+}
 .font_white {
   color: #fefefe;
 }

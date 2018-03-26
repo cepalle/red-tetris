@@ -27,7 +27,7 @@ const initPlayerState = (playerName, master = false) => {
 const initialState = {
   playerStates: [initPlayerState(urlGetPlayerName())],
   piecesFlow: [],
-  error: undefined,
+  error: {},
   playerName: urlGetPlayerName(),
   roomName: urlGetRoomName(),
   animate: false,

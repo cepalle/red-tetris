@@ -60,15 +60,15 @@ const GridPlayerComponent = ({playerState, piecesFlow}) => {
       </div>
     </div>
     <div className={"row center"}>
-      <p className={"pad font_white font_retro"}>
+      <span className={"pad font_white font_retro"}>
         YOU!{playerState.master && "(Master)"}{playerState.loose && "(loose)"}{playerState.win && "(Win)"}
-      </p>
-      <p className={"pad font_white font_retro"}>
+      </span>
+      <span className={"pad font_white font_retro"}>
         score:{playerState.score}
-      </p>
-      <p className={"pad font_white font_retro"}>
+      </span>
+      <span className={"pad font_white font_retro"}>
         lines completed:{playerState.lines}
-      </p>
+      </span>
     </div>
   </div>;
 };
