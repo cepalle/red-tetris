@@ -1,9 +1,9 @@
 import React from "react";
-import {GridPlayer} from "../containers/grid-player"
 import {InfoPanel} from "../containers/info-panel";
+import {GridPlayer} from "../containers/grid-player";
 import {Opponents} from "../containers/opponents";
 
-const App = () =>
+const TetrisGame = () =>
   <div className={"column"}>
     <div className={"row center"}>
       <div className={"row color8 pad"}>
@@ -15,4 +15,4 @@ const App = () =>
   </div>
 ;
 
-export default App;
+export {TetrisGame};
