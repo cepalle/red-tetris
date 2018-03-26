@@ -1,5 +1,5 @@
 import {
-  emitGenFlow, emitJoinRoom, emitPlayerCompleteLine, emitPlayerLoose,
+  emitGenFlow, emitHome, emitJoinRoom, emitPlayerCompleteLine, emitPlayerLoose,
   emitStartPlaying, emitTetrisPlacePiece
 } from "../util/socket-handler";
 import {logger_middleware} from "../util/logger-handler";
@@ -12,12 +12,17 @@ const socketMiddleware = store => next => action => {
 
       if (store.getState().roomName && store.getState().playerName) {
         emitJoinRoom(store.getState().roomName, store.getState().playerName);
+      } else {
+        emitHome();
+
       }
       break;
     case 'SEND_START_GAME':
       logger_middleware(["SEND_START_GAME"]);
 
-      if (!store.getState().animate) {
+      if (!store.getState().animate &&
+        store.getState().roomName &&
+        store.getState().playerName) {
         emitStartPlaying(store.getState().roomName);
       }
       break;
@@ -39,6 +44,13 @@ const socketMiddleware = store => next => action => {
     state.EmitLoose = false;
 
     emitPlayerLoose(state.roomName, state.playerName);
+  }
+
+  if (state.EmitJoinRoom) {
+    logger_middleware(["EmitJoinRoom"]);
+    state.EmitJoinRoom = false;
+
+    emitJoinRoom(state.roomName, state.playerName);
   }
 
   if (state.EmitUpdateGrid) {

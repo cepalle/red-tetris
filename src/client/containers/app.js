@@ -1,14 +1,14 @@
 import React from "react";
 import {connect} from "react-redux";
 import {TetrisGame} from "../components/tetris-game";
-import {Choice} from "./choice";
+import {Home} from "./home";
 
 const AppComponent = ({playerRoomNameChoose}) =>
   <div>
     {playerRoomNameChoose ?
       <TetrisGame/>
     :
-      <Choice/>
+      <Home/>
     }
   </div>
 ;

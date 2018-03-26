@@ -1,14 +1,15 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {sendStartGame} from "../actions/action-creators";
+import {sendStartGame, updateRoomPlayerName} from "../actions/action-creators";
 import mp3 from '../assets/Original_Tetris_theme.mp3'
 
-const InfoPanelComponent = ({error, animate, master, playerName, roomName, onClickButton, canStart}) =>
+const InfoPanelComponent = ({error, animate, master, playerName, roomName, onClickButton, onClickHome}) =>
   <div className={"column width_info_panel spaceBetween"}>
     <div className={"row"}>
-      <div className={"column"}>
-        <div className={"row center"}>
-          <h1 className={"font_white font_retro"}>TETRIS</h1>
+      <div className={"column"} onClick={() => onClickHome()}>
+        <div className={"row center pad buttonPlay"}>
+          <img className={"pad"} src={require("../assets/home-8x.png")} height="32" width="32" alt={"home"}/>
+          <h1 className={"font_white font_retro pad"}>TETRIS</h1>
         </div>
         <div className={"font_white pad"}>
           {"For play you need add to the url: #<roomName>[<yourPseudo>]"}<br/>
@@ -27,7 +28,6 @@ const InfoPanelComponent = ({error, animate, master, playerName, roomName, onCli
               Play!
             </button>
           </div>}
-
 
           {playerName && roomName && !animate && master &&
           <p className={"font_green"}>{"You are currently waiting for other players"}<br/></p>}
@@ -67,22 +67,28 @@ const InfoPanelComponent = ({error, animate, master, playerName, roomName, onCli
 
 const mapStateToProps = state => {
   return {
-    error: Object.assign({}, state.error),
-    animate: state.animate,
-    master: state.playerStates.find(e => e.playerName === state.playerName).master,
-    playerName: state.playerName,
-    roomName: state.roomName,
-  }
+  error: Object.assign({}, state.error),
+  animate: state.animate,
+  master: state.playerStates.find(e => e.playerName === state.playerName).master,
+  playerName: state.playerName,
+  roomName: state.roomName,
+}
 };
 
 const mapDispatchToProps = dispatch => {
-  return {onClickButton: () => dispatch(sendStartGame())};
+  return {
+    onClickButton: () => dispatch(sendStartGame()),
+    onClickHome: () => {
+      dispatch(updateRoomPlayerName("", ""));
+      window.location.href = "";
+    }
+  };
 };
 
 
 const InfoPanel = connect(
-  mapStateToProps,
-  mapDispatchToProps
+mapStateToProps,
+mapDispatchToProps
 )(InfoPanelComponent);
 
 export {InfoPanel};

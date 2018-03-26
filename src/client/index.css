@@ -173,6 +173,7 @@
 
 /* OTHER CSS */
 
+
 .pad {
   padding: 10px;
 }
@@ -184,6 +185,10 @@
 @font-face {
   font-family: 'arcade';
   src: url('./assets/arcade.ttf');
+}
+
+h1 {
+  margin: 0px;
 }
 
 body {

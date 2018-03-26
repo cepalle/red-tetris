@@ -141,6 +141,38 @@ const reducerAddWallLine = (state, {amount}) => {
   return gridAddWall(state, amount);
 };
 
+/**
+ * Add a line unbreakable.
+ * @param {Object} state
+ * @param {string} roomName
+ * @param {string} playerName
+ */
+const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
+  logger_reducer(["updateRoomPlayerName"]);
+
+  const newState = cloneState(state);
+  newState.playerStates[0] = initPlayerState(playerName);
+  newState.roomName = roomName;
+  newState.playerName = playerName;
+  newState.EmitJoinRoom = true;
+
+  return newState;
+};
+
+/**
+ * Add a line unbreakable.
+ * @param {Object} state
+ * @param {games} games
+ */
+const reducerUpdateGames = (state, {games}) => {
+  logger_reducer(["updateRoomPlayerName"]);
+
+  const newState = cloneState(state);
+  newState.games = games;
+
+  return newState;
+};
+
 
 export {
   reducerPiecesFlow,
@@ -149,5 +181,7 @@ export {
   reducerMovePiece,
   reducerStartGame,
   reducerUpdateGrid,
-  reducerUpdateUsers
+  reducerUpdateUsers,
+  reducerUpdateRoomPlayerName,
+  reducerUpdateGames
 }

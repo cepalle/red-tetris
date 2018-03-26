@@ -9,6 +9,7 @@ const clonePlayerStates = playerStates => playerStates.map(playerState =>
 
 const clonePiece = piece => Object.assign({}, piece, {pos: Object.assign({}, piece.pos)});
 
+/* Shalow copie games */
 const cloneState = state =>
   Object.assign(
     {},
