@@ -9,6 +9,9 @@ const OpponentComponent = ({playerStates}) => {
     {playerStates.map((playerState, k) => {
         const grid = playerState.grid.map(l => l.map(e => e));
 
+        const wall_type = (playerState.loose ? PIECES_NUM.wall_loose :
+          playerState.win ? PIECES_NUM.wall_win : PIECES_NUM.wall);
+
         for (let i = 0; i < GRID_WIDTH; i++) {
           let obstacle = false;
           for (let j = 0; j < GRID_HEIGHT; j++) {
@@ -23,10 +26,10 @@ const OpponentComponent = ({playerStates}) => {
 
         const gridRender = [];
         grid.forEach((l, i) => {
-          gridRender.push([PIECES_NUM.wall, ...l, PIECES_NUM.wall]);
+          gridRender.push([wall_type, ...l, wall_type]);
         });
-        gridRender[3] = Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall);
-        gridRender.push(Array(GRID_WIDTH + 2).fill(PIECES_NUM.wall));
+        gridRender[3] = Array(GRID_WIDTH + 2).fill(wall_type);
+        gridRender.push(Array(GRID_WIDTH + 2).fill(wall_type));
 
         return <div key={k} className={"color8 pad"}>
           <div className={"column"}>

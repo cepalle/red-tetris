@@ -12,6 +12,8 @@ const PIECES_NUM = {
   wall:8,
   preview:9,
   wall_malus:10,
+  wall_loose:11,
+  wall_win:12,
 };
 
 const PIECES_MOVE = {

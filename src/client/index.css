@@ -138,6 +138,20 @@
   background-color: #777777;
 }
 
+.color11 {
+  border: solid #A9383E;
+  border-bottom-color: #76262B;
+  border-right-color: #76262B;
+  background-color: #993339;
+}
+
+.color12 {
+  border: solid #CDA827;
+  border-bottom-color: #8C7518;
+  border-right-color: #8C7518;
+  background-color: #BA9823;
+}
+
 /* OTHER CSS */
 
 .pad {
