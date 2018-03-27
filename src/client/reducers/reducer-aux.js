@@ -72,11 +72,11 @@ const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.loose ||
-    !state.animate ||
+  if (!player ||
+    player.loose ||
     player.win ||
-    state.piecesFlow.length < 1 ||
-    !players.some(e => e.playerName === state.playerName)) {
+    !state.animate ||
+    state.piecesFlow.length < 1) {
     return state;
   }
 
@@ -146,7 +146,7 @@ const reducerAddWallLine = (state, {amount}) => {
   if (state.piecesFlow.length < 1
     || !state.animate
     || amount <= 0
-    || !players.some(e => e.playerName === state.playerName)) {
+    || !state.playerStates.some(e => e.playerName === state.playerName)) {
     return state
   }
 
