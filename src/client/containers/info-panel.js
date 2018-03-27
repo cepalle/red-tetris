@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {emitQuitGame, sendStartGame, updateRoomPlayerName} from "../actions/action-creators";
 import {InfoPanelComponent} from "../components/info-panel-component";
 
-
 const mapStateToProps = state => {
   return {
     error: Object.assign({}, state.error),
@@ -24,7 +23,6 @@ const mapDispatchToProps = dispatch => {
     }
   };
 };
-
 
 const InfoPanel = connect(
   mapStateToProps,
