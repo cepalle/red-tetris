@@ -14,7 +14,6 @@ const socketMiddleware = store => next => action => {
         emitJoinRoom(store.getState().roomName, store.getState().playerName);
       } else {
         emitHome();
-
       }
       break;
     case 'SEND_START_GAME':
