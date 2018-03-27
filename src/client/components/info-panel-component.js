@@ -10,15 +10,14 @@ const InfoPanelComponent = ({error, animate, master, playerName, roomName, onCli
           <h1 className={"font_white font_retro pad"}>TETRIS</h1>
         </div>
         <div className={"font_white pad"}>
-          {"For play you need add to the url: #<roomName>[<yourPseudo>]"}<br/>
-          {"> Exemple: cepalle.github.io/red-tetris/#chateauHyrule[Zelda]"}<br/>
-          {"Refresh the page with the new url"}<br/><br/>
-          {"<keyRight>: move right"}<br/>
-          {"<keyLeft>: move left"}<br/>
-          {"<keyDown>: move down"}<br/>
-          {"<keyUp>: rotate right"}<br/>
-          {"<keySpace>: place the piece"}<br/>
-          {"<keyEnter>: start the game if your are master"}<br/>
+          <div className={"pad"}>
+            {"<keyRight>: move right"}<br/>
+            {"<keyLeft>: move left"}<br/>
+            {"<keyDown>: move down"}<br/>
+            {"<keyUp>: rotate right"}<br/>
+            {"<keySpace>: place the piece"}<br/>
+            {"<keyEnter>: start the game if your are master"}<br/>
+          </div>
 
           {playerName && roomName && master &&
           <div className={"pad"}>

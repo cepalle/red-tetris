@@ -66,8 +66,8 @@ class HomeComponent extends React.Component {
               No current room
             </div>}
             {this.props.games.map((r, i) =>
-              <button className={"font_retro font_white buttonPlay"} key={i}
-                      onClick={() => this.setRoomName(r.name)}>{r.name}</button>
+              <button className={"font_retro buttonPlay" + (r.waiting ? " font_green" : " font_red")} key={i}
+                      onClick={() => this.setRoomName(r.name)}>{r.name + (!r.waiting ? "(playing)" : "")}</button>
             )}
           </div>
 
