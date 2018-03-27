@@ -38,6 +38,11 @@ const reducerError = (state, {error}) => {
 const reducerUpdateUsers = (state, {players}) => {
   logger_reducer(["updatePlayers"]);
 
+  if (!players.some(e => e.master) ||
+    !players.some(e => e.playerName === state.playerName)) {
+    return state;
+  }
+
   const newState = cloneState(state);
 
   let filterNotInUsers = newState.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
@@ -67,7 +72,11 @@ const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.loose || !state.animate || player.win || state.piecesFlow.length < 1) {
+  if (player.loose ||
+    !state.animate ||
+    player.win ||
+    state.piecesFlow.length < 1 ||
+    !players.some(e => e.playerName === state.playerName)) {
     return state;
   }
 
@@ -134,7 +143,10 @@ const reducerStartGame = (state, {pieces}) => {
 const reducerAddWallLine = (state, {amount}) => {
   logger_reducer(["addWallLine"]);
 
-  if (state.piecesFlow.length < 1 || !state.animate || amount <= 0) {
+  if (state.piecesFlow.length < 1
+    || !state.animate
+    || amount <= 0
+    || !players.some(e => e.playerName === state.playerName)) {
     return state
   }
 
@@ -151,7 +163,7 @@ const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
   logger_reducer(["updateRoomPlayerName"]);
 
   const newState = cloneState(state);
-  newState.playerStates[0] = initPlayerState(playerName);
+  newState.playerStates = [initPlayerState(playerName)];
   newState.roomName = roomName;
   newState.playerName = playerName;
   newState.EmitJoinRoom = true;

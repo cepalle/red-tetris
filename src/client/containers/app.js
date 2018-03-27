@@ -6,10 +6,8 @@ import {Home} from "./home";
 const AppComponent = ({playerRoomNameChoose}) =>
   <div>
     {playerRoomNameChoose ?
-      <TetrisGame/>
-    :
-      <Home/>
-    }
+      <TetrisGame/> :
+      <Home/>}
   </div>
 ;
 
