@@ -17,6 +17,7 @@ const InfoPanelComponent = ({error, animate, master, playerName, roomName, onCli
             {"<keyUp>: rotate right"}<br/>
             {"<keySpace>: place the piece"}<br/>
             {"<keyEnter>: start the game if your are master"}<br/>
+            {"<keyS> or <keyC>: switch the current piece with the next piece"}<br/>
           </div>
 
           {playerName && roomName && master &&

@@ -4,8 +4,8 @@ import {Provider} from 'react-redux';
 import App from "./containers/app";
 import {store} from "./middlewares/store";
 import './index.css';
-import "./util/event-listener-handler";
-import {eventHandler} from "./util/event-listener-handler";
+import "./util/event-handler";
+import {eventHandler} from "./util/event-handler";
 import {animateClock} from "./util/animate-handler";
 
 ReactDOM.render(

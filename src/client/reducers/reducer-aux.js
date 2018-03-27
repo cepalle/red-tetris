@@ -76,14 +76,14 @@ const reducerMovePiece = (state, {move}) => {
     player.loose ||
     player.win ||
     !state.animate ||
-    state.piecesFlow.length < 1) {
+    state.piecesFlow.length < 2) {
     return state;
   }
 
   const newState = cloneState(state);
   const newPlayer = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
   let needNext;
-  [needNext, newState.piecesFlow[0]] = updatePiecePos(newPlayer.grid, newState.piecesFlow[0], move);
+  [needNext, newState.piecesFlow] = updatePiecePos(newPlayer.grid, newState.piecesFlow, move);
 
   if (needNext) {
     newPlayer.grid = placePiece(newPlayer.grid, newState.piecesFlow[0]);
