@@ -162,12 +162,15 @@ const reducerAddWallLine = (state, {amount}) => {
 const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
   logger_reducer(["updateRoomPlayerName"]);
 
+  if (!roomName || !playerName) {
+    return state
+  }
+
   const newState = cloneState(state);
   newState.playerStates = [initPlayerState(playerName)];
   newState.roomName = roomName;
   newState.playerName = playerName;
   newState.EmitJoinRoom = true;
-
   return newState;
 };
 
@@ -195,5 +198,5 @@ export {
   reducerUpdateGrid,
   reducerUpdateUsers,
   reducerUpdateRoomPlayerName,
-  reducerUpdateGames
+  reducerUpdateGames,
 }

@@ -1,5 +1,5 @@
 import {
-  emitGenFlow, emitHome, emitJoinRoom, emitPlayerCompleteLine, emitPlayerLoose,
+  emitGenFlow, emitHome, emitJoinRoom, emitPlayerCompleteLine, emitPlayerLoose, emitQuitGame,
   emitStartPlaying, emitTetrisPlacePiece
 } from "../util/socket-handler";
 import {logger_middleware} from "../util/logger-handler";
@@ -23,6 +23,14 @@ const socketMiddleware = store => next => action => {
         store.getState().roomName &&
         store.getState().playerName) {
         emitStartPlaying(store.getState().roomName);
+      }
+      break;
+    case 'EMIT_QUIT_GAME':
+      logger_middleware(["EMIT_QUIT_GAME"]);
+
+      if (store.getState().roomName &&
+        store.getState().playerName) {
+        emitQuitGame(store.getState().roomName, store.getState().playerName);
       }
       break;
     default:

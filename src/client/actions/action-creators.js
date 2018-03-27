@@ -115,6 +115,15 @@ const updateGames = games => {
   }
 };
 
+/**
+ * send to the server QUIT_GAME.
+ */
+const emitQuitGame = () => {
+  return {
+    type: 'EMIT_QUIT_GAME',
+  }
+};
+
 
 export {
   addPiecesFlow,
@@ -127,5 +136,6 @@ export {
   connectionResponse,
   sendStartGame,
   updateRoomPlayerName,
-  updateGames
+  updateGames,
+  emitQuitGame
 };

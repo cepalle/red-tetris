@@ -1,7 +1,8 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {sendStartGame, updateRoomPlayerName} from "../actions/action-creators";
+import {emitQuitGame, sendStartGame, updateRoomPlayerName} from "../actions/action-creators";
 import mp3 from '../assets/Original_Tetris_theme.mp3'
+import {emitHome} from "../util/socket-handler";
 
 const InfoPanelComponent = ({error, animate, master, playerName, roomName, onClickButton, onClickHome}) =>
   <div className={"column width_info_panel spaceBetween"}>
@@ -79,6 +80,7 @@ const mapDispatchToProps = dispatch => {
   return {
     onClickButton: () => dispatch(sendStartGame()),
     onClickHome: () => {
+      dispatch(emitQuitGame());
       dispatch(updateRoomPlayerName("", ""));
       window.location.href = "";
     }

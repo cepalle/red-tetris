@@ -7,7 +7,7 @@ import {
   reducerUpdateGrid,
   reducerUpdateUsers,
   reducerUpdateRoomPlayerName,
-  reducerUpdateGames
+  reducerUpdateGames, reducerEmitQuitGames
 } from "./reducer-aux";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";

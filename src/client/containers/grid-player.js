@@ -1,7 +1,7 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {placePiece, placePiecePreview} from "../util/grid-piece-handler";
-import {clonePiece, clonePlayerStates} from "../util/clone-handler";
+import {clonePiece, clonePlayerState} from "../util/clone-handler";
 import {GRID_WIDTH} from "../../common/grid";
 import {PIECES_NUM} from "../../common/pieces";
 
@@ -75,7 +75,7 @@ const GridPlayerComponent = ({playerState, piecesFlow}) => {
 
 const mapStateToProps = state => {
   return {
-    playerState: clonePlayerStates(state.playerStates).find(e => e.playerName === state.playerName),
+    playerState: clonePlayerState(state.playerStates.find(e => e.playerName === state.playerName)),
     piecesFlow: state.piecesFlow.map(p => clonePiece(p)),
   }
 };

@@ -326,6 +326,19 @@ const emitHome = () => {
   socket.emit(socketDefs.HOME);
 };
 
+/**
+ * Used to say to others player that you loose
+ * Data to sent: {roomName, playerName}
+ */
+const emitQuitGame = (roomName, playerName) => {
+  logger_sock(["emit QUIT_GAME"]);
+
+  socket.emit(socketDefs.QUIT_GAME, {
+    roomName: roomName,
+    playerName: playerName
+  });
+};
+
 
 export {
   emitJoinRoom,
@@ -351,4 +364,5 @@ export {
   cbPlayerCompleteLineResponse,
   cbGenFlowResponse,
   emitHome,
+  emitQuitGame,
 };
