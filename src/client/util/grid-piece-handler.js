@@ -1,4 +1,4 @@
-import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
+import {GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_MOVE, PIECES_NUM} from "../../common/pieces";
 import {clonePiece, cloneState} from "./clone-handler"
 import {logger} from "./logger-handler"
@@ -31,7 +31,7 @@ const hasCollision = (grid, piece, loc) => {
         collisionType = COLLISION_TYPE.WALL_TOP;
       }
     }
-    else if (gy >= GRID_HEIGHT && number !== 0) {
+    else if (gy >= grid.length && number !== 0) {
       if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_BOTTOM)) {
         collisionType = COLLISION_TYPE.WALL_BOTTOM;
       }
@@ -242,7 +242,7 @@ const gridDelLine = grid => {
   });
 
   newGrid = newGrid.filter((line, i) => !lineToDel.includes(i));
-  while (newGrid.length < GRID_HEIGHT) {
+  while (newGrid.length < grid.length) {
     newGrid = [Array(GRID_WIDTH).fill(PIECES_NUM.empty), ...newGrid];
   }
 
@@ -257,7 +257,7 @@ const gridAddWall = (state, amount) => {
   for (let i = 0; i < amount; i++) {
     player.grid.push(Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus));
     player.grid.shift();
-    player.grid[GRID_HEIGHT - 1][pos_x] = PIECES_NUM.empty;
+    player.grid[player.grid.length - 1][pos_x] = PIECES_NUM.empty;
     if (newState.piecesFlow[0].pos.y > 0) {
       newState.piecesFlow[0].pos.y--;
     }
