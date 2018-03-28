@@ -1,5 +1,5 @@
 const log = false;
-const log_sock = true;
+const log_sock = false;
 const log_reducer = false;
 const log_component = false;
 const log_middleware = false;
