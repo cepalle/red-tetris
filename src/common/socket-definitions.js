@@ -20,7 +20,10 @@ module.exports = {
 
   /**
    * Used to tell to the backend that the room enter in a no-waiting getState and no player can join the room after.
-   * Data to sent: {roomName}
+   * Params available:
+   *  - addWallLine   (boolean)
+   *  - groundResizer (boolean)
+   * Data to sent: {roomName, params}
    */
   START_PLAYING: "startPlaying",
 

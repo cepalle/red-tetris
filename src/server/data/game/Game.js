@@ -2,6 +2,13 @@ import Player from "../player/Player";
 import PacketSender from "../../packet/PacketSender";
 import RoomManager from "./GameManager";
 
+class Params {
+  constructor(addWallLine = true, groundResizer = false) {
+    this.addWallLine = addWallLine;
+    this.groundResizer = groundResizer;
+  }
+}
+
 class Game {
 
   constructor(name) {
@@ -9,6 +16,8 @@ class Game {
     this.players = [];
     this.name = name;
     this.waiting = true;
+    /** @type {Params} */
+    this.params = new Params();
   }
 
   /**
@@ -89,6 +98,19 @@ class Game {
     }
     return false;
   }
+
+
+  /**
+   * Set params with custom values
+   * @param {object} params
+   */
+  setParams(params) {
+    if (params.groundResizer !== undefined && typeof params.groundResizer === "boolean")
+      this.params.groundResizer = params.groundResizer;
+    if (params.addWallLine !== undefined && typeof params.groundResizer === "boolean")
+      this.params.addWallLine = params.addWallLine;
+  }
+
 
   /**
    * Set the current getState of the room to true or false, if getState is true player can join else player can't join.
