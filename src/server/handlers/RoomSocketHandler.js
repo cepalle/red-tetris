@@ -74,6 +74,9 @@ class RoomSocketHandler extends SocketHandler {
    * Set the getState of the room to avoid player join in a game that has already started.
    * @param {string} data
    * @param {string} data.roomName
+   * @param {object} data.params
+   * @param {boolean} data.params.addWallLine
+   * @param {boolean} data.params.groundResizer
    * @param response
    */
   startPlaying(data, response = socketDefs.START_PLAYING_RESPONSE) {
@@ -86,6 +89,7 @@ class RoomSocketHandler extends SocketHandler {
       }
       else {
         game.setWaiting(false);
+        if (data.params) game.setParams(data.params);
         this.socket.emit(response, {success: true});
       }
     }
