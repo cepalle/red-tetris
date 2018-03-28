@@ -94,6 +94,36 @@ const sendStartGame = () => {
   }
 };
 
+/**
+ * update room and player name.
+ */
+const updateRoomPlayerName = (roomName, playerName) => {
+  return {
+    type: 'UPDATE_ROOM_PLAYER_NAME',
+    roomName: roomName,
+    playerName: playerName
+  }
+};
+
+/**
+ * update rooms name for home.
+ */
+const updateGames = games => {
+  return {
+    type: 'UPDATE_GAMES',
+    games: games,
+  }
+};
+
+/**
+ * send to the server QUIT_GAME.
+ */
+const emitQuitGame = () => {
+  return {
+    type: 'EMIT_QUIT_GAME',
+  }
+};
+
 
 export {
   addPiecesFlow,
@@ -104,5 +134,8 @@ export {
   startGame,
   addWallLine,
   connectionResponse,
-  sendStartGame
+  sendStartGame,
+  updateRoomPlayerName,
+  updateGames,
+  emitQuitGame
 };

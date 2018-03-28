@@ -5,7 +5,9 @@ import {
   reducerMovePiece,
   reducerStartGame,
   reducerUpdateGrid,
-  reducerUpdateUsers
+  reducerUpdateUsers,
+  reducerUpdateRoomPlayerName,
+  reducerUpdateGames, reducerEmitQuitGames
 } from "./reducer-aux";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
@@ -33,7 +35,9 @@ const initialState = {
   animate: false,
   EmitLoose: false,
   EmitUpdateGrid: false,
+  EmitJoinRoom: false,
   EmitCompleteLine: 0,
+  games: []
 };
 
 
@@ -59,6 +63,10 @@ const reducer = (state = initialState, action) => {
       return reducerStartGame(state, action);
     case 'ADD_WALL_LINE':
       return reducerAddWallLine(state, action);
+    case 'UPDATE_ROOM_PLAYER_NAME':
+      return reducerUpdateRoomPlayerName(state, action);
+    case 'UPDATE_GAMES':
+      return reducerUpdateGames(state, action);
     default:
       return state;
   }

@@ -1,4 +1,4 @@
-import {eventHandler} from "../../../src/client/util/event-listener-handler"
+import {eventHandler} from "../../../src/client/util/event-handler"
 
 describe('event-listener-handler', () => {
   describe('#event-listener-handler', () => {

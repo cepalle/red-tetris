@@ -1,14 +1,16 @@
-const clonePlayerStates = playerStates => playerStates.map(playerState =>
-    Object.assign(
-      {},
-      playerState,
-      {grid: playerState.grid.map(l => l.map(e => e))}
-    )
+const clonePlayerState = playerState =>
+  Object.assign(
+    {},
+    playerState,
+    {grid: playerState.grid.map(l => l.map(e => e))}
   )
 ;
 
+const clonePlayerStates = playerStates => playerStates.map(playerState => clonePlayerState(playerState));
+
 const clonePiece = piece => Object.assign({}, piece, {pos: Object.assign({}, piece.pos)});
 
+/* Shalow copie games */
 const cloneState = state =>
   Object.assign(
     {},
@@ -22,4 +24,4 @@ const cloneState = state =>
 ;
 
 
-export {cloneState, clonePlayerStates, clonePiece};
+export {cloneState, clonePlayerStates, clonePiece, clonePlayerState};

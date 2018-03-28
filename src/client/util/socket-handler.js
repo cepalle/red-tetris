@@ -3,12 +3,12 @@ import {store} from "../middlewares/store"
 import socketDefs from "../../common/socket-definitions";
 import {logger, logger_sock} from "./logger-handler";
 import {
-  addError, addPiecesFlow, addWallLine, connectionResponse, startGame, updateGrid,
+  addError, addPiecesFlow, addWallLine, connectionResponse, startGame, updateGames, updateGrid,
   updatePlayers
 } from "../actions/action-creators"
 
-// const socket = io.connect('http://localhost:4433');
-const socket = io.connect('https://le-101.tk:4433');
+const socket = io.connect('http://localhost:4433');
+// const socket = io.connect('https://le-101.tk:4433');
 
 
 //----------------------------------------------------------------------------
@@ -114,6 +114,7 @@ const cbPacketTetrisPlacePiece = ({grid, playerName}) => {
 //----------------------------------------------------------------------------
 
 socket.on(socketDefs.JOIN_GAME_RESPONSE, arg => cbJoinRoomResponse(arg));
+socket.on(socketDefs.HOME_RESPONSE, arg => cbHomeResponse(arg));
 socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
 socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
 socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
@@ -129,14 +130,21 @@ socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 const cbJoinRoomResponse = ({error, game}) => {
   logger_sock(["recv JOIN_GAME_RESPONSE"]);
 
-  //logger([arg]);
   if (error) {
     store.dispatch(addError(error));
-    logger(error);
   } else {
     store.dispatch(updatePlayers(game.players));
-    logger(game);
   }
+};
+
+/**
+ * Request: HOME_RESPONSE
+ * Data recv: {games}
+ */
+const cbHomeResponse = ({games}) => {
+  logger_sock(["recv HOME_RESPONSE"]);
+
+  store.dispatch(updateGames(games.rooms));
 };
 
 /**
@@ -309,6 +317,29 @@ const emitTetrisPlacePiece = (roomName, playerName, grid) => {
   });
 };
 
+/**
+ * Used to ask the server the list of room
+ */
+const emitHome = () => {
+  logger_sock(["emit HOME"]);
+
+  socket.emit(socketDefs.HOME);
+};
+
+/**
+ * Used to say to others player that you loose
+ * Data to sent: {roomName, playerName}
+ */
+const emitQuitGame = (roomName, playerName) => {
+  logger_sock(["emit QUIT_GAME"]);
+
+  socket.emit(socketDefs.QUIT_GAME, {
+    roomName: roomName,
+    playerName: playerName
+  });
+};
+
+
 export {
   emitJoinRoom,
   emitStartPlaying,
@@ -332,4 +363,6 @@ export {
   cbPlayerLooseResponse,
   cbPlayerCompleteLineResponse,
   cbGenFlowResponse,
+  emitHome,
+  emitQuitGame,
 };

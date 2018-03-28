@@ -38,6 +38,11 @@ const reducerError = (state, {error}) => {
 const reducerUpdateUsers = (state, {players}) => {
   logger_reducer(["updatePlayers"]);
 
+  if (!players.some(e => e.master) ||
+    !players.some(e => e.playerName === state.playerName)) {
+    return state;
+  }
+
   const newState = cloneState(state);
 
   let filterNotInUsers = newState.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
@@ -67,14 +72,18 @@ const reducerMovePiece = (state, {move}) => {
   logger_reducer(["movePiece"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
-  if (player.loose || !state.animate || player.win || state.piecesFlow.length < 1) {
+  if (!player ||
+    player.loose ||
+    player.win ||
+    !state.animate ||
+    state.piecesFlow.length < 2) {
     return state;
   }
 
   const newState = cloneState(state);
   const newPlayer = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
   let needNext;
-  [needNext, newState.piecesFlow[0]] = updatePiecePos(newPlayer.grid, newState.piecesFlow[0], move);
+  [needNext, newState.piecesFlow] = updatePiecePos(newPlayer.grid, newState.piecesFlow, move);
 
   if (needNext) {
     newPlayer.grid = placePiece(newPlayer.grid, newState.piecesFlow[0]);
@@ -134,11 +143,49 @@ const reducerStartGame = (state, {pieces}) => {
 const reducerAddWallLine = (state, {amount}) => {
   logger_reducer(["addWallLine"]);
 
-  if (state.piecesFlow.length < 1 || !state.animate || amount <= 0) {
+  if (state.piecesFlow.length < 1
+    || !state.animate
+    || amount <= 0
+    || !state.playerStates.some(e => e.playerName === state.playerName)) {
     return state
   }
 
   return gridAddWall(state, amount);
+};
+
+/**
+ * Add a line unbreakable.
+ * @param {Object} state
+ * @param {string} roomName
+ * @param {string} playerName
+ */
+const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
+  logger_reducer(["updateRoomPlayerName"]);
+
+  if (!roomName || !playerName) {
+    return state
+  }
+
+  const newState = cloneState(state);
+  newState.playerStates = [initPlayerState(playerName)];
+  newState.roomName = roomName;
+  newState.playerName = playerName;
+  newState.EmitJoinRoom = true;
+  return newState;
+};
+
+/**
+ * Add a line unbreakable.
+ * @param {Object} state
+ * @param {games} games
+ */
+const reducerUpdateGames = (state, {games}) => {
+  logger_reducer(["updateRoomPlayerName"]);
+
+  const newState = cloneState(state);
+  newState.games = games;
+
+  return newState;
 };
 
 
@@ -149,5 +196,7 @@ export {
   reducerMovePiece,
   reducerStartGame,
   reducerUpdateGrid,
-  reducerUpdateUsers
+  reducerUpdateUsers,
+  reducerUpdateRoomPlayerName,
+  reducerUpdateGames,
 }
