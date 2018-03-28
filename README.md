@@ -16,5 +16,4 @@ L’application client doit être construite à partir des librairies React et R
 Le code HTML ne doit pas utiliser d’éléments \<TABLE/>, mais doit être exclusivement construit à partir d’un layout flexbox.
 
 TODO:
-- add settings party
 - add test
