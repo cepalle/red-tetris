@@ -71,7 +71,7 @@ const cbPacketPlayerLose = ({game}) => {
  * Data recv: {game, pieces}
  */
 const cbPacketGameStart = ({pieces, game}) => {
-  logger_sock(["recv PACKET_GAME_START"]);
+  logger_sock(["recv PACKET_GAME_START", game.params]);
 
   store.dispatch(startGame(pieces, game.params));
 };
@@ -259,7 +259,7 @@ const emitJoinRoom = (roomName, playerName) => {
  * Data to sent: {roomName, params}
  */
 const emitStartPlaying = (roomName, params) => {
-  logger_sock(["emit START_PLAYING"]);
+  logger_sock(["emit START_PLAYING", params]);
 
   socket.emit(socketDefs.START_PLAYING, {
     roomName: roomName,
