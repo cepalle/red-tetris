@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from 'react-redux';
 import {clonePlayerState} from "../util/clone-handler"
 import {OpponentComponent} from "../components/opponents-component";
-import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
+import {GRID_WIDTH} from "../../common/grid";
 import {PIECES_NUM} from "../../common/pieces";
 
 const mapStateToProps = state => {
@@ -20,7 +20,7 @@ const mapStateToProps = state => {
 
     for (let i = 0; i < GRID_WIDTH; i++) {
       let obstacle = false;
-      for (let j = 0; j < GRID_HEIGHT; j++) {
+      for (let j = 0; j < state.gridHeight; j++) {
         if (grid[j][i] !== PIECES_NUM.empty) {
           obstacle = true;
         }

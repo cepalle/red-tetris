@@ -7,7 +7,7 @@ import {
   reducerUpdateGrid,
   reducerUpdateUsers,
   reducerUpdateRoomPlayerName,
-  reducerUpdateGames, reducerEmitQuitGames
+  reducerUpdateGames
 } from "./reducer-aux";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
@@ -37,7 +37,12 @@ const initialState = {
   EmitUpdateGrid: false,
   EmitJoinRoom: false,
   EmitCompleteLine: 0,
-  games: []
+  games: [],
+  params: {
+    addWallLine: true,
+    groundResizer: false,
+  },
+  gridHeight: GRID_HEIGHT,
 };
 
 

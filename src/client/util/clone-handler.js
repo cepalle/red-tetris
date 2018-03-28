@@ -18,7 +18,8 @@ const cloneState = state =>
     {
       playerStates: clonePlayerStates(state.playerStates),
       piecesFlow: state.piecesFlow.map(p => clonePiece(p)),
-      error: Object.assign({}, state.error)
+      error: Object.assign({}, state.error),
+      params: Object.assign({}, state.params)
     }
   )
 ;
