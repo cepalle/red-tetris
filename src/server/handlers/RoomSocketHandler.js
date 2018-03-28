@@ -88,8 +88,8 @@ class RoomSocketHandler extends SocketHandler {
         this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME})
       }
       else {
-        game.setWaiting(false);
         if (data.params) game.setParams(data.params);
+        game.setWaiting(false);
         this.socket.emit(response, {success: true});
       }
     }
