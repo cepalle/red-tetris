@@ -7,8 +7,8 @@ import {
   updatePlayers
 } from "../actions/action-creators"
 
-const socket = io.connect('http://localhost:4433');
-// const socket = io.connect('https://le-101.tk:4433');
+// const socket = io.connect('http://localhost:4433');
+const socket = io.connect('https://le-101.tk:4433');
 
 
 //----------------------------------------------------------------------------
