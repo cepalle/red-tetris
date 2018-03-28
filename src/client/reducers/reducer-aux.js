@@ -132,7 +132,7 @@ const reducerStartGame = (state, {pieces, params}) => {
   newState.piecesFlow = pieces;
   newState.params = params;
   if (params.groundResizer) {
-    newState.gridHeight = GRID_HEIGHT + newState.playerStates.length * 3;
+    newState.gridHeight = GRID_HEIGHT + (newState.playerStates.length - 1) * 2;
     console.log(newState.gridHeight);
   }
   console.log(newState.gridHeight);
