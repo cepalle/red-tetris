@@ -1,7 +1,10 @@
 import React from "react";
 import mp3 from '../assets/Original_Tetris_theme.mp3'
 
-const InfoPanelComponent = ({error, animate, master, playerName, roomName, onClickButton, onClickHome}) =>
+const InfoPanelComponent = ({
+                              error, animate, master, playerName, roomName,
+                              onClickButton, onClickHome, params, onChangeAddWallLine, onChangeGroundResizer
+                            }) =>
   <div className={"column width_info_panel spaceBetween"}>
     <div className={"row"}>
       <div className={"column"}>
@@ -22,6 +25,22 @@ const InfoPanelComponent = ({error, animate, master, playerName, roomName, onCli
 
           {playerName && roomName && master &&
           <div className={"pad"}>
+            <label>
+              <input
+                name="addWallLine"
+                type="checkbox"
+                checked={params.addWallLine}
+                onChange={() => onChangeAddWallLine()}/>
+              : AddWallLine
+            </label>
+            <label>
+              <input
+                name="groundResizer"
+                type="checkbox"
+                checked={params.groundResizer}
+                onChange={() => onChangeGroundResizer()}/>
+              : groundResizer
+            </label>
             <button className={"font_retro font_white font_button buttonPlay"} onClick={() => onClickButton()}>
               Play!
             </button>

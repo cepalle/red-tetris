@@ -3,6 +3,7 @@ import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
 import {ifLooseSet, ifWinSet} from "../util/loose-win-handler";
 import {cloneState} from "../util/clone-handler";
+import {GRID_HEIGHT} from "../../common/grid";
 
 /**
  * Add pieces to the getState.piecesFlow.
@@ -48,7 +49,7 @@ const reducerUpdateUsers = (state, {players}) => {
   let filterNotInUsers = newState.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
   let filterAddNewUsers = filterNotInUsers.concat(
     players.filter(el => !filterNotInUsers.some(e => e.playerName === el.playerName)).map(el =>
-      initPlayerState(el.playerName)
+      initPlayerState(el.playerName, el.master, newState.gridHeight)
     )
   );
 
@@ -121,16 +122,23 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
  * Restart grid of player and flow, set le pieces to the flow and start game.
  * @param {Object} state
  * @param {Array<int>} pieces
+ * @param {Params} params
  */
-const reducerStartGame = (state, {pieces}) => {
+const reducerStartGame = (state, {pieces, params}) => {
   logger_reducer(["startGame"]);
 
   const newState = cloneState(state);
 
-  newState.playerStates = newState.playerStates.map(playerState =>
-    initPlayerState(playerState.playerName, playerState.master)
-  );
   newState.piecesFlow = pieces;
+  newState.params = params;
+  if (params.groundResizer) {
+    newState.gridHeight = GRID_HEIGHT + newState.playerStates.length * 3;
+    console.log(newState.gridHeight);
+  }
+  console.log(newState.gridHeight);
+  newState.playerStates = newState.playerStates.map(playerState =>
+    initPlayerState(playerState.playerName, playerState.master, newState.gridHeight)
+  );
   newState.animate = true;
   return newState;
 };
@@ -188,6 +196,32 @@ const reducerUpdateGames = (state, {games}) => {
   return newState;
 };
 
+/**
+ * Toggle params.groundResizer.
+ * @param {Object} state
+ */
+const reducerToggleGroundResizer = state => {
+  logger_reducer(["reducerToggleGroundResizer"]);
+
+  const newState = cloneState(state);
+  newState.params.groundResizer = !state.params.groundResizer;
+
+  return newState;
+};
+
+/**
+ * Toggle params.groundAddWallLine.
+ * @param {Object} state
+ */
+const reducerToggleAddWallLine = state => {
+  logger_reducer(["reducerToggleAddWallLine"]);
+
+  const newState = cloneState(state);
+  newState.params.addWallLine = !state.params.addWallLine;
+
+  return newState;
+};
+
 
 export {
   reducerPiecesFlow,
@@ -199,4 +233,6 @@ export {
   reducerUpdateUsers,
   reducerUpdateRoomPlayerName,
   reducerUpdateGames,
+  reducerToggleGroundResizer,
+  reducerToggleAddWallLine,
 }

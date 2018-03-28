@@ -68,12 +68,12 @@ const cbPacketPlayerLose = ({game}) => {
 
 /**
  * Request: PACKET_GAME_START
- * Data recv: {room, pieces}
+ * Data recv: {game, pieces}
  */
-const cbPacketGameStart = ({pieces}) => {
+const cbPacketGameStart = ({pieces, game}) => {
   logger_sock(["recv PACKET_GAME_START"]);
 
-  store.dispatch(startGame(pieces));
+  store.dispatch(startGame(pieces, game.params));
 };
 
 /**
@@ -93,7 +93,9 @@ const cbPacketGenFlow = ({pieces}) => {
 const cbPacketPlayerCompleteLine = ({game, amount}) => {
   logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE"]);
 
-  store.dispatch(addWallLine(amount));
+  if (game.params.addWallLine) {
+    store.dispatch(addWallLine(amount));
+  }
   store.dispatch(updatePlayers(game.players));
 };
 
@@ -254,13 +256,14 @@ const emitJoinRoom = (roomName, playerName) => {
 
 /**
  * Used to tell to the backend that the room enter in a no-waiting getState and no player can join the room after.
- * Data to sent: {roomName}
+ * Data to sent: {roomName, params}
  */
-const emitStartPlaying = roomName => {
+const emitStartPlaying = (roomName, params) => {
   logger_sock(["emit START_PLAYING"]);
 
   socket.emit(socketDefs.START_PLAYING, {
-    roomName: roomName
+    roomName: roomName,
+    params: params
   });
 };
 

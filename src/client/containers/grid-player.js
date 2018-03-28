@@ -5,6 +5,7 @@ import {GridPlayerComponent} from "../components/grid-player-component";
 import {GRID_WIDTH} from "../../common/grid";
 import {PIECES_NUM} from "../../common/pieces";
 import {placePiece, placePiecePreview} from "../util/grid-piece-handler";
+import {logger} from "../util/logger-handler";
 
 const mapStateToProps = state => {
 
@@ -21,6 +22,8 @@ const mapStateToProps = state => {
     playerState.grid = placePiecePreview(playerState.grid, piecesFlow[0]);
     playerState.grid = placePiece(playerState.grid, piecesFlow[0]);
   }
+
+  // logger([state.gridHeight, playerState.grid]);
 
   playerState.grid.forEach(l => {
     gridRender.push([wall_type, ...l, wall_type]);
@@ -49,6 +52,8 @@ const mapStateToProps = state => {
     previewRender = placePiece(previewRender, pieceCp);
   }
   previewRender.forEach((l, i) => gridRender[i + 3].push(...l));
+
+  // logger([gridRender]);
 
   return {
     playerState: clonePlayerState(state.playerStates.find(e => e.playerName === state.playerName)),

@@ -7,16 +7,16 @@ import {
   reducerUpdateGrid,
   reducerUpdateUsers,
   reducerUpdateRoomPlayerName,
-  reducerUpdateGames
+  reducerUpdateGames, reducerToggleGroundResizer, reducerToggleAddWallLine
 } from "./reducer-aux";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
 import {PIECES_NUM} from "../../common/pieces";
 
 
-const initPlayerState = (playerName, master = false) => {
+const initPlayerState = (playerName, master = false, gridHeight = GRID_HEIGHT) => {
   return {
-    grid: Array(GRID_HEIGHT).fill(0).map(() => Array(GRID_WIDTH).fill(PIECES_NUM.empty)),
+    grid: Array(gridHeight).fill(0).map(() => Array(GRID_WIDTH).fill(PIECES_NUM.empty)),
     win: false,
     playerName: playerName,
     master: master,
@@ -72,6 +72,10 @@ const reducer = (state = initialState, action) => {
       return reducerUpdateRoomPlayerName(state, action);
     case 'UPDATE_GAMES':
       return reducerUpdateGames(state, action);
+    case 'TOGGLE_ADD_WALL_LINE':
+      return reducerToggleAddWallLine(state);
+    case 'TOGGLE_GROUND_RESIZER':
+      return reducerToggleGroundResizer(state);
     default:
       return state;
   }

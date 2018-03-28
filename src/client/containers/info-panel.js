@@ -1,6 +1,9 @@
 import React from "react";
 import {connect} from 'react-redux';
-import {emitQuitGame, sendStartGame, updateRoomPlayerName} from "../actions/action-creators";
+import {
+  emitQuitGame, sendStartGame, toggleAddWallLine, toggleGroundResizer,
+  updateRoomPlayerName
+} from "../actions/action-creators";
 import {InfoPanelComponent} from "../components/info-panel-component";
 
 const mapStateToProps = state => {
@@ -10,12 +13,15 @@ const mapStateToProps = state => {
     master: state.playerStates.find(e => e.playerName === state.playerName).master,
     playerName: state.playerName,
     roomName: state.roomName,
+    params: Object.assign({}, state.params),
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onClickButton: () => dispatch(sendStartGame()),
+    onChangeGroundResizer: () => dispatch(toggleGroundResizer()),
+    onChangeAddWallLine: () => dispatch(toggleAddWallLine()),
     onClickHome: () => {
       dispatch(emitQuitGame());
       dispatch(updateRoomPlayerName("", ""));

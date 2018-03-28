@@ -58,11 +58,13 @@ const updateGrid = (grid, playerName) => {
 /**
  * Restart grid of player and flow, set le pieces to the flow and start game.
  * @param {[pieces]} pieces
+ * @param {Params} params
  */
-const startGame = pieces => {
+const startGame = (pieces, params) => {
   return {
     type: 'RECV_START_GAME',
-    pieces: pieces
+    pieces: pieces,
+    params: params
   }
 };
 
@@ -124,6 +126,24 @@ const emitQuitGame = () => {
   }
 };
 
+/**
+ * send to the server QUIT_GAME.
+ */
+const toggleAddWallLine = () => {
+  return {
+    type: 'TOGGLE_ADD_WALL_LINE',
+  }
+};
+
+/**
+ * send to the server QUIT_GAME.
+ */
+const toggleGroundResizer = () => {
+  return {
+    type: 'TOGGLE_GROUND_RESIZER',
+  }
+};
+
 
 export {
   addPiecesFlow,
@@ -137,5 +157,7 @@ export {
   sendStartGame,
   updateRoomPlayerName,
   updateGames,
-  emitQuitGame
+  emitQuitGame,
+  toggleAddWallLine,
+  toggleGroundResizer,
 };

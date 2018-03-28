@@ -22,7 +22,7 @@ const socketMiddleware = store => next => action => {
       if (!store.getState().animate &&
         store.getState().roomName &&
         store.getState().playerName) {
-        emitStartPlaying(store.getState().roomName);
+        emitStartPlaying(store.getState().roomName, store.getState().params);
       }
       break;
     case 'EMIT_QUIT_GAME':
