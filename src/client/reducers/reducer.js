@@ -40,7 +40,7 @@ const initialState = {
   games: [],
   params: {
     addWallLine: true,
-    groundResizer: false,
+    groundResizer: true,
   },
   gridHeight: GRID_HEIGHT,
 };

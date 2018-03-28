@@ -54,7 +54,7 @@ class HomeComponent extends React.Component {
                       onChange={e => this.handleChangePlayer(e)}
                       placeholder={"Your Name"}/>]
             </label>
-            <input type="submit" value="Submit"/>
+            <input type="submit" value="Join"/>
           </form>
 
           <div className={"column pad"}>

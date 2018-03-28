@@ -25,21 +25,24 @@ const InfoPanelComponent = ({
 
           {playerName && roomName && master &&
           <div className={"pad"}>
-            <label>
+            <div className={"row"}>
+              Options:
+            </div>
+            <label className={"row"}>
               <input
                 name="addWallLine"
                 type="checkbox"
                 checked={params.addWallLine}
                 onChange={() => onChangeAddWallLine()}/>
-              : AddWallLine
+              : Add malus lines to adversers when lines are completed.
             </label>
-            <label>
+            <label className={"row"}>
               <input
                 name="groundResizer"
                 type="checkbox"
                 checked={params.groundResizer}
                 onChange={() => onChangeGroundResizer()}/>
-              : groundResizer
+              : Increase the height of the Tetris grid in multiplayer mode.
             </label>
             <button className={"font_retro font_white font_button buttonPlay"} onClick={() => onClickButton()}>
               Play!
@@ -69,7 +72,7 @@ const InfoPanelComponent = ({
           {error.type && error.type !== "PLAYER_ALREADY_IN_ROOM" &&
           error.type !== "PLAYER_NOT_MASTER" &&
           error.type !== "ROOM_ALREADY_IN_GAME" &&
-          <p className={"font_red"}>{error.type}<br/></p>}
+          <p className={"font_red"}>{"ERROR: " + error.type}<br/></p>}
 
         </div>
       </div>

@@ -12,6 +12,11 @@ const keyS = 83;
 const keyC = 67;
 
 const eventHandler = (event) => {
+
+  if (!store.getState().playerName || !store.getState().roomName) {
+    return;
+  }
+
   switch (event.keyCode) {
     case keyLeft:
       event.preventDefault();
