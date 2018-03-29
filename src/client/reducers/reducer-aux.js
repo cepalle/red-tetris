@@ -75,6 +75,7 @@ const reducerMovePiece = (state, {move}) => {
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (!player ||
     player.loose ||
+    player.spectator ||
     player.win ||
     !state.animate ||
     state.piecesFlow.length < 2) {

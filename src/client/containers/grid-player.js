@@ -14,7 +14,8 @@ const mapStateToProps = state => {
   const piecesFlow = state.piecesFlow;
 
   const wall_type = (playerState.loose ? PIECES_NUM.wall_loose :
-    playerState.win ? PIECES_NUM.wall_win: PIECES_NUM.wall);
+    playerState.win ? PIECES_NUM.wall_win :
+      playerState.spectator ? PIECES_NUM.wall_spect : PIECES_NUM.wall);
   const gridRender = [];
 
   if (piecesFlow.length > 0 && !playerState.loose && !playerState.win) {

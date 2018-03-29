@@ -2,7 +2,7 @@ import {logger} from "./logger-handler"
 import {PIECES_NUM} from "../../common/pieces";
 
 const ifWinSet = state => {
-  const playersNotLoose = state.playerStates.filter(e => !e.loose);
+  const playersNotLoose = state.playerStates.filter(e => !e.loose && !e.spectator);
   if (state.playerStates.length > 1 && playersNotLoose.length === 1) {
     playersNotLoose[0].win = true;
 
