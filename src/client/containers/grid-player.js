@@ -18,7 +18,7 @@ const mapStateToProps = state => {
       playerState.spectator ? PIECES_NUM.wall_spect : PIECES_NUM.wall);
   const gridRender = [];
 
-  if (piecesFlow.length > 0 && !playerState.loose && !playerState.win) {
+  if (piecesFlow.length > 0 && !playerState.loose && !playerState.win && !playerState.spectator) {
     playerState.grid = placePiecePreview(playerState.grid, piecesFlow[0]);
     playerState.grid = placePiece(playerState.grid, piecesFlow[0]);
   }
@@ -43,11 +43,13 @@ const mapStateToProps = state => {
   }
 
   const piecesRender = piecesFlow.filter((e, i) => i > 0 && i < 4);
-  for (let i = 0; i < piecesRender.length; i++) {
-    const pieceCp = clonePiece(piecesRender[i]);
-    pieceCp.pos.x = 0;
-    pieceCp.pos.y = 1 + i * 5;
-    previewRender = placePiece(previewRender, pieceCp);
+  if (piecesFlow.length > 0 && !playerState.loose && !playerState.win && !playerState.spectator) {
+    for (let i = 0; i < piecesRender.length; i++) {
+      const pieceCp = clonePiece(piecesRender[i]);
+      pieceCp.pos.x = 0;
+      pieceCp.pos.y = 1 + i * 5;
+      previewRender = placePiece(previewRender, pieceCp);
+    }
   }
   previewRender.forEach((l, i) => gridRender[i + 3].push(...l));
 
