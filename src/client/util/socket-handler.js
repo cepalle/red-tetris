@@ -93,10 +93,10 @@ const cbPacketGenFlow = ({pieces}) => {
 const cbPacketPlayerCompleteLine = ({game, amount}) => {
   logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE"]);
 
+  store.dispatch(updatePlayers(game.players));
   if (game.params.addWallLine) {
     store.dispatch(addWallLine(amount));
   }
-  store.dispatch(updatePlayers(game.players));
 };
 
 /**
