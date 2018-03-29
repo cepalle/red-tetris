@@ -156,6 +156,13 @@
   background-color: #4D5E50;
 }
 
+.color13 {
+  border: solid #1D2E40;
+  border-bottom-color: #0A1B2D;
+  border-right-color: #0A1B2D;
+  background-color: #122335;
+}
+
 .buttonPlay {
   border: solid #394A56;
   border-bottom-color: #223345;

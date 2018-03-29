@@ -22,7 +22,8 @@ const initPlayerState = (playerName, master = false, gridHeight = GRID_HEIGHT) =
     master: master,
     loose: false,
     score: 0,
-    lines: 0
+    lines: 0,
+    spectator: false
   }
 };
 
