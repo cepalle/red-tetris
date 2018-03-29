@@ -25,13 +25,15 @@ class Game {
    * @param {string} playerName
    * @param {string} id
    * @param {boolean} [master]
+   * @param {boolean} spectator
    * @return {Player | undefined}
    */
   addPlayer(playerName, id, master = false) {
     if (!playerName || !id)
       return undefined;
-    if (!this.containPlayer(playerName) && !this.containId(id) && this.waiting) {
+    if (!this.containPlayer(playerName) && !this.containId(id)) {
       const player = new Player(playerName, id, Date.now(), master);
+      player.spectator = !this.waiting;
       this.players.push(player);
 
       PacketSender.sendPlayerJoin(player, this);
@@ -91,7 +93,7 @@ class Game {
    */
   gameHasEnd() {
     if (this.players.length === 1 && this.players[0].loose ||
-      this.players.length > 1 && this.players.filter(p => !p.loose).length === 1) {
+      this.players.length > 1 && this.players.filter(p => !p.loose && !p.spectator).length === 1) {
       this.players.forEach(e => e.loose = false);
       this.setWaiting(true);
       return true;
@@ -119,7 +121,7 @@ class Game {
   setWaiting(stateWaiting) {
     this.waiting = stateWaiting;
     if (!this.waiting) {
-      this.players.forEach(e => {e.lines = 0 ; e.score = 0});
+      this.players.forEach(e => {e.lines = 0 ; e.score = 0; e.spectator = false;});
       PacketSender.sendGameStart(this);
     }
   }

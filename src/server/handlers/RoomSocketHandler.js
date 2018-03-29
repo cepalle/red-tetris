@@ -41,9 +41,11 @@ class RoomSocketHandler extends SocketHandler {
         return;
       }
       const game = GameManager.getGame(data.roomName);
-      if (!game.canJoin())
-        this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME});
-      else if (game.containId(this.id) || game.containPlayer(data.playerName))
+      if (!game.canJoin()) {
+        const player = game.addPlayer(data.playerName, this.id, true);
+        this.sendSuccess(response, game, player)
+      }
+      if (game.containId(this.id) || game.containPlayer(data.playerName))
         this.socket.emit(response, {error: errorsDefs.PLAYER_ALREADY_IN_ROOM});
       else {
         const player = game.addPlayer(data.playerName, this.id);

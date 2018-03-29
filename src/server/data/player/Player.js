@@ -15,6 +15,7 @@ class Player {
     this.loose = false;
     this.score = 0;
     this.lines = 0;
+    this.spectator = false;
   }
 }
 

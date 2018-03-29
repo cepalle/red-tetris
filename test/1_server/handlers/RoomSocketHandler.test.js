@@ -36,15 +36,18 @@ describe('RoomSocketHandler', function () {
       socket.emit(socketDefs.JOIN_GAME, {roomName:"test", playerName:"player"});
       setTimeout(() => socket2.emit(socketDefs.JOIN_GAME, {roomName:"test", playerName:"player"}), 10);
     });
-    it('should not add player because game already started', function (done) {
+    it('should add player in  spectator because game already started', function (done) {
       const socket = io('http://localhost:4433');
       const socket2 = io('http://localhost:4433');
       socket.on(socketDefs.JOIN_GAME_RESPONSE, (data) => {
         if (!data.success) done(data.error);
       });
       socket2.on(socketDefs.JOIN_GAME_RESPONSE, (data) => {
-        if (data.success) done("Error because room already started");
-        else done();
+        if (data.success) {
+          assert.equal(GameManager.getGame("test1").players.find(e => e.playerName === "player2").spectator, true);
+          done()
+        }
+        else done("play is normally in spectator");
         GameManager.rooms = [];
         socket.disconnect();
         socket2.disconnect();
