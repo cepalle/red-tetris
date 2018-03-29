@@ -14,13 +14,14 @@ const mapStateToProps = state => {
       return;
     }
     const wall_type = (playerState.loose ? PIECES_NUM.wall_loose :
-      playerState.win ? PIECES_NUM.wall_win : PIECES_NUM.wall);
+      playerState.win ? PIECES_NUM.wall_win :
+        playerState.spectator ? PIECES_NUM.wall_spect : PIECES_NUM.wall);
     const grid = playerState.grid.map(l => l.map(e => e));
     const gridRender = [];
 
     for (let i = 0; i < GRID_WIDTH; i++) {
       let obstacle = false;
-      for (let j = 0; j < state.gridHeight; j++) {
+      for (let j = 0; j < grid.length; j++) {
         if (grid[j][i] !== PIECES_NUM.empty) {
           obstacle = true;
         }
