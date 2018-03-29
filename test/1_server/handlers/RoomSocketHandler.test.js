@@ -54,7 +54,29 @@ describe('RoomSocketHandler', function () {
       });
       socket.emit(socketDefs.JOIN_GAME, {roomName:"test1", playerName:"player"});
       socket.emit(socketDefs.START_PLAYING, {roomName:"test1"});
-      setTimeout(() => socket2.emit(socketDefs.JOIN_GAME, {roomName:"test1", playerName:"player2"}), 10);
+      setTimeout(() => socket2.emit(socketDefs.JOIN_GAME, {roomName:"test1", playerName:"player2"}), 50);
     });
   });
+
+  describe("#quitRoom", function () {
+    it("should quit player", function (done) {
+      const socket = io('http://localhost:4433');
+      socket.emit(socketDefs.JOIN_GAME, {roomName:"test3", playerName:"player"});
+      setTimeout(() => socket.emit(socketDefs.QUIT_GAME, {roomName:"test3", playerName:"player"}), 50);
+      setTimeout(() => {
+        assert.isUndefined(GameManager.getGame("test3"));
+        done();
+      }, 150);
+    });
+    it("should not quit player", function (done) {
+      const socket = io('http://localhost:4433');
+      socket.emit(socketDefs.JOIN_GAME, {roomName:"test3", playerName:"player"});
+      setTimeout(() => socket.emit(socketDefs.QUIT_GAME, {roomName:"test3", playerName:"player2"}), 50);
+      setTimeout(() => {
+        assert.isNotNull(GameManager.getGame("test3"));
+        GameManager.rooms = [];
+        done();
+      }, 150);
+    })
+  })
 });
