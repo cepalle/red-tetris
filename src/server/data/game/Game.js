@@ -92,7 +92,7 @@ class Game {
    * @return {boolean}
    */
   gameHasEnd() {
-    if (this.players.length === 1 && this.players[0].loose ||
+    if (this.players.filter(p => !p.spectator).length === 1 && this.players[0].loose ||
       this.players.length > 1 && this.players.filter(p => !p.loose && !p.spectator).length === 1) {
       this.players.forEach(e => e.loose = false);
       this.setWaiting(true);
