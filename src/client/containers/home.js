@@ -5,6 +5,7 @@ import {HomeComponent} from "../components/home-component";
 const mapStateToProps = state => {
   return {
     games: state.games.map(g => g),
+    error: Object.assign({}, state.error)
   }
 };
 

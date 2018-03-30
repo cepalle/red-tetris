@@ -7,6 +7,7 @@ import './index.css';
 import "./util/event-handler";
 import {eventHandler} from "./util/event-handler";
 import {animateClock} from "./util/animate-handler";
+import {emitHome} from "./util/socket-handler";
 
 ReactDOM.render(
   <Provider store={store}>
@@ -16,3 +17,4 @@ ReactDOM.render(
 
 window.addEventListener('keydown', e => eventHandler(e), false);
 animateClock();
+emitHome();

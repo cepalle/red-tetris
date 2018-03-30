@@ -58,7 +58,7 @@ class HomeComponent extends React.Component {
           </form>
 
           <div className={"column pad"}>
-            <div>
+            <div className={"pad"}>
               Current Room: (You can choose a new room for create it)
             </div>
             {this.props.games.length === 0 &&
@@ -66,22 +66,28 @@ class HomeComponent extends React.Component {
               No current room
             </div>}
             {this.props.games.map((r, i) =>
-              <button className={"font_retro buttonPlay" + (r.waiting ? " font_green" : " font_red")} key={i}
-                      onClick={() => this.setRoomName(r.name)}>{r.name + (!r.waiting ? "(playing)" : "")}</button>
+              <button className={"font_retro buttonPlay font_white font_button_home"} key={i}
+                      onClick={() => this.setRoomName(r.name)}>{r.name + (!r.waiting ? "(playing)" : "")}
+              </button>
             )}
           </div>
 
           {playerInRoom &&
           <div className={"column pad"}>
-            <div>
-              Current Player in this room: (Please choose an other Name)
+            <div className={"pad"}>
+              Current Player in this room:
             </div>
-            {playerInRoom.map((p, i) =>
-              <div key={i} className={"font_retro font_white"}>
-                {p.playerName}
-              </div>)}
+            <div className={"pad"}>
+              {playerInRoom.map((p, i) =>
+                <div key={i} className={"font_retro font_white"}>
+                  {p.playerName}
+                </div>)}
+            </div>
           </div>
           }
+          {this.props.error.type === "PLAYER_ALREADY_IN_ROOM" &&
+          <p className={"font_red pad"}>{"A player as already your pseudo in this room"}<br/></p>}
+
         </div>
       </div>
     );
