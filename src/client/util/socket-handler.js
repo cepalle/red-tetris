@@ -17,15 +17,6 @@ const socket = io.connect('http://localhost:4433');
 //
 //----------------------------------------------------------------------------
 
-socket.on(socketDefs.PACKET_PLAYER_JOIN, arg => cbPacketPlayerJoin(arg));
-socket.on(socketDefs.PACKET_PLAYER_QUIT, arg => cbPacketPlayerQuit(arg));
-socket.on(socketDefs.PACKET_PLAYER_PROMOTED, arg => cbPacketPlayerPromoted(arg));
-socket.on(socketDefs.PACKET_PLAYER_LOSE, arg => cbPacketPlayerLose(arg));
-socket.on(socketDefs.PACKET_GAME_START, arg => cbPacketGameStart(arg));
-socket.on(socketDefs.PACKET_GENFLOW, arg => cbPacketGenFlow(arg));
-socket.on(socketDefs.PACKET_PLAYER_COMPLETE_LINE, arg => cbPacketPlayerCompleteLine(arg));
-socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(arg));
-
 /**
  * Request: PACKET_PLAYER_JOIN
  * Data recv: {player, game}
@@ -33,7 +24,9 @@ socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(
 const cbPacketPlayerJoin = ({game}) => {
   logger_sock(["recv PACKET_PLAYER_JOIN"]);
 
-  store.dispatch(updatePlayers(game.players));
+  if (game && game.players) {
+    store.dispatch(updatePlayers(game.players));
+  }
 };
 
 /**
@@ -43,7 +36,9 @@ const cbPacketPlayerJoin = ({game}) => {
 const cbPacketPlayerQuit = ({game}) => {
   logger_sock(["recv PACKET_PLAYER_QUIT"]);
 
-  store.dispatch(updatePlayers(game.players));
+  if (game && game.players) {
+    store.dispatch(updatePlayers(game.players));
+  }
 };
 
 /**
@@ -53,7 +48,9 @@ const cbPacketPlayerQuit = ({game}) => {
 const cbPacketPlayerPromoted = ({game}) => {
   logger_sock(["recv PACKET_PLAYER_PROMOTED"]);
 
-  store.dispatch(updatePlayers(game.players));
+  if (game && game.players) {
+    store.dispatch(updatePlayers(game.players));
+  }
 };
 
 /**
@@ -63,7 +60,9 @@ const cbPacketPlayerPromoted = ({game}) => {
 const cbPacketPlayerLose = ({game}) => {
   logger_sock(["recv PACKET_PLAYER_LOSE"]);
 
-  store.dispatch(updatePlayers(game.players));
+  if (game && game.players) {
+    store.dispatch(updatePlayers(game.players));
+  }
 };
 
 /**
@@ -73,7 +72,9 @@ const cbPacketPlayerLose = ({game}) => {
 const cbPacketGameStart = ({pieces, game}) => {
   logger_sock(["recv PACKET_GAME_START", game.params]);
 
-  store.dispatch(startGame(pieces, game.params));
+  if (pieces && game && game.params) {
+    store.dispatch(startGame(pieces, game.params));
+  }
 };
 
 /**
@@ -83,7 +84,9 @@ const cbPacketGameStart = ({pieces, game}) => {
 const cbPacketGenFlow = ({pieces}) => {
   logger_sock(["recv PACKET_GENFLOW"]);
 
-  store.dispatch(addPiecesFlow(pieces));
+  if (pieces) {
+    store.dispatch(addPiecesFlow(pieces));
+  }
 };
 
 /**
@@ -93,8 +96,10 @@ const cbPacketGenFlow = ({pieces}) => {
 const cbPacketPlayerCompleteLine = ({game, amount}) => {
   logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE"]);
 
-  store.dispatch(updatePlayers(game.players));
-  if (game.params.addWallLine) {
+  if (game && game.players) {
+    store.dispatch(updatePlayers(game.players));
+  }
+  if (amount && game && game.params && game.params.addWallLine) {
     store.dispatch(addWallLine(amount));
   }
 };
@@ -106,24 +111,26 @@ const cbPacketPlayerCompleteLine = ({game, amount}) => {
 const cbPacketTetrisPlacePiece = ({grid, playerName}) => {
   logger_sock(["recv PACKET_TETRIS_PLACE_PIECE"]);
 
-  store.dispatch(updateGrid(grid, playerName));
+  if (grid && playerName) {
+    store.dispatch(updateGrid(grid, playerName));
+  }
 };
+
+socket.on(socketDefs.PACKET_PLAYER_JOIN, cbPacketPlayerJoin);
+socket.on(socketDefs.PACKET_PLAYER_QUIT, cbPacketPlayerQuit);
+socket.on(socketDefs.PACKET_PLAYER_PROMOTED, cbPacketPlayerPromoted);
+socket.on(socketDefs.PACKET_PLAYER_LOSE, cbPacketPlayerLose);
+socket.on(socketDefs.PACKET_GAME_START, cbPacketGameStart);
+socket.on(socketDefs.PACKET_GENFLOW, cbPacketGenFlow);
+socket.on(socketDefs.PACKET_PLAYER_COMPLETE_LINE, cbPacketPlayerCompleteLine);
+socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, cbPacketTetrisPlacePiece);
+
 
 //----------------------------------------------------------------------------
 //
 // RESPONSE
 //
 //----------------------------------------------------------------------------
-
-socket.on(socketDefs.JOIN_GAME_RESPONSE, arg => cbJoinRoomResponse(arg));
-socket.on(socketDefs.HOME_RESPONSE, arg => cbHomeResponse(arg));
-socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg));
-socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg));
-socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg));
-socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, arg => cbTetrisPlacePieceResponse(arg));
-socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, arg => cbPlayerLooseResponse(arg));
-socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineResponse(arg));
-socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg));
 
 /**
  * Request: JOIN_GAME_RESPONSE
@@ -134,7 +141,8 @@ const cbJoinRoomResponse = ({error, game}) => {
 
   if (error) {
     store.dispatch(addError(error));
-  } else {
+  }
+  if (game && game.players) {
     store.dispatch(updatePlayers(game.players));
   }
 };
@@ -146,7 +154,9 @@ const cbJoinRoomResponse = ({error, game}) => {
 const cbHomeResponse = ({games}) => {
   logger_sock(["recv HOME_RESPONSE"]);
 
-  store.dispatch(updateGames(games.rooms));
+  if (games && games.rooms) {
+    store.dispatch(updateGames(games.rooms));
+  }
 };
 
 /**
@@ -158,7 +168,8 @@ const cbQuitRoomResponse = ({error, game}) => {
 
   if (error) {
     store.dispatch(addError(error))
-  } else {
+  }
+  if (game && game.players) {
     store.dispatch(updatePlayers(game.players))
   }
 };
@@ -218,7 +229,8 @@ const cbPlayerCompleteLineResponse = ({error, game}) => {
 
   if (error) {
     store.dispatch(addError(error));
-  } else if (game) {
+  }
+  if (game && game.players) {
     store.dispatch(updatePlayers(game.players));
   }
 };
@@ -234,6 +246,17 @@ const cbGenFlowResponse = ({error}) => {
     store.dispatch(addError(error));
   }
 };
+
+socket.on(socketDefs.JOIN_GAME_RESPONSE, cbJoinRoomResponse);
+socket.on(socketDefs.HOME_RESPONSE, cbHomeResponse);
+socket.on(socketDefs.QUIT_ROOM_RESPONSE, cbQuitRoomResponse);
+socket.on(socketDefs.START_PLAYING_RESPONSE, cbStartPlayingResponse);
+socket.on(socketDefs.CONNECTION_RESPONSE, cbConnectionResponse);
+socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, cbTetrisPlacePieceResponse);
+socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, cbPlayerLooseResponse);
+socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, cbPlayerCompleteLineResponse);
+socket.on(socketDefs.GENFLOW_RESPONSE, cbGenFlowResponse);
+
 
 //----------------------------------------------------------------------------
 //

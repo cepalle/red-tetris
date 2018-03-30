@@ -35,7 +35,7 @@ describe('store test', () => {
     const event = {
       keyCode: 0,
       preventDefault: () => undefined,
-    }
+    };
     eventHandler(event);
   });
   it('dispatch updateRoomPlayerName', () => {
@@ -81,7 +81,7 @@ describe('store test', () => {
     const event = {
       keyCode: 0,
       preventDefault: () => undefined,
-    }
+    };
     eventHandler(event);
     event.keyCode = 13;
     eventHandler(event);

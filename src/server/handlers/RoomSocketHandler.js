@@ -59,7 +59,7 @@ class RoomSocketHandler extends SocketHandler {
   quitGame(data, response = socketDefs.QUIT_GAME) {
     if (this.dataIsValid(data, response) && this.gameIsValid(data, response)) {
       const game = GameManager.getGame(data.roomName);
-      if (!game.containId(this.id))
+      if (!game || !game.containId(this.id))
         this.socket.emit(response, {error: errorsDefs.PLAYER_NOT_IN_ROOM});
       else {
         const player = game.removePlayer(data.playerName);
