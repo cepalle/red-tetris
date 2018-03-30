@@ -110,4 +110,9 @@ describe('store test', () => {
     }
     store.dispatch(movePiece(PIECES_MOVE.SWITCH));
   });
+  it('middleware', () => {
+    store.getState().EmitLoose = true;
+    store.getState().EmitCompleteLine = true;
+    store.dispatch(movePiece(PIECES_MOVE.SWITCH));
+  });
 });
