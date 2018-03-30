@@ -24,11 +24,9 @@ import {
   emitHome,
   emitQuitGame,
 } from "../../src/client/util/socket-handler";
-import Game from "../../src/server/data/game/Game";
-import GameManager from "../../src/server/data/game/GameManager";
 
 describe('socket test', () => {
-  it('reducerUpdateGrid', () => {
+  it('socket', () => {
     emitGenFlow("room");
     emitPlayerLoose("room101", "player42");
     emitPlayerCompleteLine("qwefad", "dadas", 10);
