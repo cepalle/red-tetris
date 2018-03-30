@@ -83,6 +83,7 @@ class RoomSocketHandler extends SocketHandler {
       this.playerIsMaster(response)) {
       const game = GameManager.getGameById(this.id);
       if (!game.waiting) {
+        console.log("hey");
         this.socket.emit(response, {error: errorsDefs.ROOM_ALREADY_IN_GAME})
       }
       else {

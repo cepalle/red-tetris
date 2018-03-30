@@ -51,6 +51,8 @@ class Game {
     const player = this.players.find(e => e.playerName === playerName);
     if (player) {
       this.players.removeObj(player);
+      if (this.players.filter(e => e.spectator).length === this.players.length)
+        this.setWaiting(true);
       if (player.master)
         this.promoteNewPlayer();
 
