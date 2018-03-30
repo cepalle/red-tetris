@@ -4,10 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client-prod": "webpack-dev-server --mode production --open",
     "client-dev": "webpack-dev-server --mode development --open",
     "build": "webpack ./src/client/index.js ",
-    "srv-prod": "node ./src/server/App.js",
+    "srv-dist": "babel src --out-dir dist",
     "srv-dev": "babel-watch -w src src/server/App.js",
     "test": "mocha -r jsdom-global/register --recursive --require babel-core/register --reporter spec",
     "test-server": "mocha --recursive --require babel-core/register --reporter spec \"test/1_server/\"",
