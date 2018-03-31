@@ -13,9 +13,9 @@ import {GRID_HEIGHT} from "../../common/grid";
 const reducerPiecesFlow = (state, {pieces}) => {
   logger_reducer(["piecesFlow"]);
 
-  const newState = cloneState(state);
-  newState.piecesFlow = newState.piecesFlow.concat(pieces);
-  return newState;
+  return Object.assign({}, state, {
+    piecesFlow: state.piecesFlow.concat(pieces)
+  });
 };
 
 /**
@@ -26,9 +26,7 @@ const reducerPiecesFlow = (state, {pieces}) => {
 const reducerError = (state, {error}) => {
   logger_reducer(["error"]);
 
-  const newState = cloneState(state);
-  newState.error = error;
-  return newState;
+  return Object.assign({}, state, {error: error});
 };
 
 /**
@@ -108,15 +106,14 @@ const reducerMovePiece = (state, {move}) => {
 const reducerUpdateGrid = (state, {grid, playerName}) => {
   logger_reducer(["updateGrid"]);
 
-  const newState = cloneState(state);
-
-  newState.playerStates = newState.playerStates.map(el => {
-    if (el.playerName === playerName) {
-      el.grid = grid
-    }
-    return el;
+  return Object.assign({}, state, {
+    playerStates: state.playerStates.map(el => {
+      if (el.playerName === playerName) {
+        return Object.assign({}, el, {grid: grid});
+      }
+      return el;
+    })
   });
-  return newState;
 };
 
 /**
@@ -128,20 +125,19 @@ const reducerUpdateGrid = (state, {grid, playerName}) => {
 const reducerStartGame = (state, {pieces, params}) => {
   logger_reducer(["startGame"]);
 
-  const newState = cloneState(state);
-
-  newState.piecesFlow = pieces;
-  newState.params = params;
+  let newGridHeight = GRID_HEIGHT;
   if (params.groundResizer) {
-    newState.gridHeight = GRID_HEIGHT + (newState.playerStates.length - 1) * 2;
-  } else {
-    newState.gridHeight = GRID_HEIGHT;
+    newGridHeight += (state.playerStates.length - 1) * 2;
   }
-  newState.playerStates = newState.playerStates.map(playerState =>
-    initPlayerState(playerState.playerName, playerState.master, newState.gridHeight)
-  );
-  newState.animate = true;
-  return newState;
+  return Object.assign({}, state, {
+    piecesFlow: pieces,
+    params: params,
+    gridHeight: newGridHeight,
+    playerStates: state.playerStates.map(playerState =>
+      initPlayerState(playerState.playerName, playerState.master, newGridHeight)
+    ),
+    animate: true,
+  });
 };
 
 /**
@@ -172,15 +168,15 @@ const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
   logger_reducer(["updateRoomPlayerName"]);
 
   if (!roomName || !playerName) {
-    return state
+    return state;
   }
 
-  const newState = cloneState(state);
-  newState.playerStates = [initPlayerState(playerName)];
-  newState.roomName = roomName;
-  newState.playerName = playerName;
-  newState.EmitJoinRoom = true;
-  return newState;
+  return Object.assign({}, state, {
+    playerStates: [initPlayerState(playerName)],
+    roomName: roomName,
+    playerName: playerName,
+    EmitJoinRoom: true,
+  });
 };
 
 /**
@@ -191,10 +187,9 @@ const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
 const reducerUpdateGames = (state, {games}) => {
   logger_reducer(["updateRoomPlayerName"]);
 
-  const newState = cloneState(state);
-  newState.games = games;
-
-  return newState;
+  return Object.assign({}, state, {
+    games: games
+  });
 };
 
 /**
@@ -207,7 +202,11 @@ const reducerToggleGroundResizer = state => {
   const newState = cloneState(state);
   newState.params.groundResizer = !state.params.groundResizer;
 
-  return newState;
+  return Object.assign({}, state, {
+    params: Object.assign({}, state.params, {
+      groundResizer: !state.params.groundResizer,
+    }),
+  });
 };
 
 /**
@@ -217,10 +216,11 @@ const reducerToggleGroundResizer = state => {
 const reducerToggleAddWallLine = state => {
   logger_reducer(["reducerToggleAddWallLine"]);
 
-  const newState = cloneState(state);
-  newState.params.addWallLine = !state.params.addWallLine;
-
-  return newState;
+  return Object.assign({}, state, {
+    params: Object.assign({}, state.params, {
+      addWallLine: !state.params.addWallLine,
+    }),
+  });
 };
 
 
