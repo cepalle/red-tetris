@@ -5,7 +5,7 @@ import {gridAddWall, placePiecePreview} from "../../src/client/util/grid-piece-h
 describe('grid handler test', () => {
   it('dispatch gridAddWall', () => {
     const newState = cloneState(store.getState());
-    gridAddWall(newState, 10);
+    gridAddWall(newState.playerStates[0].grid, 10);
   });
   it('dispatch gridAddWall', () => {
     const newState = cloneState(store.getState());

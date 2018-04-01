@@ -1,5 +1,6 @@
 import {store} from "../../src/client/middlewares/store";
-import {reducerUpdateGrid, reducerAddWallLine} from "../../src/client/reducers/reducer-aux";
+import {reducerUpdateGrid, reducerAddWallLine, reducerUpdatePlayers} from "../../src/client/reducers/reducer-aux";
+import {initPlayerState} from "../../src/client/reducers/reducer"
 
 describe('reducer test', () => {
   it('reducerUpdateGrid', () => {
@@ -9,10 +10,16 @@ describe('reducer test', () => {
     };
     reducerUpdateGrid(store.getState(), obj);
   });
-  it('dispatch reducerAddWallLine', () => {
+  it('reducerAddWallLine', () => {
     const obj = {
       amount: 1
     };
     reducerAddWallLine(store.getState(), obj);
+  });
+  it('reducerUpdatePlayers', () => {
+    const obj = {
+      players: store.getState().playerStates.concat(initPlayerState("tetere", false)),
+    };
+    reducerUpdatePlayers(store.getState(), obj);
   });
 });
