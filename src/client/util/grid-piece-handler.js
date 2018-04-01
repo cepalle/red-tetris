@@ -1,8 +1,8 @@
 import {GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_MOVE, PIECES_NUM} from "../../common/pieces";
-import {clonePiece, cloneState} from "./clone-handler"
+import {clonePiece} from "./clone-handler"
 import {logger} from "./logger-handler"
-import {ifLooseSet} from "./loose-win-handler";
+import {asLoose} from "./loose-win-handler";
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",
@@ -249,23 +249,17 @@ const gridDelLine = grid => {
   return [newGrid, lineToDel.length - nbWall];
 };
 
-const gridAddWall = (state, amount) => {
-  let newState = cloneState(state);
-  const player = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
+const gridAddWall = (grid, amount) => {
   const pos_x = Math.floor(Math.random() * GRID_WIDTH);
+  const newGrid = grid.map(l => l.map(e => e));
 
   for (let i = 0; i < amount; i++) {
-    player.grid.push(Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus));
-    player.grid.shift();
-    player.grid[player.grid.length - 1][pos_x] = PIECES_NUM.empty;
-    if (newState.piecesFlow[0].pos.y > 0) {
-      newState.piecesFlow[0].pos.y--;
-    }
+    newGrid.push(Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus));
+    newGrid.shift();
+    newGrid[newGrid.length - 1][pos_x] = PIECES_NUM.empty;
   }
 
-  ifLooseSet(newState);
-  newState.EmitUpdateGrid = true;
-  return newState;
+  return newGrid;
 };
 
 

@@ -5,7 +5,7 @@ import {
   reducerMovePiece,
   reducerStartGame,
   reducerUpdateGrid,
-  reducerUpdateUsers,
+  reducerUpdatePlayers,
   reducerUpdateRoomPlayerName,
   reducerUpdateGames, reducerToggleGroundResizer, reducerToggleAddWallLine
 } from "./reducer-aux";
@@ -60,7 +60,7 @@ const reducer = (state = initialState, action) => {
     case 'ADD_ERROR':
       return reducerError(state, action);
     case 'UPDATE_PLAYERS':
-      return reducerUpdateUsers(state, action);
+      return reducerUpdatePlayers(state, action);
     case 'PIECES_MOVE':
       return reducerMovePiece(state, action);
     case 'UPDATE_GRID':

@@ -1,8 +1,7 @@
 import {gridAddWall, gridDelLine, updatePiecePos, placePiece} from "../util/grid-piece-handler";
 import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
-import {ifLooseSet, ifWinSet} from "../util/loose-win-handler";
-import {cloneState} from "../util/clone-handler";
+import {asLoose, ifWinSet} from "../util/loose-win-handler";
 import {GRID_HEIGHT} from "../../common/grid";
 
 /**
@@ -34,7 +33,7 @@ const reducerError = (state, {error}) => {
  * @param {Object} state
  * @param {Array<player>} players
  */
-const reducerUpdateUsers = (state, {players}) => {
+const reducerUpdatePlayers = (state, {players}) => {
   logger_reducer(["updatePlayers"]);
 
   if (!players.some(e => e.master) ||
@@ -42,24 +41,20 @@ const reducerUpdateUsers = (state, {players}) => {
     return state;
   }
 
-  const newState = cloneState(state);
-
-  let filterNotInUsers = newState.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
-  let filterAddNewUsers = filterNotInUsers.concat(
-    players.filter(el => !filterNotInUsers.some(e => e.playerName === el.playerName)).map(el =>
-      initPlayerState(el.playerName, el.master, newState.gridHeight)
+  let filterNotInPlayers = state.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
+  let concatNewUsers = filterNotInPlayers.concat(
+    players.filter(el => !filterNotInPlayers.some(e => e.playerName === el.playerName)).map(el =>
+      initPlayerState(el.playerName, el.master, state.gridHeight)
     )
   );
 
-  /* UPDATE */
-  newState.playerStates = filterAddNewUsers.map(playerState => {
-    const player = players.find(e => e.playerName === playerState.playerName);
-    return Object.assign(playerState, player);
+  const newState = Object.assign({}, state, {
+    playerStates: concatNewUsers.map(playerState => {
+      const player = players.find(e => e.playerName === playerState.playerName);
+      return Object.assign(playerState, player);
+    }),
   });
-
-  ifWinSet(newState);
-
-  return newState;
+  return ifWinSet(newState);
 };
 
 /**
@@ -80,22 +75,41 @@ const reducerMovePiece = (state, {move}) => {
     return state;
   }
 
-  const newState = cloneState(state);
-  const newPlayer = newState.playerStates.find(playerState => playerState.playerName === newState.playerName);
   let needNext;
-  [needNext, newState.piecesFlow] = updatePiecePos(newPlayer.grid, newState.piecesFlow, move);
+  let newPiecesFlow;
+  [needNext, newPiecesFlow] = updatePiecePos(player.grid, state.piecesFlow, move);
 
   if (needNext) {
-    newPlayer.grid = placePiece(newPlayer.grid, newState.piecesFlow[0]);
-    let nbLineDel;
-    [newPlayer.grid, nbLineDel] = gridDelLine(newPlayer.grid);
-    newState.piecesFlow.shift();
+    let newGrid = placePiece(player.grid, newPiecesFlow[0]);
+    newPiecesFlow.shift();
 
-    newState.EmitCompleteLine = nbLineDel;
-    newState.EmitUpdateGrid = true;
-    ifLooseSet(newState);
+    let nbLineDel;
+    [newGrid, nbLineDel] = gridDelLine(newGrid);
+
+    const loose = asLoose(newGrid);
+
+    const newState = Object.assign({}, state, {
+      piecesFlow: newPiecesFlow,
+      playerStates: state.playerStates.map(el => {
+        if (el.playerName === state.playerName) {
+          return Object.assign({}, el, {
+            grid: newGrid,
+            loose: loose
+          });
+        }
+        return el;
+      }),
+      animate: state.animate && !loose,
+      EmitLoose: loose,
+      EmitUpdateGrid: true,
+      EmitCompleteLine: nbLineDel,
+    });
+
+    return ifWinSet(newState);
   }
-  return newState;
+  return Object.assign({}, state, {
+    piecesFlow: newPiecesFlow,
+  });
 };
 
 /**
@@ -155,7 +169,26 @@ const reducerAddWallLine = (state, {amount}) => {
     return state
   }
 
-  return gridAddWall(state, amount);
+  const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
+  const newGrid = gridAddWall(player.grid, amount);
+  const loose = asLoose(newGrid);
+
+  const newState = Object.assign({}, state, {
+    playerStates: state.playerStates.map(el => {
+      if (el.playerName === state.playerName) {
+        return Object.assign({}, el, {
+          grid: newGrid,
+          loose: loose
+        });
+      }
+      return el;
+    }),
+    animate: state.animate && !loose,
+    EmitLoose: loose,
+    EmitUpdateGrid: true,
+  });
+
+  return ifWinSet(newState);
 };
 
 /**
@@ -199,9 +232,6 @@ const reducerUpdateGames = (state, {games}) => {
 const reducerToggleGroundResizer = state => {
   logger_reducer(["reducerToggleGroundResizer"]);
 
-  const newState = cloneState(state);
-  newState.params.groundResizer = !state.params.groundResizer;
-
   return Object.assign({}, state, {
     params: Object.assign({}, state.params, {
       groundResizer: !state.params.groundResizer,
@@ -231,7 +261,7 @@ export {
   reducerMovePiece,
   reducerStartGame,
   reducerUpdateGrid,
-  reducerUpdateUsers,
+  reducerUpdatePlayers,
   reducerUpdateRoomPlayerName,
   reducerUpdateGames,
   reducerToggleGroundResizer,
