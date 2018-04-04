@@ -8,7 +8,7 @@ Full Stack Javascript Multiplayer Tetris Game build with Node, socket.io, React 
 
 ## Images
 
-### Connect you:
+### How connect:
 
 ![Connect_img](https://github.com/cepalle/red-tetris/blob/master/README_img/connect_img.png)
 
