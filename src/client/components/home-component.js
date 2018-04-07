@@ -46,7 +46,7 @@ class HomeComponent extends React.Component {
               #<input type="text"
                       value={this.state.roomName}
                       onChange={e => this.handleChangeRoom(e)}
-                      placeholder={"Your room"}/>
+                      placeholder={"Choose or create room"}/>
             </label>
             <label>
               [<input type="text"
@@ -59,7 +59,7 @@ class HomeComponent extends React.Component {
 
           <div className={"column pad"}>
             <div className={"pad"}>
-              Current Room: (You can choose a new room for create it)
+              Current Room:
             </div>
             {this.props.games.length === 0 &&
             <div>

@@ -13,14 +13,16 @@ const InfoPanelComponent = ({
           <h1 className={"font_white font_retro pad"}>TETRIS</h1>
         </div>
         <div className={"font_white pad"}>
-          <div className={"pad"}>
-            {"<keyRight>: move right"}<br/>
-            {"<keyLeft>: move left"}<br/>
-            {"<keyDown>: move down"}<br/>
-            {"<keyUp>: rotate right"}<br/>
-            {"<keySpace>: place the piece"}<br/>
-            {"<keyEnter>: start the game if your are master"}<br/>
-            {"<keyS> or <keyC>: switch the current piece with the next piece"}<br/>
+          <div className={"pad color0"}>
+            <span className={"font_color_key"}>{"<keyRight>"}</span>{": move right"}<br/>
+            <span className={"font_color_key"}>{"<keyLeft>"}</span>{": move left"}<br/>
+            <span className={"font_color_key"}>{"<keyDown>"}</span>{": move down"}<br/>
+            <span className={"font_color_key"}>{"<keyUp>"}</span>{": rotate right"}<br/>
+            <span className={"font_color_key"}>{"<keySpace>"}</span>{": place the piece"}<br/>
+            <span className={"font_color_key"}>{"<keyEnter>"}</span>{": start the game if your are master"}<br/>
+            <span className={"font_color_key"}>{"<keyS>"}</span>
+            {"or"}
+            <span className={"font_color_key"}>{"<keyC>"}</span>{": switch the current piece with the next piece"}<br/>
           </div>
 
           {playerName && roomName && master &&

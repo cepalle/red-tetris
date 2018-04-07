@@ -184,7 +184,7 @@
 }
 
 .width_info_panel {
-  width: 600px;
+  width: 500px;
 }
 
 @font-face {
@@ -222,6 +222,10 @@ h1 {
 
 .font_green {
   color: green;
+}
+
+.font_color_key {
+  color: #777777;
 }
 
 /* cyrillic-ext */

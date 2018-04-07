@@ -12,17 +12,19 @@ const GridPlayerComponent = ({playerState, gridRender}) =>
         )}
       </div>
     </div>
-    <div className={"row center"}>
-      <span className={"pad font_white font_retro"}>
+    <div className={"column center"}>
+      <span className={"pad font_white font_retro row center"}>
         YOU!{playerState.master && "(Master)"}{playerState.loose && "(loose)"}{playerState.win && "(Win)"}
         {playerState.spectator && "(Spectator)"}
       </span>
-      <span className={"pad font_white font_retro"}>
+      <div className={"row center"}>
+        <span className={"pad font_white font_retro"}>
         score:{playerState.score}
-      </span>
-      <span className={"pad font_white font_retro"}>
+        </span>
+        <span className={"pad font_white font_retro"}>
         lines completed:{playerState.lines}
-      </span>
+        </span>
+      </div>
     </div>
   </div>
 ;
