@@ -1,10 +1,8 @@
-# Tetris
-
-Play it at: https://cepalle.github.io/red-tetris/
-
 ## Overview
 
 Full Stack Javascript Multiplayer Tetris Game build with Node, socket.io, React and Redux.
+
+Play it at: https://cepalle.github.io/red-tetris/
 
 ## Images
 
