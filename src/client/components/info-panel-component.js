@@ -59,7 +59,7 @@ const InfoPanelComponent = ({
 
           {(!playerName || !roomName) &&
           <p className={"font_red"}>{"You need to join a room and take a pseudo"}<br/>
-            {"(The room will be created if doesn't exist)"}<br/></p>}
+            {"(The room is going to be created if doesn't exist)"}<br/></p>}
 
 
           {error.type === "PLAYER_ALREADY_IN_ROOM" &&
