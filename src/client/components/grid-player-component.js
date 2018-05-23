@@ -14,7 +14,7 @@ const GridPlayerComponent = ({playerState, gridRender}) =>
     </div>
     <div className={"column center"}>
       <span className={"pad font_white font_retro row center"}>
-        YOU!{playerState.master && "(Master)"}{playerState.loose && "(loose)"}{playerState.win && "(Win)"}
+        YOU!{playerState.master && "(Master)"}{playerState.loose && "(lost)"}{playerState.win && "(Win)"}
         {playerState.spectator && "(Spectator)"}
       </span>
       <div className={"row center"}>
