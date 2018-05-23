@@ -16,7 +16,7 @@ const OpponentComponent = ({infoRenders}) =>
         <div className={"row center"}>
         <span className={"font_white font_retro"}>
           {infoRender.playerState.playerName}{infoRender.playerState.master && "(Master)"}
-          {infoRender.playerState.loose && "(loose)"}{infoRender.playerState.win && "(Win)"}
+          {infoRender.playerState.loose && "(lost)"}{infoRender.playerState.win && "(Win)"}
           {infoRender.playerState.spectator && "(Spectator)"}
         </span>
         </div>
