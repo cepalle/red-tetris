@@ -16,10 +16,12 @@ const socket = io.connect('http://localhost:4433');
 
 Then run:
 ````cmd
+ npm install
  npm run client-dev
 ````
 and:
 ````cmd
+ npm install
  npm run srv-dev
 ````
 
