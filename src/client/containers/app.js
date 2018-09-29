@@ -5,7 +5,7 @@ import {AppComponent} from "../components/app-component";
 const mapStateToProps = state => {
   return {
     playerRoomNameChoose: state.playerName && state.roomName,
-    error: Object.assign({}, state.error),
+    error: state.error,
   };
 };
 

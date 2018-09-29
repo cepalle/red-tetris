@@ -8,12 +8,12 @@ import {InfoPanelComponent} from "../components/info-panel-component";
 
 const mapStateToProps = state => {
   return {
-    error: Object.assign({}, state.error),
+    error: state.error,
     animate: state.animate,
     master: state.playerStates.find(e => e.playerName === state.playerName).master,
     playerName: state.playerName,
     roomName: state.roomName,
-    params: Object.assign({}, state.params),
+    params: state.params,
   }
 };
 
