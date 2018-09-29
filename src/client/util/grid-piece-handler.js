@@ -2,7 +2,6 @@ import {GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_MOVE, PIECES_NUM} from "../../common/pieces";
 import {clonePiece} from "./clone-handler"
 import {logger} from "./logger-handler"
-import {asLoose} from "./loose-win-handler";
 
 const COLLISION_TYPE = {
   PIECE: "collision_piece",

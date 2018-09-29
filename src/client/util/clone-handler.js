@@ -24,5 +24,4 @@ const cloneState = state =>
   )
 ;
 
-
 export {cloneState, clonePlayerStates, clonePiece, clonePlayerState};
