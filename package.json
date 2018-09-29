@@ -16,7 +16,7 @@
   },
   "keywords": [],
   "author": "cepalle;aviscogl",
-  "license": "ISC",
+  "license": "",
   "dependencies": {
     "babel-loader": "^7.1.5",
     "babel-preset-env": "^1.7.0",
@@ -31,14 +31,14 @@
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1",
     "webpack": "^4.16.4",
-    "webpack-cli": "^2.1.5",
+    "webpack-cli": "^3.1.1",
     "webpack-dev-server": "^3.1.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-watch": "^2.0.7",
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "chai-as-promised": "^5.3.0",
     "chai-equal-jsx": "^1.0.9",
     "css-loader": "^0.28.11",

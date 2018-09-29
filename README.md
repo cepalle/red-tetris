@@ -6,23 +6,15 @@ Play it at: https://cepalle.github.io/red-tetris/
 
 ## Run it locally
 
-in src/client/util/socket-handler.js
-
-Switch comment line:
-````javascript
-const socket = io.connect('http://localhost:4433');
-// const socket = io.connect('https://le-101.tk:4433');
-````
-
 Then run:
 ````cmd
  npm install
- npm run client-dev
+ npm run srv-dev
 ````
 and:
 ````cmd
  npm install
- npm run srv-dev
+ npm run client-dev
 ````
 
 ## Images
