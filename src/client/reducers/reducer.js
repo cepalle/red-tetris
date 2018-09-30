@@ -44,6 +44,7 @@ const initialState = {
     groundResizer: true,
   },
   gridHeight: GRID_HEIGHT,
+  socketIsConnect: false
 };
 
 
@@ -85,6 +86,10 @@ const reducer = (state = initialState, action) => {
       return Object.assign({}, state, {EmitUpdateGrid: action.bool});
     case 'UPDATE_EMITE_COMPLETE_LINE':
       return Object.assign({}, state, {EmitCompleteLine: action.nb});
+    case 'CLEAN_ERROR':
+      return Object.assign({}, state, {error: {}});
+    case 'UPDATE_SOCKET_IS_CONNECT':
+      return Object.assign({}, state, {socketIsConnect: action.bool});
     default:
       return state;
   }

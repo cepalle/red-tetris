@@ -6,6 +6,7 @@ const mapStateToProps = state => {
   return {
     playerRoomNameChoose: state.playerName && state.roomName,
     error: state.error,
+    socketIsConnect: state.socketIsConnect
   };
 };
 

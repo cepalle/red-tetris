@@ -1,7 +1,9 @@
-const errorCleanMiddleware = store => next => action => {
+import {cleanError} from "../actions/action-creators";
 
-  const state = store.getState();
-  state.error = {};
+const errorCleanMiddleware = store => next => action => {
+  if (store.getState().error.type) {
+    next(cleanError());
+  }
   return next(action);
 };
 

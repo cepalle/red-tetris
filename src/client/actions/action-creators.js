@@ -172,6 +172,19 @@ const updateEmiteCompleteLine = (nb) => {
   }
 };
 
+const cleanError = () => {
+  return {
+    type: 'CLEAN_ERROR'
+  }
+};
+
+const updateSocketIsConnect = (bool) => {
+  return {
+    type: 'UPDATE_SOCKET_IS_CONNECT',
+    bool
+  }
+};
+
 export {
   addPiecesFlow,
   addError,
@@ -191,4 +204,6 @@ export {
   updateEmiteJoinRoom,
   updateEmiteUpdateGrid,
   updateEmiteCompleteLine,
+  cleanError,
+  updateSocketIsConnect,
 };

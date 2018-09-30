@@ -7,9 +7,9 @@ import {
   updateEmiteCompleteLine,
   updateEmiteJoinRoom,
   updateEmiteLoose,
-  updateEmiteUpdateGrid
+  updateEmiteUpdateGrid, updateSocketIsConnect
 } from "../actions/action-creators";
-import {socketEmit} from "../util/socket";
+import {socketEmit, socketIsConnect} from "../util/socket";
 
 const connectionResponseHandler = (state, emit) => {
   logger_middleware(["CONNECTION_RESPONSE"]);
@@ -85,6 +85,12 @@ const nextCompleteLineHandler = (state, next, emit) => {
   }
 };
 
+const nextSocketIsConnect = (state, next, socketIsConnect) => {
+  if (socketIsConnect() !== state.socketIsConnect) {
+    next(updateSocketIsConnect(socketIsConnect()))
+  }
+};
+
 const socketMiddleware = store => next => action => {
   switch (action.type) {
     case 'CONNECTION_RESPONSE':
@@ -107,6 +113,7 @@ const socketMiddleware = store => next => action => {
   nextJoinRoomHandler(store.getState(), next, socketEmit);
   nextUpdateGridHandler(store.getState(), next, socketEmit);
   nextCompleteLineHandler(store.getState(), next, socketEmit);
+  nextSocketIsConnect(store.getState(), next, socketIsConnect);
 
   return result;
 };

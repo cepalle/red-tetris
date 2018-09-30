@@ -1,12 +1,11 @@
 import React from "react";
 import {Home} from "../containers/home";
 import {TetrisGame} from "./tetris-game-component";
-import {socketIsConnect} from "../util/socket";
 
-const AppComponent = ({playerRoomNameChoose, error}) => {
+const AppComponent = ({playerRoomNameChoose, error, socketIsConnect}) => {
   let page = <TetrisGame/>;
 
-  if (!socketIsConnect()) {
+  if (!socketIsConnect) {
     page = <div className={"row center font_white"}>
       <p className={"color8 pad"}>
         Sorry, an error occurs with the backend server connection ='( <br/>
