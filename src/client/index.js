@@ -16,10 +16,14 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("app"));
 
-window.addEventListener('keydown', e => eventHandler(e), false);
+window.addEventListener('keydown', event =>
+    eventHandler(event,
+      !store.getState().playerName || !store.getState().roomName,
+      store.dispatch),
+  false);
 
 window.setInterval(() =>
-    animateClock(store.dispatch, store.getState().animate)
-  , 500);
+    animateClock(store.dispatch, store.getState().animate),
+  500);
 
 emitHome(socketEmit);

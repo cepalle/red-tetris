@@ -42,7 +42,6 @@ socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, arg => cbPlayerLooseResponse(arg, st
 socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineResponse(arg, store.dispatch));
 socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg, store.dispatch));
 
-
 export {
   socketEmit,
   socketIsConnect,

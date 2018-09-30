@@ -1,5 +1,4 @@
 import {PIECES_MOVE} from "../../common/pieces"
-import {store} from "../middlewares/store"
 import {movePiece, sendStartGame} from "../actions/action-creators"
 
 const keyEnter = 13;
@@ -11,51 +10,51 @@ const keyDown = 40;
 const keyS = 83;
 const keyC = 67;
 
-const eventHandler = (event) => {
+const eventHandler = (event, isInGame, dispatch) => {
 
-  if (!store.getState().playerName || !store.getState().roomName) {
+  if (isInGame) {
     return;
   }
 
   switch (event.keyCode) {
     case keyLeft:
       event.preventDefault();
-      store.dispatch(movePiece(PIECES_MOVE.LEFT));
+      dispatch(movePiece(PIECES_MOVE.LEFT));
       break;
 
     case keyUp:
       event.preventDefault();
-      store.dispatch(movePiece(PIECES_MOVE.ROT_RIGHT));
+      dispatch(movePiece(PIECES_MOVE.ROT_RIGHT));
       break;
 
     case keyRight:
       event.preventDefault();
-      store.dispatch(movePiece(PIECES_MOVE.RIGHT));
+      dispatch(movePiece(PIECES_MOVE.RIGHT));
       break;
 
     case keyDown:
       event.preventDefault();
-      store.dispatch(movePiece(PIECES_MOVE.DOWN));
+      dispatch(movePiece(PIECES_MOVE.DOWN));
       break;
 
     case keySpace:
       event.preventDefault();
-      store.dispatch(movePiece(PIECES_MOVE.DROP));
+      dispatch(movePiece(PIECES_MOVE.DROP));
       break;
 
     case keyEnter:
       event.preventDefault();
-      store.dispatch(sendStartGame());
+      dispatch(sendStartGame());
       break;
 
     case keyS:
       event.preventDefault();
-      store.dispatch(movePiece(PIECES_MOVE.SWITCH));
+      dispatch(movePiece(PIECES_MOVE.SWITCH));
       break;
 
     case keyC:
       event.preventDefault();
-      store.dispatch(movePiece(PIECES_MOVE.SWITCH));
+      dispatch(movePiece(PIECES_MOVE.SWITCH));
       break;
   }
 };
