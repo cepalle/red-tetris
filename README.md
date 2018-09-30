@@ -6,14 +6,16 @@ Play it at: https://cepalle.github.io/red-tetris/
 
 ## Run it locally
 
-Then run:
+After:
 ````cmd
  npm install
+````
+run:
+````cmd
  npm run srv-dev
 ````
 and:
 ````cmd
- npm install
  npm run client-dev
 ````
 

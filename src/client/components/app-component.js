@@ -8,8 +8,7 @@ const AppComponent = ({playerRoomNameChoose, error, socketIsConnect}) => {
   if (!socketIsConnect) {
     page = <div className={"row center font_white"}>
       <p className={"color8 pad"}>
-        Sorry, an error occurs with the backend server connection ='( <br/>
-        See README for run it locally
+        The server is not online, See README for run it locally
       </p>
     </div>
   } else if (!playerRoomNameChoose || error.type === "PLAYER_ALREADY_IN_ROOM") {
