@@ -1,7 +1,7 @@
 import React from "react";
 import {Home} from "../containers/home";
 import {TetrisGame} from "./tetris-game-component";
-import {socketIsConnect} from "../util/socket-handler";
+import {socketIsConnect} from "../util/socket";
 
 const AppComponent = ({playerRoomNameChoose, error}) => {
   let page = <TetrisGame/>;

@@ -8,6 +8,7 @@ import "./util/event-handler";
 import {eventHandler} from "./util/event-handler";
 import {animateClock} from "./util/animate-handler";
 import {emitHome} from "./util/socket-handler";
+import {socketEmit} from "./util/socket";
 
 ReactDOM.render(
   <Provider store={store}>
@@ -21,4 +22,4 @@ window.setInterval(() =>
     animateClock(store.dispatch, store.getState().animate)
   , 500);
 
-emitHome();
+emitHome(socketEmit);

@@ -1,8 +1,8 @@
 const log = true;
-const log_sock = false;
-const log_reducer = false;
-const log_component = false;
-const log_middleware = false;
+const log_sock = true;
+const log_reducer = true;
+const log_component = true;
+const log_middleware = true;
 
 const logger = arg => {
   log && console.log(...arg);

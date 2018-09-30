@@ -28,11 +28,11 @@ const initPlayerState = (playerName, master = false, gridHeight = GRID_HEIGHT) =
 };
 
 const initialState = {
-  playerStates: [initPlayerState(urlGetPlayerName())],
+  playerStates: [initPlayerState(urlGetPlayerName(window))],
   piecesFlow: [],
   error: {},
-  playerName: urlGetPlayerName(),
-  roomName: urlGetRoomName(),
+  playerName: urlGetPlayerName(window),
+  roomName: urlGetRoomName(window),
   animate: false,
   EmitLoose: false,
   EmitUpdateGrid: false,
@@ -77,6 +77,14 @@ const reducer = (state = initialState, action) => {
       return reducerToggleAddWallLine(state);
     case 'TOGGLE_GROUND_RESIZER':
       return reducerToggleGroundResizer(state);
+    case 'UPDATE_EMITE_LOOSE':
+      return Object.assign({}, state, {EmitLoose: action.bool});
+    case 'UPDATE_EMITE_JOIN_ROOM':
+      return Object.assign({}, state, {EmitJoinRoom: action.bool});
+    case 'UPDATE_EMITE_UPDATE_GRID':
+      return Object.assign({}, state, {EmitUpdateGrid: action.bool});
+    case 'UPDATE_EMITE_COMPLETE_LINE':
+      return Object.assign({}, state, {EmitCompleteLine: action.nb});
     default:
       return state;
   }

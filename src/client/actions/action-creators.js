@@ -144,6 +144,33 @@ const toggleGroundResizer = () => {
   }
 };
 
+const updateEmiteLoose = (bool) => {
+  return {
+    type: 'UPDATE_EMITE_LOOSE',
+    bool
+  }
+};
+
+const updateEmiteJoinRoom = (bool) => {
+  return {
+    type: 'UPDATE_EMITE_JOIN_ROOM',
+    bool
+  }
+};
+
+const updateEmiteUpdateGrid = (bool) => {
+  return {
+    type: 'UPDATE_EMITE_UPDATE_GRID',
+    bool
+  }
+};
+
+const updateEmiteCompleteLine = (nb) => {
+  return {
+    type: 'UPDATE_EMITE_COMPLETE_LINE',
+    nb
+  }
+};
 
 export {
   addPiecesFlow,
@@ -160,4 +187,8 @@ export {
   emitQuitGame,
   toggleAddWallLine,
   toggleGroundResizer,
+  updateEmiteLoose,
+  updateEmiteJoinRoom,
+  updateEmiteUpdateGrid,
+  updateEmiteCompleteLine,
 };

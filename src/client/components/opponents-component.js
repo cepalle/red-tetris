@@ -1,7 +1,6 @@
 import React from "react";
 import {PIECES_NUM} from "../../common/pieces";
 import {GRID_WIDTH} from "../../common/grid";
-import {clonePlayerState} from "../util/clone-handler";
 
 const OpponentComponent = ({playerStates, playerName}) => {
   const infoRenders = [];
@@ -36,7 +35,7 @@ const OpponentComponent = ({playerStates, playerName}) => {
 
     infoRenders.push({
       grid: gridRender,
-      playerState: clonePlayerState(playerState),
+      playerState: playerState,
     });
   });
 
