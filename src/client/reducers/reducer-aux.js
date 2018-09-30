@@ -253,7 +253,6 @@ const reducerToggleAddWallLine = state => {
   });
 };
 
-
 export {
   reducerPiecesFlow,
   reducerAddWallLine,

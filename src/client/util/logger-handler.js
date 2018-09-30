@@ -1,4 +1,4 @@
-const log = false;
+const log = true;
 const log_sock = false;
 const log_reducer = false;
 const log_component = false;

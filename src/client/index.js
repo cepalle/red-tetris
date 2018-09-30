@@ -16,5 +16,9 @@ ReactDOM.render(
   document.getElementById("app"));
 
 window.addEventListener('keydown', e => eventHandler(e), false);
-animateClock();
+
+window.setInterval(() =>
+    animateClock(store.dispatch, store.getState().animate)
+  , 500);
+
 emitHome();
