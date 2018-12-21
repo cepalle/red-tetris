@@ -1,8 +1,8 @@
 import socketDefs from "../../common/socket-definitions";
 import {logger_sock} from "./logger-handler";
 import {
-  addError, addPiecesFlow, addWallLine, connectionResponse, startGame, updateGames, updateGrid,
-  updatePlayers
+  ADD_ERROR, ADD_PIECES_FLOW, ADD_WALL_LINE, CONNECTION_RESPONSE, RECV_START_GAME, UPDATE_GAMES, UPDATE_GRID,
+  UPDATE_PLAYERS
 } from "../actions/action-creators"
 
 //----------------------------------------------------------------------------
@@ -19,7 +19,7 @@ const cbPacketPlayerJoin = ({game}, dispatch) => {
   logger_sock(["recv PACKET_PLAYER_JOIN"]);
 
   if (game && game.players) {
-    dispatch(updatePlayers(game.players));
+    dispatch(UPDATE_PLAYERS(game.players));
   }
 };
 
@@ -31,7 +31,7 @@ const cbPacketPlayerQuit = ({game}, dispatch) => {
   logger_sock(["recv PACKET_PLAYER_QUIT"]);
 
   if (game && game.players) {
-    dispatch(updatePlayers(game.players));
+    dispatch(UPDATE_PLAYERS(game.players));
   }
 };
 
@@ -43,7 +43,7 @@ const cbPacketPlayerPromoted = ({game}, dispatch) => {
   logger_sock(["recv PACKET_PLAYER_PROMOTED"]);
 
   if (game && game.players) {
-    dispatch(updatePlayers(game.players));
+    dispatch(UPDATE_PLAYERS(game.players));
   }
 };
 
@@ -55,7 +55,7 @@ const cbPacketPlayerLose = ({game}, dispatch) => {
   logger_sock(["recv PACKET_PLAYER_LOSE"]);
 
   if (game && game.players) {
-    dispatch(updatePlayers(game.players));
+    dispatch(UPDATE_PLAYERS(game.players));
   }
 };
 
@@ -67,7 +67,7 @@ const cbPacketGameStart = ({pieces, game}, dispatch) => {
   logger_sock(["recv PACKET_GAME_START", game.params]);
 
   if (pieces && game && game.params) {
-    dispatch(startGame(pieces, game.params));
+    dispatch(RECV_START_GAME(pieces, game.params));
   }
 };
 
@@ -79,7 +79,7 @@ const cbPacketGenFlow = ({pieces}, dispatch) => {
   logger_sock(["recv PACKET_GENFLOW"]);
 
   if (pieces) {
-    dispatch(addPiecesFlow(pieces));
+    dispatch(ADD_PIECES_FLOW(pieces));
   }
 };
 
@@ -91,10 +91,10 @@ const cbPacketPlayerCompleteLine = ({game, amount}, dispatch) => {
   logger_sock(["recv PACKET_PLAYER_COMPLETE_LINE"]);
 
   if (game && game.players) {
-    dispatch(updatePlayers(game.players));
+    dispatch(UPDATE_PLAYERS(game.players));
   }
   if (amount && game && game.params && game.params.addWallLine) {
-    dispatch(addWallLine(amount));
+    dispatch(ADD_WALL_LINE(amount));
   }
 };
 
@@ -106,7 +106,7 @@ const cbPacketTetrisPlacePiece = ({grid, playerName}, dispatch) => {
   logger_sock(["recv PACKET_TETRIS_PLACE_PIECE"]);
 
   if (grid && playerName) {
-    dispatch(updateGrid(grid, playerName));
+    dispatch(UPDATE_GRID(grid, playerName));
   }
 };
 
@@ -124,10 +124,10 @@ const cbJoinRoomResponse = ({error, game}, dispatch) => {
   logger_sock(["recv JOIN_GAME_RESPONSE"]);
 
   if (error) {
-    dispatch(addError(error));
+    dispatch(ADD_ERROR(error));
   }
   if (game && game.players) {
-    dispatch(updatePlayers(game.players));
+    dispatch(UPDATE_PLAYERS(game.players));
   }
 };
 
@@ -139,7 +139,7 @@ const cbHomeResponse = ({games}, dispatch) => {
   logger_sock(["recv HOME_RESPONSE"]);
 
   if (games && games.rooms) {
-    dispatch(updateGames(games.rooms));
+    dispatch(UPDATE_GAMES(games.rooms));
   }
 };
 
@@ -151,10 +151,10 @@ const cbQuitRoomResponse = ({error, game}, dispatch) => {
   logger_sock(["recv QUIT_ROOM_RESPONSE"]);
 
   if (error) {
-    dispatch(addError(error))
+    dispatch(ADD_ERROR(error))
   }
   if (game && game.players) {
-    dispatch(updatePlayers(game.players))
+    dispatch(UPDATE_PLAYERS(game.players))
   }
 };
 
@@ -166,7 +166,7 @@ const cbStartPlayingResponse = ({error}, dispatch) => {
   logger_sock(["recv START_PLAYING_RESPONSE"]);
 
   if (error) {
-    dispatch(addError(error))
+    dispatch(ADD_ERROR(error))
   }
 };
 
@@ -177,7 +177,7 @@ const cbStartPlayingResponse = ({error}, dispatch) => {
 const cbConnectionResponse = (_, dispatch) => {
   logger_sock(["recv CONNECTION_RESPONSE"]);
 
-  dispatch(connectionResponse())
+  dispatch(CONNECTION_RESPONSE())
 };
 
 /**
@@ -188,7 +188,7 @@ const cbTetrisPlacePieceResponse = ({error}, dispatch) => {
   logger_sock(["recv TETRIS_PLACE_PIECE_RESPONSE"]);
 
   if (error) {
-    dispatch(addError(error))
+    dispatch(ADD_ERROR(error))
   }
 };
 
@@ -200,7 +200,7 @@ const cbPlayerLooseResponse = ({error}, dispatch) => {
   logger_sock(["recv PLAYER_LOOSE_RESPONSE"]);
 
   if (error) {
-    dispatch(addError(error))
+    dispatch(ADD_ERROR(error))
   }
 };
 
@@ -212,10 +212,10 @@ const cbPlayerCompleteLineResponse = ({error, game}, dispatch) => {
   logger_sock(["recv PLAYER_COMPLETE_LINE_RESPONSE"]);
 
   if (error) {
-    dispatch(addError(error));
+    dispatch(ADD_ERROR(error));
   }
   if (game && game.players) {
-    dispatch(updatePlayers(game.players));
+    dispatch(UPDATE_PLAYERS(game.players));
   }
 };
 
@@ -227,7 +227,7 @@ const cbGenFlowResponse = ({error}, dispatch) => {
   logger_sock(["recv GENFLOW_RESPONSE"]);
 
   if (error) {
-    dispatch(addError(error));
+    dispatch(ADD_ERROR(error));
   }
 };
 

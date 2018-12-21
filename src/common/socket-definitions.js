@@ -105,7 +105,7 @@ module.exports = {
    * Used to tell to the client that he successful the socket.io
    * Data to sent: {}
    */
-  CONNECTION_RESPONSE: "connectionResponse",
+  CONNECTION_RESPONSE: "CONNECTION_RESPONSE",
 
   /**
    * Used to tell if the request is ok

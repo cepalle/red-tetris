@@ -1,8 +1,8 @@
-import {addWallLine, updateGrid} from "../../src/client/actions/action-creators";
+import {ADD_WALL_LINE, UPDATE_GRID} from "../../src/client/actions/action-creators";
 
 describe('action test', () => {
   it('reducerUpdateGrid', () => {
-    updateGrid([], "playerName");
-    addWallLine(8);
+    UPDATE_GRID([], "playerName");
+    ADD_WALL_LINE(8);
   });
 });

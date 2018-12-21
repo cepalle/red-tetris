@@ -1,7 +1,7 @@
 import React from "react";
 import connect from "react-redux/es/connect/connect";
 import {store} from "../middlewares/store";
-import {updateRoomPlayerName} from "../actions/action-creators";
+import {UPDATE_ROOM_PLAYER_NAME} from "../actions/action-creators";
 
 const mapStateToProps = state => {
   return {
@@ -29,7 +29,7 @@ class HomeComponent extends React.Component {
 
   handleSubmit(event) {
     window.location.href = "#" + this.state.roomName + "[" + this.state.playerName + "]";
-    store.dispatch(updateRoomPlayerName(this.state.roomName, this.state.playerName));
+    store.dispatch(UPDATE_ROOM_PLAYER_NAME(this.state.roomName, this.state.playerName));
     event.preventDefault();
   }
 

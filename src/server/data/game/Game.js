@@ -112,7 +112,7 @@ class Game {
     if (params.groundResizer !== undefined && typeof params.groundResizer === "boolean")
       this.params.groundResizer = params.groundResizer;
     if (params.addWallLine !== undefined && typeof params.groundResizer === "boolean")
-      this.params.addWallLine = params.addWallLine;
+      this.params.ADD_WALL_LINE = params.addWallLine;
   }
 
 

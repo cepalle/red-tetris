@@ -1,5 +1,5 @@
 import {PIECES_MOVE} from "../../common/pieces"
-import {movePiece, sendStartGame} from "../actions/action-creators"
+import {PIECES_MOVE, SEND_START_GAME} from "../actions/action-creators"
 
 const keyEnter = 13;
 const keySpace = 32;
@@ -19,42 +19,42 @@ const eventHandler = (event, isInGame, dispatch) => {
   switch (event.keyCode) {
     case keyLeft:
       event.preventDefault();
-      dispatch(movePiece(PIECES_MOVE.LEFT));
+      dispatch(PIECES_MOVE(PIECES_MOVE.LEFT));
       break;
 
     case keyUp:
       event.preventDefault();
-      dispatch(movePiece(PIECES_MOVE.ROT_RIGHT));
+      dispatch(PIECES_MOVE(PIECES_MOVE.ROT_RIGHT));
       break;
 
     case keyRight:
       event.preventDefault();
-      dispatch(movePiece(PIECES_MOVE.RIGHT));
+      dispatch(PIECES_MOVE(PIECES_MOVE.RIGHT));
       break;
 
     case keyDown:
       event.preventDefault();
-      dispatch(movePiece(PIECES_MOVE.DOWN));
+      dispatch(PIECES_MOVE(PIECES_MOVE.DOWN));
       break;
 
     case keySpace:
       event.preventDefault();
-      dispatch(movePiece(PIECES_MOVE.DROP));
+      dispatch(PIECES_MOVE(PIECES_MOVE.DROP));
       break;
 
     case keyEnter:
       event.preventDefault();
-      dispatch(sendStartGame());
+      dispatch(SEND_START_GAME());
       break;
 
     case keyS:
       event.preventDefault();
-      dispatch(movePiece(PIECES_MOVE.SWITCH));
+      dispatch(PIECES_MOVE(PIECES_MOVE.SWITCH));
       break;
 
     case keyC:
       event.preventDefault();
-      dispatch(movePiece(PIECES_MOVE.SWITCH));
+      dispatch(PIECES_MOVE(PIECES_MOVE.SWITCH));
       break;
   }
 };

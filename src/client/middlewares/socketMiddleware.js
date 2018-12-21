@@ -4,10 +4,10 @@ import {
 } from "../util/socket-handler";
 import {logger_middleware} from "../util/logger-handler";
 import {
-  updateEmiteCompleteLine,
-  updateEmiteJoinRoom,
-  updateEmiteLoose,
-  updateEmiteUpdateGrid, updateSocketIsConnect
+  UPDATE_EMITE_COMPLETE_LINE,
+  UPDATE_EMITE_JOIN_ROOM,
+  UPDATE_EMITE_LOOSE,
+  UPDATE_EMITE_UPDATE_GRID, UPDATE_SOCKET_IS_CONNECT
 } from "../actions/action-creators";
 import {socketEmit, socketIsConnect} from "../util/socket";
 
@@ -50,7 +50,7 @@ const nextLooseHandler = (state, next, emit) => {
     logger_middleware(["EmitLoose"]);
 
     emitPlayerLoose(state.roomName, state.playerName, emit);
-    next(updateEmiteLoose(false))
+    next(UPDATE_EMITE_LOOSE(false))
   }
 };
 
@@ -59,7 +59,7 @@ const nextJoinRoomHandler = (state, next, emit) => {
     logger_middleware(["EmitJoinRoom"]);
 
     emitJoinRoom(state.roomName, state.playerName, emit);
-    next(updateEmiteJoinRoom(false))
+    next(UPDATE_EMITE_JOIN_ROOM(false))
   }
 };
 
@@ -73,7 +73,7 @@ const nextUpdateGridHandler = (state, next, emit) => {
       state.playerStates.find(e => e.playerName === state.playerName).grid,
       emit
     );
-    next(updateEmiteUpdateGrid(false))
+    next(UPDATE_EMITE_UPDATE_GRID(false))
   }
 };
 
@@ -81,13 +81,13 @@ const nextCompleteLineHandler = (state, next, emit) => {
   if (state.EmitCompleteLine > 0) {
     emitPlayerCompleteLine(state.roomName, state.playerName, state.EmitCompleteLine, emit);
 
-    next(updateEmiteCompleteLine(0))
+    next(UPDATE_EMITE_COMPLETE_LINE(0))
   }
 };
 
 const nextSocketIsConnect = (state, next, socketIsConnect) => {
   if (socketIsConnect() !== state.socketIsConnect) {
-    next(updateSocketIsConnect(socketIsConnect()))
+    next(UPDATE_SOCKET_IS_CONNECT(socketIsConnect()))
   }
 };
 

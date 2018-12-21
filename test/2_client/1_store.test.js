@@ -1,7 +1,7 @@
 import {store} from "../../src/client/middlewares/store";
 import {
-  addError, addPiecesFlow, connectionResponse, movePiece, sendStartGame,
-  toggleGroundResizer, toggleAddWallLine, emitQuitGame, updateRoomPlayerName
+  ADD_ERROR, ADD_PIECES_FLOW, CONNECTION_RESPONSE, PIECES_MOVE, SEND_START_GAME,
+  TOGGLE_GROUND_RESIZER, TOGGLE_ADD_WALL_LINE, EMIT_QUIT_GAME, UPDATE_ROOM_PLAYER_NAME
 } from "../../src/client/actions/action-creators";
 import {PIECES_MOVE} from "../../src/common/pieces";
 import {eventHandler} from "../../src/client/util/event-handler";
@@ -12,24 +12,24 @@ describe('store test', () => {
       type: "TEST",
       message: "TEST_MESSAGE"
     };
-    store.dispatch(addError(er));
+    store.dispatch(ADD_ERROR(er));
   });
   it('dispatch toggle AddWallLine GroundResizer', () => {
-    store.dispatch(toggleAddWallLine());
-    store.dispatch(toggleGroundResizer());
+    store.dispatch(TOGGLE_ADD_WALL_LINE());
+    store.dispatch(TOGGLE_GROUND_RESIZER());
   });
   it('dispatch connectionResponse', () => {
-    store.dispatch(connectionResponse());
-    store.dispatch(emitQuitGame());
-    store.dispatch(connectionResponse());
+    store.dispatch(CONNECTION_RESPONSE());
+    store.dispatch(EMIT_QUIT_GAME());
+    store.dispatch(CONNECTION_RESPONSE());
   });
   it('dispatch connectionResponse', () => {
-    store.dispatch(connectionResponse());
-    store.dispatch(emitQuitGame());
-    store.dispatch(connectionResponse());
+    store.dispatch(CONNECTION_RESPONSE());
+    store.dispatch(EMIT_QUIT_GAME());
+    store.dispatch(CONNECTION_RESPONSE());
   });
   it('dispatch sendStartGame', () => {
-    store.dispatch(sendStartGame());
+    store.dispatch(SEND_START_GAME());
   });
   it('dispatch eventHandler no Name', () => {
     const event = {
@@ -39,13 +39,13 @@ describe('store test', () => {
     eventHandler(event);
   });
   it('dispatch updateRoomPlayerName', () => {
-    store.dispatch(updateRoomPlayerName("roomName", "playerName"));
+    store.dispatch(UPDATE_ROOM_PLAYER_NAME("roomName", "playerName"));
   });
   it('dispatch sendStartGame', () => {
-    store.dispatch(sendStartGame());
+    store.dispatch(SEND_START_GAME());
   });
   it('dispatch no flow', () => {
-    store.dispatch(movePiece(PIECES_MOVE.DOWN));
+    store.dispatch(PIECES_MOVE(PIECES_MOVE.DOWN));
   });
   it('dispatch add Flow', () => {
     const pieces = [
@@ -75,7 +75,7 @@ describe('store test', () => {
         pos: {x: 5, y: 10}
       },
     ];
-    store.dispatch(addPiecesFlow(pieces));
+    store.dispatch(ADD_PIECES_FLOW(pieces));
   });
   it('dispatch eventHandler with Name', () => {
     const event = {
@@ -101,18 +101,18 @@ describe('store test', () => {
     eventHandler(event);
   });
   it('dispatch move', () => {
-    store.dispatch(movePiece(PIECES_MOVE.ROT_LEFT));
+    store.dispatch(PIECES_MOVE(PIECES_MOVE.ROT_LEFT));
     for (let i = 0; i < 15; i++) {
-      store.dispatch(movePiece(PIECES_MOVE.LEFT));
+      store.dispatch(PIECES_MOVE(PIECES_MOVE.LEFT));
     }
     for (let i = 0; i < 15; i++) {
-      store.dispatch(movePiece(PIECES_MOVE.RIGHT));
+      store.dispatch(PIECES_MOVE(PIECES_MOVE.RIGHT));
     }
-    store.dispatch(movePiece(PIECES_MOVE.SWITCH));
+    store.dispatch(PIECES_MOVE(PIECES_MOVE.SWITCH));
   });
   it('middleware', () => {
     store.getState().EmitLoose = true;
     store.getState().EmitCompleteLine = true;
-    store.dispatch(movePiece(PIECES_MOVE.SWITCH));
+    store.dispatch(PIECES_MOVE(PIECES_MOVE.SWITCH));
   });
 });

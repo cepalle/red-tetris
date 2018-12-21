@@ -11,7 +11,7 @@ import {GRID_HEIGHT} from "../../common/grid";
  * @param {Array<player>} players
  */
 const reducerUpdatePlayers = (state, {players}) => {
-  logger_reducer(["updatePlayers"]);
+  logger_reducer(["UPDATE_PLAYERS"]);
 
   if (!players.some(e => e.master) ||
     !players.some(e => e.playerName === state.playerName)) {
@@ -41,7 +41,7 @@ const reducerUpdatePlayers = (state, {players}) => {
  * @param {Object} move
  */
 const reducerMovePiece = (state, {move}) => {
-  logger_reducer(["movePiece"]);
+  logger_reducer(["PIECES_MOVE"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (!player ||
@@ -92,7 +92,7 @@ const reducerMovePiece = (state, {move}) => {
  * @param {Params} params
  */
 const reducerStartGame = (state, {pieces, params}) => {
-  logger_reducer(["startGame"]);
+  logger_reducer(["RECV_START_GAME"]);
 
   let newGridHeight = GRID_HEIGHT;
   if (params.groundResizer) {
@@ -116,7 +116,7 @@ const reducerStartGame = (state, {pieces, params}) => {
  * @param {int} amount
  */
 const reducerAddWallLine = (state, {amount}) => {
-  logger_reducer(["addWallLine"]);
+  logger_reducer(["ADD_WALL_LINE"]);
 
   if (state.piecesFlow.length < 1
     || !state.animate
@@ -149,7 +149,7 @@ const reducerAddWallLine = (state, {amount}) => {
  * @param {string} playerName
  */
 const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
-  logger_reducer(["updateRoomPlayerName"]);
+  logger_reducer(["UPDATE_ROOM_PLAYER_NAME"]);
 
   if (!roomName || !playerName) {
     return state;

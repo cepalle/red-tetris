@@ -1,8 +1,8 @@
 import React from "react";
 import {connect} from 'react-redux';
 import {
-  emitQuitGame, sendStartGame, toggleAddWallLine, toggleGroundResizer,
-  updateRoomPlayerName
+  EMIT_QUIT_GAME, SEND_START_GAME, TOGGLE_ADD_WALL_LINE, TOGGLE_GROUND_RESIZER,
+  UPDATE_ROOM_PLAYER_NAME
 } from "../actions/action-creators";
 import mp3 from "../assets/Original_Tetris_theme.mp3";
 
@@ -19,12 +19,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onClickButton: () => dispatch(sendStartGame()),
-    onChangeGroundResizer: () => dispatch(toggleGroundResizer()),
-    onChangeAddWallLine: () => dispatch(toggleAddWallLine()),
+    onClickButton: () => dispatch(SEND_START_GAME()),
+    onChangeGroundResizer: () => dispatch(TOGGLE_GROUND_RESIZER()),
+    onChangeAddWallLine: () => dispatch(TOGGLE_ADD_WALL_LINE()),
     onClickHome: () => {
-      dispatch(emitQuitGame());
-      dispatch(updateRoomPlayerName("", ""));
+      dispatch(EMIT_QUIT_GAME());
+      dispatch(UPDATE_ROOM_PLAYER_NAME("", ""));
       window.location.href = "";
     }
   };
