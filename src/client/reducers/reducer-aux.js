@@ -4,29 +4,6 @@ import {initPlayerState} from "./reducer";
 import {asLoose, ifWinSet} from "../util/loose-win-handler";
 import {GRID_HEIGHT} from "../../common/grid";
 
-/**
- * Add pieces to the getState.piecesFlow.
- * @param {Object} state
- * @param {Array<int>} pieces
- */
-const reducerPiecesFlow = (state, {pieces}) => {
-  logger_reducer(["piecesFlow"]);
-
-  return Object.assign({}, state, {
-    piecesFlow: state.piecesFlow.concat(pieces)
-  });
-};
-
-/**
- * Set error to getState.error.
- * @param {Object} state
- * @param {type, message} error
- */
-const reducerError = (state, {error}) => {
-  logger_reducer(["error"]);
-
-  return Object.assign({}, state, {error: error});
-};
 
 /**
  * Synchronize players with players.
@@ -41,19 +18,20 @@ const reducerUpdatePlayers = (state, {players}) => {
     return state;
   }
 
-  let filterNotInPlayers = state.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
-  let concatNewUsers = filterNotInPlayers.concat(
+  const filterNotInPlayers = state.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
+  const concatNewUsers = filterNotInPlayers.concat(
     players.filter(el => !filterNotInPlayers.some(e => e.playerName === el.playerName)).map(el =>
       initPlayerState(el.playerName, el.master, state.gridHeight)
     )
   );
 
-  const newState = Object.assign({}, state, {
-    playerStates: concatNewUsers.map(playerState => {
-      const player = players.find(e => e.playerName === playerState.playerName);
-      return Object.assign(playerState, player);
-    }),
-  });
+  const newState = {
+    ...state,
+    playerStates: concatNewUsers.map(playerState => ({
+      ...playerState,
+      player: players.find(e => e.playerName === playerState.playerName)
+    })),
+  };
   return ifWinSet(newState);
 };
 
@@ -80,54 +58,31 @@ const reducerMovePiece = (state, {move}) => {
   [needNext, newPiecesFlow] = updatePiecePos(player.grid, state.piecesFlow, move);
 
   if (needNext) {
-    let newGrid = placePiece(player.grid, newPiecesFlow[0]);
+    const newGrid = placePiece(player.grid, newPiecesFlow[0]);
     newPiecesFlow.shift();
 
-    let nbLineDel;
-    [newGrid, nbLineDel] = gridDelLine(newGrid);
+    const [newGrid2, nbLineDel] = gridDelLine(newGrid);
 
-    const loose = asLoose(newGrid);
+    const loose = asLoose(newGrid2);
 
-    const newState = Object.assign({}, state, {
+    const newState = {
+      ...state,
       piecesFlow: newPiecesFlow,
-      playerStates: state.playerStates.map(el => {
-        if (el.playerName === state.playerName) {
-          return Object.assign({}, el, {
-            grid: newGrid,
-            loose: loose
-          });
-        }
-        return el;
-      }),
+      playerStates: state.playerStates.map(el => (el.playerName === state.playerName) ?
+        {...el, grid: newGrid2, loose: loose} : el
+      ),
       animate: state.animate && !loose,
       EmitLoose: loose,
       EmitUpdateGrid: true,
       EmitCompleteLine: nbLineDel,
-    });
+    };
 
     return ifWinSet(newState);
   }
-  return Object.assign({}, state, {
+  return {
+    ...state,
     piecesFlow: newPiecesFlow,
-  });
-};
-
-/**
- * Update the grid of the player that as change.
- * @param {Object} state
- * @param {grid, playerName}
- */
-const reducerUpdateGrid = (state, {grid, playerName}) => {
-  logger_reducer(["updateGrid"]);
-
-  return Object.assign({}, state, {
-    playerStates: state.playerStates.map(el => {
-      if (el.playerName === playerName) {
-        return Object.assign({}, el, {grid: grid});
-      }
-      return el;
-    })
-  });
+  };
 };
 
 /**
@@ -143,7 +98,8 @@ const reducerStartGame = (state, {pieces, params}) => {
   if (params.groundResizer) {
     newGridHeight += (state.playerStates.length - 1) * 2;
   }
-  return Object.assign({}, state, {
+  return {
+    ...state,
     piecesFlow: pieces,
     params: params,
     gridHeight: newGridHeight,
@@ -151,7 +107,7 @@ const reducerStartGame = (state, {pieces, params}) => {
       initPlayerState(playerState.playerName, playerState.master, newGridHeight)
     ),
     animate: true,
-  });
+  };
 };
 
 /**
@@ -173,20 +129,15 @@ const reducerAddWallLine = (state, {amount}) => {
   const newGrid = gridAddWall(player.grid, amount);
   const loose = asLoose(newGrid);
 
-  const newState = Object.assign({}, state, {
-    playerStates: state.playerStates.map(el => {
-      if (el.playerName === state.playerName) {
-        return Object.assign({}, el, {
-          grid: newGrid,
-          loose: loose
-        });
-      }
-      return el;
-    }),
+  const newState = {
+    ...state,
+    playerStates: state.playerStates.map(el => (el.playerName === state.playerName) ?
+      {...el, grid: newGrid, loose: loose} : el
+    ),
     animate: state.animate && !loose,
     EmitLoose: loose,
     EmitUpdateGrid: true,
-  });
+  };
 
   return ifWinSet(newState);
 };
@@ -204,65 +155,19 @@ const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
     return state;
   }
 
-  return Object.assign({}, state, {
+  return {
+    ...state,
     playerStates: [initPlayerState(playerName)],
     roomName: roomName,
     playerName: playerName,
     EmitJoinRoom: true,
-  });
-};
-
-/**
- * Add a line unbreakable.
- * @param {Object} state
- * @param {games} games
- */
-const reducerUpdateGames = (state, {games}) => {
-  logger_reducer(["updateRoomPlayerName"]);
-
-  return Object.assign({}, state, {
-    games: games
-  });
-};
-
-/**
- * Toggle params.groundResizer.
- * @param {Object} state
- */
-const reducerToggleGroundResizer = state => {
-  logger_reducer(["reducerToggleGroundResizer"]);
-
-  return Object.assign({}, state, {
-    params: Object.assign({}, state.params, {
-      groundResizer: !state.params.groundResizer,
-    }),
-  });
-};
-
-/**
- * Toggle params.groundAddWallLine.
- * @param {Object} state
- */
-const reducerToggleAddWallLine = state => {
-  logger_reducer(["reducerToggleAddWallLine"]);
-
-  return Object.assign({}, state, {
-    params: Object.assign({}, state.params, {
-      addWallLine: !state.params.addWallLine,
-    }),
-  });
+  };
 };
 
 export {
-  reducerPiecesFlow,
   reducerAddWallLine,
-  reducerError,
   reducerMovePiece,
   reducerStartGame,
-  reducerUpdateGrid,
   reducerUpdatePlayers,
   reducerUpdateRoomPlayerName,
-  reducerUpdateGames,
-  reducerToggleGroundResizer,
-  reducerToggleAddWallLine,
 }

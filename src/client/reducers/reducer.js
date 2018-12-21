@@ -1,13 +1,9 @@
 import {
-  reducerPiecesFlow,
   reducerAddWallLine,
-  reducerError,
   reducerMovePiece,
   reducerStartGame,
-  reducerUpdateGrid,
   reducerUpdatePlayers,
   reducerUpdateRoomPlayerName,
-  reducerUpdateGames, reducerToggleGroundResizer, reducerToggleAddWallLine
 } from "./reducer-aux";
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
@@ -57,15 +53,25 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_PIECES_FLOW':
-      return reducerPiecesFlow(state, action);
+      return {
+        ...state,
+        piecesFlow: [...state.piecesFlow, action.pieces]
+      };
     case 'ADD_ERROR':
-      return reducerError(state, action);
+      return {...state, error: error};
     case 'UPDATE_PLAYERS':
       return reducerUpdatePlayers(state, action);
     case 'PIECES_MOVE':
       return reducerMovePiece(state, action);
     case 'UPDATE_GRID':
-      return reducerUpdateGrid(state, action);
+      return {
+        ...state,
+        playerStates: state.playerStates.map(el =>
+          (el.playerName === playerName) ?
+            {...el, grid: grid} :
+            el
+        )
+      };
     case 'RECV_START_GAME':
       return reducerStartGame(state, action);
     case 'ADD_WALL_LINE':
@@ -73,23 +79,38 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_ROOM_PLAYER_NAME':
       return reducerUpdateRoomPlayerName(state, action);
     case 'UPDATE_GAMES':
-      return reducerUpdateGames(state, action);
+      return {
+        ...state,
+        games: games
+      };
     case 'TOGGLE_ADD_WALL_LINE':
-      return reducerToggleAddWallLine(state);
+      return {
+        ...state,
+        params: {
+          ...state.params,
+          addWallLine: !state.params.addWallLine,
+        },
+      };
     case 'TOGGLE_GROUND_RESIZER':
-      return reducerToggleGroundResizer(state);
+      return {
+        ...state,
+        params: {
+          ...state.params,
+          groundResizer: !state.params.groundResizer,
+        },
+      };
     case 'UPDATE_EMITE_LOOSE':
-      return Object.assign({}, state, {EmitLoose: action.bool});
+      return {...state, EmitLoose: action.bool};
     case 'UPDATE_EMITE_JOIN_ROOM':
-      return Object.assign({}, state, {EmitJoinRoom: action.bool});
+      return {...state, EmitJoinRoom: action.bool};
     case 'UPDATE_EMITE_UPDATE_GRID':
-      return Object.assign({}, state, {EmitUpdateGrid: action.bool});
+      return {...state, EmitUpdateGrid: action.bool};
     case 'UPDATE_EMITE_COMPLETE_LINE':
-      return Object.assign({}, state, {EmitCompleteLine: action.nb});
+      return {...state, EmitCompleteLine: action.bool};
     case 'CLEAN_ERROR':
-      return Object.assign({}, state, {error: {}});
+      return {...state, error: {}};
     case 'UPDATE_SOCKET_IS_CONNECT':
-      return Object.assign({}, state, {socketIsConnect: action.bool});
+      return {...state, socketIsConnect: action.bool};
     default:
       return state;
   }
