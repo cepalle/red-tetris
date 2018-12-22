@@ -228,52 +228,47 @@ const updatePiecePos = (grid: number[][], Flow: IPiece[], move: PIECES_MOVE): { 
   return updatePieceSwitch(grid, Flow);
 };
 
-const gridDelLine = (grid: number[][]) => {
+const gridDelLine = (grid: number[][]): { grid: number[][], nbLineToSend: number } => {
 
-  let nbWall = 0;
-  let lineToDel = [];
-  let newGrid = grid.map(l => l.map(e => e));
+  let nbToSend = 0;
 
-  newGrid.forEach((line, i) => {
-    let asEmpty = false;
-    let asWall = false;
-    line.forEach(el => {
-      if (el === PIECES_NUM.empty) {
-        asEmpty = true;
-      }
-      if (el === PIECES_NUM.wall_malus) {
-        asWall = true;
-      }
-    });
+  let newGrid = grid.map((line, y) => {
+    const asEmpty = line.some((el) => el === PIECES_NUM.empty);
+    const asWall = line.some((el) => el === PIECES_NUM.wall);
+
     if (!asEmpty) {
-      lineToDel.push(i);
-      if (asWall) {
-        nbWall++;
+      if (!asWall) {
+        nbToSend++;
       }
+      return undefined;
     }
-  });
+    return line;
+  }).filter((el) => el !== undefined);
 
-  newGrid = newGrid.filter((line, i) => !lineToDel.includes(i));
   while (newGrid.length < grid.length) {
     newGrid = [Array(GRID_WIDTH).fill(PIECES_NUM.empty), ...newGrid];
   }
 
-  return [newGrid, lineToDel.length - nbWall];
+  return {
+    grid: newGrid,
+    nbLineToSend: nbToSend
+  };
 };
 
-const gridAddWall = (grid, amount) => {
+const gridAddWall = (grid: number[][], amount: number): number[][] => {
   const pos_x = Math.floor(Math.random() * GRID_WIDTH);
-  const newGrid = grid.map(l => l.map(e => e));
 
+  const toAdd = Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus);
+  toAdd[pos_x] = PIECES_NUM.empty;
+
+  let newGrid = grid;
   for (let i = 0; i < amount; i++) {
-    newGrid.push(Array(GRID_WIDTH).fill(PIECES_NUM.wall_malus));
+    newGrid = [...grid, toAdd];
     newGrid.shift();
-    newGrid[newGrid.length - 1][pos_x] = PIECES_NUM.empty;
   }
 
   return newGrid;
 };
-
 
 export {
   hasCollision,
