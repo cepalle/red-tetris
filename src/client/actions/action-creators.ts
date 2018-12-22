@@ -154,10 +154,10 @@ const UPDATE_ROOM_PLAYER_NAME = (roomName: string, playerName: string): IUpdateR
 
 interface IUpdateGame extends IAction {
   readonly type: EnumAction.UPDATE_GAMES,
-  readonly games: IGame
+  readonly games: IGame[]
 }
 
-const UPDATE_GAMES = (games: IGame): IUpdateGame => {
+const UPDATE_GAMES = (games: IGame[]): IUpdateGame => {
   return {
     type: EnumAction.UPDATE_GAMES,
     games: games,

@@ -59,7 +59,7 @@ interface IState {
   readonly EmitCompleteLine: number,
   readonly games: IGame[],
   readonly params: IParams,
-  readonly gridHeight: boolean,
+  readonly gridHeight: number,
   readonly socketIsConnect: boolean
 }
 
@@ -108,7 +108,7 @@ const reducer = (state = initialState, action: ReducerAction): IState => {
     case EnumAction.ADD_PIECES_FLOW:
       return {
         ...state,
-        piecesFlow: [...state.piecesFlow, action.pieces]
+        piecesFlow: [...state.piecesFlow, ...action.pieces]
       };
     case EnumAction.ADD_ERROR:
       return {...state, error: action.error};
@@ -159,7 +159,7 @@ const reducer = (state = initialState, action: ReducerAction): IState => {
     case EnumAction.UPDATE_EMITE_UPDATE_GRID:
       return {...state, EmitUpdateGrid: action.bool};
     case EnumAction.UPDATE_EMITE_COMPLETE_LINE:
-      return {...state, EmitCompleteLine: action.bool};
+      return {...state, EmitCompleteLine: action.nb};
     case EnumAction.CLEAN_ERROR:
       return {...state, error: {}};
     case EnumAction.UPDATE_SOCKET_IS_CONNECT:
