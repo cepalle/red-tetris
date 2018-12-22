@@ -1,6 +1,5 @@
 import {GRID_WIDTH} from "../../common/grid";
 import {getPiece, PIECES_NUM} from "../../common/pieces";
-import {clonePiece} from "./clone-handler"
 import {IPiece, IPos} from "../reducers/reducer";
 
 enum COLLISION_TYPE {
@@ -102,7 +101,7 @@ const movePose = (pos: IPos, move: PIECES_MOVE): IPos => {
   }
 };
 
-const newRot = (rot, move) => {
+const moveRot = (rot: number, move: PIECES_MOVE): number => {
   if (move === PIECES_MOVE.ROT_RIGHT) {
     return (rot + 1) % 4;
   }
@@ -112,96 +111,124 @@ const newRot = (rot, move) => {
   return rot;
 };
 
-const updatePieceSwitch = (grid, Flow) => {
-  const newFlow = Flow.map(p => clonePiece(p));
+const updatePieceSwitch = (grid: number[][], flow: IPiece[]): { bool: boolean, flow: IPiece[] } => {
+  if (flow.length < 2) {
+    return {bool: false, flow}
+  }
 
-  let tmp1 = clonePiece(Flow[0]);
-  let tmp2 = clonePiece(Flow[1]);
-  tmp1.pos = Flow[1].pos;
-  tmp2.pos = Flow[0].pos;
-  tmp1 = moveCollision(tmp1, grid);
-  tmp2 = moveCollision(tmp2, grid);
+  const [p1, p2, ...rest] = flow;
 
-  newFlow[0] = tmp2;
-  newFlow[1] = tmp1;
-  return [false, newFlow];
+  const newP1 = moveCollision({...p1, pos: p2.pos}, grid);
+  const newP2 = moveCollision({...p2, pos: p1.pos}, grid);
+
+  return {bool: false, flow: [newP2, newP1, ...rest]};
 };
 
-const updatePieceRot = (grid, Flow, move) => {
-  const newFlow = Flow.map(p => clonePiece(p));
+const updatePieceRot = (grid: number[][], flow: IPiece[], move: PIECES_MOVE): { bool: boolean, flow: IPiece[] } => {
+  if (flow.length < 1) {
+    return {bool: false, flow}
+  }
 
-  const newPiece = {
-    num: Flow[0].num,
-    rot: newRot(Flow[0].rot, move),
-    pos: movePose(Flow[0].pos, move)
-  };
+  const [first, ...rest] = flow;
 
-  newFlow[0] = moveCollision(newPiece, grid);
-  return [false, newFlow];
+  const newPiece: IPiece = moveCollision({
+    ...first,
+    rot: moveRot(first.rot, move),
+    pos: movePose(first.pos, move)
+  }, grid);
+
+  return {bool: false, flow: [newPiece, ...rest]};
 };
 
-const moveCollision = (piece, grid) => {
+// Can block ?
+const moveCollision = (piece: IPiece, grid: number[][]): IPiece => {
+  const newPieceDescr = getPiece(piece.num, piece.rot);
 
-  const newPiece = clonePiece(piece);
-  const newPieceDescr = getPiece(newPiece.num, newPiece.rot);
+  let collisionType = hasCollision(grid, newPieceDescr, piece.pos);
 
-  let collisionType = hasCollision(grid, newPieceDescr, newPiece.pos);
-
+  let newPiece = piece;
   while (collisionType && collisionType !== COLLISION_TYPE.WALL_TOP) {
-    if (collisionType === COLLISION_TYPE.WALL_LEFT) {
-      newPiece.pos.x++;
-    } else if (collisionType === COLLISION_TYPE.WALL_RIGHT) {
-      newPiece.pos.x--;
-    } else {
-      newPiece.pos.y--;
-    }
+    newPiece = {
+      ...newPiece,
+      pos: {
+        ...newPiece.pos,
+        ...(
+          collisionType === COLLISION_TYPE.WALL_LEFT ?
+            {x: newPiece.pos.x + 1} :
+            collisionType === COLLISION_TYPE.WALL_RIGHT ?
+              {x: newPiece.pos.x - 1} :
+              {y: newPiece.pos.y - 1}
+        )
+      }
+    };
     collisionType = hasCollision(grid, newPieceDescr, newPiece.pos);
   }
   return newPiece;
 };
 
-const updatePiecePos = (grid, Flow, move) => {
-  const newFlow = Flow.map(p => clonePiece(p));
+const updatePiecePos = (grid: number[][], Flow: IPiece[], move: PIECES_MOVE): { bool: boolean, flow: IPiece[] } => {
+
+  const [cur, ...rest] = Flow;
 
   if (move === PIECES_MOVE.ROT_LEFT || move === PIECES_MOVE.ROT_RIGHT) {
     return updatePieceRot(grid, Flow, move);
-  } else if (move === PIECES_MOVE.DROP) {
-    const newPiece = clonePiece(Flow[0]);
-    const newPieceDescr = getPiece(newPiece.num, newPiece.rot);
-    while (!hasCollision(grid, newPieceDescr, newPiece.pos)) {
-      newPiece.pos.y++;
+  }
+  if (move === PIECES_MOVE.DROP) {
+    const newPieceDescr = getPiece(cur.num, cur.rot);
+
+    let newCur = cur;
+    while (!hasCollision(grid, newPieceDescr, newCur.pos)) {
+      newCur = {
+        ...newCur,
+        pos: {
+          ...newCur.pos,
+          y: newCur.pos.y + 1
+        }
+      };
     }
-    newPiece.pos.y--;
-    newFlow[0] = newPiece;
-    return [true, newFlow];
-  } else if (move === PIECES_MOVE.RIGHT || move === PIECES_MOVE.LEFT) {
-    const newPiece = {
-      num: Flow[0].num,
-      rot: newRot(Flow[0].rot, move),
-      pos: movePose(Flow[0].pos, move)
+    newCur = {
+      ...newCur,
+      pos: {
+        ...newCur.pos,
+        y: newCur.pos.y - 1
+      }
     };
-    const newPieceDescr = getPiece(newPiece.num, newPiece.rot);
-    if (!hasCollision(grid, newPieceDescr, newPiece.pos)) {
-      newFlow[0] = newPiece;
-    }
-    return [false, newFlow];
-  } else if (move === PIECES_MOVE.DOWN) {
-    const newPiece = {
-      num: Flow[0].num,
-      rot: newRot(Flow[0].rot, move),
-      pos: movePose(Flow[0].pos, move)
+    return {bool: true, flow: [newCur, ...rest]}
+  }
+  if (move === PIECES_MOVE.RIGHT || move === PIECES_MOVE.LEFT) {
+    const newCur = {
+      ...cur,
+      pos: movePose(cur.pos, move)
     };
-    const newPieceDescr = getPiece(newPiece.num, newPiece.rot);
-    if (!hasCollision(grid, newPieceDescr, newPiece.pos)) {
-      newFlow[0] = newPiece;
-      return [false, newFlow];
+    const newPieceDescr = getPiece(newCur.num, newCur.rot);
+
+    return {
+      bool: false,
+      flow: (!hasCollision(grid, newPieceDescr, newCur.pos)) ? [newCur, ...rest] : Flow,
     }
-    return [true, newFlow];
+  }
+  if (move === PIECES_MOVE.DOWN) {
+    const newCur = {
+      ...cur,
+      pos: movePose(cur.pos, move)
+    };
+    const newPieceDescr = getPiece(newCur.num, newCur.rot);
+
+    if (!hasCollision(grid, newPieceDescr, newCur.pos)) {
+      return {
+        bool: false,
+        flow: [newCur, ...rest]
+      };
+    }
+    return {
+      bool: true,
+      flow: Flow
+    };
   }
   return updatePieceSwitch(grid, Flow);
 };
 
-const gridDelLine = grid => {
+const gridDelLine = (grid: number[][]) => {
 
   let nbWall = 0;
   let lineToDel = [];
