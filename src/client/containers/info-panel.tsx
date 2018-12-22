@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {connect} from 'react-redux';
 import {
   EMIT_QUIT_GAME, SEND_START_GAME, TOGGLE_ADD_WALL_LINE, TOGGLE_GROUND_RESIZER,

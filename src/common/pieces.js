@@ -1,22 +1,5 @@
 const PIECES = [1, 2, 3, 4, 5, 6, 7];
 
-const PIECES_NUM = {
-  empty: 0,
-  _1:1,
-  _2:2,
-  _3:3,
-  _4:4,
-  _5:5,
-  _6:6,
-  _7:7,
-  wall:8,
-  preview:9,
-  wall_malus:10,
-  wall_loose:11,
-  wall_win:12,
-  wall_spect:13,
-};
-
 const PIECES_DESCR = [
   [
     {

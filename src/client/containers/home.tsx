@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import connect from "react-redux/es/connect/connect";
 import {store} from "../middlewares/store";
 import {UPDATE_ROOM_PLAYER_NAME} from "../actions/action-creators";

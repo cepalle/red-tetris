@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {InfoPanel} from "../containers/info-panel";
 import {GridPlayer} from "../containers/grid-player";
 import {Opponents} from "../containers/opponents";

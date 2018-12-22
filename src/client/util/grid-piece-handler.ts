@@ -1,5 +1,5 @@
 import {GRID_WIDTH} from "../../common/grid";
-import {getPiece, PIECES_NUM} from "../../common/pieces";
+import {getPiece} from "../../common/pieces";
 import {IPiece, IPos} from "../reducers/reducer";
 
 enum COLLISION_TYPE {
@@ -18,6 +18,23 @@ enum ENUM_PIECES_MOVE {
   DOWN = "PIECES_MOVE_DOWN",
   DROP = "PIECES_DROP",
   SWITCH = "PIECE_SWITCH",
+}
+
+enum PIECES_NUM {
+  empty = 0,
+  n1 = 1,
+  n2 = 2,
+  n3 = 3,
+  n4 = 4,
+  n5 = 5,
+  n6 = 6,
+  n7 = 7,
+  wall,
+  preview,
+  wall_malus,
+  wall_loose,
+  wall_win,
+  wall_spect,
 }
 
 const PRIO_COLLISION = [
@@ -280,4 +297,5 @@ export {
   gridAddWall,
   placePiecePreview,
   ENUM_PIECES_MOVE,
+  PIECES_NUM,
 }
