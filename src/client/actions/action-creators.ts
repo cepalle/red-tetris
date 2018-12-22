@@ -249,12 +249,38 @@ const CLEAN_ERROR = (): ICleanError => {
   }
 };
 
-const UPDATE_SOCKET_IS_CONNECT = (bool) => {
+interface IUpdateSocketIsConnect extends IAction {
+  type: EnumAction.UPDATE_SOCKET_IS_CONNECT,
+  bool: boolean
+}
+
+const UPDATE_SOCKET_IS_CONNECT = (bool: boolean): IUpdateSocketIsConnect => {
   return {
-    type: 'UPDATE_SOCKET_IS_CONNECT',
+    type: EnumAction.UPDATE_SOCKET_IS_CONNECT,
     bool
   }
 };
+
+type ReducerAction = IUpdateEmiteJoinRoom
+  | IUpdateEmiteUpdateGrid
+  | IUpdateEmiteCompleteLine
+  | ICleanError
+  | IUpdateEmitLoose
+  | IToggleGroundResizer
+  | IToggleAddWallLine
+  | IEmitQuitGame
+  | IUpdateGame
+  | IUpdateRoomPlayerName
+  | ISendStartGame
+  | IConnectionResponse
+  | IAddWallLine
+  | IRecvStartGame
+  | IUpdateGrid
+  | IPiecesMove
+  | IUpadtePlayers
+  | IAddError
+  | IAddPiecesFlow
+  | IUpdateSocketIsConnect;
 
 export {
   ADD_PIECES_FLOW,
@@ -277,4 +303,26 @@ export {
   UPDATE_EMITE_COMPLETE_LINE,
   CLEAN_ERROR,
   UPDATE_SOCKET_IS_CONNECT,
+  IUpdateEmiteJoinRoom,
+  IUpdateEmiteUpdateGrid,
+  IUpdateEmiteCompleteLine,
+  ICleanError,
+  EnumAction,
+  IAction,
+  IUpdateEmitLoose,
+  IToggleGroundResizer,
+  IToggleAddWallLine,
+  IEmitQuitGame,
+  IUpdateGame,
+  IUpdateRoomPlayerName,
+  ISendStartGame,
+  IConnectionResponse,
+  IAddWallLine,
+  IRecvStartGame,
+  IUpdateGrid,
+  IPiecesMove,
+  IUpadtePlayers,
+  IAddError,
+  IAddPiecesFlow,
+  ReducerAction,
 };

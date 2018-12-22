@@ -8,6 +8,7 @@ import {
 import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
 import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
 import {PIECES_NUM} from "../../common/pieces";
+import {EnumAction, ReducerAction} from "../actions/action-creators";
 
 
 interface IPlayerState {
@@ -34,29 +35,41 @@ const initPlayerState = (playerName: string, master = false, gridHeight = GRID_H
   }
 };
 
+interface IPiece {
 
+}
+
+interface IError {
+
+}
+
+interface IGame {
+
+}
+
+interface IParams {
+  addWallLine: boolean,
+  groundResizer: boolean,
+}
 
 interface IState {
   playerStates: IPlayerState[],
-  piecesFlow: [],
-  error: {},
-  playerName: urlGetPlayerName(window),
-  roomName: urlGetRoomName(window),
-  animate: false,
-  EmitLoose: false,
-  EmitUpdateGrid: false,
-  EmitJoinRoom: false,
-  EmitCompleteLine: 0,
-  games: [],
-  params: {
-    addWallLine: true,
-    groundResizer: true,
-  },
-  gridHeight: GRID_HEIGHT,
-  socketIsConnect: false
+  piecesFlow: IPiece[],
+  error: IError,
+  playerName: string,
+  roomName: string,
+  animate: boolean,
+  EmitLoose: boolean,
+  EmitUpdateGrid: boolean,
+  EmitJoinRoom: boolean,
+  EmitCompleteLine: number,
+  games: IGame[],
+  params: IParams,
+  gridHeight: boolean,
+  socketIsConnect: boolean
 }
 
-const initialState = {
+const initialState: IState = {
   playerStates: [initPlayerState(urlGetPlayerName(window))],
   piecesFlow: [],
   error: {},
@@ -83,20 +96,20 @@ const initialState = {
 //
 //----------------------------------------------------------------------------
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: ReducerAction): IState => {
   switch (action.type) {
-    case 'ADD_PIECES_FLOW':
+    case EnumAction.ADD_PIECES_FLOW:
       return {
         ...state,
         piecesFlow: [...state.piecesFlow, action.pieces]
       };
-    case 'ADD_ERROR':
-      return {...state, error: error};
-    case 'UPDATE_PLAYERS':
+    case EnumAction.ADD_ERROR:
+      return {...state, error: action.error};
+    case EnumAction.UPDATE_PLAYERS:
       return reducerUpdatePlayers(state, action);
-    case 'PIECES_MOVE':
+    case EnumAction.PIECES_MOVE:
       return reducerMovePiece(state, action);
-    case 'UPDATE_GRID':
+    case EnumAction.UPDATE_GRID:
       return {
         ...state,
         playerStates: state.playerStates.map(el =>
@@ -105,18 +118,18 @@ const reducer = (state = initialState, action) => {
             el
         )
       };
-    case 'RECV_START_GAME':
+    case EnumAction.RECV_START_GAME:
       return reducerStartGame(state, action);
-    case 'ADD_WALL_LINE':
+    case EnumAction.ADD_WALL_LINE:
       return reducerAddWallLine(state, action);
-    case 'UPDATE_ROOM_PLAYER_NAME':
+    case EnumAction.UPDATE_ROOM_PLAYER_NAME:
       return reducerUpdateRoomPlayerName(state, action);
-    case 'UPDATE_GAMES':
+    case EnumAction.UPDATE_GAMES:
       return {
         ...state,
         games: action.games
       };
-    case 'TOGGLE_ADD_WALL_LINE':
+    case EnumAction.TOGGLE_ADD_WALL_LINE:
       return {
         ...state,
         params: {
@@ -124,7 +137,7 @@ const reducer = (state = initialState, action) => {
           addWallLine: !state.params.addWallLine,
         },
       };
-    case 'TOGGLE_GROUND_RESIZER':
+    case EnumAction.TOGGLE_GROUND_RESIZER:
       return {
         ...state,
         params: {
@@ -132,17 +145,17 @@ const reducer = (state = initialState, action) => {
           groundResizer: !state.params.groundResizer,
         },
       };
-    case 'UPDATE_EMITE_LOOSE':
+    case EnumAction.UPDATE_EMITE_LOOSE:
       return {...state, EmitLoose: action.bool};
-    case 'UPDATE_EMITE_JOIN_ROOM':
+    case EnumAction.UPDATE_EMITE_JOIN_ROOM:
       return {...state, EmitJoinRoom: action.bool};
-    case 'UPDATE_EMITE_UPDATE_GRID':
+    case EnumAction.UPDATE_EMITE_UPDATE_GRID:
       return {...state, EmitUpdateGrid: action.bool};
-    case 'UPDATE_EMITE_COMPLETE_LINE':
+    case EnumAction.UPDATE_EMITE_COMPLETE_LINE:
       return {...state, EmitCompleteLine: action.bool};
-    case 'CLEAN_ERROR':
+    case EnumAction.CLEAN_ERROR:
       return {...state, error: {}};
-    case 'UPDATE_SOCKET_IS_CONNECT':
+    case EnumAction.UPDATE_SOCKET_IS_CONNECT:
       return {...state, socketIsConnect: action.bool};
     default:
       return state;
