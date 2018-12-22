@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {
-  EMIT_QUIT_GAME, ReducerAction, SEND_START_GAME, TOGGLE_ADD_WALL_LINE, TOGGLE_GROUND_RESIZER,
+  EMIT_QUIT_GAME, ReduxAction, SEND_START_GAME, TOGGLE_ADD_WALL_LINE, TOGGLE_GROUND_RESIZER,
   UPDATE_ROOM_PLAYER_NAME,
 } from '../actions/action-creators';
 import mp3 from '../assets/Original_Tetris_theme.mp3';
@@ -20,7 +20,7 @@ const mapStateToProps = (state: IState) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ReducerAction>) => {
+const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
   return {
     onClickButton: () => dispatch(SEND_START_GAME()),
     onChangeGroundResizer: () => dispatch(TOGGLE_GROUND_RESIZER()),

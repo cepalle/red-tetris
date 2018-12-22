@@ -1,6 +1,6 @@
-import io from "socket.io-client";
-import socketDefs from "../../common/socket-definitions";
-import {store} from "../middlewares/store";
+import io from 'socket.io-client';
+import socketDefs from '../../common/socket-definitions';
+import {store} from '../middlewares/store';
 import {
   cbConnectionResponse, cbGenFlowResponse, cbHomeResponse,
   cbJoinRoomResponse,
@@ -15,8 +15,8 @@ import {
   cbPlayerLooseResponse,
   cbQuitRoomResponse,
   cbStartPlayingResponse,
-  cbTetrisPlacePieceResponse
-} from "./socket-handler";
+  cbTetrisPlacePieceResponse,
+} from './socket-handler';
 
 const socket = io.connect('http://localhost:4433');
 const socketEmit = (ev, ag) => socket.emit(ev, ag);

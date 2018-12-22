@@ -8,10 +8,10 @@ import {
   emitStartPlaying,
   emitTetrisPlacePiece,
 } from '../util/socket-handler';
-import {logger_middleware} from '../util/logger-handler';
+import {loggerMiddleware} from '../util/logger-handler';
 import {
   EnumAction,
-  ReducerAction,
+  ReduxAction,
   UPDATE_EMITE_COMPLETE_LINE,
   UPDATE_EMITE_JOIN_ROOM,
   UPDATE_EMITE_LOOSE,
@@ -23,7 +23,7 @@ import {Dispatch, Store} from 'redux';
 import {IState} from '@src/client/reducers/reducer';
 
 const connectionResponseHandler = (state: IState, emit) => {
-  logger_middleware(['CONNECTION_RESPONSE']);
+  loggerMiddleware(['CONNECTION_RESPONSE']);
 
   if (state.roomName && state.playerName) {
     emitJoinRoom(state.roomName, state.playerName, emit);
@@ -33,7 +33,7 @@ const connectionResponseHandler = (state: IState, emit) => {
 };
 
 const sendStartGameHandler = (state: IState, emit) => {
-  logger_middleware(['SEND_START_GAME']);
+  loggerMiddleware(['SEND_START_GAME']);
 
   if (!state.animate && state.roomName && state.playerName) {
     emitStartPlaying(state.roomName, state.params, emit);
@@ -41,42 +41,42 @@ const sendStartGameHandler = (state: IState, emit) => {
 };
 
 const emitQuitGameHandler = (state: IState, emit) => {
-  logger_middleware(['EMIT_QUIT_GAME']);
+  loggerMiddleware(['EMIT_QUIT_GAME']);
 
   if (state.roomName && state.playerName) {
     emitQuitGame(state.roomName, state.playerName, emit);
   }
 };
 
-const nextGenFlowHandler = (state: IState, next: Dispatch<ReducerAction>, emit) => {
+const nextGenFlowHandler = (state: IState, next: Dispatch<ReduxAction>, emit) => {
   if (state.piecesFlow.length < 8 && state.animate) {
-    logger_middleware(['emitGenFlow']);
+    loggerMiddleware(['emitGenFlow']);
 
     emitGenFlow(state.roomName, emit);
   }
 };
 
-const nextLooseHandler = (state: IState, next: Dispatch<ReducerAction>, emit) => {
+const nextLooseHandler = (state: IState, next: Dispatch<ReduxAction>, emit) => {
   if (state.EmitLoose) {
-    logger_middleware(['EmitLoose']);
+    loggerMiddleware(['EmitLoose']);
 
     emitPlayerLoose(state.roomName, state.playerName, emit);
     next(UPDATE_EMITE_LOOSE(false));
   }
 };
 
-const nextJoinRoomHandler = (state: IState, next: Dispatch<ReducerAction>, emit) => {
+const nextJoinRoomHandler = (state: IState, next: Dispatch<ReduxAction>, emit) => {
   if (state.EmitJoinRoom) {
-    logger_middleware(['EmitJoinRoom']);
+    loggerMiddleware(['EmitJoinRoom']);
 
     emitJoinRoom(state.roomName, state.playerName, emit);
     next(UPDATE_EMITE_JOIN_ROOM(false));
   }
 };
 
-const nextUpdateGridHandler = (state: IState, next: Dispatch<ReducerAction>, emit) => {
+const nextUpdateGridHandler = (state: IState, next: Dispatch<ReduxAction>, emit) => {
   if (state.EmitUpdateGrid) {
-    logger_middleware(['EmitUpdateGrid']);
+    loggerMiddleware(['EmitUpdateGrid']);
 
     emitTetrisPlacePiece(
       state.roomName,
@@ -88,7 +88,7 @@ const nextUpdateGridHandler = (state: IState, next: Dispatch<ReducerAction>, emi
   }
 };
 
-const nextCompleteLineHandler = (state: IState, next: Dispatch<ReducerAction>, emit) => {
+const nextCompleteLineHandler = (state: IState, next: Dispatch<ReduxAction>, emit) => {
   if (state.EmitCompleteLine > 0) {
     emitPlayerCompleteLine(state.roomName, state.playerName, state.EmitCompleteLine, emit);
 
@@ -96,13 +96,13 @@ const nextCompleteLineHandler = (state: IState, next: Dispatch<ReducerAction>, e
   }
 };
 
-const nextSocketIsConnect = (state: IState, next: Dispatch<ReducerAction>, socketIsConnect) => {
+const nextSocketIsConnect = (state: IState, next: Dispatch<ReduxAction>, socketIsConnect) => {
   if (socketIsConnect() !== state.socketIsConnect) {
     next(UPDATE_SOCKET_IS_CONNECT(socketIsConnect()));
   }
 };
 
-const socketMiddleware = (store: any) => (next: any) => (action: ReducerAction) => {
+const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) => {
   switch (action.type) {
     case EnumAction.CONNECTION_RESPONSE:
       connectionResponseHandler(store.getState(), socketEmit);

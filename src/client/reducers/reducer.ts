@@ -7,7 +7,7 @@ import {
 } from './reducer-aux';
 import {GRID_HEIGHT, GRID_WIDTH} from '../../common/grid';
 import {urlGetPlayerName, urlGetRoomName} from '../util/url-handler';
-import {EnumAction, ReducerAction} from '../actions/action-creators';
+import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {ENUM_PIECES} from '@src/client/util/grid-piece-handler';
 
 interface IPlayerState {
@@ -96,7 +96,7 @@ const initialState: IState = {
   socketIsConnect: false,
 };
 
-const reducer = (state = initialState, action: ReducerAction): IState => {
+const reducer = (state = initialState, action: ReduxAction): IState => {
   switch (action.type) {
     case EnumAction.ADD_PIECES_FLOW:
       return {

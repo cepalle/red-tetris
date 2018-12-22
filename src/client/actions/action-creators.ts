@@ -264,7 +264,7 @@ const UPDATE_SOCKET_IS_CONNECT = (bool: boolean): IUpdateSocketIsConnect => {
   };
 };
 
-type ReducerAction = IUpdateEmiteJoinRoom
+type ReduxAction = IUpdateEmiteJoinRoom
   | IUpdateEmiteUpdateGrid
   | IUpdateEmiteCompleteLine
   | ICleanError
@@ -328,5 +328,5 @@ export {
   IUpadtePlayers,
   IAddError,
   IAddPiecesFlow,
-  ReducerAction,
+  ReduxAction,
 };

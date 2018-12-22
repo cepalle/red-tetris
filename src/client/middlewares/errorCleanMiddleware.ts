@@ -1,9 +1,9 @@
-import {CLEAN_ERROR, ReducerAction} from '../actions/action-creators';
-import {logger_middleware} from '../util/logger-handler';
+import {CLEAN_ERROR, ReduxAction} from '../actions/action-creators';
+import {loggerMiddleware} from '../util/logger-handler';
 
-const errorCleanMiddleware = (store: any) => (next: any) => (action: ReducerAction) => {
+const errorCleanMiddleware = (store: any) => (next: any) => (action: ReduxAction) => {
   if (store.getState().error.type) {
-    logger_middleware(['CLEAN_ERROR']);
+    loggerMiddleware(['CLEAN_ERROR']);
     next(CLEAN_ERROR());
   }
   return next(action);

@@ -1,5 +1,5 @@
 import {gridAddWall, gridDelLine, updatePiecePos, placePiece} from '../util/grid-piece-handler';
-import {logger_reducer} from '../util/logger-handler';
+import {loggerReducer} from '../util/logger-handler';
 import {initPlayerState, IState} from './reducer';
 import {asLoose, ifWinSet} from '../util/loose-win-handler';
 import {GRID_HEIGHT} from '../../common/grid';
@@ -15,7 +15,7 @@ import {
  * Synchronize players with players.
  */
 const reducerUpdatePlayers = (state: IState, action: IUpadtePlayers) => {
-  logger_reducer(['UPDATE_PLAYERS']);
+  loggerReducer(['UPDATE_PLAYERS']);
 
   const {players} = action;
 
@@ -45,7 +45,7 @@ const reducerUpdatePlayers = (state: IState, action: IUpadtePlayers) => {
  * Update the grid with the move of the part.
  */
 const reducerMovePiece = (state: IState, action: IPiecesMove) => {
-  logger_reducer(['ENUM_PIECES_MOVE']);
+  loggerReducer(['ENUM_PIECES_MOVE']);
 
   const {move} = action;
 
@@ -93,7 +93,7 @@ const reducerMovePiece = (state: IState, action: IPiecesMove) => {
  * Restart grid of player and flow, set le pieces to the flow and start game.
  */
 const reducerStartGame = (state: IState, action: IRecvStartGame) => {
-  logger_reducer(['RECV_START_GAME']);
+  loggerReducer(['RECV_START_GAME']);
 
   const {pieces, params} = action;
 
@@ -116,8 +116,8 @@ const reducerStartGame = (state: IState, action: IRecvStartGame) => {
 /**
  * Add a line unbreakable.
  */
-const reducerAddWallLine = (state : IState, action: IAddWallLine) => {
-  logger_reducer(['ADD_WALL_LINE']);
+const reducerAddWallLine = (state: IState, action: IAddWallLine) => {
+  loggerReducer(['ADD_WALL_LINE']);
 
   const {amount} = action;
 
@@ -149,7 +149,7 @@ const reducerAddWallLine = (state : IState, action: IAddWallLine) => {
  * Add a line unbreakable.
  */
 const reducerUpdateRoomPlayerName = (state: IState, action: IUpdateRoomPlayerName) => {
-  logger_reducer(['UPDATE_ROOM_PLAYER_NAME']);
+  loggerReducer(['UPDATE_ROOM_PLAYER_NAME']);
 
   const {roomName, playerName} = action;
 

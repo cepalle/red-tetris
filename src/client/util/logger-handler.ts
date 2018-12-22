@@ -1,27 +1,33 @@
 const log = true;
-const log_sock = true;
-const log_reducer = true;
-const log_component = true;
-const log_middleware = true;
+const logSock = true;
+const logReducer = true;
+const logComponent = true;
+const logMiddleware = true;
 
-const logger = arg => {
+const logger = (arg: any[]) => {
   log && console.log(...arg);
 };
 
-const logger_sock = arg => {
-   log_sock && console.log("socket:", ...arg);
+const loggerSock = (arg: any[]) => {
+  logSock && console.log('socket:', ...arg);
 };
 
-const logger_reducer = arg => {
-   log_reducer && console.log("reducer:", ...arg);
+const loggerReducer = (arg: any[]) => {
+  logReducer && console.log('reducer:', ...arg);
 };
 
-const logger_component = arg => {
-   log_component && console.log("store:", ...arg);
+const loggerComponent = (arg: any[]) => {
+  logComponent && console.log('store:', ...arg);
 };
 
-const logger_middleware = arg => {
-   log_middleware && console.log("middleware:", ...arg);
+const loggerMiddleware = (arg: any[]) => {
+  logMiddleware && console.log('middleware:', ...arg);
 };
 
-export {logger, logger_sock, logger_reducer, logger_component, logger_middleware};
+export {
+  logger,
+  loggerSock,
+  loggerReducer,
+  loggerComponent,
+  loggerMiddleware,
+};
