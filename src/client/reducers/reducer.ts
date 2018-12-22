@@ -10,7 +10,18 @@ import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
 import {PIECES_NUM} from "../../common/pieces";
 
 
-const initPlayerState = (playerName, master = false, gridHeight = GRID_HEIGHT) => {
+interface IPlayerState {
+  grid: number[][],
+  win: boolean,
+  playerName: string,
+  master: boolean,
+  loose: boolean,
+  score: number,
+  lines: number,
+  spectator: boolean
+}
+
+const initPlayerState = (playerName: string, master = false, gridHeight = GRID_HEIGHT): IPlayerState => {
   return {
     grid: Array(gridHeight).fill(0).map(() => Array(GRID_WIDTH).fill(PIECES_NUM.empty)),
     win: false,
@@ -22,6 +33,28 @@ const initPlayerState = (playerName, master = false, gridHeight = GRID_HEIGHT) =
     spectator: false
   }
 };
+
+
+
+interface IState {
+  playerStates: IPlayerState[],
+  piecesFlow: [],
+  error: {},
+  playerName: urlGetPlayerName(window),
+  roomName: urlGetRoomName(window),
+  animate: false,
+  EmitLoose: false,
+  EmitUpdateGrid: false,
+  EmitJoinRoom: false,
+  EmitCompleteLine: 0,
+  games: [],
+  params: {
+    addWallLine: true,
+    groundResizer: true,
+  },
+  gridHeight: GRID_HEIGHT,
+  socketIsConnect: false
+}
 
 const initialState = {
   playerStates: [initPlayerState(urlGetPlayerName(window))],
