@@ -1,4 +1,3 @@
-import {PIECES_MOVE} from "../../common/pieces"
 import {PIECES_MOVE, SEND_START_GAME} from "../actions/action-creators"
 
 const keyEnter = 13;

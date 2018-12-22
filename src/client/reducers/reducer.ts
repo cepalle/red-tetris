@@ -67,8 +67,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         playerStates: state.playerStates.map(el =>
-          (el.playerName === playerName) ?
-            {...el, grid: grid} :
+          (el.playerName === action.playerName) ?
+            {...el, grid: action.grid} :
             el
         )
       };
@@ -81,7 +81,7 @@ const reducer = (state = initialState, action) => {
     case 'UPDATE_GAMES':
       return {
         ...state,
-        games: games
+        games: action.games
       };
     case 'TOGGLE_ADD_WALL_LINE':
       return {

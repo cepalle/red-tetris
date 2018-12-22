@@ -1,4 +1,3 @@
-import {PIECES_MOVE} from "../actions/action-creators";
 import {PIECES_MOVE} from "../../common/pieces";
 import {logger} from "./logger-handler";
 
