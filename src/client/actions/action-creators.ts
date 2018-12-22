@@ -1,5 +1,5 @@
-import {IGame, IParams, IPiece, IPlayerState} from "../reducers/reducer";
-import {ENUM_PIECES_MOVE} from "../util/grid-piece-handler";
+import {IGame, IParams, IPiece, IPlayerState} from '../reducers/reducer';
+import {ENUM_PIECES_MOVE} from '../util/grid-piece-handler';
 
 enum EnumAction {
   ADD_PIECES_FLOW,
@@ -38,7 +38,7 @@ interface IAddPiecesFlow extends IAction {
 const ADD_PIECES_FLOW = (pieces: IPiece[]): IAddPiecesFlow => {
   return {
     type: EnumAction.ADD_PIECES_FLOW,
-    pieces: pieces
+    pieces: pieces,
   };
 };
 
@@ -50,8 +50,8 @@ interface IAddError extends IAction {
 const ADD_ERROR = (error: any): IAddError => {
   return {
     type: EnumAction.ADD_ERROR,
-    error: error
-  }
+    error: error,
+  };
 };
 
 interface IUpadtePlayers extends IAction {
@@ -62,8 +62,8 @@ interface IUpadtePlayers extends IAction {
 const UPDATE_PLAYERS = (players: IPlayerState[]): IUpadtePlayers => {
   return {
     type: EnumAction.UPDATE_PLAYERS,
-    players: players
-  }
+    players: players,
+  };
 };
 
 interface IPiecesMove extends IAction {
@@ -74,8 +74,8 @@ interface IPiecesMove extends IAction {
 const PIECES_MOVE = (move: ENUM_PIECES_MOVE): IPiecesMove => {
   return {
     type: EnumAction.PIECES_MOVE,
-    move: move
-  }
+    move: move,
+  };
 };
 
 interface IUpdateGrid extends IAction {
@@ -88,8 +88,8 @@ const UPDATE_GRID = (grid: number[][], playerName: string): IUpdateGrid => {
   return {
     type: EnumAction.UPDATE_GRID,
     grid: grid,
-    playerName: playerName
-  }
+    playerName: playerName,
+  };
 };
 
 interface IRecvStartGame extends IAction {
@@ -102,8 +102,8 @@ const RECV_START_GAME = (pieces: IPiece[], params: IParams): IRecvStartGame => {
   return {
     type: EnumAction.RECV_START_GAME,
     pieces: pieces,
-    params: params
-  }
+    params: params,
+  };
 };
 
 interface IAddWallLine extends IAction {
@@ -114,8 +114,8 @@ interface IAddWallLine extends IAction {
 const ADD_WALL_LINE = (amount: number): IAddWallLine => {
   return {
     type: EnumAction.ADD_WALL_LINE,
-    amount: amount
-  }
+    amount: amount,
+  };
 };
 
 interface IConnectionResponse extends IAction {
@@ -124,8 +124,8 @@ interface IConnectionResponse extends IAction {
 
 const CONNECTION_RESPONSE = (): IConnectionResponse => {
   return {
-    type: EnumAction.CONNECTION_RESPONSE
-  }
+    type: EnumAction.CONNECTION_RESPONSE,
+  };
 };
 
 interface ISendStartGame extends IAction {
@@ -134,8 +134,8 @@ interface ISendStartGame extends IAction {
 
 const SEND_START_GAME = (): ISendStartGame => {
   return {
-    type: EnumAction.SEND_START_GAME
-  }
+    type: EnumAction.SEND_START_GAME,
+  };
 };
 
 interface IUpdateRoomPlayerName extends IAction {
@@ -148,8 +148,8 @@ const UPDATE_ROOM_PLAYER_NAME = (roomName: string, playerName: string): IUpdateR
   return {
     type: EnumAction.UPDATE_ROOM_PLAYER_NAME,
     roomName: roomName,
-    playerName: playerName
-  }
+    playerName: playerName,
+  };
 };
 
 interface IUpdateGame extends IAction {
@@ -161,7 +161,7 @@ const UPDATE_GAMES = (games: IGame[]): IUpdateGame => {
   return {
     type: EnumAction.UPDATE_GAMES,
     games: games,
-  }
+  };
 };
 
 interface IEmitQuitGame extends IAction {
@@ -171,7 +171,7 @@ interface IEmitQuitGame extends IAction {
 const EMIT_QUIT_GAME = (): IEmitQuitGame => {
   return {
     type: EnumAction.EMIT_QUIT_GAME,
-  }
+  };
 };
 
 interface IToggleAddWallLine extends IAction {
@@ -181,7 +181,7 @@ interface IToggleAddWallLine extends IAction {
 const TOGGLE_ADD_WALL_LINE = (): IToggleAddWallLine => {
   return {
     type: EnumAction.TOGGLE_ADD_WALL_LINE,
-  }
+  };
 };
 
 interface IToggleGroundResizer extends IAction {
@@ -191,7 +191,7 @@ interface IToggleGroundResizer extends IAction {
 const TOGGLE_GROUND_RESIZER = (): IToggleGroundResizer => {
   return {
     type: EnumAction.TOGGLE_GROUND_RESIZER,
-  }
+  };
 };
 
 interface IUpdateEmitLoose extends IAction {
@@ -202,8 +202,8 @@ interface IUpdateEmitLoose extends IAction {
 const UPDATE_EMITE_LOOSE = (bool: boolean): IUpdateEmitLoose => {
   return {
     type: EnumAction.UPDATE_EMITE_LOOSE,
-    bool
-  }
+    bool,
+  };
 };
 
 interface IUpdateEmiteJoinRoom extends IAction {
@@ -214,8 +214,8 @@ interface IUpdateEmiteJoinRoom extends IAction {
 const UPDATE_EMITE_JOIN_ROOM = (bool: boolean): IUpdateEmiteJoinRoom => {
   return {
     type: EnumAction.UPDATE_EMITE_JOIN_ROOM,
-    bool
-  }
+    bool,
+  };
 };
 
 interface IUpdateEmiteUpdateGrid extends IAction {
@@ -226,8 +226,8 @@ interface IUpdateEmiteUpdateGrid extends IAction {
 const UPDATE_EMITE_UPDATE_GRID = (bool: boolean): IUpdateEmiteUpdateGrid => {
   return {
     type: EnumAction.UPDATE_EMITE_UPDATE_GRID,
-    bool
-  }
+    bool,
+  };
 };
 
 interface IUpdateEmiteCompleteLine extends IAction {
@@ -238,8 +238,8 @@ interface IUpdateEmiteCompleteLine extends IAction {
 const UPDATE_EMITE_COMPLETE_LINE = (nb: number): IUpdateEmiteCompleteLine => {
   return {
     type: EnumAction.UPDATE_EMITE_COMPLETE_LINE,
-    nb
-  }
+    nb,
+  };
 };
 
 interface ICleanError extends IAction {
@@ -248,8 +248,8 @@ interface ICleanError extends IAction {
 
 const CLEAN_ERROR = (): ICleanError => {
   return {
-    type: EnumAction.CLEAN_ERROR
-  }
+    type: EnumAction.CLEAN_ERROR,
+  };
 };
 
 interface IUpdateSocketIsConnect extends IAction {
@@ -260,8 +260,8 @@ interface IUpdateSocketIsConnect extends IAction {
 const UPDATE_SOCKET_IS_CONNECT = (bool: boolean): IUpdateSocketIsConnect => {
   return {
     type: EnumAction.UPDATE_SOCKET_IS_CONNECT,
-    bool
-  }
+    bool,
+  };
 };
 
 type ReducerAction = IUpdateEmiteJoinRoom
@@ -286,6 +286,7 @@ type ReducerAction = IUpdateEmiteJoinRoom
   | IUpdateSocketIsConnect;
 
 export {
+  PIECES_MOVE,
   ADD_PIECES_FLOW,
   ADD_ERROR,
   UPDATE_PLAYERS,

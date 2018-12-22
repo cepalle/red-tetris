@@ -4,12 +4,11 @@ import {
   reducerStartGame,
   reducerUpdatePlayers,
   reducerUpdateRoomPlayerName,
-} from "./reducer-aux";
-import {GRID_HEIGHT, GRID_WIDTH} from "../../common/grid";
-import {urlGetPlayerName, urlGetRoomName} from "../util/url-handler";
-import {PIECES_NUM} from "../../common/pieces";
-import {EnumAction, ReducerAction} from "../actions/action-creators";
-
+} from './reducer-aux';
+import {GRID_HEIGHT, GRID_WIDTH} from '../../common/grid';
+import {urlGetPlayerName, urlGetRoomName} from '../util/url-handler';
+import {EnumAction, ReducerAction} from '../actions/action-creators';
+import {ENUM_PIECES_NUM} from '@src/client/util/grid-piece-handler';
 
 interface IPlayerState {
   readonly grid: number[][],
@@ -34,7 +33,8 @@ interface IPiece {
 }
 
 interface IError {
-
+  type?: string,
+  message?: string
 }
 
 interface IGame {
@@ -65,15 +65,15 @@ interface IState {
 
 const initPlayerState = (playerName: string, master = false, gridHeight = GRID_HEIGHT): IPlayerState => {
   return {
-    grid: Array(gridHeight).fill(0).map(() => Array(GRID_WIDTH).fill(PIECES_NUM.empty)),
+    grid: Array(gridHeight).fill(0).map(() => Array(GRID_WIDTH).fill(ENUM_PIECES_NUM.empty)),
     win: false,
     playerName: playerName,
     master: master,
     loose: false,
     score: 0,
     lines: 0,
-    spectator: false
-  }
+    spectator: false,
+  };
 };
 
 const initialState: IState = {
@@ -93,22 +93,15 @@ const initialState: IState = {
     groundResizer: true,
   },
   gridHeight: GRID_HEIGHT,
-  socketIsConnect: false
+  socketIsConnect: false,
 };
-
-
-//----------------------------------------------------------------------------
-//
-// SWITCH REDUCER
-//
-//----------------------------------------------------------------------------
 
 const reducer = (state = initialState, action: ReducerAction): IState => {
   switch (action.type) {
     case EnumAction.ADD_PIECES_FLOW:
       return {
         ...state,
-        piecesFlow: [...state.piecesFlow, ...action.pieces]
+        piecesFlow: [...state.piecesFlow, ...action.pieces],
       };
     case EnumAction.ADD_ERROR:
       return {...state, error: action.error};
@@ -122,8 +115,8 @@ const reducer = (state = initialState, action: ReducerAction): IState => {
         playerStates: state.playerStates.map(el =>
           (el.playerName === action.playerName) ?
             {...el, grid: action.grid} :
-            el
-        )
+            el,
+        ),
       };
     case EnumAction.RECV_START_GAME:
       return reducerStartGame(state, action);
@@ -134,7 +127,7 @@ const reducer = (state = initialState, action: ReducerAction): IState => {
     case EnumAction.UPDATE_GAMES:
       return {
         ...state,
-        games: action.games
+        games: action.games,
       };
     case EnumAction.TOGGLE_ADD_WALL_LINE:
       return {

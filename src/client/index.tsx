@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import App from "./components/app-component";
-import {store} from "./middlewares/store";
+import App from './components/app-component';
+import {store} from './middlewares/store';
 import './index.css';
-import "./util/event-handler";
-import {eventHandler} from "./util/event-handler";
-import {animateClock} from "./util/animate-handler";
-import {emitHome} from "./util/socket-handler";
-import {socketEmit} from "./util/socket";
-import {BrowserRouter} from "react-router-dom";
+import './util/event-handler';
+import {eventHandler} from './util/event-handler';
+import {animateClock} from './util/animate-handler';
+import {emitHome} from './util/socket-handler';
+import {socketEmit} from './util/socket';
+import {BrowserRouter} from 'react-router-dom';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -17,7 +17,7 @@ ReactDOM.render(
       <App/>
     </BrowserRouter>
   </Provider>,
-  document.getElementById("app"));
+  document.getElementById('app'));
 
 window.addEventListener('keydown', event =>
     eventHandler(event,

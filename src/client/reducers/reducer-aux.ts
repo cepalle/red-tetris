@@ -1,17 +1,19 @@
-import {gridAddWall, gridDelLine, updatePiecePos, placePiece} from "../util/grid-piece-handler";
-import {logger_reducer} from "../util/logger-handler";
-import {initPlayerState} from "./reducer";
-import {asLoose, ifWinSet} from "../util/loose-win-handler";
-import {GRID_HEIGHT} from "../../common/grid";
-
+import {gridAddWall, gridDelLine, updatePiecePos, placePiece} from '../util/grid-piece-handler';
+import {logger_reducer} from '../util/logger-handler';
+import {initPlayerState, IState} from './reducer';
+import {asLoose, ifWinSet} from '../util/loose-win-handler';
+import {GRID_HEIGHT} from '../../common/grid';
+import {IUpadtePlayers} from '@src/client/actions/action-creators';
 
 /**
  * Synchronize players with players.
  * @param {Object} state
  * @param {Array<player>} players
  */
-const reducerUpdatePlayers = (state, {players}) => {
-  logger_reducer(["UPDATE_PLAYERS"]);
+const reducerUpdatePlayers = (state: IState, action: IUpadtePlayers) => {
+  logger_reducer(['UPDATE_PLAYERS']);
+
+  const {players} = action;
 
   if (!players.some(e => e.master) ||
     !players.some(e => e.playerName === state.playerName)) {
@@ -21,15 +23,15 @@ const reducerUpdatePlayers = (state, {players}) => {
   const filterNotInPlayers = state.playerStates.filter(el => players.some(e => e.playerName === el.playerName));
   const concatNewUsers = filterNotInPlayers.concat(
     players.filter(el => !filterNotInPlayers.some(e => e.playerName === el.playerName)).map(el =>
-      initPlayerState(el.playerName, el.master, state.gridHeight)
-    )
+      initPlayerState(el.playerName, el.master, state.gridHeight),
+    ),
   );
 
   const newState = {
     ...state,
     playerStates: concatNewUsers.map(playerState => ({
       ...playerState,
-      player: players.find(e => e.playerName === playerState.playerName)
+      player: players.find(e => e.playerName === playerState.playerName),
     })),
   };
   return ifWinSet(newState);
@@ -41,7 +43,7 @@ const reducerUpdatePlayers = (state, {players}) => {
  * @param {Object} move
  */
 const reducerMovePiece = (state, {move}) => {
-  logger_reducer(["ENUM_PIECES_MOVE"]);
+  logger_reducer(['ENUM_PIECES_MOVE']);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (!player ||
@@ -69,7 +71,7 @@ const reducerMovePiece = (state, {move}) => {
       ...state,
       piecesFlow: newPiecesFlow,
       playerStates: state.playerStates.map(el => (el.playerName === state.playerName) ?
-        {...el, grid: newGrid2, loose: loose} : el
+        {...el, grid: newGrid2, loose: loose} : el,
       ),
       animate: state.animate && !loose,
       EmitLoose: loose,
@@ -92,7 +94,7 @@ const reducerMovePiece = (state, {move}) => {
  * @param {Params} params
  */
 const reducerStartGame = (state, {pieces, params}) => {
-  logger_reducer(["RECV_START_GAME"]);
+  logger_reducer(['RECV_START_GAME']);
 
   let newGridHeight = GRID_HEIGHT;
   if (params.groundResizer) {
@@ -104,7 +106,7 @@ const reducerStartGame = (state, {pieces, params}) => {
     params: params,
     gridHeight: newGridHeight,
     playerStates: state.playerStates.map(playerState =>
-      initPlayerState(playerState.playerName, playerState.master, newGridHeight)
+      initPlayerState(playerState.playerName, playerState.master, newGridHeight),
     ),
     animate: true,
   };
@@ -116,13 +118,13 @@ const reducerStartGame = (state, {pieces, params}) => {
  * @param {int} amount
  */
 const reducerAddWallLine = (state, {amount}) => {
-  logger_reducer(["ADD_WALL_LINE"]);
+  logger_reducer(['ADD_WALL_LINE']);
 
   if (state.piecesFlow.length < 1
     || !state.animate
     || amount <= 0
     || !state.playerStates.some(e => e.playerName === state.playerName)) {
-    return state
+    return state;
   }
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
@@ -132,7 +134,7 @@ const reducerAddWallLine = (state, {amount}) => {
   const newState = {
     ...state,
     playerStates: state.playerStates.map(el => (el.playerName === state.playerName) ?
-      {...el, grid: newGrid, loose: loose} : el
+      {...el, grid: newGrid, loose: loose} : el,
     ),
     animate: state.animate && !loose,
     EmitLoose: loose,
@@ -149,7 +151,7 @@ const reducerAddWallLine = (state, {amount}) => {
  * @param {string} playerName
  */
 const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
-  logger_reducer(["UPDATE_ROOM_PLAYER_NAME"]);
+  logger_reducer(['UPDATE_ROOM_PLAYER_NAME']);
 
   if (!roomName || !playerName) {
     return state;
@@ -170,4 +172,4 @@ export {
   reducerStartGame,
   reducerUpdatePlayers,
   reducerUpdateRoomPlayerName,
-}
+};
