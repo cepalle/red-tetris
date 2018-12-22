@@ -1,6 +1,6 @@
 import {store} from "../../src/client/middlewares/store";
 import {
-  ADD_ERROR, ADD_PIECES_FLOW, CONNECTION_RESPONSE, PIECES_MOVE, SEND_START_GAME,
+  ADD_ERROR, ADD_PIECES_FLOW, CONNECTION_RESPONSE, ENUM_PIECES_MOVE, SEND_START_GAME,
   TOGGLE_GROUND_RESIZER, TOGGLE_ADD_WALL_LINE, EMIT_QUIT_GAME, UPDATE_ROOM_PLAYER_NAME
 } from "../../src/client/actions/action-creators";
 import {PIECES_MOVE} from "../../src/common/pieces";

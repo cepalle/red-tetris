@@ -12,14 +12,55 @@ import {EnumAction, ReducerAction} from "../actions/action-creators";
 
 
 interface IPlayerState {
-  grid: number[][],
-  win: boolean,
-  playerName: string,
-  master: boolean,
-  loose: boolean,
-  score: number,
-  lines: number,
-  spectator: boolean
+  readonly grid: number[][],
+  readonly win: boolean,
+  readonly playerName: string,
+  readonly master: boolean,
+  readonly loose: boolean,
+  readonly score: number,
+  readonly lines: number,
+  readonly spectator: boolean
+}
+
+interface IPos {
+  readonly x: number,
+  readonly y: number
+}
+
+interface IPiece {
+  readonly num: number,
+  readonly rot: number,
+  readonly pos: IPos
+}
+
+interface IError {
+
+}
+
+interface IGame {
+
+}
+
+interface IParams {
+  readonly addWallLine: boolean,
+  readonly groundResizer: boolean,
+}
+
+interface IState {
+  readonly playerStates: IPlayerState[],
+  readonly piecesFlow: IPiece[],
+  readonly error: IError,
+  readonly playerName: string,
+  readonly roomName: string,
+  readonly animate: boolean,
+  readonly EmitLoose: boolean,
+  readonly EmitUpdateGrid: boolean,
+  readonly EmitJoinRoom: boolean,
+  readonly EmitCompleteLine: number,
+  readonly games: IGame[],
+  readonly params: IParams,
+  readonly gridHeight: boolean,
+  readonly socketIsConnect: boolean
 }
 
 const initPlayerState = (playerName: string, master = false, gridHeight = GRID_HEIGHT): IPlayerState => {
@@ -34,47 +75,6 @@ const initPlayerState = (playerName: string, master = false, gridHeight = GRID_H
     spectator: false
   }
 };
-
-interface IPos {
-  x: number,
-  y: number
-}
-
-interface IPiece {
-  num: number,
-  rot: number,
-  pos: IPos
-}
-
-interface IError {
-
-}
-
-interface IGame {
-
-}
-
-interface IParams {
-  addWallLine: boolean,
-  groundResizer: boolean,
-}
-
-interface IState {
-  playerStates: IPlayerState[],
-  piecesFlow: IPiece[],
-  error: IError,
-  playerName: string,
-  roomName: string,
-  animate: boolean,
-  EmitLoose: boolean,
-  EmitUpdateGrid: boolean,
-  EmitJoinRoom: boolean,
-  EmitCompleteLine: number,
-  games: IGame[],
-  params: IParams,
-  gridHeight: boolean,
-  socketIsConnect: boolean
-}
 
 const initialState: IState = {
   playerStates: [initPlayerState(urlGetPlayerName(window))],

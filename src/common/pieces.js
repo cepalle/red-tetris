@@ -268,7 +268,7 @@ const getPieceMask = (pieces, rot = 0) => PIECES_DESCR[pieces - 1][rot].info;
 module.exports = {
   PIECES,
   PIECES_DESCR,
-  PIECES_MOVE,
+  ENUM_PIECES_MOVE,
   getPiece,
   getPieceMask,
   PIECES_NUM

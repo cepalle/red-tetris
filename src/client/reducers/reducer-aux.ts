@@ -41,7 +41,7 @@ const reducerUpdatePlayers = (state, {players}) => {
  * @param {Object} move
  */
 const reducerMovePiece = (state, {move}) => {
-  logger_reducer(["PIECES_MOVE"]);
+  logger_reducer(["ENUM_PIECES_MOVE"]);
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (!player ||
