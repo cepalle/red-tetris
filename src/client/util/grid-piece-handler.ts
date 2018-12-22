@@ -1,15 +1,25 @@
 import {GRID_WIDTH} from "../../common/grid";
-import {getPiece, PIECES_MOVE, PIECES_NUM} from "../../common/pieces";
+import {getPiece, PIECES_NUM} from "../../common/pieces";
 import {clonePiece} from "./clone-handler"
-import {logger} from "./logger-handler"
+import {IPiece, IPos} from "../reducers/reducer";
 
-const COLLISION_TYPE = {
-  PIECE: "collision_piece",
-  WALL_RIGHT: "collision_wall_right",
-  WALL_LEFT: "collision_wall_left",
-  WALL_BOTTOM: "collision_wall_bottom",
-  WALL_TOP: "collision_top",
-};
+enum COLLISION_TYPE {
+  PIECE = "collision_piece",
+  WALL_RIGHT = "collision_wall_right",
+  WALL_LEFT = "collision_wall_left",
+  WALL_BOTTOM = "collision_wall_bottom",
+  WALL_TOP = "collision_top",
+}
+
+enum PIECES_MOVE {
+  ROT_RIGHT = "PIECES_ROT_RIGHT",
+  ROT_LEFT = "PIECES_ROT_LEFT",
+  RIGHT = "PIECES_MOVE_RIGHT",
+  LEFT = "PIECES_MOVE_LEFT",
+  DOWN = "PIECES_MOVE_DOWN",
+  DROP = "PIECES_DROP",
+  SWITCH = "PIECE_SWITCH",
+}
 
 const PRIO_COLLISION = [
   COLLISION_TYPE.WALL_TOP,
@@ -19,7 +29,7 @@ const PRIO_COLLISION = [
   COLLISION_TYPE.WALL_LEFT
 ];
 
-const hasCollision = (grid, piece, loc) => {
+const hasCollision = (grid: number[][], piece, loc: IPos): COLLISION_TYPE | undefined => {
   let collisionType = undefined;
   piece.forEach((line, y) => line.forEach((number, x) => {
     const gx = x + loc.x;
@@ -29,23 +39,19 @@ const hasCollision = (grid, piece, loc) => {
       if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_TOP)) {
         collisionType = COLLISION_TYPE.WALL_TOP;
       }
-    }
-    else if (gy >= grid.length && number !== 0) {
+    } else if (gy >= grid.length && number !== 0) {
       if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_BOTTOM)) {
         collisionType = COLLISION_TYPE.WALL_BOTTOM;
       }
-    }
-    else if (gx < 0 && number !== 0) {
+    } else if (gx < 0 && number !== 0) {
       if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_LEFT)) {
         collisionType = COLLISION_TYPE.WALL_LEFT;
       }
-    }
-    else if (gx >= GRID_WIDTH && number !== 0) {
+    } else if (gx >= GRID_WIDTH && number !== 0) {
       if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.WALL_RIGHT)) {
         collisionType = COLLISION_TYPE.WALL_RIGHT;
       }
-    }
-    else if (number !== 0 && grid[gy][gx] !== 0) {
+    } else if (number !== 0 && grid[gy][gx] !== 0) {
       if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(COLLISION_TYPE.PIECE)) {
         collisionType = COLLISION_TYPE.PIECE;
       }
@@ -54,66 +60,46 @@ const hasCollision = (grid, piece, loc) => {
   return collisionType;
 };
 
-const placePiece = (grid, piece) => {
-  const newGrid = grid.map(l => l.map(e => e));
-  const pieceDescr = getPiece(piece.num, piece.rot);
-  pieceDescr.forEach((line, y) => {
-      return line.forEach((number, x) => {
-          const gx = x + piece.pos.x;
-          const gy = y + piece.pos.y;
-          if (number !== 0) {
-            if (gx >= 0 && gy >= 0 &&
-              gy < newGrid.length && gx < newGrid[gy].length) {
-              newGrid[gy][gx] = number;
-            } else {
-              logger(["invalide placement:", grid, piece]);
-            }
-          }
-        }
-      )
+const placePiece = (grid: number[][], piece: IPiece, isPreview = false): number[][] => {
+  const pieceDescr: number[][] = getPiece(piece.num, piece.rot);
+
+  return grid.map((line, y) => line.map((number, x) => {
+    if (y >= piece.pos.y &&
+      x >= piece.pos.x &&
+      y < piece.pos.y + pieceDescr.length &&
+      x < piece.pos.x + pieceDescr.length &&
+      pieceDescr[y - piece.pos.y][x - piece.pos.x] !== 0
+    ) {
+      return (isPreview) ? PIECES_NUM.preview : pieceDescr[y - piece.pos.y][x - piece.pos.x]
     }
-  );
-  return newGrid;
+    return x;
+  }));
 };
 
-const placePiecePreview = (grid, piece) => {
-  const newGrid = grid.map(l => l.map(e => e));
+const placePiecePreview = (grid: number[][], piece: IPiece) => {
   const pieceDescr = getPiece(piece.num, piece.rot);
-  const loc = newLoc(piece.pos);
+  let loc = piece.pos;
 
   while (!hasCollision(grid, pieceDescr, loc)) {
-    loc.y++;
+    loc = {...loc, y: loc.y - 1};
   }
   if (loc.y > 0) {
-    loc.y--;
+    loc = {...loc, y: loc.y - 1};
   }
-
-  pieceDescr.forEach((line, y) =>
-    line.forEach((number, x) => {
-        const gx = x + loc.x;
-        const gy = y + loc.y;
-        if (number !== 0) {
-          if (gx >= 0 && gy >= 0 &&
-            gy < newGrid.length && gx < newGrid[gy].length) {
-            newGrid[gy][gx] = PIECES_NUM.preview;
-          } else {
-            logger(["invalide placement:", grid, piece]);
-          }
-        }
-      }
-    )
-  );
-  return newGrid;
+  return placePiece(grid, {...piece, pos: loc}, true)
 };
 
-const newLoc = (loc, move) => {
-  if (move === PIECES_MOVE.DOWN)
-    return {x: loc.x, y: loc.y + 1};
-  else if (move === PIECES_MOVE.LEFT)
-    return {x: loc.x - 1, y: loc.y};
-  else if (move === PIECES_MOVE.RIGHT)
-    return {x: loc.x + 1, y: loc.y};
-  return {x: loc.x, y: loc.y};
+const movePose = (pos: IPos, move: PIECES_MOVE): IPos => {
+  switch (move) {
+    case PIECES_MOVE.DOWN:
+      return {x: pos.x, y: pos.y + 1};
+    case PIECES_MOVE.LEFT:
+      return {x: pos.x - 1, y: pos.y};
+    case PIECES_MOVE.RIGHT:
+      return {x: pos.x + 1, y: pos.y};
+    default:
+      return pos;
+  }
 };
 
 const newRot = (rot, move) => {
@@ -147,7 +133,7 @@ const updatePieceRot = (grid, Flow, move) => {
   const newPiece = {
     num: Flow[0].num,
     rot: newRot(Flow[0].rot, move),
-    pos: newLoc(Flow[0].pos, move)
+    pos: movePose(Flow[0].pos, move)
   };
 
   newFlow[0] = moveCollision(newPiece, grid);
@@ -192,7 +178,7 @@ const updatePiecePos = (grid, Flow, move) => {
     const newPiece = {
       num: Flow[0].num,
       rot: newRot(Flow[0].rot, move),
-      pos: newLoc(Flow[0].pos, move)
+      pos: movePose(Flow[0].pos, move)
     };
     const newPieceDescr = getPiece(newPiece.num, newPiece.rot);
     if (!hasCollision(grid, newPieceDescr, newPiece.pos)) {
@@ -203,7 +189,7 @@ const updatePiecePos = (grid, Flow, move) => {
     const newPiece = {
       num: Flow[0].num,
       rot: newRot(Flow[0].rot, move),
-      pos: newLoc(Flow[0].pos, move)
+      pos: movePose(Flow[0].pos, move)
     };
     const newPieceDescr = getPiece(newPiece.num, newPiece.rot);
     if (!hasCollision(grid, newPieceDescr, newPiece.pos)) {
@@ -266,7 +252,7 @@ export {
   hasCollision,
   placePiece,
   COLLISION_TYPE,
-  newLoc,
+  movePose,
   updatePiecePos,
   gridDelLine,
   gridAddWall,

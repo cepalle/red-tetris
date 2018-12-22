@@ -35,8 +35,15 @@ const initPlayerState = (playerName: string, master = false, gridHeight = GRID_H
   }
 };
 
-interface IPiece {
+interface IPos {
+  x: number,
+  y: number
+}
 
+interface IPiece {
+  num: number,
+  rot: number,
+  pos: IPos
 }
 
 interface IError {
@@ -162,4 +169,15 @@ const reducer = (state = initialState, action: ReducerAction): IState => {
   }
 };
 
-export {reducer, initPlayerState};
+export {
+  reducer,
+  initPlayerState,
+  EnumAction,
+  IState,
+  IGame,
+  IParams,
+  IError,
+  IPiece,
+  IPlayerState,
+  IPos,
+};
