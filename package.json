@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "client-dev": "webpack-dev-server --mode development --open",
-    "build": "webpack ./src/client/index.js ",
+    "build": "webpack ./src/client/index.tsx ",
     "srv-dist": "babel src/server --out-dir dist && node dist/server/App.js",
     "srv-dev": "babel-watch -w src src/server/App.js",
     "test": "mocha -r jsdom-global/register --recursive --require babel-core/register --reporter spec",
@@ -34,6 +34,8 @@
     "redux": "^3.7.2",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
+    "ts-loader": "^5.3.2",
+    "typescript": "^3.2.2",
     "webpack": "^4.28.1",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.11"
