@@ -9,10 +9,13 @@ import {eventHandler} from "./util/event-handler";
 import {animateClock} from "./util/animate-handler";
 import {emitHome} from "./util/socket-handler";
 import {socketEmit} from "./util/socket";
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
   <Provider store={store}>
-    <App/>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
   </Provider>,
   document.getElementById("app"));
 
