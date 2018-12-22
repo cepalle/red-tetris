@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {chooseWallType, ENUM_PIECES_NUM, placePiece, placePiecePreview} from '../util/grid-piece-handler';
+import {chooseWallType, ENUM_PIECES, placePiece, placePiecePreview} from '../util/grid-piece-handler';
 import {GRID_WIDTH} from '../../common/grid';
 import {IPiece, IPlayerState, IState} from '../reducers/reducer';
 
@@ -18,8 +18,8 @@ interface IProps {
   piecesFlow: IPiece[]
 }
 
-const initFlowRender = (wallType: ENUM_PIECES_NUM): ENUM_PIECES_NUM[][] => {
-  const lineBuild = [...(Array(4).fill(ENUM_PIECES_NUM.empty)), wallType];
+const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
+  const lineBuild = [...(Array(4).fill(ENUM_PIECES.empty)), wallType];
 
   const scarBuild = [
     lineBuild,

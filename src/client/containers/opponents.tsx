@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {GRID_WIDTH} from '../../common/grid';
 import {IPlayerState, IState} from '@src/client/reducers/reducer';
-import {chooseWallType, ENUM_PIECES_NUM} from '@src/client/util/grid-piece-handler';
+import {chooseWallType, ENUM_PIECES} from '@src/client/util/grid-piece-handler';
 
 const mapStateToProps = (state: IState) => {
   return {
@@ -23,7 +23,7 @@ const OpponentComponent = (props: IProps) => {
   const opponent = playerStates.filter((p) => p.playerName === playerName);
 
   const infoRenders: Array<{
-    grid: ENUM_PIECES_NUM[][];
+    grid: ENUM_PIECES[][];
     playerState: IPlayerState;
   }> = opponent.map((playerState) => {
 
@@ -33,11 +33,11 @@ const OpponentComponent = (props: IProps) => {
     for (let i = 0; i < GRID_WIDTH; i++) {
       let obstacle = false;
       for (let j = 0; j < grid.length; j++) {
-        if (grid[j][i] !== ENUM_PIECES_NUM.empty) {
+        if (grid[j][i] !== ENUM_PIECES.empty) {
           obstacle = true;
         }
         if (obstacle) {
-          grid[j][i] = ENUM_PIECES_NUM.n7;
+          grid[j][i] = ENUM_PIECES.n7;
         }
       }
     }

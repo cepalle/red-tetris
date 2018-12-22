@@ -20,7 +20,7 @@ enum ENUM_PIECES_MOVE {
   SWITCH = 'PIECE_SWITCH',
 }
 
-enum ENUM_PIECES_NUM {
+enum ENUM_PIECES {
   empty = 0,
   n1 = 1,
   n2 = 2,
@@ -45,15 +45,15 @@ const PRIO_COLLISION = [
   ENUM_COLLISION_TYPE.WALL_LEFT,
 ];
 
-const chooseWallType = (player: IPlayerState): ENUM_PIECES_NUM => {
+const chooseWallType = (player: IPlayerState): ENUM_PIECES => {
   return (
     player.loose ?
-      ENUM_PIECES_NUM.wall_loose :
+      ENUM_PIECES.wall_loose :
       player.win ?
-        ENUM_PIECES_NUM.wall_win :
+        ENUM_PIECES.wall_win :
         player.spectator ?
-          ENUM_PIECES_NUM.wall_spect :
-          ENUM_PIECES_NUM.wall
+          ENUM_PIECES.wall_spect :
+          ENUM_PIECES.wall
   );
 };
 
@@ -98,7 +98,7 @@ const placePiece = (grid: number[][], piece: IPiece, isPreview = false): number[
       x < piece.pos.x + pieceDescr.length &&
       pieceDescr[y - piece.pos.y][x - piece.pos.x] !== 0
     ) {
-      return (isPreview) ? ENUM_PIECES_NUM.preview : pieceDescr[y - piece.pos.y][x - piece.pos.x];
+      return (isPreview) ? ENUM_PIECES.preview : pieceDescr[y - piece.pos.y][x - piece.pos.x];
     }
     return x;
   }));
@@ -257,13 +257,13 @@ const updatePiecePos = (grid: number[][], Flow: IPiece[], move: ENUM_PIECES_MOVE
   return updatePieceSwitch(grid, Flow);
 };
 
-const gridDelLine = (grid: number[][]): { grid: number[][]; nbLineToSend: number } => {
+const gridDelLine = (grid: ENUM_PIECES[][]): { grid: ENUM_PIECES[][]; nbLineToSend: number } => {
 
   let nbToSend = 0;
 
   let newGrid = grid.map((line, y) => {
-    const asEmpty = line.some((el) => el === ENUM_PIECES_NUM.empty);
-    const asWall = line.some((el) => el === ENUM_PIECES_NUM.wall);
+    const asEmpty = line.some((el) => el === ENUM_PIECES.empty);
+    const asWall = line.some((el) => el === ENUM_PIECES.wall);
 
     if (!asEmpty) {
       if (!asWall) {
@@ -272,10 +272,10 @@ const gridDelLine = (grid: number[][]): { grid: number[][]; nbLineToSend: number
       return undefined;
     }
     return line;
-  }).filter((el) => el !== undefined);
+  }).filter((el) => el !== undefined) as ENUM_PIECES[][];
 
   while (newGrid.length < grid.length) {
-    newGrid = [Array(GRID_WIDTH).fill(ENUM_PIECES_NUM.empty), ...newGrid];
+    newGrid = [Array(GRID_WIDTH).fill(ENUM_PIECES.empty), ...newGrid];
   }
 
   return {
@@ -284,11 +284,11 @@ const gridDelLine = (grid: number[][]): { grid: number[][]; nbLineToSend: number
   };
 };
 
-const gridAddWall = (grid: number[][], amount: number): number[][] => {
+const gridAddWall = (grid: ENUM_PIECES[][], amount: number): ENUM_PIECES[][] => {
   const pos_x = Math.floor(Math.random() * GRID_WIDTH);
 
-  const toAdd = Array(GRID_WIDTH).fill(ENUM_PIECES_NUM.wall_malus);
-  toAdd[pos_x] = ENUM_PIECES_NUM.empty;
+  const toAdd = Array(GRID_WIDTH).fill(ENUM_PIECES.wall_malus);
+  toAdd[pos_x] = ENUM_PIECES.empty;
 
   let newGrid = grid;
   for (let i = 0; i < amount; i++) {
@@ -309,6 +309,6 @@ export {
   gridAddWall,
   placePiecePreview,
   ENUM_PIECES_MOVE,
-  ENUM_PIECES_NUM,
+  ENUM_PIECES,
   chooseWallType,
 };

@@ -3,12 +3,16 @@ import {logger_reducer} from '../util/logger-handler';
 import {initPlayerState, IState} from './reducer';
 import {asLoose, ifWinSet} from '../util/loose-win-handler';
 import {GRID_HEIGHT} from '../../common/grid';
-import {IUpadtePlayers} from '@src/client/actions/action-creators';
+import {
+  IAddWallLine,
+  IPiecesMove,
+  IRecvStartGame,
+  IUpadtePlayers,
+  IUpdateRoomPlayerName,
+} from '@src/client/actions/action-creators';
 
 /**
  * Synchronize players with players.
- * @param {Object} state
- * @param {Array<player>} players
  */
 const reducerUpdatePlayers = (state: IState, action: IUpadtePlayers) => {
   logger_reducer(['UPDATE_PLAYERS']);
@@ -39,11 +43,11 @@ const reducerUpdatePlayers = (state: IState, action: IUpadtePlayers) => {
 
 /**
  * Update the grid with the move of the part.
- * @param {Object} state
- * @param {Object} move
  */
-const reducerMovePiece = (state, {move}) => {
+const reducerMovePiece = (state: IState, action: IPiecesMove) => {
   logger_reducer(['ENUM_PIECES_MOVE']);
+
+  const {move} = action;
 
   const player = state.playerStates.find(playerState => playerState.playerName === state.playerName);
   if (!player ||
@@ -55,51 +59,48 @@ const reducerMovePiece = (state, {move}) => {
     return state;
   }
 
-  let needNext;
-  let newPiecesFlow;
-  [needNext, newPiecesFlow] = updatePiecePos(player.grid, state.piecesFlow, move);
+  const {bool, flow} = updatePiecePos(player.grid, state.piecesFlow, move);
 
-  if (needNext) {
-    const newGrid = placePiece(player.grid, newPiecesFlow[0]);
-    newPiecesFlow.shift();
+  if (bool) {
+    const newGrid = placePiece(player.grid, flow[0]);
+    flow.shift();
 
-    const [newGrid2, nbLineDel] = gridDelLine(newGrid);
+    const {grid, nbLineToSend} = gridDelLine(newGrid);
 
-    const loose = asLoose(newGrid2);
+    const loose = asLoose(grid);
 
     const newState = {
       ...state,
-      piecesFlow: newPiecesFlow,
+      piecesFlow: flow,
       playerStates: state.playerStates.map(el => (el.playerName === state.playerName) ?
-        {...el, grid: newGrid2, loose: loose} : el,
+        {...el, grid: grid, loose: loose} : el,
       ),
       animate: state.animate && !loose,
       EmitLoose: loose,
       EmitUpdateGrid: true,
-      EmitCompleteLine: nbLineDel,
+      EmitCompleteLine: nbLineToSend,
     };
 
     return ifWinSet(newState);
   }
   return {
     ...state,
-    piecesFlow: newPiecesFlow,
+    piecesFlow: flow,
   };
 };
 
 /**
  * Restart grid of player and flow, set le pieces to the flow and start game.
- * @param {Object} state
- * @param {Array<int>} pieces
- * @param {Params} params
  */
-const reducerStartGame = (state, {pieces, params}) => {
+const reducerStartGame = (state: IState, action: IRecvStartGame) => {
   logger_reducer(['RECV_START_GAME']);
 
-  let newGridHeight = GRID_HEIGHT;
-  if (params.groundResizer) {
-    newGridHeight += (state.playerStates.length - 1) * 2;
-  }
+  const {pieces, params} = action;
+
+  const newGridHeight = (params.groundResizer) ?
+    GRID_HEIGHT + (state.playerStates.length - 1) * 2 :
+    GRID_HEIGHT;
+
   return {
     ...state,
     piecesFlow: pieces,
@@ -114,11 +115,11 @@ const reducerStartGame = (state, {pieces, params}) => {
 
 /**
  * Add a line unbreakable.
- * @param {Object} state
- * @param {int} amount
  */
-const reducerAddWallLine = (state, {amount}) => {
+const reducerAddWallLine = (state : IState, action: IAddWallLine) => {
   logger_reducer(['ADD_WALL_LINE']);
+
+  const {amount} = action;
 
   if (state.piecesFlow.length < 1
     || !state.animate
@@ -146,12 +147,11 @@ const reducerAddWallLine = (state, {amount}) => {
 
 /**
  * Add a line unbreakable.
- * @param {Object} state
- * @param {string} roomName
- * @param {string} playerName
  */
-const reducerUpdateRoomPlayerName = (state, {roomName, playerName}) => {
+const reducerUpdateRoomPlayerName = (state: IState, action: IUpdateRoomPlayerName) => {
   logger_reducer(['UPDATE_ROOM_PLAYER_NAME']);
+
+  const {roomName, playerName} = action;
 
   if (!roomName || !playerName) {
     return state;

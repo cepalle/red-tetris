@@ -8,7 +8,7 @@ import {
 import {GRID_HEIGHT, GRID_WIDTH} from '../../common/grid';
 import {urlGetPlayerName, urlGetRoomName} from '../util/url-handler';
 import {EnumAction, ReducerAction} from '../actions/action-creators';
-import {ENUM_PIECES_NUM} from '@src/client/util/grid-piece-handler';
+import {ENUM_PIECES} from '@src/client/util/grid-piece-handler';
 
 interface IPlayerState {
   readonly grid: number[][],
@@ -65,7 +65,7 @@ interface IState {
 
 const initPlayerState = (playerName: string, master = false, gridHeight = GRID_HEIGHT): IPlayerState => {
   return {
-    grid: Array(gridHeight).fill(0).map(() => Array(GRID_WIDTH).fill(ENUM_PIECES_NUM.empty)),
+    grid: Array(gridHeight).fill(0).map(() => Array(GRID_WIDTH).fill(ENUM_PIECES.empty)),
     win: false,
     playerName: playerName,
     master: master,

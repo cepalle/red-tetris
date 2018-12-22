@@ -1,5 +1,5 @@
-import {IGame, IParams, IPiece, IPlayerState} from '../reducers/reducer';
-import {ENUM_PIECES_MOVE} from '../util/grid-piece-handler';
+import {IError, IGame, IParams, IPiece, IPlayerState} from '../reducers/reducer';
+import {ENUM_PIECES_MOVE, ENUM_PIECES} from '../util/grid-piece-handler';
 
 enum EnumAction {
   ADD_PIECES_FLOW,
@@ -44,10 +44,10 @@ const ADD_PIECES_FLOW = (pieces: IPiece[]): IAddPiecesFlow => {
 
 interface IAddError extends IAction {
   readonly type: EnumAction.ADD_ERROR,
-  readonly error: any // TODO
+  readonly error: IError
 }
 
-const ADD_ERROR = (error: any): IAddError => {
+const ADD_ERROR = (error: IError): IAddError => {
   return {
     type: EnumAction.ADD_ERROR,
     error: error,
@@ -80,11 +80,11 @@ const PIECES_MOVE = (move: ENUM_PIECES_MOVE): IPiecesMove => {
 
 interface IUpdateGrid extends IAction {
   readonly type: EnumAction.UPDATE_GRID,
-  readonly grid: number[][],
+  readonly grid: ENUM_PIECES[][],
   readonly playerName: string,
 }
 
-const UPDATE_GRID = (grid: number[][], playerName: string): IUpdateGrid => {
+const UPDATE_GRID = (grid: ENUM_PIECES[][], playerName: string): IUpdateGrid => {
   return {
     type: EnumAction.UPDATE_GRID,
     grid: grid,
