@@ -1,31 +1,34 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {GRID_WIDTH} from '../../common/grid';
-import {IPlayerState, IState} from '@src/client/reducers/reducer';
+import {IState} from '@src/client/reducers/reducer';
 import {chooseWallType, ENUM_PIECES} from '@src/client/util/grid-piece-handler';
+import {IPlayer} from '@src/server/RoomManager';
+import {GRID_WIDTH} from '@src/common/grid';
 
 const mapStateToProps = (state: IState) => {
+
+  if (state.roomState === undefined) {
+    return {
+      opponents: [],
+    };
+  }
   return {
-    playerStates: state.playerStates,
-    playerName: state.playerName,
+    opponents: state.roomState.players.filter((p) => p.playerName !== state.playerName),
   };
 };
 
 interface IProps {
-  playerStates: IPlayerState[],
-  playerName: string
+  opponents: IPlayer[],
 }
 
 const OpponentComponent = (props: IProps) => {
 
-  const {playerStates, playerName} = props;
-
-  const opponent = playerStates.filter((p) => p.playerName === playerName);
+  const {opponents} = props;
 
   const infoRenders: Array<{
     grid: ENUM_PIECES[][];
-    playerState: IPlayerState;
-  }> = opponent.map((playerState) => {
+    player: IPlayer;
+  }> = opponents.map((playerState) => {
 
     const wallType = chooseWallType(playerState);
     const grid = playerState.grid.map(l => l.map(e => e));
@@ -51,7 +54,7 @@ const OpponentComponent = (props: IProps) => {
 
     return {
       grid: gridRender,
-      playerState: playerState,
+      player: playerState,
     };
   });
 
@@ -67,19 +70,19 @@ const OpponentComponent = (props: IProps) => {
         </div>
         <div className={'row center'}>
         <span className={'font_white font_retro'}>
-          {infoRender.playerState.playerName}{infoRender.playerState.master && '(Master)'}
-          {infoRender.playerState.loose && '(lost)'}{infoRender.playerState.win && '(Win)'}
-          {infoRender.playerState.spectator && '(Viewer)'}
+          {infoRender.player.playerName}{infoRender.player.master && '(Master)'}
+          {infoRender.player.lost && '(lost)'}{infoRender.player.win && '(Win)'}
+          {infoRender.player.isSpectator && '(Viewer)'}
         </span>
         </div>
         <div className={'row center'}>
         <span className={'font_white font_retro'}>
-          {'score:' + infoRender.playerState.score}
+          {'score:' + infoRender.player.score}
         </span>
         </div>
         <div className={'row center'}>
         <span className={'font_white font_retro'}>
-          {'lines completed:' + infoRender.playerState.lines}
+          {'lines completed:' + infoRender.player.nbLineCompleted}
         </span>
         </div>
       </div>,
