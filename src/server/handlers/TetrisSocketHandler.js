@@ -1,4 +1,4 @@
-import {PIECES} from "../../common/pieces";
+import {Pieces} from "../../common/pieces";
 import SocketHandler from "./SocketHandler";
 import GameManager from "../data/game/GameManager";
 import PacketSender from "../packet/PacketSender";

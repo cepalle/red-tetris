@@ -1,5 +1,5 @@
 import {GRID_HEIGHT, GRID_WIDTH} from "../../../common/grid";
-import {getPieceMask, PIECES} from "../../../common/pieces";
+import {getPieceInfo, Pieces} from "../../../common/pieces";
 
 class Piece {
   constructor(num, pos, rot) {
@@ -19,7 +19,7 @@ class Piece {
   static generatePiece() {
     const num = Piece.randNumber(1, 7);
     const rot = Piece.randNumber(0, 4);
-    const mask = getPieceMask(num, rot);
+    const mask = getPieceInfo(num, rot);
     const pos = {
       x: Piece.randNumber(mask.x, GRID_WIDTH - mask.width + 1),
       y: 0
