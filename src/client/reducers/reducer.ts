@@ -38,7 +38,7 @@ interface IError {
 }
 
 interface IGame {
-
+  players: IPlayerState[]
 }
 
 interface IParams {
