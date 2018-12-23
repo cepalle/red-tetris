@@ -27,7 +27,7 @@ import {
 
 describe('socket test', () => {
   it('socket', () => {
-    emitGenFlow("room");
+    emitGenFlow("roomState");
     emitPlayerLoose("room101", "player42");
     emitPlayerCompleteLine("qwefad", "dadas", 10);
     emitQuitGame("grwse", "dqdsa");

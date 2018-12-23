@@ -8,7 +8,7 @@ import GameManager from "../../../src/server/data/game/GameManager"
 describe('RoomSocketHandler', function () {
   describe('#joinRoom', function () {
 
-    it('should create a room and return success', function (done) {
+    it('should create a roomState and return success', function (done) {
       const socket = io('http://localhost:4433');
       socket.on(socketDefs.JOIN_GAME_RESPONSE, (data) => {
         if (data.success)
@@ -27,7 +27,7 @@ describe('RoomSocketHandler', function () {
         if (!data.success) done(data.error);
       });
       socket2.on(socketDefs.JOIN_GAME_RESPONSE, (data) => {
-        if (data.success) done("Error because room already with this name");
+        if (data.success) done("Error because roomState already with this name");
         else done();
         socket.disconnect();
         socket2.disconnect();

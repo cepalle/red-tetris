@@ -6,7 +6,7 @@ import {
 } from '../actions/action-creators';
 import {connect} from 'react-redux';
 import {TetrisGameComponent} from '../components/tetris-game-component';
-import {Home} from 'home';
+import {Home} from '@src/client/containers/home';
 
 const mapStateToProps = (state: IState) => {
   return {

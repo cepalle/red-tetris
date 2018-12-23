@@ -1,58 +1,81 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {
-  EMIT_QUIT_GAME, ReduxAction, SEND_START_GAME, TOGGLE_ADD_WALL_LINE, TOGGLE_GROUND_RESIZER,
-  UPDATE_ROOM_PLAYER_NAME,
+  ReduxAction,
 } from '../actions/action-creators';
 import mp3 from '../assets/Original_Tetris_theme.mp3';
 import {Dispatch} from 'redux';
-import {IError, IOptionGame, IState} from '@src/client/reducers/reducer';
-import {isMaster} from '@src/client/util/isMaster';
+import {IState} from '@src/client/reducers/reducer';
+import {IRoomState} from '@src/server/RoomManager';
+import {IOptionGame} from '@src/common/IType';
+
+const extractInfo = (
+  roomState: IRoomState | undefined,
+  playerName: string | undefined,
+): {
+  isMaster: boolean | undefined;
+  optionGame: IOptionGame | undefined;
+} => {
+  const objUndefined = {
+    isMaster: undefined,
+    optionGame: undefined,
+  };
+
+  if (roomState === undefined || playerName === undefined) {
+    return objUndefined;
+  }
+
+  const player = roomState.players.find((p) => p.playerName === playerName);
+
+  if (player === undefined) {
+    return objUndefined;
+  }
+
+  return {
+    isMaster: player.master,
+    optionGame: roomState.optionGame,
+  };
+};
 
 const mapStateToProps = (state: IState) => {
+  const {isMaster, optionGame} = extractInfo(state.roomState, state.playerName);
+
   return {
-    error: state.error,
-    animate: state.animate,
-    master: isMaster(state.playerStates, state.playerName),
-    playerName: state.playerName,
-    roomName: state.roomName,
-    params: state.params,
+    isMaster,
+    optionGame,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
   return {
-    onClickButton: () => dispatch(SEND_START_GAME()),
-    onChangeGroundResizer: () => dispatch(TOGGLE_GROUND_RESIZER()),
-    onChangeAddWallLine: () => dispatch(TOGGLE_ADD_WALL_LINE()),
-    onClickHome: () => {
-      dispatch(EMIT_QUIT_GAME());
-      dispatch(UPDATE_ROOM_PLAYER_NAME('', ''));
-      window.location.href = '';
+    onChangeAddWallLine: () => {
+      // TODO
+    },
+    onChangeGroundResizer: () => {
+      // TODO
+    },
+    onClickButton: () => {
+      // TODO
     },
   };
 };
 
 interface IProps {
-  error: IError,
-  animate: boolean,
-  master: boolean,
-  playerName: string,
-  roomName: string,
-  params: IParams,
+  isMaster: boolean | undefined,
+  optionGame: IOptionGame | undefined,
 
-  onClickButton: () => void,
-  onChangeGroundResizer: () => void,
   onChangeAddWallLine: () => void,
-  onClickHome: () => void,
+  onChangeGroundResizer: () => void,
+  onClickButton: () => void,
 }
 
 const InfoPanelComponent = (props: IProps) => {
 
-  const {
-    error, animate, master, playerName, roomName,
-    onClickButton, onClickHome, params, onChangeAddWallLine, onChangeGroundResizer,
-  } = props;
+  const {isMaster, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickButton} = props;
+
+  const onClickHome = () => {
+    window.location.href = '';
+  };
 
   return (
     <div className={'column width_info_panel spaceBetween'}>
@@ -62,6 +85,7 @@ const InfoPanelComponent = (props: IProps) => {
             <img className={'pad'} src={require('../assets/home-8x.png')} height="32" width="32" alt={'home'}/>
             <h1 className={'font_white font_retro pad'}>TETRIS</h1>
           </div>
+
           <div className={'font_white pad'}>
             <div className={'pad color0'}>
               <span className={'font_color_key'}>{'<keyRight>'}</span>{': move right'}<br/>
@@ -76,7 +100,7 @@ const InfoPanelComponent = (props: IProps) => {
                 className={'font_color_key'}>{'<keyC>'}</span>{': switch the current piece with the next piece'}<br/>
             </div>
 
-            {playerName && roomName && master &&
+            {isMaster && optionGame &&
             <div className={'pad'}>
               <div className={'row'}>
                 Options:
@@ -85,7 +109,7 @@ const InfoPanelComponent = (props: IProps) => {
                 <input
                   name="addWallLine"
                   type="checkbox"
-                  checked={params.addWallLine}
+                  checked={optionGame.addWallLine}
                   onChange={() => onChangeAddWallLine()}/>
                 : Add malus lines to adversers when lines are completed.
               </label>
@@ -93,39 +117,15 @@ const InfoPanelComponent = (props: IProps) => {
                 <input
                   name="groundResizer"
                   type="checkbox"
-                  checked={params.groundResizer}
+                  checked={optionGame.groundResizer}
                   onChange={() => onChangeGroundResizer()}/>
                 : Increase the height of the Tetris grid in multiplayer mode.
               </label>
               <button className={'font_retro font_white font_button buttonPlay'} onClick={() => onClickButton()}>
                 Play!
               </button>
-            </div>}
-
-            {playerName && roomName && !animate && master &&
-            <p className={'font_green'}>{'You are currently waiting for other players'}<br/></p>}
-
-            {playerName && roomName && !animate && !master &&
-            <p className={'font_green'}>{'You are currently waiting for master player'}<br/></p>}
-
-            {(!playerName || !roomName) &&
-            <p className={'font_red'}>{'You need to join a room and take a pseudo'}<br/>
-              {'(The room is going to be created if doesn\'t exist)'}<br/></p>}
-
-
-            {error.type === 'PLAYER_ALREADY_IN_ROOM' &&
-            <p className={'font_red'}>{'A player as already your pseudo in this room'}<br/></p>}
-
-            {error.type && error.type === 'ROOM_ALREADY_IN_GAME' &&
-            <p className={'font_red'}>{'Others players are still playing'}<br/></p>}
-
-            {error.type && error.type === 'PLAYER_NOT_MASTER' &&
-            <p className={'font_red'}>{'You need to be master for start the game'}<br/></p>}
-
-            {error.type && error.type !== 'PLAYER_ALREADY_IN_ROOM' &&
-            error.type !== 'PLAYER_NOT_MASTER' &&
-            error.type !== 'ROOM_ALREADY_IN_GAME' &&
-            <p className={'font_red'}>{'ERROR: ' + error.type}<br/></p>}
+            </div>
+            }
 
           </div>
         </div>

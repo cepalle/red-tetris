@@ -1,3 +1,4 @@
+// url source of true playerName roomName ?
 const urlGetPlayerName = (): string | undefined => {
   const firstSplit = window.location.href.split('[');
   if (firstSplit.length <= 1) {

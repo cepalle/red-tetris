@@ -4,14 +4,14 @@ import {urlGetPlayerName, urlGetRoomName} from '@src/client/util/url-handler';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
 
 interface IState {
-  readonly room: IRoomState | undefined,
+  readonly roomState: IRoomState | undefined,
   readonly playerName: string | undefined,
   readonly roomName: string | undefined,
   readonly roomsPlayersName: IRoomPlayersName[],
 }
 
 const initialState: IState = {
-  room: undefined,
+  roomState: undefined,
   playerName: urlGetPlayerName(),
   roomName: urlGetRoomName(),
   roomsPlayersName: [],

@@ -22,6 +22,8 @@ const socketEmit = (ev: string, ag: any) => socket.emit(ev, ag);
 
 const socketIsConnect = () => socket.connected;
 
+// TODO on connect send playerName roomName (get in url)
+
 // PACKET
 
 /**
@@ -395,7 +397,7 @@ socket.on(socketDefs.GENFLOW_RESPONSE, cbGenFlowResponse(store.dispatch));
 //----------------------------------------------------------------------------
 
 /**
- * Used to tell to the backend when a player want to join a room.
+ * Used to tell to the backend when a player want to join a roomState.
  * Data to sent: {roomName, playerName}
  */
 const factEmitJoinRoom = (
@@ -414,7 +416,7 @@ const factEmitJoinRoom = (
 const emitJoinRoom = factEmitJoinRoom(socketEmit);
 
 /**
- * Used to tell to the backend that the room enter in a no-waiting getState and no player can join the room after.
+ * Used to tell to the backend that the roomState enter in a no-waiting getState and no player can join the roomState after.
  * Data to sent: {roomName, params}
  */
 const factEmitStartPlaying = (
@@ -496,7 +498,7 @@ const factEmitTetrisPlacePiece = (
 const emitTetrisPlacePiece = factEmitTetrisPlacePiece(socketEmit);
 
 /**
- * Used to ask the server the list of room
+ * Used to ask the server the list of roomState
  */
 const factEmitHome = (
   emit: (ev: string, ag: any) => void,
