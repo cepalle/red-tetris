@@ -13,8 +13,9 @@ import {
 } from '../actions/action-creators';
 import {store} from '@src/client/middlewares/store';
 import io from 'socket.io-client';
-import {IGame, IPiece} from '@src/client/reducers/reducer';
+import {IError, IGame, IParams, IPiece, IPlayerState} from '@src/client/reducers/reducer';
 import {Dispatch} from 'redux';
+import {ENUM_PIECES} from '@src/client/util/grid-piece-handler';
 
 const socket = io.connect('http://localhost:4433');
 const socketEmit = (ev: string, ag: any) => socket.emit(ev, ag);
@@ -29,7 +30,7 @@ const socketIsConnect = () => socket.connected;
 
 interface IPacketPlayerJoin {
   game: IGame,
-  player: any
+  player: IPlayerState
 }
 
 const cbPacketPlayerJoin = (dispatch: Dispatch<ReduxAction>) => (arg: IPacketPlayerJoin) => {
@@ -48,7 +49,7 @@ socket.on(socketDefs.PACKET_PLAYER_JOIN, cbPacketPlayerJoin(store.dispatch));
  */
 
 interface IPacketPlayerQuit {
-  player: any,
+  player: IPlayerState,
   game: IGame
 }
 
@@ -68,7 +69,7 @@ socket.on(socketDefs.PACKET_PLAYER_QUIT, cbPacketPlayerQuit(store.dispatch));
  */
 
 interface IPacketPlayerPromoted {
-  player: any,
+  player: IPlayerState,
   game: IGame
 }
 
@@ -88,7 +89,7 @@ socket.on(socketDefs.PACKET_PLAYER_PROMOTED, cbPacketPlayerPromoted(store.dispat
  */
 
 interface IPacketPlayerLose {
-  player: any,
+  player: IPlayerState,
   game: IGame
 }
 
@@ -149,7 +150,7 @@ socket.on(socketDefs.PACKET_GENFLOW, cbPacketGenFlow(store.dispatch));
 interface IPacketPlayerCompleteLine {
   game: IGame,
   amount: number,
-  player: any,
+  player: IPlayerState,
 }
 
 const cbPacketPlayerCompleteLine = (dispatch: Dispatch<ReduxAction>) => (arg: IPacketPlayerCompleteLine) => {
@@ -164,20 +165,28 @@ const cbPacketPlayerCompleteLine = (dispatch: Dispatch<ReduxAction>) => (arg: IP
     dispatch(ADD_WALL_LINE(amount));
   }
 };
-socket.on(socketDefs.PACKET_GENFLOW, arg => cbPacketGenFlow(arg, store.dispatch));
+socket.on(socketDefs.PACKET_GENFLOW, cbPacketGenFlow(store.dispatch));
 
 /**
  * Request: PACKET_TETRIS_PLACE_PIECE
  * Data recv: {grid, playerName} gridAndPlayer
  */
-const cbPacketTetrisPlacePiece = (dispatch: Dispatch<ReduxAction>) => ({grid, playerName}, dispatch) => {
+
+interface IPacketTetrisPlacePiece {
+  grid: ENUM_PIECES[][],
+  playerName: string,
+}
+
+const cbPacketTetrisPlacePiece = (dispatch: Dispatch<ReduxAction>) => (arg: IPacketTetrisPlacePiece) => {
   loggerSock(['recv PACKET_TETRIS_PLACE_PIECE']);
+
+  const {grid, playerName} = arg;
 
   if (grid && playerName) {
     dispatch(UPDATE_GRID(grid, playerName));
   }
 };
-socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(arg, store.dispatch));
+socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, cbPacketTetrisPlacePiece(store.dispatch));
 
 //----------------------------------------------------------------------------
 //
@@ -187,10 +196,20 @@ socket.on(socketDefs.PACKET_TETRIS_PLACE_PIECE, arg => cbPacketTetrisPlacePiece(
 
 /**
  * Request: JOIN_GAME_RESPONSE
- * Data recv: {error: {type, message}} || {success, game, user}
  */
-const cbJoinRoomResponse = (dispatch: Dispatch<ReduxAction>) => ({error, game}, dispatch) => {
+
+interface IJoinRoomResponse {
+  error?: IError,
+
+  success?: any,
+  game?: IGame,
+  user?: any,
+}
+
+const cbJoinRoomResponse = (dispatch: Dispatch<ReduxAction>) => (arg: IJoinRoomResponse) => {
   loggerSock(['recv JOIN_GAME_RESPONSE']);
+
+  const {error, game} = arg;
 
   if (error) {
     dispatch(ADD_ERROR(error));
@@ -199,27 +218,43 @@ const cbJoinRoomResponse = (dispatch: Dispatch<ReduxAction>) => ({error, game}, 
     dispatch(UPDATE_PLAYERS(game.players));
   }
 };
-socket.on(socketDefs.JOIN_GAME_RESPONSE, arg => cbJoinRoomResponse(arg, store.dispatch));
+socket.on(socketDefs.JOIN_GAME_RESPONSE, cbJoinRoomResponse(store.dispatch));
 
 /**
  * Request: HOME_RESPONSE
- * Data recv: {games}
  */
-const cbHomeResponse = (dispatch: Dispatch<ReduxAction>) => ({games}, dispatch) => {
+
+interface IHomeResponse {
+  games: any, // TODO check
+}
+
+const cbHomeResponse = (dispatch: Dispatch<ReduxAction>) => (arg: IHomeResponse) => {
   loggerSock(['recv HOME_RESPONSE']);
+
+  const {games} = arg;
 
   if (games && games.rooms) {
     dispatch(UPDATE_GAMES(games.rooms));
   }
 };
-socket.on(socketDefs.HOME_RESPONSE, arg => cbHomeResponse(arg, store.dispatch));
+socket.on(socketDefs.HOME_RESPONSE, cbHomeResponse(store.dispatch));
 
 /**
  * Request: QUIT_ROOM_RESPONSE
- * Data recv: {error: {type, message}} || {success, game, user}
  */
-const cbQuitRoomResponse = (dispatch: Dispatch<ReduxAction>) => ({error, game}, dispatch) => {
+
+interface IQuitRoomResponse {
+  error?: IError,
+
+  success?: any,
+  game?: IGame,
+  user?: any,
+}
+
+const cbQuitRoomResponse = (dispatch: Dispatch<ReduxAction>) => (arg: IQuitRoomResponse) => {
   loggerSock(['recv QUIT_ROOM_RESPONSE']);
+
+  const {error, game} = arg;
 
   if (error) {
     dispatch(ADD_ERROR(error));
@@ -228,64 +263,99 @@ const cbQuitRoomResponse = (dispatch: Dispatch<ReduxAction>) => ({error, game}, 
     dispatch(UPDATE_PLAYERS(game.players));
   }
 };
-socket.on(socketDefs.QUIT_ROOM_RESPONSE, arg => cbQuitRoomResponse(arg, store.dispatch));
+socket.on(socketDefs.QUIT_ROOM_RESPONSE, cbQuitRoomResponse(store.dispatch));
 
 /**
  * Request: START_PLAYING_RESPONSE
  * Data recv: {error: {type, message}} || {success}
  */
-const cbStartPlayingResponse = (dispatch: Dispatch<ReduxAction>) => ({error}, dispatch) => {
+
+interface IStartPlayerResponse {
+  error?: IError,
+
+  success?: any,
+}
+
+const cbStartPlayingResponse = (dispatch: Dispatch<ReduxAction>) => (arg: IStartPlayerResponse) => {
   loggerSock(['recv START_PLAYING_RESPONSE']);
+
+  const {error} = arg;
 
   if (error) {
     dispatch(ADD_ERROR(error));
   }
 };
-socket.on(socketDefs.START_PLAYING_RESPONSE, arg => cbStartPlayingResponse(arg, store.dispatch));
+socket.on(socketDefs.START_PLAYING_RESPONSE, cbStartPlayingResponse(store.dispatch));
 
 /**
  * Request: CONNECTION_RESPONSE
- * Data recv: {}
  */
-const cbConnectionResponse = (dispatch: Dispatch<ReduxAction>) => (_, dispatch) => {
+const cbConnectionResponse = (dispatch: Dispatch<ReduxAction>) => () => {
   loggerSock(['recv CONNECTION_RESPONSE']);
 
   dispatch(CONNECTION_RESPONSE());
 };
-socket.on(socketDefs.CONNECTION_RESPONSE, arg => cbConnectionResponse(arg, store.dispatch));
+socket.on(socketDefs.CONNECTION_RESPONSE, cbConnectionResponse(store.dispatch));
 
 /**
  * Request: TETRIS_PLACE_PIECE_RESPONSE
  * Data recv: {error: {type, message}} || {success}
  */
-const cbTetrisPlacePieceResponse = (dispatch: Dispatch<ReduxAction>) => ({error}, dispatch) => {
+
+interface ITetrisPlacePieceResponse {
+  error?: IError,
+
+  success?: any,
+}
+
+const cbTetrisPlacePieceResponse = (dispatch: Dispatch<ReduxAction>) => (arg: ITetrisPlacePieceResponse) => {
   loggerSock(['recv TETRIS_PLACE_PIECE_RESPONSE']);
+
+  const {error} = arg;
 
   if (error) {
     dispatch(ADD_ERROR(error));
   }
 };
-socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, arg => cbTetrisPlacePieceResponse(arg, store.dispatch));
+socket.on(socketDefs.TETRIS_PLACE_PIECE_RESPONSE, cbTetrisPlacePieceResponse(store.dispatch));
 
 /**
  * Request: PLAYER_LOOSE_RESPONSE
- * Data recv: {}
  */
-const cbPlayerLooseResponse = (dispatch: Dispatch<ReduxAction>) => ({error}, dispatch) => {
+
+interface IPlayerLooseResponse {
+  error?: IError,
+
+  success?: any,
+}
+
+const cbPlayerLooseResponse = (dispatch: Dispatch<ReduxAction>) => (arg: IPlayerLooseResponse) => {
   loggerSock(['recv PLAYER_LOOSE_RESPONSE']);
+
+  const {error} = arg;
 
   if (error) {
     dispatch(ADD_ERROR(error));
   }
 };
-socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, arg => cbPlayerLooseResponse(arg, store.dispatch));
+socket.on(socketDefs.PLAYER_LOOSE_RESPONSE, cbPlayerLooseResponse(store.dispatch));
 
 /**
  * Request: PLAYER_COMPLETE_LINE_RESPONSE
  * Data recv: {}
  */
-const cbPlayerCompleteLineResponse = (dispatch: Dispatch<ReduxAction>) => ({error, game}, dispatch) => {
+
+interface IPlayerCompleteLineResponse {
+  error?: IError,
+
+  success?: any,
+  game?: IGame,
+}
+
+const cbPlayerCompleteLineResponse = (dispatch: Dispatch<ReduxAction>) => (arg: IPlayerCompleteLineResponse) => {
   loggerSock(['recv PLAYER_COMPLETE_LINE_RESPONSE']);
+
+  const {error, game} = arg;
 
   if (error) {
     dispatch(ADD_ERROR(error));
@@ -294,20 +364,29 @@ const cbPlayerCompleteLineResponse = (dispatch: Dispatch<ReduxAction>) => ({erro
     dispatch(UPDATE_PLAYERS(game.players));
   }
 };
-socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, arg => cbPlayerCompleteLineResponse(arg, store.dispatch));
+socket.on(socketDefs.PLAYER_COMPLETE_LINE_RESPONSE, cbPlayerCompleteLineResponse(store.dispatch));
 
 /**
  * Request: GENFLOW_RESPONSE
  * Data recv: {}
  */
-const cbGenFlowResponse = (dispatch: Dispatch<ReduxAction>) => ({error}, dispatch) => {
+
+interface IGenFlowResponse {
+  error?: IError,
+
+  success?: any,
+}
+
+const cbGenFlowResponse = (dispatch: Dispatch<ReduxAction>) => (arg: IGenFlowResponse) => {
   loggerSock(['recv GENFLOW_RESPONSE']);
+
+  const {error} = arg;
 
   if (error) {
     dispatch(ADD_ERROR(error));
   }
 };
-socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg, store.dispatch));
+socket.on(socketDefs.GENFLOW_RESPONSE, cbGenFlowResponse(store.dispatch));
 
 //----------------------------------------------------------------------------
 //
@@ -319,12 +398,12 @@ socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg, store.dispa
  * Used to tell to the backend when a player want to join a room.
  * Data to sent: {roomName, playerName}
  */
-const emitJoinRoom = (
+const factEmitJoinRoom = (
   emit: (ev: string, ag: any) => void,
 ) => (
   roomName: string,
   playerName: string,
-) => {
+): void => {
   loggerSock(['emit JOIN_GAME']);
 
   emit(socketDefs.JOIN_GAME, {
@@ -332,43 +411,47 @@ const emitJoinRoom = (
     playerName: playerName,
   });
 };
+const emitJoinRoom = factEmitJoinRoom(socketEmit);
 
 /**
  * Used to tell to the backend that the room enter in a no-waiting getState and no player can join the room after.
  * Data to sent: {roomName, params}
  */
-const emitStartPlaying = (
+const factEmitStartPlaying = (
   emit: (ev: string, ag: any) => void,
-) => (roomName, params, emit) => {
+) => (roomName: string, params: IParams): void => {
   loggerSock(['emit START_PLAYING', params]);
 
+  // TODO use type
   emit(socketDefs.START_PLAYING, {
     roomName: roomName,
     params: params,
   });
 };
+const emitStartPlaying = factEmitStartPlaying(socketEmit);
 
 /**
  * Used to ask to the server new pieces
  * Data to sent: {roomName}
  */
-const emitGenFlow = (
+const factEmitGenFlow = (
   emit: (ev: string, ag: any) => void,
-) => (roomName, emit) => {
+) => (roomName: string): void => {
   loggerSock(['emit GENFLOW']);
 
   emit(socketDefs.GENFLOW, {
     roomName: roomName,
   });
 };
+const emitGenFlow = factEmitGenFlow(socketEmit);
 
 /**
  * Used to say to others player that you loose
  * Data to sent: {roomName, playerName}
  */
-const emitPlayerLoose = (
+const factEmitPlayerLoose = (
   emit: (ev: string, ag: any) => void,
-) => (roomName, playerName, emit) => {
+) => (roomName: string, playerName: string): void => {
   loggerSock(['emit PLAYER_LOOSE']);
 
   emit(socketDefs.PLAYER_LOOSE, {
@@ -376,14 +459,15 @@ const emitPlayerLoose = (
     playerName: playerName,
   });
 };
+const emitPlayerLoose = factEmitPlayerLoose(socketEmit);
 
 /**
  * Used to say to others player that you completed a line
  * Data to sent: {roomName, playerName}
  */
-const emitPlayerCompleteLine = (
+const factEmitPlayerCompleteLine = (
   emit: (ev: string, ag: any) => void,
-) => (roomName, playerName, amount, emit) => {
+) => (roomName: string, playerName: string, amount: number): void => {
   loggerSock(['emit PLAYER_COMPLETE_LINE']);
 
   emit(socketDefs.PLAYER_COMPLETE_LINE, {
@@ -392,14 +476,15 @@ const emitPlayerCompleteLine = (
     amount: amount,
   });
 };
+const emitPlayerCompleteLine = factEmitPlayerCompleteLine(socketEmit);
 
 /**
  * Used to tell to other clients that a player has placed a piece
  * Data to sent: {grid, playerName}
  */
-const emitTetrisPlacePiece = (
+const factEmitTetrisPlacePiece = (
   emit: (ev: string, ag: any) => void,
-) => (roomName, playerName, grid, emit) => {
+) => (roomName: string, playerName: string, grid: ENUM_PIECES[][]): void => {
   loggerSock(['emit TETRIS_PLACE_PIECE']);
 
   emit(socketDefs.TETRIS_PLACE_PIECE, {
@@ -408,25 +493,27 @@ const emitTetrisPlacePiece = (
     playerName: playerName,
   });
 };
+const emitTetrisPlacePiece = factEmitTetrisPlacePiece(socketEmit);
 
 /**
  * Used to ask the server the list of room
  */
-const emitHome = (
+const factEmitHome = (
   emit: (ev: string, ag: any) => void,
-) => (emit) => {
+) => (): void => {
   loggerSock(['emit HOME']);
 
-  emit(socketDefs.HOME);
+  emit(socketDefs.HOME, {});
 };
+const emitHome = factEmitHome(socketEmit);
 
 /**
  * Used to say to others player that you loose
  * Data to sent: {roomName, playerName}
  */
-const emitQuitGame = (
+const factEmitQuitGame = (
   emit: (ev: string, ag: any) => void,
-) => (roomName, playerName, emit) => {
+) => (roomName: string, playerName: string): void => {
   loggerSock(['emit QUIT_GAME']);
 
   emit(socketDefs.QUIT_GAME, {
@@ -434,6 +521,7 @@ const emitQuitGame = (
     playerName: playerName,
   });
 };
+const emitQuitGame = factEmitQuitGame(socketEmit);
 
 export {
   emitJoinRoom,
