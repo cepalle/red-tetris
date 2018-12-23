@@ -1,71 +1,65 @@
-import Room from "./Game";
+import {Game} from './Game';
 
 class GameManager {
 
+  rooms: Game[];
+
   constructor() {
-    /** @type {Array<Game>} */
     this.rooms = [];
   }
 
   /**
    * Get game from a name,
-   * @param {string} roomName
-   * @returns {Game}
    */
-  getGame(roomName) {
+  getGame(roomName: string): Game | undefined {
     return this.rooms.find(e => e.name === roomName);
   }
 
   /**
    * Get a game by id of socket.io
-   * @param {string} id
-   * @returns {Game | undefined}
    */
-  getGameById(id) {
+  getGameById(id: string): Game | undefined {
     return this.rooms.find(e => {
-      return e.players.some(e => e.id === id);
-    })
+      return e.players.some(el => el.id === id);
+    });
   }
 
   /**
    * Return true if a game with that name exist or false else
-   * @param {string} roomName
-   * @returns {boolean}
    */
-  hasGame(roomName) {
-    if (typeof roomName !== "string")
+  hasGame(roomName: string): boolean {
+    if (typeof roomName !== 'string') {
       return false;
+    }
     return this.getGame(roomName) !== undefined;
   }
 
   /**
    * Add a game to the GameManager
-   * @param roomName
-   * @returns {Game | boolean}
    */
-  addGame(roomName) {
-    if (this.getGame(roomName) !== undefined)
-      return false;
-    const room = new Room(roomName);
+  addGame(roomName: string): Game | undefined {
+    if (this.getGame(roomName) !== undefined) {
+      return undefined;
+    }
+    const room = new Game(roomName);
     this.rooms.push(room);
     return room;
   }
 
   /**
    * Destroy a game with name roomName
-   * @param {string} roomName
-   * @returns {boolean}
    */
-  deleteGame(roomName) {
-    if (this.getGame(roomName) === undefined)
+  deleteGame(roomName: string): boolean {
+    if (this.getGame(roomName) === undefined) {
       return false;
+    }
     const room = this.getGame(roomName);
-    this.rooms.removeObj(room);
+    this.rooms.filter((r) => r === room);
     return true;
   }
 
 }
 
-const rm =  new GameManager();
+const roomManager = new GameManager();
 
-export default rm;
+export {roomManager};

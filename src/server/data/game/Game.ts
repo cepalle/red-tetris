@@ -1,23 +1,22 @@
-import Player from "../player/Player";
-import PacketSender from "../../packet/PacketSender";
-import RoomManager from "./GameManager";
-
-class Params {
-  constructor(addWallLine = true, groundResizer = false) {
-    this.addWallLine = addWallLine;
-    this.groundResizer = groundResizer;
-  }
-}
+import {Player} from '@src/server/data/player/Player';
+import {PacketSender} from '@src/server/packet/PacketSender';
+import {IParams} from '@src/common/IType';
+import {roomManager} from '@src/server/data/game/GameManager';
 
 class Game {
+  players: Player[];
+  name: string;
+  waiting: boolean;
+  params: IParams;
 
-  constructor(name) {
-    /** @type {Array<Player>} */
+  constructor(name: string) {
     this.players = [];
     this.name = name;
     this.waiting = true;
-    /** @type {Params} */
-    this.params = new Params();
+    this.params = {
+      addWallLine: true,
+      groundResizer: true,
+    };
   }
 
   /**
@@ -25,12 +24,12 @@ class Game {
    * @param {string} playerName
    * @param {string} id
    * @param {boolean} [master]
-   * @param {boolean} spectator
    * @return {Player | undefined}
    */
-  addPlayer(playerName, id, master = false) {
-    if (!playerName || !id)
+  addPlayer(playerName: string, id: string, master: boolean = false): Player | undefined {
+    if (!playerName || !id) {
       return undefined;
+    }
     if (!this.containPlayer(playerName) && !this.containId(id)) {
       const player = new Player(playerName, id, Date.now(), master);
       player.spectator = !this.waiting;
@@ -40,60 +39,55 @@ class Game {
 
       return player;
     }
+    return undefined;
   }
 
   /**
    * Remove an player by his playerName.
-   * @param {string} playerName
-   * @return {Player}
    */
-  removePlayer(playerName) {
+  removePlayer(playerName: string): Player | undefined {
     const player = this.players.find(e => e.playerName === playerName);
     if (player) {
-      this.players.removeObj(player);
-      if (this.players.filter(e => e.spectator).length === this.players.length)
+      this.players.filter((p) => p === player);
+      if (this.players.filter(e => e.spectator).length === this.players.length) {
         this.setWaiting(true);
-      if (player.master)
+      }
+      if (player.master) {
         this.promoteNewPlayer();
+      }
 
       PacketSender.sendPlayerQuit(player, this);
 
       return player;
     }
+    return undefined;
   }
 
   /**
    * Get an player in the room by his id.
-   * @param {string} id
-   * @returns {Player | undefined}
    */
-  getPlayer(id) {
+  getPlayer(id: string): Player | undefined {
     return this.players.find(e => e.id === id);
   }
 
   /**
    * Return true if this.players contain player with id.
-   * @param {string} id
-   * @returns {boolean}
    */
-  containId(id) {
+  containId(id: string): boolean {
     return this.players.find(e => e.id === id) !== undefined;
   }
 
   /**
    * Return true if this.players contain player with playerName.
-   * @param {string} playerName
-   * @returns {boolean}
    */
-  containPlayer(playerName) {
+  containPlayer(playerName: string): boolean {
     return this.players.find(e => e.playerName === playerName) !== undefined;
   }
 
   /**
    * Check if a player is alone and he has lose or on multiples players, there is only player that not has loose.
-   * @return {boolean}
    */
-  gameHasEnd() {
+  gameHasEnd(): boolean {
     if (this.players.filter(p => !p.spectator).length === 1 && this.players[0].loose ||
       this.players.length > 1 && this.players.filter(p => !p.loose && !p.spectator).length === 1) {
       this.players.forEach(e => e.loose = false);
@@ -103,27 +97,29 @@ class Game {
     return false;
   }
 
-
   /**
    * Set params with custom values
    * @param {object} params
    */
-  setParams(params) {
-    if (params.groundResizer !== undefined && typeof params.groundResizer === "boolean")
-      this.params.groundResizer = params.groundResizer;
-    if (params.addWallLine !== undefined && typeof params.groundResizer === "boolean")
-      this.params.ADD_WALL_LINE = params.addWallLine;
+  setParams(params: IParams) {
+    this.params = {
+      ...this.params,
+      groundResizer: params.groundResizer,
+      addWallLine: params.addWallLine,
+    };
   }
-
 
   /**
    * Set the current getState of the room to true or false, if getState is true player can join else player can't join.
-   * @param {boolean} stateWaiting
    */
-  setWaiting(stateWaiting) {
+  setWaiting(stateWaiting: boolean): void {
     this.waiting = stateWaiting;
     if (!this.waiting) {
-      this.players.forEach(e => {e.lines = 0 ; e.score = 0; e.spectator = false;});
+      this.players.forEach(e => {
+        e.lines = 0;
+        e.score = 0;
+        e.spectator = false;
+      });
       PacketSender.sendGameStart(this);
     }
   }
@@ -133,10 +129,11 @@ class Game {
    */
   promoteNewPlayer() {
     if (this.players.length === 0) {
-      RoomManager.deleteGame(this.name);
-    }
-    else if (!this.players.some(e => e.master)) {
-      const promotedPlayer = this.players.sort((a, b) => a.order > b.order)[0];
+      roomManager.deleteGame(this.name);
+    } else if (!this.players.some(e => e.master)) {
+      const promotedPlayer = this.players.sort((a, b) =>
+        a.order > b.order ? 1 : -1,
+      )[0];
       promotedPlayer.master = true;
       PacketSender.sendPlayerPromoted(promotedPlayer, this);
     }
@@ -144,11 +141,10 @@ class Game {
 
   /**
    * Return true if players can join, false else.
-   * @returns {boolean}
    */
-  canJoin() {
+  canJoin(): boolean {
     return this.waiting;
   }
 }
 
-export default Game;
+export {Game};

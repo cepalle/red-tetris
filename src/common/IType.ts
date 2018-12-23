@@ -33,7 +33,8 @@ interface IPlayerState {
   readonly loose: boolean,
   readonly score: number,
   readonly lines: number,
-  readonly spectator: boolean
+  readonly spectator: boolean,
+  readonly id: string,
 }
 
 interface IPos {

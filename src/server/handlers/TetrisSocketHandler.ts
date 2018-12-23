@@ -1,44 +1,40 @@
-import {Pieces} from "../../common/pieces";
-import SocketHandler from "./SocketHandler";
-import GameManager from "../data/game/GameManager";
-import PacketSender from "../packet/PacketSender";
-import socketDefs from "../../common/socket-definitions";
-import errorsDefs from "../../common/errors-definitions";
-import Piece from "../data/piece/Piece";
+import GameManager from '../data/game/GameManager';
+import {Socket} from 'socket.io';
+import {ENUM_SOCKET_DEF} from '@src/common/socket-definitions';
+import {ENUM_ERROR} from '@src/common/errors-definitions';
+import {ENUM_PIECES} from '@src/common/IType';
+import {SocketHandler} from '@src/server/handlers/SocketHandler';
+import {PacketSender} from '@src/server/packet/PacketSender';
+import {Piece} from '@src/server/data/piece/Piece';
 
-const LINE_SCORE = [40,100,300,1200,2500,3500];
+const LINE_SCORE = [40, 100, 300, 1200, 2500, 3500];
 
 class TetrisSocketHandler extends SocketHandler {
 
-  constructor(socket) {
+  constructor(socket: Socket) {
     super(socket);
   }
 
   /**
    * Call when a player place a piece.
-   * @param {Array<Array<number>>} data.grid
    */
-  placePiece(data, response = socketDefs.TETRIS_PLACE_PIECE_RESPONSE) {
-    if (this.checkData("grid", data, response)) {
+  placePiece(data: { grid: ENUM_PIECES[][] }, response: string = ENUM_SOCKET_DEF.TETRIS_PLACE_PIECE_RESPONSE): void {
+    if (this.checkData('grid', data, response)) {
       const game = GameManager.getGameById(this.id);
       if (game) {
         const player = game.getPlayer(this.id);
         PacketSender.sendPlayerPlacePiece(game, data.grid, player);
+      } else {
+        this.socket.emit(response, {error: ENUM_ERROR.ROOM_NOT_EXIST});
       }
-      else
-        this.socket.emit(response, {error: errorsDefs.ROOM_NOT_EXIST});
     }
   }
 
   /**
    * This will generate 10 pieces to all clients.
-   * @param {string} data
-   * @param {string} data.roomName
-   * @param response
    */
-  genFlow(data, response = socketDefs.GENFLOW_RESPONSE) {
-    if (this.gameIsValid(data, response))
-    {
+  genFlow(data: any, response: string = ENUM_SOCKET_DEF.GENFLOW_RESPONSE): void {
+    if (this.gameIsValid(data, response)) {
       const tetrisPieces = Piece.generatePieces(10);
       this.socket.emit(response, {success: true});
       PacketSender.sendGenFlow(GameManager.getGame(data.roomName), tetrisPieces);
@@ -47,13 +43,9 @@ class TetrisSocketHandler extends SocketHandler {
 
   /**
    * Send to all player that a player has loose.
-   * @param {Object} data
-   * @param {string} data.roomName
-   * @param {string} response
    */
-  playerLoose(data, response = socketDefs.PLAYER_LOOSE_RESPONSE) {
-    if (this.playerCanPlay(data, response))
-    {
+  playerLoose(data: any, response: string = ENUM_SOCKET_DEF.PLAYER_LOOSE_RESPONSE): void {
+    if (this.playerCanPlay(data, response)) {
       const game = GameManager.getGame(data.roomName);
       const player = game.getPlayer(this.id);
       player.loose = true;
@@ -65,14 +57,9 @@ class TetrisSocketHandler extends SocketHandler {
 
   /**
    * Send to all player that a player has complete a line.
-   * @param {Object} data
-   * @param {string} data.roomName
-   * @param {number} data.amount
-   * @param {string} response
    */
-  playerCompleteLine(data, response = socketDefs.PLAYER_COMPLETE_LINE_RESPONSE) {
-    if (this.playerCanPlay(data, response))
-    {
+  playerCompleteLine(data: any, response: string = ENUM_SOCKET_DEF.PLAYER_COMPLETE_LINE_RESPONSE) {
+    if (this.playerCanPlay(data, response)) {
       const game = GameManager.getGame(data.roomName);
       const player = game.getPlayer(this.id);
       player.lines += data.amount || 1;
@@ -83,4 +70,4 @@ class TetrisSocketHandler extends SocketHandler {
   }
 }
 
-export default TetrisSocketHandler;
+export {TetrisSocketHandler};

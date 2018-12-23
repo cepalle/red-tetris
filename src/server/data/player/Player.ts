@@ -1,13 +1,14 @@
 class Player {
-  /**
-   * Constructor of Player class
-   * @param {Socket} socket
-   * @param {string} playerName
-   * @param {string} id
-   * @param {number} order
-   * @param {boolean} isMaster
-   */
-  constructor(playerName, id, order, isMaster = false) {
+  playerName: string;
+  id: string;
+  order: number;
+  master: boolean;
+  loose: boolean;
+  score: number;
+  lines: number;
+  spectator: boolean;
+
+  constructor(playerName: string, id: string, order: number, isMaster: boolean = false) {
     this.playerName = playerName;
     this.id = id;
     this.order = order;
@@ -19,4 +20,4 @@ class Player {
   }
 }
 
-export default Player;
+export {Player};

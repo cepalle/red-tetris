@@ -1,56 +1,49 @@
-import {GRID_HEIGHT, GRID_WIDTH} from "../../../common/grid";
-import {getPieceInfo, Pieces} from "../../../common/pieces";
+import {IPos} from '@src/common/IType';
+import {getPieceInfo} from '@src/common/pieces';
+import {GRID_WIDTH} from '@src/common/grid';
 
 class Piece {
-  constructor(num, pos, rot) {
+  num: number;
+  rot: number;
+  pos: IPos;
+
+  constructor(num: number, pos: IPos, rot: number) {
     this.num = num;
     this.rot = rot;
     this.pos = pos;
   }
 
-  static randNumber(min, len) {
+  static randNumber(min: number, len: number): number {
     return Math.floor(Math.random() * len) + min;
   }
 
   /**
    * Generate a random piece
-   * @return {Piece}
    */
-  static generatePiece() {
+  static generatePiece(): Piece {
     const num = Piece.randNumber(1, 7);
     const rot = Piece.randNumber(0, 4);
     const mask = getPieceInfo(num, rot);
     const pos = {
       x: Piece.randNumber(mask.x, GRID_WIDTH - mask.width + 1),
-      y: 0
+      y: 0,
     };
     return new Piece(num, pos, rot);
   }
 
   /**
    * Generate n pieces
-   * @param {number} n
-   * @return {Array<Piece>}
    */
-  static generatePieces(n) {
+  static generatePieces(n: number): Piece[] {
     const pieces = [];
-    let lastPiece = undefined;
 
     for (let i = 0; i < n; i++) {
       const piece = Piece.generatePiece();
-      if (!lastPiece || canPlace(lastPiece, piece.num)) {
-        lastPiece = piece;
-        pieces.push(piece);
-      }
-      else i--;
-    }
-    function canPlace(lastPiece, num) {
-      return !(lastPiece === num || Piece.randNumber(1, 10) > 5);
-
+      pieces.push(piece);
     }
 
     return pieces;
   }
 }
 
-export default Piece
+export {Piece};

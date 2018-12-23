@@ -1,13 +1,15 @@
-import SocketHandler from "./SocketHandler";
-import socketDefs from "../../common/socket-definitions";
-import GameManager from "../data/game/GameManager"
+import {SocketHandler} from '@src/server/handlers/SocketHandler';
+import {ENUM_SOCKET_DEF} from '@src/common/socket-definitions';
+import {Socket} from 'socket.io';
+import {roomManager} from '@src/server/data/game/GameManager';
+
 class GlobalSocketHandler extends SocketHandler {
 
   /**
    * Constructor of RoomSocketHandler class
    * @param socket
    */
-  constructor(socket) {
+  constructor(socket: Socket) {
     super(socket);
   }
 
@@ -15,13 +17,13 @@ class GlobalSocketHandler extends SocketHandler {
    * This is used when a client join the socket
    * @param {string} response
    */
-  connection(response = socketDefs.CONNECTION_RESPONSE) {
+  connection(response: string = ENUM_SOCKET_DEF.CONNECTION_RESPONSE) {
     this.socket.emit(response);
   }
 
-  home(response = socketDefs.HOME_RESPONSE) {
-    this.socket.emit(response, {games: GameManager})
+  home(response: string = ENUM_SOCKET_DEF.HOME_RESPONSE) {
+    this.socket.emit(response, {games: roomManager});
   }
 }
 
-export default GlobalSocketHandler;
+export {GlobalSocketHandler};

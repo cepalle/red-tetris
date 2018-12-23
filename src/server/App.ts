@@ -1,66 +1,71 @@
-import "./util/ArraysUtil";
-import express from "express";
-import RoomSocketHandler from "./handlers/RoomSocketHandler";
-import GameManager from "./data/game/GameManager";
-import GlobalSocketHandler from "./handlers/GlobalSocketHandler";
-import TetrisSocketHandler from "./handlers/TetrisSocketHandler";
-import SocketMap from "./data/SocketMap";
-import socketDefs from "../common/socket-definitions";
-import https from "https";
-import {Server} from "http";
-import * as fs from "fs";
+import './util/ArraysUtil';
+import express from 'express';
+import https from 'https';
+import {Server} from 'http';
+import * as fs from 'fs';
+import {ENUM_SOCKET_DEF} from '@src/common/socket-definitions';
+import {Socket} from 'socket.io';
+import {RoomSocketHandler} from '@src/server/handlers/RoomSocketHandler';
+import {GlobalSocketHandler} from '@src/server/handlers/GlobalSocketHandler';
+import {TetrisSocketHandler} from '@src/server/handlers/TetrisSocketHandler';
+import {socketMap} from '@src/server/data/SocketMap';
+import {roomManager} from '@src/server/data/game/GameManager';
 
 class App {
 
-  handleClient(socket) {
+  handleClient(socket: Socket): void {
 
     const roomSocketHandler = new RoomSocketHandler(socket);
     const globalSocketHandler = new GlobalSocketHandler(socket);
     const tetrisSocketHandler = new TetrisSocketHandler(socket);
 
-    SocketMap.sockets.set(socket.id, socket);
+    socketMap.sockets.set(socket.id, socket);
 
     globalSocketHandler.connection();
 
-    socket.on(socketDefs.HOME, (d) => globalSocketHandler.home());
-    socket.on(socketDefs.JOIN_GAME, (d) => roomSocketHandler.joinGame(d));
-    socket.on(socketDefs.QUIT_GAME, (d) => roomSocketHandler.quitGame(d));
-    socket.on(socketDefs.START_PLAYING, (d) => roomSocketHandler.startPlaying(d));
-    socket.on(socketDefs.GENFLOW, (d) => tetrisSocketHandler.genFlow(d));
-    socket.on(socketDefs.TETRIS_PLACE_PIECE, (d) => tetrisSocketHandler.placePiece(d));
-    socket.on(socketDefs.PLAYER_LOOSE, (d) => tetrisSocketHandler.playerLoose(d));
-    socket.on(socketDefs.PLAYER_COMPLETE_LINE, (d) => tetrisSocketHandler.playerCompleteLine(d));
+    socket.on(ENUM_SOCKET_DEF.HOME, () => globalSocketHandler.home());
+    socket.on(ENUM_SOCKET_DEF.JOIN_GAME, (d) => roomSocketHandler.joinGame(d));
+    socket.on(ENUM_SOCKET_DEF.QUIT_GAME, (d) => roomSocketHandler.quitGame(d));
+    socket.on(ENUM_SOCKET_DEF.START_PLAYING, (d) => roomSocketHandler.startPlaying(d));
+    socket.on(ENUM_SOCKET_DEF.GENFLOW, (d) => tetrisSocketHandler.genFlow(d));
+    socket.on(ENUM_SOCKET_DEF.TETRIS_PLACE_PIECE, (d) => tetrisSocketHandler.placePiece(d));
+    socket.on(ENUM_SOCKET_DEF.PLAYER_LOOSE, (d) => tetrisSocketHandler.playerLoose(d));
+    socket.on(ENUM_SOCKET_DEF.PLAYER_COMPLETE_LINE, (d) => tetrisSocketHandler.playerCompleteLine(d));
 
-    socket.on(socketDefs.DISCONNECT, () => {
-      const room = GameManager.getGameById(socket.id);
-      if (room) {
-        const player = room.getPlayer(socket.id);
-        roomSocketHandler.quitGame({roomName: room.name, playerName: player.playerName});
+    socket.on(ENUM_SOCKET_DEF.DISCONNECT, () => {
+      const room = roomManager.getGameById(socket.id);
+      if (!room) {
+        return;
       }
+
+      const player = room.getPlayer(socket.id);
+      if (!player) {
+        return;
+      }
+
+      roomSocketHandler.quitGame({roomName: room.name, playerName: player.playerName});
     });
   }
 
-  main() {
+  main(): void {
     const app = express();
-    let server;
 
-    if (process.env.NODE_ENV && process.env.NODE_ENV === "production") {
-      server = https.createServer(
+    const server = (process.env.NODE_ENV && process.env.NODE_ENV === 'production') ?
+      https.createServer(
         {
           key: fs.readFileSync('/home/ssl/privkey.pem'),
-          cert: fs.readFileSync('/home/ssl/cert.pem')
-        }, app
-      );
-    } else
-      server = Server(app);
+          cert: fs.readFileSync('/home/ssl/cert.pem'),
+        }, app) :
+      new Server(app);
 
-    const io = require("socket.io")(server);
-    io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
-    server.listen(4433, function () {
+    const io = require('socket.io')(server);
+
+    io.on(ENUM_SOCKET_DEF.CONNECTION, (e: Socket) => this.handleClient(e));
+
+    server.listen(4433, () => {
       console.log('Server on port : 4433');
     });
   }
 }
 
-
-const app = new App().main();
+new App().main();
