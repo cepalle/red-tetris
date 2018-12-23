@@ -70,7 +70,7 @@ describe('GameManager', function () {
       expect(GameManager).to.have.property('rooms').with.lengthOf(0);
       GameManager.rooms = [];
     });
-    it('should delete multiples games', function () {
+    it('should delete multiples roomManagers', function () {
       GameManager.addGame("hey");
       GameManager.addGame("hey2");
       const res1 = GameManager.deleteGame("hey");

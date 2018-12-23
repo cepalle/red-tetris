@@ -2,7 +2,7 @@ import "../../../src/server/App"
 import GlobalSocketHandler from "../../../src/server/handlers/GlobalSocketHandler";
 import {expect, assert} from "chai";
 import io from 'socket.io-client';
-import socketDefs from "../../../src/common/socket-definitions";
+import socketDefs from "../../../src/common/socketEvent";
 
 describe('GlobalSocketHandler', function () {
   describe('#emitConnection', function () {

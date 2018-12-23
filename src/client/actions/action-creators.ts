@@ -1,4 +1,4 @@
-import {IError, IGame, IParams, IPiece, IPlayerState} from '../reducers/reducer';
+import {IError, IGame, IOptionGame, IPiece, IPlayerState} from '../reducers/reducer';
 import {ENUM_PIECES_MOVE, ENUM_PIECES} from '../util/grid-piece-handler';
 
 enum EnumAction {

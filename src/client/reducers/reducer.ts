@@ -8,7 +8,7 @@ import {
 import {GRID_HEIGHT, GRID_WIDTH} from '@src/common/grid';
 import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {ENUM_PIECES} from '@src/client/util/grid-piece-handler';
-import {IError, IGame, IParams, IPiece, IPlayerState} from '@src/common/IType';
+import {IError, IGame, IOptionGame, IPiece, IPlayerState} from '@src/common/IType';
 
 interface IState {
   readonly playerStates: IPlayerState[],
@@ -22,7 +22,7 @@ interface IState {
   readonly EmitJoinRoom: boolean,
   readonly EmitCompleteLine: number,
   readonly games: IGame[],
-  readonly params: IParams,
+  readonly params: IOptionGame,
   readonly gridHeight: number,
   readonly socketIsConnect: boolean
 }

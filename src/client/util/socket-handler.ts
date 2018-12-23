@@ -1,4 +1,4 @@
-import socketDefs from '../../common/socket-definitions';
+import socketDefs from '../../common/socketEvent';
 import {loggerSock} from './logger-handler';
 import {
   ADD_ERROR,
@@ -13,7 +13,7 @@ import {
 } from '../actions/action-creators';
 import {store} from '@src/client/middlewares/store';
 import io from 'socket.io-client';
-import {IError, IGame, IParams, IPiece, IPlayerState} from '@src/client/reducers/reducer';
+import {IError, IGame, IOptionGame, IPiece, IPlayerState} from '@src/client/reducers/reducer';
 import {Dispatch} from 'redux';
 import {ENUM_PIECES} from '@src/client/util/grid-piece-handler';
 

@@ -1,3 +1,20 @@
+interface IOptionGame {
+  readonly addWallLine: boolean,
+  readonly groundResizer: boolean,
+}
+
+interface IPos {
+  readonly x: number,
+  readonly y: number
+}
+
+interface IPiece {
+  readonly num: number,
+  readonly rot: number,
+}
+
+// ---
+
 enum ENUM_PIECES_MOVE {
   ROT_RIGHT = 'PIECES_ROT_RIGHT',
   ROT_LEFT = 'PIECES_ROT_LEFT',
@@ -37,17 +54,6 @@ interface IPlayerState {
   readonly id: string,
 }
 
-interface IPos {
-  readonly x: number,
-  readonly y: number
-}
-
-interface IPiece {
-  readonly num: number,
-  readonly rot: number,
-  readonly pos: IPos
-}
-
 interface IError {
   type?: string,
   message?: string
@@ -55,16 +61,11 @@ interface IError {
 
 interface IGame {
   players: IPlayerState[],
-  params: IParams,
-}
-
-interface IParams {
-  readonly addWallLine: boolean,
-  readonly groundResizer: boolean,
+  params: IOptionGame,
 }
 
 export {
-  IParams,
+  IOptionGame,
   IGame,
   IError,
   IPlayerState,

@@ -6,7 +6,7 @@ import {
 } from '../actions/action-creators';
 import mp3 from '../assets/Original_Tetris_theme.mp3';
 import {Dispatch} from 'redux';
-import {IError, IParams, IState} from '@src/client/reducers/reducer';
+import {IError, IOptionGame, IState} from '@src/client/reducers/reducer';
 import {isMaster} from '@src/client/util/isMaster';
 
 const mapStateToProps = (state: IState) => {
