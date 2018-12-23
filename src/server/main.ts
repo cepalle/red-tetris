@@ -1,6 +1,6 @@
 import './util/ArraysUtil';
-import express from 'express';
-import https from 'https';
+import * as express from 'express';
+import * as https from 'https';
 import {Server} from 'http';
 import * as fs from 'fs';
 import {Socket} from 'socket.io';
@@ -10,7 +10,7 @@ import {
   IEventSetRoomPlayerName,
   IEventStartGame,
 } from '@src/common/socketEventServer';
-import {RoomsManager} from '@src/server/RoomsManager';
+import {RoomsManager} from './RoomsManager';
 
 class App {
 

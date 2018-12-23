@@ -37,6 +37,7 @@ const initPlayerState = (playerName: string, master = false, gridHeight = GRID_H
     score: 0,
     lines: 0,
     spectator: false,
+    id: '',
   };
 };
 

@@ -1,12 +1,19 @@
 import {Socket} from 'socket.io';
-import {IOptionGame} from '@src/common/IType';
+import {ENUM_PIECES, IOptionGame} from '@src/common/IType';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {IEventPlacePiece} from '@src/common/socketEventServer';
+import {factPlayer} from '@src/server/playerUtils';
 
 interface IPlayer {
   playerName: string;
   socket: Socket;
   isSpectator: boolean;
+  grid: ENUM_PIECES[][];
+  score: number;
+  lineCompleted: number;
+  win: boolean;
+  lost: boolean;
+  master: boolean;
 }
 
 interface IRoomState {
@@ -45,10 +52,11 @@ class RoomManager {
       // TODO
     }
 
+    const isMaster = this.state.players.length === 0;
     this.updateState({
       ...this.state,
       players: [...this.state.players,
-        {playerName: playerName, socket: socket, isSpectator: true},
+        factPlayer(playerName, socket, isMaster),
       ],
     });
   }
@@ -81,7 +89,7 @@ class RoomManager {
   }
 
   public placePiece(socket: Socket, arg: IEventPlacePiece) {
-    const {piece, pos} = arg;
+    // const {piece, pos} = arg;
     // TODO
   }
 
@@ -94,4 +102,8 @@ class RoomManager {
 
 }
 
-export {RoomManager};
+export {
+  RoomManager,
+  IPlayer,
+  IRoomState,
+};

@@ -6,13 +6,14 @@
   "scripts": {
     "client-dev": "webpack-dev-server --mode development --open",
     "build": "webpack ./src/client/index.tsx ",
-    "srv-dist": "babel src/server --out-dir dist && node dist/server/App.js",
-    "srv-dev": "babel-watch -w src src/server/App.js",
+    "srv-dist": "babel src/server --out-dir dist && node dist/server/main.ts",
+    "srv-dev": "babel-watch -w src src/server/main.ts",
     "test": "mocha -r jsdom-global/register --recursive --require babel-core/register --reporter spec",
     "test-server": "mocha --recursive --require babel-core/register --reporter spec \"test/1_server/\"",
     "coverage": "nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha --recursive -r jsdom-global/register",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "build-srv": "tsc"
   },
   "keywords": [],
   "author": "cepalle;aviscogl",
@@ -65,5 +66,5 @@
     "tslint": "^5.12.0",
     "tslint-react": "^3.6.0"
   },
-  "homepage": "http://cepalle.github.io/blackpath"
+  "homepage": "http://cepalle.github.io/red-tetris"
 }
