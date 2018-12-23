@@ -22,14 +22,14 @@ class App {
 
     globalSocketHandler.connection();
 
-    socket.on(socketDefs.HOME,                  (d) => globalSocketHandler.home());
-    socket.on(socketDefs.JOIN_GAME,             (d) => roomSocketHandler.joinGame(d));
-    socket.on(socketDefs.QUIT_GAME,             (d) => roomSocketHandler.quitGame(d));
-    socket.on(socketDefs.START_PLAYING,         (d) => roomSocketHandler.startPlaying(d));
-    socket.on(socketDefs.GENFLOW,               (d) => tetrisSocketHandler.genFlow(d));
-    socket.on(socketDefs.TETRIS_PLACE_PIECE,    (d) => tetrisSocketHandler.placePiece(d));
-    socket.on(socketDefs.PLAYER_LOOSE,          (d) => tetrisSocketHandler.playerLoose(d));
-    socket.on(socketDefs.PLAYER_COMPLETE_LINE,  (d) => tetrisSocketHandler.playerCompleteLine(d));
+    socket.on(socketDefs.HOME, (d) => globalSocketHandler.home());
+    socket.on(socketDefs.JOIN_GAME, (d) => roomSocketHandler.joinGame(d));
+    socket.on(socketDefs.QUIT_GAME, (d) => roomSocketHandler.quitGame(d));
+    socket.on(socketDefs.START_PLAYING, (d) => roomSocketHandler.startPlaying(d));
+    socket.on(socketDefs.GENFLOW, (d) => tetrisSocketHandler.genFlow(d));
+    socket.on(socketDefs.TETRIS_PLACE_PIECE, (d) => tetrisSocketHandler.placePiece(d));
+    socket.on(socketDefs.PLAYER_LOOSE, (d) => tetrisSocketHandler.playerLoose(d));
+    socket.on(socketDefs.PLAYER_COMPLETE_LINE, (d) => tetrisSocketHandler.playerCompleteLine(d));
 
     socket.on(socketDefs.DISCONNECT, () => {
       const room = GameManager.getGameById(socket.id);
@@ -51,8 +51,7 @@ class App {
           cert: fs.readFileSync('/home/ssl/cert.pem')
         }, app
       );
-    }
-    else
+    } else
       server = Server(app);
 
     const io = require("socket.io")(server);

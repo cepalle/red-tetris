@@ -5,47 +5,10 @@ import {
   reducerUpdatePlayers,
   reducerUpdateRoomPlayerName,
 } from './reducer-aux';
-import {GRID_HEIGHT, GRID_WIDTH} from '../../common/grid';
-import {urlGetPlayerName, urlGetRoomName} from '../util/url-handler';
+import {GRID_HEIGHT, GRID_WIDTH} from '@src/common/grid';
 import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {ENUM_PIECES} from '@src/client/util/grid-piece-handler';
-
-interface IPlayerState {
-  readonly grid: number[][],
-  readonly win: boolean,
-  readonly playerName: string,
-  readonly master: boolean,
-  readonly loose: boolean,
-  readonly score: number,
-  readonly lines: number,
-  readonly spectator: boolean
-}
-
-interface IPos {
-  readonly x: number,
-  readonly y: number
-}
-
-interface IPiece {
-  readonly num: number,
-  readonly rot: number,
-  readonly pos: IPos
-}
-
-interface IError {
-  type?: string,
-  message?: string
-}
-
-interface IGame {
-  players: IPlayerState[],
-  params: IParams,
-}
-
-interface IParams {
-  readonly addWallLine: boolean,
-  readonly groundResizer: boolean,
-}
+import {IError, IGame, IParams, IPiece, IPlayerState} from '@src/common/IType';
 
 interface IState {
   readonly playerStates: IPlayerState[],
@@ -78,11 +41,11 @@ const initPlayerState = (playerName: string, master = false, gridHeight = GRID_H
 };
 
 const initialState: IState = {
-  playerStates: [initPlayerState(urlGetPlayerName(window))],
+  playerStates: [initPlayerState('')], // TODO
   piecesFlow: [],
   error: {},
-  playerName: urlGetPlayerName(window),
-  roomName: urlGetRoomName(window),
+  playerName: '', // TODO
+  roomName: '', // TODO
   animate: false,
   EmitLoose: false,
   EmitUpdateGrid: false,
@@ -168,10 +131,4 @@ export {
   initPlayerState,
   EnumAction,
   IState,
-  IGame,
-  IParams,
-  IError,
-  IPiece,
-  IPlayerState,
-  IPos,
 };

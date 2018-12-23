@@ -1,6 +1,6 @@
-import {GRID_WIDTH} from '../../common/grid';
-import {getPiece} from '../../common/pieces';
-import {IPiece, IPlayerState, IPos} from '../reducers/reducer';
+import {GRID_WIDTH} from '@src/common/grid';
+import {getPiece} from '@src/common/pieces';
+import {ENUM_PIECES, ENUM_PIECES_MOVE, IPiece, IPlayerState, IPos} from '@src/common/IType';
 
 enum ENUM_COLLISION_TYPE {
   PIECE = 'collision_piece',
@@ -8,33 +8,6 @@ enum ENUM_COLLISION_TYPE {
   WALL_LEFT = 'collision_wall_left',
   WALL_BOTTOM = 'collision_wall_bottom',
   WALL_TOP = 'collision_top',
-}
-
-enum ENUM_PIECES_MOVE {
-  ROT_RIGHT = 'PIECES_ROT_RIGHT',
-  ROT_LEFT = 'PIECES_ROT_LEFT',
-  RIGHT = 'PIECES_MOVE_RIGHT',
-  LEFT = 'PIECES_MOVE_LEFT',
-  DOWN = 'PIECES_MOVE_DOWN',
-  DROP = 'PIECES_DROP',
-  SWITCH = 'PIECE_SWITCH',
-}
-
-enum ENUM_PIECES {
-  empty = 0,
-  n1 = 1,
-  n2 = 2,
-  n3 = 3,
-  n4 = 4,
-  n5 = 5,
-  n6 = 6,
-  n7 = 7,
-  wall,
-  preview,
-  wall_malus,
-  wall_loose,
-  wall_win,
-  wall_spect,
 }
 
 const PRIO_COLLISION = [
@@ -57,8 +30,8 @@ const chooseWallType = (player: IPlayerState): ENUM_PIECES => {
   );
 };
 
-const hasCollision = (grid: number[][], piece, loc: IPos): ENUM_COLLISION_TYPE | undefined => {
-  let collisionType;
+const hasCollision = (grid: number[][], piece: ENUM_PIECES[][], loc: IPos): ENUM_COLLISION_TYPE | undefined => {
+  let collisionType: ENUM_COLLISION_TYPE;
   piece.forEach((line, y) => line.forEach((nb, x) => {
     const gx = x + loc.x;
     const gy = y + loc.y;
@@ -91,7 +64,7 @@ const hasCollision = (grid: number[][], piece, loc: IPos): ENUM_COLLISION_TYPE |
 const placePiece = (grid: number[][], piece: IPiece, isPreview = false): number[][] => {
   const pieceDescr: number[][] = getPiece(piece.num, piece.rot);
 
-  return grid.map((line, y) => line.map((number, x) => {
+  return grid.map((line, y) => line.map((nb, x) => {
     if (y >= piece.pos.y &&
       x >= piece.pos.x &&
       y < piece.pos.y + pieceDescr.length &&
@@ -153,7 +126,11 @@ const updatePieceSwitch = (grid: number[][], flow: IPiece[]): { bool: boolean; f
   return {bool: false, flow: [newP2, newP1, ...rest]};
 };
 
-const updatePieceRot = (grid: number[][], flow: IPiece[], move: ENUM_PIECES_MOVE): { bool: boolean; flow: IPiece[] } => {
+const updatePieceRot = (
+  grid: number[][],
+  flow: IPiece[],
+  move: ENUM_PIECES_MOVE,
+): { bool: boolean; flow: IPiece[] } => {
   if (flow.length < 1) {
     return {bool: false, flow};
   }
@@ -170,7 +147,10 @@ const updatePieceRot = (grid: number[][], flow: IPiece[], move: ENUM_PIECES_MOVE
 };
 
 // Can block ?
-const moveCollision = (piece: IPiece, grid: number[][]): IPiece => {
+const moveCollision = (
+  piece: IPiece,
+  grid: number[][],
+): IPiece => {
   const newPieceDescr = getPiece(piece.num, piece.rot);
 
   let collisionType = hasCollision(grid, newPieceDescr, piece.pos);
@@ -195,7 +175,11 @@ const moveCollision = (piece: IPiece, grid: number[][]): IPiece => {
   return newPiece;
 };
 
-const updatePiecePos = (grid: number[][], Flow: IPiece[], move: ENUM_PIECES_MOVE): { bool: boolean; flow: IPiece[] } => {
+const updatePiecePos = (
+  grid: number[][],
+  Flow: IPiece[],
+  move: ENUM_PIECES_MOVE,
+): { bool: boolean; flow: IPiece[] } => {
 
   const [cur, ...rest] = Flow;
 
@@ -285,10 +269,10 @@ const gridDelLine = (grid: ENUM_PIECES[][]): { grid: ENUM_PIECES[][]; nbLineToSe
 };
 
 const gridAddWall = (grid: ENUM_PIECES[][], amount: number): ENUM_PIECES[][] => {
-  const pos_x = Math.floor(Math.random() * GRID_WIDTH);
+  const posX = Math.floor(Math.random() * GRID_WIDTH);
 
   const toAdd = Array(GRID_WIDTH).fill(ENUM_PIECES.wall_malus);
-  toAdd[pos_x] = ENUM_PIECES.empty;
+  toAdd[posX] = ENUM_PIECES.empty;
 
   let newGrid = grid;
   for (let i = 0; i < amount; i++) {
