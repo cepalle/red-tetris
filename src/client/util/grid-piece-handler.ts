@@ -1,6 +1,7 @@
 import {GRID_WIDTH} from '@src/common/grid';
 import {getPiece} from '@src/common/pieces';
 import {ENUM_PIECES, ENUM_PIECES_MOVE, IPiece, IPlayerState, IPos} from '@src/common/IType';
+import {IPlayer} from '@src/server/RoomManager';
 
 enum ENUM_COLLISION_TYPE {
   PIECE = 'collision_piece',
@@ -18,13 +19,13 @@ const PRIO_COLLISION = [
   ENUM_COLLISION_TYPE.WALL_LEFT,
 ];
 
-const chooseWallType = (player: IPlayerState): ENUM_PIECES => {
+const chooseWallType = (player: IPlayer): ENUM_PIECES => {
   return (
-    player.loose ?
+    player.lost ?
       ENUM_PIECES.wall_loose :
       player.win ?
         ENUM_PIECES.wall_win :
-        player.spectator ?
+        player.isSpectator ?
           ENUM_PIECES.wall_spect :
           ENUM_PIECES.wall
   );

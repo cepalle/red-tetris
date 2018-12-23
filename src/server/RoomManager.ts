@@ -1,5 +1,5 @@
 import {Socket} from 'socket.io';
-import {ENUM_PIECES, IOptionGame} from '@src/common/IType';
+import {ENUM_PIECES, IOptionGame, IPiece} from '@src/common/IType';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {IEventPlacePiece} from '@src/common/socketEventServer';
 import {factPlayer} from '@src/server/playerUtils';
@@ -14,7 +14,7 @@ interface IPlayer {
   win: boolean;
   lost: boolean;
   master: boolean;
-  flow: ENUM_PIECES[];
+  flow: IPiece[];
 }
 
 interface IRoomState {

@@ -1,10 +1,13 @@
-import {ENUM_PIECES} from '@src/common/IType';
+import {ENUM_PIECES, IPiece} from '@src/common/IType';
 
-const randomPiece = (): ENUM_PIECES => {
-  return Math.floor(Math.random() * (ENUM_PIECES.n7 - ENUM_PIECES.n1 + 1)) + ENUM_PIECES.n1;
+const randomPiece = (): IPiece => {
+  return {
+    num: Math.floor(Math.random() * (ENUM_PIECES.n7 - ENUM_PIECES.n1 + 1)) + ENUM_PIECES.n1,
+    rot: Math.floor(Math.random() * 4),
+  };
 };
 
-const genFlow = (n: number): ENUM_PIECES[] => {
+const genFlow = (n: number): IPiece[] => {
   return Array(n).fill(0).map(() => randomPiece());
 };
 

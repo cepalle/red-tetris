@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {chooseWallType, ENUM_PIECES, placePiece, placePiecePreview} from '../util/grid-piece-handler';
-import {GRID_WIDTH} from '../../common/grid';
-import {IPiece, IPlayerState, IState} from '../reducers/reducer';
+import {IState} from '../reducers/reducer';
+import {IPlayer} from '@src/server/RoomManager';
+import {GRID_WIDTH} from '@src/common/grid';
 
 const mapStateToProps = (state: IState) => {
+  const player = (state.roomState === undefined) ? undefined :
+    state.roomState.players.find((p) => p.playerName === state.playerName);
+
   return {
-    playerStates: state.playerStates,
-    playerName: state.playerName,
-    piecesFlow: state.piecesFlow,
+    player: player,
   };
 };
 
 interface IProps {
-  playerStates: IPlayerState[],
-  playerName: string,
-  piecesFlow: IPiece[]
+  player: IPlayer,
 }
 
 const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
@@ -38,19 +38,15 @@ const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
 
 const GridPlayerComponent = (props: IProps) => {
   /* PLAYERGRID */
-  const {playerStates, playerName, piecesFlow} = props;
+  const {player} = props;
 
-  const playerState = playerStates.find(e => e.playerName === playerName);
+  const {flow, grid} = player;
 
-  if (playerState === undefined) {
-    return <div>an error occurred</div>;
-  }
+  const wallType = chooseWallType(player);
 
-  const wallType = chooseWallType(playerState);
-
-  const gridWithPiece = (piecesFlow.length > 0 && !playerState.loose && !playerState.win && !playerState.spectator) ?
-    placePiece(placePiecePreview(playerState.grid, piecesFlow[0]), piecesFlow[0]) :
-    playerState.grid;
+  const gridWithPiece = (flow.length > 0 && !player.lost && !player.win && !player.isSpectator) ?
+    placePiece(placePiecePreview(grid, flow[0]), flow[0]) :
+    grid;
 
   const gridRender = gridWithPiece.map(l => [wallType, ...l, wallType]);
   gridRender[3] = Array(GRID_WIDTH + 2).fill(wallType);
