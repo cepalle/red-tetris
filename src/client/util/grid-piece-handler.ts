@@ -62,25 +62,25 @@ const hasCollision = (grid: number[][], piece: ENUM_PIECES[][], loc: IPos): ENUM
   return collisionType;
 };
 
-const placePiece = (grid: number[][], piece: IPiece, isPreview = false): number[][] => {
+const placePiece = (grid: number[][], piece: IPiece, pos: IPos, isPreview = false): number[][] => {
   const pieceDescr: number[][] = getPiece(piece.num, piece.rot);
 
   return grid.map((line, y) => line.map((nb, x) => {
-    if (y >= piece.pos.y &&
-      x >= piece.pos.x &&
-      y < piece.pos.y + pieceDescr.length &&
-      x < piece.pos.x + pieceDescr.length &&
-      pieceDescr[y - piece.pos.y][x - piece.pos.x] !== 0
+    if (y >= pos.y &&
+      x >= pos.x &&
+      y < pos.y + pieceDescr.length &&
+      x < pos.x + pieceDescr.length &&
+      pieceDescr[y - pos.y][x - pos.x] !== 0
     ) {
-      return (isPreview) ? ENUM_PIECES.preview : pieceDescr[y - piece.pos.y][x - piece.pos.x];
+      return (isPreview) ? ENUM_PIECES.preview : pieceDescr[y - pos.y][x - pos.x];
     }
     return x;
   }));
 };
 
-const placePiecePreview = (grid: number[][], piece: IPiece) => {
+const placePiecePreview = (grid: number[][], piece: IPiece, pos: IPos) => {
   const pieceDescr = getPiece(piece.num, piece.rot);
-  let loc = piece.pos;
+  let loc = pos;
 
   while (!hasCollision(grid, pieceDescr, loc)) {
     loc = {...loc, y: loc.y - 1};
@@ -88,7 +88,7 @@ const placePiecePreview = (grid: number[][], piece: IPiece) => {
   if (loc.y > 0) {
     loc = {...loc, y: loc.y - 1};
   }
-  return placePiece(grid, {...piece, pos: loc}, true);
+  return placePiece(grid, piece, loc, true);
 };
 
 const movePose = (pos: IPos, move: ENUM_PIECES_MOVE): IPos => {

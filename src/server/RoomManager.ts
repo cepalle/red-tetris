@@ -10,7 +10,7 @@ interface IPlayer {
   isSpectator: boolean;
   grid: ENUM_PIECES[][];
   score: number;
-  lineCompleted: number;
+  nbLineCompleted: number;
   win: boolean;
   lost: boolean;
   master: boolean;

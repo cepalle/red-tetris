@@ -4,6 +4,7 @@ import {chooseWallType, ENUM_PIECES, placePiece, placePiecePreview} from '../uti
 import {IState} from '../reducers/reducer';
 import {IPlayer} from '@src/server/RoomManager';
 import {GRID_WIDTH} from '@src/common/grid';
+import {IPos} from '@src/common/IType';
 
 const mapStateToProps = (state: IState) => {
   const player = (state.roomState === undefined) ? undefined :
@@ -11,11 +12,13 @@ const mapStateToProps = (state: IState) => {
 
   return {
     player: player,
+    posPiece: state.posPiece,
   };
 };
 
 interface IProps {
-  player: IPlayer,
+  player: IPlayer | undefined,
+  posPiece: IPos,
 }
 
 const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
@@ -38,14 +41,22 @@ const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
 
 const GridPlayerComponent = (props: IProps) => {
   /* PLAYERGRID */
-  const {player} = props;
+  const {player, posPiece} = props;
+
+  if (player === undefined) {
+    return (
+      <div className={'column'}>
+        Waiting server ...
+      </div>
+    );
+  }
 
   const {flow, grid} = player;
 
   const wallType = chooseWallType(player);
 
   const gridWithPiece = (flow.length > 0 && !player.lost && !player.win && !player.isSpectator) ?
-    placePiece(placePiecePreview(grid, flow[0]), flow[0]) :
+    placePiece(placePiecePreview(grid, flow[0], posPiece), flow[0], posPiece) :
     grid;
 
   const gridRender = gridWithPiece.map(l => [wallType, ...l, wallType]);
@@ -58,20 +69,12 @@ const GridPlayerComponent = (props: IProps) => {
   /* PIECEFLOW */
   let previewRender = initFlowRender(wallType);
 
-  const piecesRender = piecesFlow.filter((e, i) => i > 0 && i < 4);
+  const piecesRender = flow.filter((e, i) => i > 0 && i < 4);
 
-  if (piecesFlow.length > 0 && !playerState.loose && !playerState.win && !playerState.spectator) {
+  if (flow.length > 0 && !player.lost && !player.win && !player.isSpectator) {
     for (let i = 0; i < piecesRender.length; i++) {
       const piece = piecesRender[i];
-      const newPiece = {
-        ...piece,
-        pos: {
-          ...piece.pos,
-          x: 0,
-          y: 1 + i * 5,
-        },
-      };
-      previewRender = placePiece(previewRender, newPiece);
+      previewRender = placePiece(previewRender, piece, {x: 0, y: 1 + i * 5});
     }
   }
 
@@ -91,15 +94,15 @@ const GridPlayerComponent = (props: IProps) => {
       </div>
       <div className={'column center'}>
       <span className={'pad font_white font_retro row center'}>
-        YOU!{playerState.master && '(Master)'}{playerState.loose && '(lost)'}{playerState.win && '(Win)'}
-        {playerState.spectator && '(Viewer)'}
+        YOU!{player.master && '(Master)'}{player.lost && '(lost)'}{player.win && '(Win)'}
+        {player.isSpectator && '(Viewer)'}
       </span>
         <div className={'row center'}>
         <span className={'pad font_white font_retro'}>
-        score:{playerState.score}
+        score:{player.score}
         </span>
           <span className={'pad font_white font_retro'}>
-        lines completed:{playerState.lines}
+        lines completed:{player.nbLineCompleted}
         </span>
         </div>
       </div>

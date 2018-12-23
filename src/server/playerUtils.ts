@@ -15,7 +15,7 @@ const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlaye
     isSpectator: true,
     grid: grid,
     score: 0,
-    lineCompleted: 0,
+    nbLineCompleted: 0,
     win: false,
     lost: false,
     master: master,
