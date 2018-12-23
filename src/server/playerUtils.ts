@@ -2,6 +2,7 @@ import {Socket} from 'socket.io';
 import {IPlayer} from '@src/server/RoomManager';
 import {GRID_HEIGHT, GRID_WIDTH} from '@src/common/grid';
 import {ENUM_PIECES} from '@src/common/IType';
+import {genFlow} from '@src/server/flowUtils';
 
 const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlayer => {
   const grid = Array(GRID_HEIGHT).fill(0).map(() =>
@@ -18,6 +19,7 @@ const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlaye
     win: false,
     lost: false,
     master: master,
+    flow: genFlow(20),
   };
 };
 

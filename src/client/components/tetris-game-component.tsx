@@ -3,7 +3,7 @@ import {InfoPanel} from '../containers/info-panel';
 import {GridPlayer} from '../containers/grid-player';
 import {Opponents} from '../containers/opponents';
 
-const TetrisGame = () => (
+const TetrisGameComponent = () => (
   <div className={'column'}>
     <div className={'row center'}>
       <div className={'row color8 pad'}>
@@ -15,4 +15,4 @@ const TetrisGame = () => (
   </div>
 );
 
-export {TetrisGame};
+export {TetrisGameComponent};

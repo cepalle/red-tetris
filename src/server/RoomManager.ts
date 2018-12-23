@@ -14,6 +14,7 @@ interface IPlayer {
   win: boolean;
   lost: boolean;
   master: boolean;
+  flow: ENUM_PIECES[];
 }
 
 interface IRoomState {

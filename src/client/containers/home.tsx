@@ -1,38 +1,31 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {IError, IGame, IState} from '@src/client/reducers/reducer';
+import {IState} from '@src/client/reducers/reducer';
 import {useState} from 'react';
+import {IRoomPlayersName} from '@src/common/socketEventClient';
 
 const mapStateToProps = (state: IState) => {
   return {
-    games: state.games,
-    error: state.error,
+    roomsPlayersName: state.roomsPlayersName,
   };
 };
 
 interface IProps {
-  games: IGame[],
-  error: IError,
+  roomsPlayersName: IRoomPlayersName[],
 }
 
 const HomeComponent = (props: IProps) => {
 
-  const {games, error} = props;
+  const {roomsPlayersName} = props;
 
   const [roomName, setRoomName] = useState('');
   const [playerName, setPlayerName] = useState('');
 
-  /*
-  handleSubmit(event) {
-    window.location.href = '#' + this.state.roomName + '[' + this.state.playerName + ']';
-    store.dispatch(UPDATE_ROOM_PLAYER_NAME(this.state.roomName, this.state.playerName));
-    event.preventDefault();
-  }
-  */
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    // TODO
+    if (roomName.length > 1 && playerName.length > 1) {
+      window.location.href = `#${roomName}[${playerName}]`; // refresh page ?
+    }
   };
 
   const handleChangeRoom = (e: any) => {
@@ -45,8 +38,8 @@ const HomeComponent = (props: IProps) => {
     setPlayerName(e.target.value);
   };
 
-  const room = games.find(e => e.name === roomName);
-  const playerInRoom = (room) ? room.players : undefined;
+  const room = roomsPlayersName.find(e => e.roomName === roomName);
+  const playerInRoom = (room) ? room.playerNames : undefined;
 
   return (
     <div className={'row center font_white pad'}>
@@ -74,13 +67,16 @@ const HomeComponent = (props: IProps) => {
           <div className={'pad'}>
             Current Room:
           </div>
-          {games.length === 0 &&
+
+          {roomsPlayersName.length === 0 &&
           <div>
-            No current room
-          </div>}
-          {games.map((r, i) =>
+            No room
+          </div>
+          }
+
+          {roomsPlayersName.map((r, i) =>
             <button className={'font_retro buttonPlay font_white font_button_home'} key={i}
-                    onClick={() => setRoomName(r.name)}>{r.name + (!r.waiting ? '(playing)' : '')}
+                    onClick={() => setRoomName(r.roomName)}>{r.roomName}
             </button>,
           )}
         </div>
@@ -91,16 +87,13 @@ const HomeComponent = (props: IProps) => {
             Current Player in this room:
           </div>
           <div className={'pad'}>
-            {playerInRoom.map((p, i) =>
+            {playerInRoom.map((name, i) =>
               <div key={i} className={'font_retro font_white'}>
-                {p.playerName}
-              </div>)}
+                {name}
+              </div>,
+            )}
           </div>
         </div>
-        }
-
-        {error.type === 'PLAYER_ALREADY_IN_ROOM' &&
-        <p className={'font_red pad'}>{'A player as already your pseudo in this room'}<br/></p>
         }
 
       </div>
