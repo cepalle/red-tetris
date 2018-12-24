@@ -1,6 +1,6 @@
-## Overview
+## Overview (switch in TypeScript in progress)
 
-Full Stack Javascript Multiplayer Tetris Game build with Node, socket.io, React and Redux.
+Full Stack TypeScript Multiplayer Tetris Game build with Node, socket.io, React and Redux.
 
 Play it at: https://cepalle.github.io/red-tetris/
 
