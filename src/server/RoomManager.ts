@@ -1,7 +1,8 @@
 import {Socket} from 'socket.io';
 import {ENUM_PIECES, IOptionGame, IPiece, IPos} from '@src/common/IType';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
-import {factPlayer} from '@src/server/playerUtils';
+import {GRID_HEIGHT, GRID_WIDTH} from '@src/common/grid';
+import {genFlow} from '@src/server/flowUtils';
 
 // -- ISTATE
 
@@ -17,6 +18,25 @@ interface IPlayer {
   master: boolean;
   flow: IPiece[];
 }
+
+const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlayer => {
+  const grid = Array(GRID_HEIGHT).fill(0).map(() =>
+    Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
+  );
+
+  return {
+    playerName: playerName,
+    socket: socket,
+    isSpectator: true,
+    grid: grid,
+    score: 0,
+    nbLineCompleted: 0,
+    win: false,
+    lost: false,
+    master: master,
+    flow: genFlow(20),
+  };
+};
 
 interface IRoomState {
   roomName: string;
