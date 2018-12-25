@@ -156,14 +156,16 @@ const reducerStartGame = (state: IRoomState, action: IActionStartGame): IRoomSta
 interface IActionPlacePiece extends IActionRoom {
   type: EnumActionRoomStore.PLACE_PIECE;
 
+  socketId: string,
   piece: IPiece,
   pos: IPos
 }
 
-const PLACE_PIECE = (piece: IPiece, pos: IPos): IActionPlacePiece => {
+const PLACE_PIECE = (piece: IPiece, pos: IPos, socketId: string): IActionPlacePiece => {
   return {
     type: EnumActionRoomStore.PLACE_PIECE,
 
+    socketId,
     piece,
     pos,
   };
@@ -223,7 +225,7 @@ class RoomManager {
     this.stateSub = new BehaviorSubject<IRoomState>(this.state);
   }
 
-  public dispatch(action: ActionRoom) {
+  public dispatch(action: ActionRoom): void {
     const newState = reducer(this.state, action);
 
     if (newState !== this.state) {
@@ -232,15 +234,19 @@ class RoomManager {
     }
   }
 
-  public hasSocketId(socketId: string) {
+  public hasSocketId(socketId: string): boolean {
     return this.state.players.some((p) => p.socket.id === socketId);
   }
+
+  public nbPlayer(): number {
+    return this.state.players.length;
+  }
+
 }
 
 export {
   RoomManager,
-  IPlayer,
-  IRoomState,
+  ActionRoom,
   ADD_PLAYER,
   DEL_PLAYER,
   UPDATE_OPTION_GAME,

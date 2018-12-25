@@ -1,11 +1,11 @@
-import {Socket} from 'socket.io';
-import {
-  IEventPlacePiece,
-  IEventSetGameOption,
-  IEventSetRoomPlayerName,
-  IEventStartGame,
-} from '@src/common/socketEventServer';
-import {RoomManager} from '@src/server/RoomManager';
+import {ActionRoom, RoomManager} from '@src/server/RoomManager';
+
+interface IActionRooms {
+  roomName?: string,
+  socketId?: string,
+
+  actionRoom: ActionRoom
+}
 
 class RoomsManager {
 
@@ -15,48 +15,30 @@ class RoomsManager {
     this.roomManagers = [];
   }
 
-  public setRoomPlayerName(socket: Socket, arg: IEventSetRoomPlayerName): void {
-    const {playerName, roomName} = arg;
+  // middelware ? clean room empty ?
+  public dispatch(action: IActionRooms): void {
 
-    let room = this.roomManagers.find((r) => r.state.roomName === roomName);
+    const {roomName, socketId, actionRoom} = action;
 
-    if (room === undefined) {
-      room = new RoomManager(roomName);
-      this.roomManagers.push(room);
-    }
+    if (roomName !== undefined) {
+      let room = this.roomManagers.find((r) => r.state.roomName === roomName);
+      if (room === undefined) {
+        room = new RoomManager(roomName);
+      }
 
-    room.addPlayer(playerName, socket);
-  }
-
-  public delSocket(socket: Socket): void {
-    this.roomManagers.forEach((r) => r.delPlayer(socket));
-  }
-
-  public updateOptionGame(socket: Socket, arg: IEventSetGameOption): void {
-    const roomWithSock = this.roomManagers.find((r) => r.hasSock(socket));
-    if (roomWithSock === undefined) {
+      room.dispatch(actionRoom);
       return;
     }
 
-    roomWithSock.updateOptionGame(arg.optionGame);
-  }
-
-  public startGame(socket: Socket, arg: IEventStartGame) {
-    const roomWithSock = this.roomManagers.find((r) => r.hasSock(socket));
-    if (roomWithSock === undefined) {
+    if (socketId !== undefined) {
+      this.roomManagers.forEach((r) => {
+        if (r.hasSocketId(socketId)) {
+          r.dispatch(actionRoom);
+        }
+      });
       return;
     }
 
-    roomWithSock.startGame();
-  }
-
-  public placePiece(socket: Socket, arg: IEventPlacePiece) {
-    const roomWithSock = this.roomManagers.find((r) => r.hasSock(socket));
-    if (roomWithSock === undefined) {
-      return;
-    }
-
-    roomWithSock.placePiece(socket, arg);
   }
 
 }

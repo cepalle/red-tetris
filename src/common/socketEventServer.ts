@@ -1,18 +1,25 @@
 import {IOptionGame, IPiece, IPos} from '@src/common/IType';
 
 interface IEventSetRoomPlayerName {
-  playerName: string,
   roomName: string,
+
+  playerName: string,
 }
 
 interface IEventSetGameOption {
+  roomName: string,
+
   optionGame: IOptionGame
 }
 
 interface IEventStartGame {
+  roomName: string,
+
 }
 
 interface IEventPlacePiece {
+  roomName: string,
+
   piece: IPiece,
   pos: IPos
 }
