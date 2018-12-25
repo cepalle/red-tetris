@@ -48,6 +48,14 @@ interface IActionRoomAddPlayer extends IActionRoom {
   socket: Socket;
 }
 
+const ADD_PLAYER = (playerName: string, socket: Socket): IActionRoomAddPlayer => {
+  return {
+    type: EnumActionRoomStore.ADD_PLAYER,
+    playerName,
+    socket,
+  };
+};
+
 const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoomState => {
 
   const {playerName, socket} = action;
@@ -79,6 +87,13 @@ interface IActionRoomDelPlayer extends IActionRoom {
   socketId: string;
 }
 
+const DEL_PLAYER = (socketId: string): IActionRoomDelPlayer => {
+  return {
+    type: EnumActionRoomStore.DEL_PLAYER,
+    socketId,
+  };
+};
+
 const reducerDelPlayer = (state: IRoomState, action: IActionRoomDelPlayer): IRoomState => {
 
   const {socketId} = action;
@@ -100,6 +115,13 @@ interface IActionUpdateOptionGame extends IActionRoom {
   optionGame: IOptionGame;
 }
 
+const UPDATE_OPTION_GAME = (optionGame: IOptionGame): IActionUpdateOptionGame => {
+  return {
+    type: EnumActionRoomStore.UPDATE_OPTION_GAME,
+    optionGame,
+  };
+};
+
 const reducerUpdateOptionGame = (state: IRoomState, action: IActionUpdateOptionGame): IRoomState => {
 
   const {optionGame} = action;
@@ -116,6 +138,12 @@ interface IActionStartGame extends IActionRoom {
   type: EnumActionRoomStore.START_GAME;
 }
 
+const START_GAME = (): IActionStartGame => {
+  return {
+    type: EnumActionRoomStore.START_GAME,
+  };
+};
+
 const reducerStartGame = (state: IRoomState, action: IActionStartGame): IRoomState => {
   return {
     ...state,
@@ -131,6 +159,15 @@ interface IActionPlacePiece extends IActionRoom {
   piece: IPiece,
   pos: IPos
 }
+
+const PLACE_PIECE = (piece: IPiece, pos: IPos): IActionPlacePiece => {
+  return {
+    type: EnumActionRoomStore.PLACE_PIECE,
+
+    piece,
+    pos,
+  };
+};
 
 const reducerPlacePiece = (state: IRoomState, action: IActionPlacePiece): IRoomState => {
   // const {piece, pos} = arg;
@@ -204,4 +241,9 @@ export {
   RoomManager,
   IPlayer,
   IRoomState,
+  ADD_PLAYER,
+  DEL_PLAYER,
+  UPDATE_OPTION_GAME,
+  START_GAME,
+  PLACE_PIECE,
 };
