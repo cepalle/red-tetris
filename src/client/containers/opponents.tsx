@@ -58,36 +58,38 @@ const OpponentComponent = (props: IProps) => {
     };
   });
 
-  return <div className={'row wrap center'}>
-    {infoRenders.map((infoRender, k) =>
-      <div key={k} className={'color8 pad'}>
-        <div className={'column'}>
-          {infoRender.grid.map((line, i) =>
-            <div key={i} className={'row'}>
-              {line.map((el, j) => <div key={j} className={'caseOpponent color' + el}/>)}
-            </div>,
-          )}
-        </div>
-        <div className={'row center'}>
+  return (
+    <div className={'row wrap center'}>
+      {infoRenders.map((infoRender, k) =>
+        <div key={k} className={'color8 pad'}>
+          <div className={'column'}>
+            {infoRender.grid.map((line, i) =>
+              <div key={i} className={'row'}>
+                {line.map((el, j) => <div key={j} className={'caseOpponent color' + el}/>)}
+              </div>,
+            )}
+          </div>
+          <div className={'row center'}>
         <span className={'font_white font_retro'}>
           {infoRender.player.playerName}{infoRender.player.master && '(Master)'}
           {infoRender.player.lost && '(lost)'}{infoRender.player.win && '(Win)'}
           {infoRender.player.isSpectator && '(Viewer)'}
         </span>
-        </div>
-        <div className={'row center'}>
+          </div>
+          <div className={'row center'}>
         <span className={'font_white font_retro'}>
           {'score:' + infoRender.player.score}
         </span>
-        </div>
-        <div className={'row center'}>
+          </div>
+          <div className={'row center'}>
         <span className={'font_white font_retro'}>
           {'lines completed:' + infoRender.player.nbLineCompleted}
         </span>
-        </div>
-      </div>,
-    )}
-  </div>;
+          </div>
+        </div>,
+      )}
+    </div>
+  );
 };
 
 const Opponents = connect(

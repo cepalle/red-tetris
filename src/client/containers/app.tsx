@@ -12,6 +12,7 @@ const mapStateToProps = (state: IState) => {
   return {
     playerName: state.playerName,
     roomName: state.roomName,
+    isConnected: state.socket.connected,
   };
 };
 
@@ -22,15 +23,23 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
 interface IProps {
   playerName: string | undefined,
   roomName: string | undefined,
+  isConnected: boolean,
 }
 
 const AppComponent = (props: IProps) => {
 
-  const {playerName, roomName} = props;
+  const {playerName, roomName, isConnected} = props;
+
+  if (!isConnected) {
+    return (
+      <div>Server Offline</div>
+    );
+  }
 
   if (playerName !== undefined && roomName !== undefined) {
     return <TetrisGameComponent/>;
   }
+
   return <Home/>;
 };
 

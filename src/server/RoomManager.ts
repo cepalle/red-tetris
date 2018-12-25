@@ -266,6 +266,8 @@ class RoomManager {
 
 export {
   RoomManager,
+  IPlayer,
+  IRoomState,
   ActionRoom,
   ADD_PLAYER,
   DEL_PLAYER,
