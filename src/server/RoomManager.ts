@@ -1,7 +1,6 @@
 import {Socket} from 'socket.io';
-import {ENUM_PIECES, IOptionGame, IPiece} from '@src/common/IType';
+import {ENUM_PIECES, IOptionGame, IPiece, IPos} from '@src/common/IType';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
-import {IEventPlacePiece} from '@src/common/socketEventServer';
 import {factPlayer} from '@src/server/playerUtils';
 
 // ACTION
@@ -11,6 +10,7 @@ enum EnumActionRoomStore {
   DEL_PLAYER,
   UPDATE_OPTION_GAME,
   START_GAME,
+  PLACE_PIECE,
 }
 
 interface IActionRoom {
@@ -101,12 +101,28 @@ const reducerStartGame = (state: IRoomState, action: IActionStartGame): IRoomSta
   };
 };
 
+// PLACE_PIECE
+
+interface IActionPlacePiece extends IActionRoom {
+  type: EnumActionRoomStore.PLACE_PIECE;
+
+  piece: IPiece,
+  pos: IPos
+}
+
+const reducerPlacePiece = (state: IRoomState, action: IActionStartGame): IRoomState => {
+  // const {piece, pos} = arg;
+  // TODO
+  return state;
+};
+
 // ACTION ROOM
 
 type ActionRoom = IActionRoomAddPlayer
   | IActionRoomDelPlayer
   | IActionUpdateOptionGame
-  | IActionStartGame;
+  | IActionStartGame
+  | IActionPlacePiece;
 
 // REDUCER
 
@@ -121,6 +137,8 @@ const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
       return reducerUpdateOptionGame(state, action);
     case EnumActionRoomStore.START_GAME:
       return reducerStartGame(state, action);
+    case EnumActionRoomStore.PLACE_PIECE:
+      return reducerPlacePiece(state, action);
     default:
       return state;
   }
@@ -180,12 +198,6 @@ class RoomManager {
   public hasSocketId(socketId: string) {
     return this.state.players.some((p) => p.socket.id === socketId);
   }
-
-  public placePiece(socket: Socket, arg: IEventPlacePiece) {
-    // const {piece, pos} = arg;
-    // TODO
-  }
-
 }
 
 export {
