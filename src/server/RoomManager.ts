@@ -3,7 +3,29 @@ import {ENUM_PIECES, IOptionGame, IPiece, IPos} from '@src/common/IType';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {factPlayer} from '@src/server/playerUtils';
 
-// ACTION
+// -- ISTATE
+
+interface IPlayer {
+  playerName: string;
+  socket: Socket;
+  isSpectator: boolean;
+  grid: ENUM_PIECES[][];
+  score: number;
+  nbLineCompleted: number;
+  win: boolean;
+  lost: boolean;
+  master: boolean;
+  flow: IPiece[];
+}
+
+interface IRoomState {
+  roomName: string;
+  playing: boolean;
+  players: IPlayer[];
+  optionGame: IOptionGame;
+}
+
+// -- ACTION
 
 enum EnumActionRoomStore {
   ADD_PLAYER,
@@ -110,13 +132,13 @@ interface IActionPlacePiece extends IActionRoom {
   pos: IPos
 }
 
-const reducerPlacePiece = (state: IRoomState, action: IActionStartGame): IRoomState => {
+const reducerPlacePiece = (state: IRoomState, action: IActionPlacePiece): IRoomState => {
   // const {piece, pos} = arg;
   // TODO
   return state;
 };
 
-// ACTION ROOM
+// -- ACTION ROOM
 
 type ActionRoom = IActionRoomAddPlayer
   | IActionRoomDelPlayer
@@ -124,7 +146,7 @@ type ActionRoom = IActionRoomAddPlayer
   | IActionStartGame
   | IActionPlacePiece;
 
-// REDUCER
+// -- REDUCER
 
 // use middelware for check end send socket... ?
 const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
@@ -144,29 +166,7 @@ const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
   }
 };
 
-// ISTATE
-
-interface IPlayer {
-  playerName: string;
-  socket: Socket;
-  isSpectator: boolean;
-  grid: ENUM_PIECES[][];
-  score: number;
-  nbLineCompleted: number;
-  win: boolean;
-  lost: boolean;
-  master: boolean;
-  flow: IPiece[];
-}
-
-interface IRoomState {
-  roomName: string;
-  playing: boolean;
-  players: IPlayer[];
-  optionGame: IOptionGame;
-}
-
-// ROOM MANAGER
+// -- ROOM MANAGER
 
 class RoomManager {
 
