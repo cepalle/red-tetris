@@ -1,6 +1,6 @@
 import {cloneState} from "../../src/client/util/clone-handler";
 import {store} from "../../src/client/middlewares/store";
-import {gridAddWall, placePiecePreview} from "../../src/client/util/grid-piece-handler";
+import {gridAddWall, placePiecePreview} from "../../src/common/grid-piece-handler";
 
 describe('grid handler test', () => {
   it('dispatch gridAddWall', () => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {IState} from '@src/client/reducers/reducer';
-import {chooseWallType, ENUM_PIECES} from '@src/client/util/grid-piece-handler';
+import {chooseWallType, ENUM_PIECES} from '@src/common/grid-piece-handler';
 import {IPlayer} from '@src/server/RoomManager';
 import {GRID_WIDTH} from '@src/common/grid';
 

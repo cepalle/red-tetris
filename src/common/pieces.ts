@@ -1,4 +1,4 @@
-import {ENUM_PIECES} from '@src/client/util/grid-piece-handler';
+import {ENUM_PIECES} from '@src/common/grid-piece-handler';
 
 const Pieces = [1, 2, 3, 4, 5, 6, 7];
 

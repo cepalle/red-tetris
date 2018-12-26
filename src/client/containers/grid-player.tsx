@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {chooseWallType, ENUM_PIECES, placePiece, placePiecePreview} from '../util/grid-piece-handler';
+import {chooseWallType, ENUM_PIECES, placePiece, placePiecePreview} from '../../common/grid-piece-handler';
 import {IState} from '../reducers/reducer';
 import {GRID_WIDTH} from '@src/common/grid';
 import {IPos} from '@src/common/IType';

@@ -1,7 +1,7 @@
-import {GRID_WIDTH} from '@src/common/grid';
-import {getPiece} from '@src/common/pieces';
-import {ENUM_PIECES, ENUM_PIECES_MOVE, IPiece, IPos} from '@src/common/IType';
-import {IPlayer} from '@src/server/RoomManager';
+import {GRID_WIDTH} from 'grid';
+import {getPiece} from 'pieces';
+import {ENUM_PIECES, ENUM_PIECES_MOVE, IPiece, IPos} from 'IType';
+import {IPlayer} from '../server/RoomManager';
 
 enum ENUM_COLLISION_TYPE {
   PIECE = 'collision_piece',
