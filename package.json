@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client-dev": "webpack-dev-server --mode development --open",
+    "client-dev": "webpack-dev-server --mode development",
     "build": "webpack ./src/client/index.tsx ",
     "srv-dist": "babel src/server --out-dir dist && node dist/server/main.ts",
     "srv-dev": "babel-watch -w src src/server/main.ts",

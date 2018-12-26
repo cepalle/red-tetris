@@ -7,6 +7,10 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js'
   },
+  resolve: {
+    extensions: [".js", ".json", ".ts", ".tsx"],
+    alias: {'@src': path.join(__dirname, "src")}
+  },
   module: {
     rules: [
       {
