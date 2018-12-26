@@ -1,5 +1,5 @@
 import * as React from 'react';
-import ReactDOM from 'react-dom';
+import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {store} from './middlewares/store';
 import './index.css';
@@ -7,13 +7,16 @@ import {App} from '@src/client/containers/app';
 import {SEND_MOVE_PIECE} from '@src/client/actions/action-creators';
 import {eventHandler} from '@src/client/util/event-handler';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
+import {onAll} from '@src/client/util/socket-handler';
 
-ReactDOM.render(
+render(
   <Provider store={store}>
     <App/>
   </Provider>,
   document.getElementById('app'),
 );
+
+onAll(store.getState().socket, store.dispatch);
 
 const eventHandlerWithStore = eventHandler(store);
 

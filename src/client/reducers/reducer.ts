@@ -1,9 +1,7 @@
 import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {urlGetPlayerName, urlGetRoomName} from '@src/client/util/url-handler';
-import io from 'socket.io-client';
-import {onAll} from '@src/client/util/socket-handler';
+import * as io from 'socket.io-client';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
-import {store} from '@src/client/middlewares/store';
 import {
   reducerOnSetRoomsPlayersName,
   reducerOnSetRoomState,
@@ -22,9 +20,7 @@ interface IState {
 }
 
 const initApp = (): IState => {
-  const socket: SocketIOClient.Socket = io.connect(SOCKET_URL);
-
-  onAll(socket, store.dispatch);
+  const socket: SocketIOClient.Socket = io(SOCKET_URL);
 
   return {
     socket: socket,
