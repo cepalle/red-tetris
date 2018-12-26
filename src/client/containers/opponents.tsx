@@ -70,8 +70,9 @@ const OpponentComponent = (props: IProps) => {
           </div>
           <div className={'row center'}>
         <span className={'font_white font_retro'}>
-          {infoRender.player.playerName}{infoRender.player.master && '(Master)'}
-          {infoRender.player.lost && '(lost)'}{infoRender.player.win && '(Win)'}
+          {infoRender.player.playerName}
+          {infoRender.player.lost && '(lost)'}
+          {infoRender.player.win && '(Win)'}
           {infoRender.player.isSpectator && '(Viewer)'}
         </span>
           </div>
