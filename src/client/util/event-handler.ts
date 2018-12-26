@@ -1,5 +1,6 @@
-import {ENUM_PIECES_MOVE, PIECES_MOVE, ReduxAction, SEND_START_GAME} from '../actions/action-creators';
 import {Dispatch} from 'redux';
+import {PIECE_MOVE, ReduxAction, SEND_START_GAME} from '@src/client/actions/action-creators';
+import {ENUM_PIECES_MOVE} from '@src/common/IType';
 
 const keyEnter = 13;
 const keySpace = 32;
@@ -19,27 +20,27 @@ const eventHandler = (event: any, isInGame: boolean, dispatch: Dispatch<ReduxAct
   switch (event.keyCode) {
     case keyLeft:
       event.preventDefault();
-      dispatch(PIECES_MOVE(ENUM_PIECES_MOVE.LEFT));
+      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.LEFT));
       break;
 
     case keyUp:
       event.preventDefault();
-      dispatch(PIECES_MOVE(ENUM_PIECES_MOVE.ROT_RIGHT));
+      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.ROT_RIGHT));
       break;
 
     case keyRight:
       event.preventDefault();
-      dispatch(PIECES_MOVE(ENUM_PIECES_MOVE.RIGHT));
+      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.RIGHT));
       break;
 
     case keyDown:
       event.preventDefault();
-      dispatch(PIECES_MOVE(ENUM_PIECES_MOVE.DOWN));
+      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.DOWN));
       break;
 
     case keySpace:
       event.preventDefault();
-      dispatch(PIECES_MOVE(ENUM_PIECES_MOVE.DROP));
+      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.DROP));
       break;
 
     case keyEnter:
@@ -49,12 +50,12 @@ const eventHandler = (event: any, isInGame: boolean, dispatch: Dispatch<ReduxAct
 
     case keyS:
       event.preventDefault();
-      dispatch(PIECES_MOVE(ENUM_PIECES_MOVE.SWITCH));
+      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.SWITCH));
       break;
 
     case keyC:
       event.preventDefault();
-      dispatch(PIECES_MOVE(ENUM_PIECES_MOVE.SWITCH));
+      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.SWITCH));
       break;
   }
 };
