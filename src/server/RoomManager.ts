@@ -1,10 +1,14 @@
 import {Socket} from 'socket.io';
-import {ENUM_PIECES, IOptionGame, IPiece, IPos} from '@src/common/IType';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
-import {GRID_HEIGHT, GRID_WIDTH} from '@src/common/grid';
 import {genFlow} from '@src/server/flowUtils';
+import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, IPiece} from '@src/common/grid-piece-handler';
 
 // -- ISTATE
+
+interface IOptionGame {
+  readonly addWallLine: boolean,
+  readonly groundResizer: boolean,
+}
 
 interface IPlayer {
   playerName: string;

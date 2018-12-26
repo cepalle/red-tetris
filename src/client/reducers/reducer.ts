@@ -1,14 +1,14 @@
 import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {urlGetPlayerName, urlGetRoomName} from '@src/client/util/url-handler';
-import {IPos} from '@src/common/IType';
-import {GRID_WIDTH} from '@src/common/grid';
 import {IRoomState} from '@src/server/RoomManager';
 import io from 'socket.io-client';
 import {onAll} from '@src/client/util/socket-handler';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
 import {store} from '@src/client/middlewares/store';
 import {reducerOnSetRoomsPlayersName, reducerOnSetRoomState, reducerPieceMove} from '@src/client/reducers/reducer-aux';
+import {GRID_WIDTH, IPos} from '@src/common/grid-piece-handler';
 
+// mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
 
 interface IState {
@@ -20,7 +20,6 @@ interface IState {
   readonly posPiece: IPos,
 }
 
-// socket in State
 const initApp = (): IState => {
   const socket: SocketIOClient.Socket = io.connect(SOCKET_URL);
 

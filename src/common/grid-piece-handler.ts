@@ -1,7 +1,309 @@
-import {GRID_WIDTH} from 'grid';
-import {getPiece} from 'pieces';
-import {ENUM_PIECES, ENUM_PIECES_MOVE, IPiece, IPos} from 'IType';
 import {IPlayer} from '../server/RoomManager';
+
+// --- TYPE
+
+interface IPos {
+  readonly x: number,
+  readonly y: number
+}
+
+interface IPiece {
+  readonly num: number,
+  readonly rot: number,
+}
+
+enum ENUM_PIECES_MOVE {
+  ROT_RIGHT = 'PIECES_ROT_RIGHT',
+  ROT_LEFT = 'PIECES_ROT_LEFT',
+  RIGHT = 'PIECES_MOVE_RIGHT',
+  LEFT = 'PIECES_MOVE_LEFT',
+  DOWN = 'PIECES_MOVE_DOWN',
+  DROP = 'PIECES_DROP',
+  SWITCH = 'PIECE_SWITCH',
+}
+
+enum ENUM_PIECES {
+  empty = 0,
+  n1 = 1,
+  n2 = 2,
+  n3 = 3,
+  n4 = 4,
+  n5 = 5,
+  n6 = 6,
+  n7 = 7,
+  wall,
+  preview,
+  wall_malus,
+  wall_loose,
+  wall_win,
+  wall_spect,
+}
+
+// --- PIECE
+
+interface IPieceInfo {
+  x: number,
+  y: number,
+  width: number
+}
+
+interface IPiecesDescr {
+  info: IPieceInfo,
+  piece: ENUM_PIECES[][],
+}
+
+const PIECES_DESCR: IPiecesDescr[][] = [
+  [
+    {
+      info: {x: 0, y: -1, width: 4},
+      piece: [
+        [0, 0, 0, 0],
+        [1, 1, 1, 1],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -2, y: 0, width: 1},
+      piece: [
+        [0, 0, 1, 0],
+        [0, 0, 1, 0],
+        [0, 0, 1, 0],
+        [0, 0, 1, 0],
+      ],
+    },
+    {
+      info: {x: 0, y: -2, width: 4},
+      piece: [
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 1, 1, 1],
+        [0, 0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 1},
+      piece: [
+        [0, 1, 0, 0],
+        [0, 1, 0, 0],
+        [0, 1, 0, 0],
+        [0, 1, 0, 0],
+      ],
+    },
+  ],
+  [
+    {
+      info: {x: 0, y: 0, width: 3},
+      piece: [
+        [2, 0, 0],
+        [2, 2, 2],
+        [0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 2},
+      piece: [
+        [0, 2, 2],
+        [0, 2, 0],
+        [0, 2, 0],
+      ],
+    },
+    {
+      info: {x: 0, y: -1, width: 3},
+      piece: [
+        [0, 0, 0],
+        [2, 2, 2],
+        [0, 0, 2],
+      ],
+    },
+    {
+      info: {x: 0, y: 0, width: 2},
+      piece: [
+        [0, 2, 0],
+        [0, 2, 0],
+        [2, 2, 0],
+      ],
+    },
+  ],
+  [
+    {
+      info: {x: 0, y: 0, width: 3},
+      piece: [
+        [0, 0, 3],
+        [3, 3, 3],
+        [0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 2},
+      piece: [
+        [0, 3, 0],
+        [0, 3, 0],
+        [0, 3, 3],
+      ],
+    },
+    {
+      info: {x: 0, y: -1, width: 3},
+      piece: [
+        [0, 0, 0],
+        [3, 3, 3],
+        [3, 0, 0],
+      ],
+    },
+    {
+      info: {x: 0, y: 0, width: 2},
+      piece: [
+        [3, 3, 0],
+        [0, 3, 0],
+        [0, 3, 0],
+      ],
+    },
+  ],
+  [
+    {
+      info: {x: -1, y: 0, width: 4},
+      piece: [
+        [0, 4, 4, 0],
+        [0, 4, 4, 0],
+        [0, 0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 4},
+      piece: [
+        [0, 4, 4, 0],
+        [0, 4, 4, 0],
+        [0, 0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 4},
+      piece: [
+        [0, 4, 4, 0],
+        [0, 4, 4, 0],
+        [0, 0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 4},
+      piece: [
+        [0, 4, 4, 0],
+        [0, 4, 4, 0],
+        [0, 0, 0, 0],
+      ],
+    },
+  ],
+  [
+    {
+      info: {x: 0, y: 0, width: 3},
+      piece: [
+        [0, 5, 5],
+        [5, 5, 0],
+        [0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 2},
+      piece: [
+        [0, 5, 0],
+        [0, 5, 5],
+        [0, 0, 5],
+      ],
+    },
+    {
+      info: {x: 0, y: -1, width: 3},
+      piece: [
+        [0, 0, 0],
+        [0, 5, 5],
+        [5, 5, 0],
+      ],
+    },
+    {
+      info: {x: 0, y: 0, width: 2},
+      piece: [
+        [5, 0, 0],
+        [5, 5, 0],
+        [0, 5, 0],
+      ],
+    },
+  ],
+  [
+    {
+      info: {x: 0, y: 0, width: 3},
+      piece: [
+        [0, 6, 0],
+        [6, 6, 6],
+        [0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 2},
+      piece: [
+        [0, 6, 0],
+        [0, 6, 6],
+        [0, 6, 0],
+      ],
+    },
+    {
+      info: {x: 0, y: -1, width: 3},
+      piece: [
+        [0, 0, 0],
+        [6, 6, 6],
+        [0, 6, 0],
+      ],
+    },
+    {
+      info: {x: 0, y: 0, width: 2},
+      piece: [
+        [0, 6, 0],
+        [6, 6, 0],
+        [0, 6, 0],
+      ],
+    },
+  ],
+  [
+    {
+      info: {x: 0, y: 0, width: 3},
+      piece: [
+        [7, 7, 0],
+        [0, 7, 7],
+        [0, 0, 0],
+      ],
+    },
+    {
+      info: {x: -1, y: 0, width: 2},
+      piece: [
+        [0, 0, 7],
+        [0, 7, 7],
+        [0, 7, 0],
+      ],
+    },
+    {
+      info: {x: 0, y: -1, width: 3},
+      piece: [
+        [0, 0, 0],
+        [7, 7, 0],
+        [0, 7, 7],
+      ],
+    },
+    {
+      info: {x: 0, y: 0, width: 2},
+      piece: [
+        [0, 7, 0],
+        [7, 7, 0],
+        [7, 0, 0],
+      ],
+    },
+  ],
+];
+
+const getPiece = (pieces: ENUM_PIECES, rot = 0): ENUM_PIECES[][] => PIECES_DESCR[pieces - 1][rot].piece;
+const getPieceInfo = (pieces: ENUM_PIECES, rot = 0): IPieceInfo => PIECES_DESCR[pieces - 1][rot].info;
+
+// --- GRID
+
+const GRID_HEIGHT = 24;
+const GRID_WIDTH = 10;
 
 enum ENUM_COLLISION_TYPE {
   PIECE = 'collision_piece',
@@ -32,29 +334,37 @@ const chooseWallType = (player: IPlayer): ENUM_PIECES => {
 };
 
 const hasCollision = (grid: number[][], piece: ENUM_PIECES[][], loc: IPos): ENUM_COLLISION_TYPE | undefined => {
-  let collisionType: ENUM_COLLISION_TYPE;
+  let collisionType: ENUM_COLLISION_TYPE | undefined = undefined;
+
+  const comp = (col1: ENUM_COLLISION_TYPE | undefined, col2: ENUM_COLLISION_TYPE): boolean => {
+    if (col1 === undefined) {
+      return true;
+    }
+    return PRIO_COLLISION.indexOf(col1) < PRIO_COLLISION.indexOf(col2);
+  };
+
   piece.forEach((line, y) => line.forEach((nb, x) => {
     const gx = x + loc.x;
     const gy = y + loc.y;
 
     if (gy < 0 && nb !== 0) {
-      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(ENUM_COLLISION_TYPE.WALL_TOP)) {
+      if (comp(collisionType, ENUM_COLLISION_TYPE.WALL_TOP)) {
         collisionType = ENUM_COLLISION_TYPE.WALL_TOP;
       }
     } else if (gy >= grid.length && nb !== 0) {
-      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(ENUM_COLLISION_TYPE.WALL_BOTTOM)) {
+      if (comp(collisionType, ENUM_COLLISION_TYPE.WALL_BOTTOM)) {
         collisionType = ENUM_COLLISION_TYPE.WALL_BOTTOM;
       }
     } else if (gx < 0 && nb !== 0) {
-      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(ENUM_COLLISION_TYPE.WALL_LEFT)) {
+      if (comp(collisionType, ENUM_COLLISION_TYPE.WALL_LEFT)) {
         collisionType = ENUM_COLLISION_TYPE.WALL_LEFT;
       }
     } else if (gx >= GRID_WIDTH && nb !== 0) {
-      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(ENUM_COLLISION_TYPE.WALL_RIGHT)) {
+      if (comp(collisionType, ENUM_COLLISION_TYPE.WALL_RIGHT)) {
         collisionType = ENUM_COLLISION_TYPE.WALL_RIGHT;
       }
     } else if (nb !== 0 && grid[gy][gx] !== 0) {
-      if (PRIO_COLLISION.indexOf(collisionType) < PRIO_COLLISION.indexOf(ENUM_COLLISION_TYPE.PIECE)) {
+      if (comp(collisionType, ENUM_COLLISION_TYPE.PIECE)) {
         collisionType = ENUM_COLLISION_TYPE.PIECE;
       }
     }
@@ -285,6 +595,8 @@ const gridAddWall = (grid: ENUM_PIECES[][], amount: number): ENUM_PIECES[][] => 
 };
 
 export {
+  GRID_HEIGHT,
+  GRID_WIDTH,
   hasCollision,
   placePiece,
   ENUM_COLLISION_TYPE,
@@ -296,4 +608,6 @@ export {
   ENUM_PIECES_MOVE,
   ENUM_PIECES,
   chooseWallType,
+  IPiece,
+  IPos,
 };
