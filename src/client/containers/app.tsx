@@ -32,7 +32,11 @@ const AppComponent = (props: IProps) => {
 
   if (!isConnected) {
     return (
-      <div>Server Offline</div>
+      <div className={'row center font_white'}>
+        <p className={'color8 pad'}>
+          Server Offline
+        </p>
+      </div>
     );
   }
 
