@@ -1,9 +1,10 @@
 import {EnumAction, ReduxAction} from '@src/client/actions/action-creators';
 import {
   ENUM_SOCKET_EVENT_SERVER,
+  IEventMovePiece,
   IEventSetGameOption,
+  IEventSetRoomPlayerName,
   IEventStartGame,
-  IEventPieceSwitch,
 } from '@src/common/socketEventServer';
 
 const sendStartGame = (socket: SocketIOClient.Socket, arg: IEventStartGame): void => {
@@ -14,8 +15,12 @@ const sendUpdateOptionGame = (socket: SocketIOClient.Socket, arg: IEventSetGameO
   socket.emit(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
 };
 
-const sendPeceSwitch = (socket: SocketIOClient.Socket, arg: IEventPieceSwitch) => {
-  socket.emit(ENUM_SOCKET_EVENT_SERVER.PIECE_SWITCH, arg);
+const sendMovePiece = (socket: SocketIOClient.Socket, arg: IEventMovePiece) => {
+  socket.emit(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, arg);
+};
+
+const sendRoomPlayerName = (socket: SocketIOClient.Socket, arg: IEventSetRoomPlayerName) => {
+  socket.emit(ENUM_SOCKET_EVENT_SERVER.SET_ROOM_PLAYER_NAME, arg);
 };
 
 const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) => {
@@ -23,6 +28,14 @@ const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) =>
   const state = store.getState();
 
   switch (action.type) {
+    case EnumAction.SEND_ROOM_PLAYER_NAME:
+      if (state.socket !== undefined && state.roomName !== undefined) {
+        sendRoomPlayerName(state.socket, {
+          roomName: state.roomName,
+          playerName: state.playerNames,
+        });
+      }
+      break;
     case EnumAction.SEND_START_GAME:
       if (state.socket !== undefined && state.roomName !== undefined) {
         sendStartGame(state.socket, {
@@ -38,10 +51,11 @@ const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) =>
         });
       }
       break;
-    case EnumAction.SEND_PIECE_SWITCH:
+    case EnumAction.SEND_MOVE_PIECE:
       if (state.socket !== undefined && state.roomName !== undefined) {
-        sendPeceSwitch(state.socket, {
+        sendMovePiece(state.socket, {
           roomName: state.roomName,
+          move: action.move,
         });
       }
       break;

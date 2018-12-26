@@ -5,10 +5,10 @@ import {IOptionGame} from '@src/server/RoomManager';
 enum EnumAction {
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
-  PIECE_MOVE,
-  SEND_PIECE_SWITCH,
   SEND_START_GAME,
   SEND_UPDATE_OPTION_GAME,
+  SEND_MOVE_PIECE,
+  SEND_ROOM_PLAYER_NAME,
 }
 
 interface IAction {
@@ -43,16 +43,16 @@ const ON_SET_ROOMS_PLAYERS_NAME = (arg: IEventSetRoomsPlayersName): IOnSetRoomes
   };
 };
 
-// PIECE_MOVE
+// SEND_MOVE_PIECE
 
-interface IPieceMove extends IAction {
-  readonly type: EnumAction.PIECE_MOVE,
+interface ISendMovePiece extends IAction {
+  readonly type: EnumAction.SEND_MOVE_PIECE,
   readonly move: ENUM_PIECES_MOVE,
 }
 
-const PIECE_MOVE = (move: ENUM_PIECES_MOVE): IPieceMove => {
+const SEND_MOVE_PIECE = (move: ENUM_PIECES_MOVE): ISendMovePiece => {
   return {
-    type: EnumAction.PIECE_MOVE,
+    type: EnumAction.SEND_MOVE_PIECE,
     move,
   };
 };
@@ -83,24 +83,24 @@ const SEND_UPDATE_OPTION_GAME = (optionGame: IOptionGame): ISendUpdateOptionGame
   };
 };
 
-// SEND_PIECE_SWITCH
+// SEND_ROOM_PLAYER_NAME
 
-interface IPieceSwitch extends IAction {
-  readonly type: EnumAction.SEND_PIECE_SWITCH,
+interface ISendRoomPlayerName {
+  readonly type: EnumAction.SEND_ROOM_PLAYER_NAME,
 }
 
-const SEND_PIECE_SWITCH = () => {
+const SEND_ROOM_PLAYER_NAME = (): ISendRoomPlayerName => {
   return {
-    type: EnumAction.SEND_PIECE_SWITCH,
+    type: EnumAction.SEND_ROOM_PLAYER_NAME,
   };
 };
 
 type ReduxAction = IOnSetRoomeState
   | IOnSetRoomesPlayersName
-  | IPieceMove
+  | ISendMovePiece
   | ISendStartGame
   | ISendUpdateOptionGame
-  | IPieceSwitch;
+  | ISendRoomPlayerName;
 
 export {
   EnumAction,
@@ -109,12 +109,12 @@ export {
   ON_SET_ROOM_STATE,
   IOnSetRoomesPlayersName,
   ON_SET_ROOMS_PLAYERS_NAME,
-  IPieceMove,
-  PIECE_MOVE,
+  ISendMovePiece,
+  SEND_MOVE_PIECE,
   ISendStartGame,
   SEND_START_GAME,
   ISendUpdateOptionGame,
   SEND_UPDATE_OPTION_GAME,
-  IPieceSwitch,
-  SEND_PIECE_SWITCH,
+  ISendRoomPlayerName,
+  SEND_ROOM_PLAYER_NAME,
 };

@@ -1,5 +1,5 @@
 import {Store} from 'redux';
-import {PIECE_MOVE, SEND_PIECE_SWITCH, SEND_START_GAME} from '@src/client/actions/action-creators';
+import {SEND_MOVE_PIECE, SEND_PIECE_SWITCH, SEND_START_GAME} from '@src/client/actions/action-creators';
 import {IState} from '@src/client/reducers/reducer';
 import {isPlaying} from '@src/client/reducers/isPlaying';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
@@ -25,27 +25,27 @@ const eventHandler = (store: Store<IState>) => (event: any) => {
   switch (event.keyCode) {
     case keyLeft:
       event.preventDefault();
-      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.LEFT));
+      dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.LEFT));
       break;
 
     case keyUp:
       event.preventDefault();
-      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.ROT_RIGHT));
+      dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.ROT_RIGHT));
       break;
 
     case keyRight:
       event.preventDefault();
-      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.RIGHT));
+      dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.RIGHT));
       break;
 
     case keyDown:
       event.preventDefault();
-      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.DOWN));
+      dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.DOWN));
       break;
 
     case keySpace:
       event.preventDefault();
-      dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.DROP));
+      dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.DROP));
       break;
 
     case keyEnter:

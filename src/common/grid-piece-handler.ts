@@ -12,13 +12,21 @@ interface IPiece {
   readonly rot: number,
 }
 
+const initPiece = () => {
+  return {
+    x: Math.floor(GRID_WIDTH / 2),
+    y: 0,
+  };
+};
+
 enum ENUM_PIECES_MOVE {
-  ROT_RIGHT = 'PIECES_ROT_RIGHT',
-  ROT_LEFT = 'PIECES_ROT_LEFT',
-  RIGHT = 'PIECES_MOVE_RIGHT',
-  LEFT = 'PIECES_MOVE_LEFT',
-  DOWN = 'PIECES_MOVE_DOWN',
-  DROP = 'PIECES_DROP',
+  ROT_RIGHT = 'ROT_RIGHT',
+  ROT_LEFT = 'ROT_LEFT',
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
+  DOWN = 'DOWN',
+  DROP = 'DROP',
+  SWITCH = 'SWITCH',
 }
 
 enum ENUM_PIECES {
@@ -581,4 +589,5 @@ export {
   chooseWallType,
   IPiece,
   IPos,
+  initPiece,
 };

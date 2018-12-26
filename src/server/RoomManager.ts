@@ -1,7 +1,7 @@
 import {Socket} from 'socket.io';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {genFlow} from '@src/server/flowUtils';
-import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, IPiece} from '@src/common/grid-piece-handler';
+import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, initPiece, IPiece, IPos} from '@src/common/grid-piece-handler';
 
 // -- ISTATE
 
@@ -17,6 +17,7 @@ interface IPlayer {
   lost: boolean;
   master: boolean;
   flow: IPiece[];
+  posPiece: IPos;
 }
 
 const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlayer => {
@@ -36,6 +37,7 @@ const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlaye
     lost: false,
     master: master,
     flow: genFlow(20),
+    posPiece: initPiece(),
   };
 };
 

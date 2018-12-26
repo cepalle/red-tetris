@@ -8,9 +8,8 @@ import {store} from '@src/client/middlewares/store';
 import {
   reducerOnSetRoomsPlayersName,
   reducerOnSetRoomState,
-  reducerPieceMove,
 } from '@src/client/reducers/reducer-aux';
-import {GRID_WIDTH, IPos} from '@src/common/grid-piece-handler';
+import {initPiece, IPos} from '@src/common/grid-piece-handler';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
@@ -28,6 +27,7 @@ const initApp = (): IState => {
   const socket: SocketIOClient.Socket = io.connect(SOCKET_URL);
 
   onAll(socket, store.dispatch);
+  // send player and room name
 
   return {
     socket: socket,
@@ -35,7 +35,7 @@ const initApp = (): IState => {
     playerName: urlGetPlayerName(),
     roomName: urlGetRoomName(),
     roomsPlayersName: [],
-    posPiece: {x: Math.floor(GRID_WIDTH / 2), y: 0},
+    posPiece: initPiece(),
   };
 };
 
@@ -45,8 +45,6 @@ const reducer = (state = initApp(), action: ReduxAction): IState => {
       return reducerOnSetRoomState(state, action);
     case EnumAction.ON_SET_ROOMS_PLAYERS_NAME:
       return reducerOnSetRoomsPlayersName(state, action);
-    case EnumAction.PIECE_MOVE:
-      return reducerPieceMove(state, action);
     default:
       return state;
   }

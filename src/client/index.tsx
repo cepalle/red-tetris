@@ -5,7 +5,7 @@ import {store} from './middlewares/store';
 import './index.css';
 import './util/event-handler';
 import {App} from '@src/client/containers/app';
-import {PIECE_MOVE} from '@src/client/actions/action-creators';
+import {SEND_MOVE_PIECE} from '@src/client/actions/action-creators';
 import {ENUM_PIECES_MOVE} from '@src/common/IType';
 import {eventHandler} from '@src/client/util/event-handler';
 
@@ -22,5 +22,5 @@ window.addEventListener('keydown', event =>
   false);
 
 window.setInterval(() =>
-    store.dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.DOWN)),
+    store.dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.DOWN)),
   500);
