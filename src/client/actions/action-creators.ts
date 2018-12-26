@@ -1,5 +1,6 @@
 import {IEventSetRoomsPlayersName, IEventSetRoomState} from '@src/common/socketEventClient';
-import {ENUM_PIECES_MOVE, IOptionGame} from '@src/common/IType';
+import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
+import {IOptionGame} from '@src/server/RoomManager';
 
 enum EnumAction {
   ON_SET_ROOM_STATE,

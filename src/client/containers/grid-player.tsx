@@ -1,10 +1,15 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {chooseWallType, ENUM_PIECES, placePiece, placePiecePreview} from '../../common/grid-piece-handler';
 import {IState} from '../reducers/reducer';
-import {GRID_WIDTH} from '@src/common/grid';
-import {IPos} from '@src/common/IType';
 import {IPlayer} from '@src/server/RoomManager';
+import {
+  chooseWallType,
+  ENUM_PIECES,
+  GRID_WIDTH,
+  IPos,
+  placePiece,
+  placePiecePreview,
+} from '@src/common/grid-piece-handler';
 
 const mapStateToProps = (state: IState) => {
   const player = (state.roomState === undefined) ? undefined :

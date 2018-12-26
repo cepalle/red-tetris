@@ -5,8 +5,7 @@ import {
 } from '../actions/action-creators';
 import {Dispatch} from 'redux';
 import {IState} from '@src/client/reducers/reducer';
-import {IRoomState} from '@src/server/RoomManager';
-import {IOptionGame} from '@src/common/IType';
+import {IOptionGame, IRoomState} from '@src/server/RoomManager';
 import {store} from '@src/client/middlewares/store';
 
 const mp3 = require('@src/client/assets/Original_Tetris_theme.mp3');

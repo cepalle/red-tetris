@@ -5,11 +5,6 @@ import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, IPiece} from '@src/common/grid-pie
 
 // -- ISTATE
 
-interface IOptionGame {
-  readonly addWallLine: boolean,
-  readonly groundResizer: boolean,
-}
-
 interface IPlayer {
   playerName: string;
   socket: Socket;
@@ -43,6 +38,11 @@ const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlaye
     flow: genFlow(20),
   };
 };
+
+interface IOptionGame {
+  readonly addWallLine: boolean,
+  readonly groundResizer: boolean,
+}
 
 interface IRoomState {
   roomName: string;
@@ -280,4 +280,5 @@ export {
   UPDATE_OPTION_GAME,
   START_GAME,
   PLACE_PIECE,
+  IOptionGame,
 };
