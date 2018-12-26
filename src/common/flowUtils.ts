@@ -1,4 +1,4 @@
-import {ENUM_PIECES, IPiece} from '@src/common/IType';
+import {ENUM_PIECES, IPiece} from '@src/common/grid-piece-handler';
 
 const randomPiece = (): IPiece => {
   return {

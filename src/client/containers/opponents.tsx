@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {IState} from '@src/client/reducers/reducer';
 import {chooseWallType, ENUM_PIECES, GRID_WIDTH} from '@src/common/grid-piece-handler';
-import {IPlayer} from '@src/server/RoomManager';
+import {IPlayer} from '@src/common/ITypeRoomManager';
 
 const mapStateToProps = (state: IState) => {
 

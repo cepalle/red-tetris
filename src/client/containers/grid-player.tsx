@@ -1,15 +1,14 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {IState} from '../reducers/reducer';
-import {IPlayer} from '@src/server/RoomManager';
 import {
   chooseWallType,
   ENUM_PIECES,
   GRID_WIDTH,
-  IPos,
   placePiece,
   placePiecePreview,
 } from '@src/common/grid-piece-handler';
+import {IPlayer} from '@src/common/ITypeRoomManager';
 
 const mapStateToProps = (state: IState) => {
   const player = (state.roomState === undefined) ? undefined :
@@ -17,13 +16,11 @@ const mapStateToProps = (state: IState) => {
 
   return {
     player: player,
-    posPiece: state.posPiece,
   };
 };
 
 interface IProps {
   player: IPlayer | undefined,
-  posPiece: IPos,
 }
 
 const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
@@ -46,7 +43,7 @@ const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
 
 const GridPlayerComponent = (props: IProps) => {
   /* PLAYERGRID */
-  const {player, posPiece} = props;
+  const {player} = props;
 
   if (player === undefined) {
     return (
@@ -56,7 +53,7 @@ const GridPlayerComponent = (props: IProps) => {
     );
   }
 
-  const {flow, grid} = player;
+  const {flow, grid, posPiece} = player;
 
   const wallType = chooseWallType(player);
 

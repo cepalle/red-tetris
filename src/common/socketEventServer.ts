@@ -1,5 +1,5 @@
-import {IOptionGame} from '@src/server/RoomManager';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
+import {IOptionGame} from '@src/common/ITypeRoomManager';
 
 // SET_ROOM_PLAYER_NAME
 interface IEventSetRoomPlayerName {

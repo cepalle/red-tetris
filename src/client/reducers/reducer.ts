@@ -1,6 +1,5 @@
 import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {urlGetPlayerName, urlGetRoomName} from '@src/client/util/url-handler';
-import {IRoomState} from '@src/server/RoomManager';
 import io from 'socket.io-client';
 import {onAll} from '@src/client/util/socket-handler';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
@@ -9,7 +8,7 @@ import {
   reducerOnSetRoomsPlayersName,
   reducerOnSetRoomState,
 } from '@src/client/reducers/reducer-aux';
-import {initPiece, IPos} from '@src/common/grid-piece-handler';
+import {IRoomState} from '@src/common/ITypeRoomManager';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
@@ -20,14 +19,13 @@ interface IState {
   readonly playerName: string | undefined,
   readonly roomName: string | undefined,
   readonly roomsPlayersName: IRoomPlayersName[],
-  readonly posPiece: IPos,
 }
 
 const initApp = (): IState => {
   const socket: SocketIOClient.Socket = io.connect(SOCKET_URL);
 
   onAll(socket, store.dispatch);
-  // send player and room name
+  // send player and room name ?
 
   return {
     socket: socket,
@@ -35,7 +33,6 @@ const initApp = (): IState => {
     playerName: urlGetPlayerName(),
     roomName: urlGetRoomName(),
     roomsPlayersName: [],
-    posPiece: initPiece(),
   };
 };
 

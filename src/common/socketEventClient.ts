@@ -1,4 +1,4 @@
-import {IRoomState} from '@src/server/RoomManager';
+import {IRoomState} from '@src/common/ITypeRoomManager';
 
 // SET_ROOM_STATE
 interface IEventSetRoomState {

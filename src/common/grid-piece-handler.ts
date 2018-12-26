@@ -1,4 +1,4 @@
-import {IPlayer} from '../server/RoomManager';
+import {IPlayer} from '@src/common/ITypeRoomManager';
 
 // --- TYPE
 

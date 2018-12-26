@@ -6,8 +6,8 @@ import './index.css';
 import './util/event-handler';
 import {App} from '@src/client/containers/app';
 import {SEND_MOVE_PIECE} from '@src/client/actions/action-creators';
-import {ENUM_PIECES_MOVE} from '@src/common/IType';
 import {eventHandler} from '@src/client/util/event-handler';
+import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 
 ReactDOM.render(
   <Provider store={store}>

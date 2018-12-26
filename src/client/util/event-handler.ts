@@ -1,5 +1,5 @@
 import {Store} from 'redux';
-import {SEND_MOVE_PIECE, SEND_PIECE_SWITCH, SEND_START_GAME} from '@src/client/actions/action-creators';
+import {SEND_MOVE_PIECE, SEND_START_GAME} from '@src/client/actions/action-creators';
 import {IState} from '@src/client/reducers/reducer';
 import {isPlaying} from '@src/client/reducers/isPlaying';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
@@ -55,12 +55,12 @@ const eventHandler = (store: Store<IState>) => (event: any) => {
 
     case keyS:
       event.preventDefault();
-      dispatch(SEND_PIECE_SWITCH());
+      dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.SWITCH));
       break;
 
     case keyC:
       event.preventDefault();
-      dispatch(SEND_PIECE_SWITCH());
+      dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.SWITCH));
       break;
   }
 };

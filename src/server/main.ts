@@ -5,13 +5,13 @@ import {Server} from 'http';
 import * as fs from 'fs';
 import {Socket} from 'socket.io';
 import {
-  ENUM_SOCKET_EVENT_SERVER, IEventPlacePiece,
+  ENUM_SOCKET_EVENT_SERVER,
   IEventSetGameOption,
   IEventSetRoomPlayerName,
   IEventStartGame,
 } from '@src/common/socketEventServer';
 import {RoomsManager} from './RoomsManager';
-import {ADD_PLAYER, DEL_PLAYER, PLACE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/RoomManager';
+import {ADD_PLAYER, DEL_PLAYER, START_GAME, UPDATE_OPTION_GAME} from '@src/server/RoomManager';
 
 class App {
 
@@ -36,13 +36,6 @@ class App {
       this.roomsManager.dispatch({
         roomName: arg.roomName,
         actionRoom: START_GAME(),
-      });
-    });
-
-    socket.on(ENUM_SOCKET_EVENT_SERVER.PLACE_PIECE, (arg: IEventPlacePiece) => {
-      this.roomsManager.dispatch({
-        roomName: arg.roomName,
-        actionRoom: PLACE_PIECE(arg.piece, arg.pos, socket.id),
       });
     });
 
