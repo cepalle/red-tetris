@@ -1,13 +1,15 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {
-  ReduxAction,
+  ReduxAction, SEND_START_GAME, SEND_UPDATE_OPTION_GAME,
 } from '../actions/action-creators';
-import mp3 from '../assets/Original_Tetris_theme.mp3';
 import {Dispatch} from 'redux';
 import {IState} from '@src/client/reducers/reducer';
 import {IRoomState} from '@src/server/RoomManager';
 import {IOptionGame} from '@src/common/IType';
+import {store} from '@src/client/middlewares/store';
+
+const mp3 = require('@src/client/assets/Original_Tetris_theme.mp3');
 
 const extractInfo = (
   roomState: IRoomState | undefined,
@@ -48,14 +50,32 @@ const mapStateToProps = (state: IState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
   return {
-    onChangeAddWallLine: () => {
-      // TODO
+    onChangeAddWallLine: (): void => {
+      const roomState = store.getState().roomState;
+      if (roomState === undefined) {
+        return;
+      }
+
+      const oldOption = roomState.optionGame;
+      dispatch(SEND_UPDATE_OPTION_GAME({
+        ...oldOption,
+        addWallLine: !oldOption.addWallLine,
+      }));
     },
-    onChangeGroundResizer: () => {
-      // TODO
+    onChangeGroundResizer: (): void => {
+      const roomState = store.getState().roomState;
+      if (roomState === undefined) {
+        return;
+      }
+
+      const oldOption = roomState.optionGame;
+      dispatch(SEND_UPDATE_OPTION_GAME({
+        ...oldOption,
+        groundResizer: !oldOption.groundResizer,
+      }));
     },
-    onClickButton: () => {
-      // TODO
+    onClickStartGame: (): void => {
+      dispatch(SEND_START_GAME());
     },
   };
 };
@@ -66,12 +86,12 @@ interface IProps {
 
   onChangeAddWallLine: () => void,
   onChangeGroundResizer: () => void,
-  onClickButton: () => void,
+  onClickStartGame: () => void,
 }
 
 const InfoPanelComponent = (props: IProps) => {
 
-  const {isMaster, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickButton} = props;
+  const {isMaster, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame} = props;
 
   const onClickHome = () => {
     window.location.href = '';
@@ -121,7 +141,7 @@ const InfoPanelComponent = (props: IProps) => {
                   onChange={() => onChangeGroundResizer()}/>
                 : Increase the height of the Tetris grid in multiplayer mode.
               </label>
-              <button className={'font_retro font_white font_button buttonPlay'} onClick={() => onClickButton()}>
+              <button className={'font_retro font_white font_button buttonPlay'} onClick={() => onClickStartGame()}>
                 Play!
               </button>
             </div>

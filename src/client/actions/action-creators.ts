@@ -1,11 +1,12 @@
 import {IEventSetRoomsPlayersName, IEventSetRoomState} from '@src/common/socketEventClient';
-import {ENUM_PIECES_MOVE} from '@src/common/IType';
+import {ENUM_PIECES_MOVE, IOptionGame} from '@src/common/IType';
 
 enum EnumAction {
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
   PIECE_MOVE,
   SEND_START_GAME,
+  SEND_UPDATE_OPTION_GAME,
 }
 
 interface IAction {
@@ -66,10 +67,25 @@ const SEND_START_GAME = (): ISendStartGame => {
   };
 };
 
+// SEND_UPDATE_OPTION_GAME
+
+interface ISendUpdateOptionGame extends IAction {
+  readonly type: EnumAction.SEND_UPDATE_OPTION_GAME,
+  readonly optionGame: IOptionGame,
+}
+
+const SEND_UPDATE_OPTION_GAME = (optionGame: IOptionGame): ISendUpdateOptionGame => {
+  return {
+    type: EnumAction.SEND_UPDATE_OPTION_GAME,
+    optionGame,
+  };
+};
+
 type ReduxAction = IOnSetRoomeState
   | IOnSetRoomesPlayersName
   | IPieceMove
-  | ISendStartGame;
+  | ISendStartGame
+  | ISendUpdateOptionGame;
 
 export {
   EnumAction,
@@ -82,4 +98,6 @@ export {
   PIECE_MOVE,
   ISendStartGame,
   SEND_START_GAME,
+  ISendUpdateOptionGame,
+  SEND_UPDATE_OPTION_GAME,
 };
