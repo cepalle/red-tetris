@@ -1,17 +1,14 @@
 import * as React from 'react';
-import {IState} from '../reducers/reducer';
+import {ENUM_ROUTE, IState} from '../reducers/reducer';
 import {Dispatch} from 'redux';
-import {
-  ReduxAction,
-} from '../actions/action-creators';
+import {ReduxAction} from '../actions/action-creators';
 import {connect} from 'react-redux';
 import {TetrisGameComponent} from '../components/tetris-game-component';
 import {Home} from '@src/client/containers/home';
 
 const mapStateToProps = (state: IState) => {
   return {
-    playerName: state.playerName,
-    roomName: state.roomName,
+    route: state.route,
     isConnected: state.socket.connected,
   };
 };
@@ -21,14 +18,13 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
 };
 
 interface IProps {
-  playerName: string | undefined,
-  roomName: string | undefined,
+  route: ENUM_ROUTE,
   isConnected: boolean,
 }
 
 const AppComponent = (props: IProps) => {
 
-  const {playerName, roomName, isConnected} = props;
+  const {route, isConnected} = props;
 
   if (!isConnected) {
     return (
@@ -40,7 +36,7 @@ const AppComponent = (props: IProps) => {
     );
   }
 
-  if (playerName !== undefined && roomName !== undefined) {
+  if (route === ENUM_ROUTE.TETRIS_GAME) {
     return <TetrisGameComponent/>;
   }
 

@@ -6,7 +6,7 @@ import {Socket} from 'socket.io';
 import {
   ENUM_SOCKET_EVENT_SERVER, IEventMovePiece,
   IEventSetGameOption,
-  IEventSetRoomPlayerName,
+  IEventSubRoomState,
   IEventStartGame,
 } from '@src/common/socketEventServer';
 import {RoomsManager} from './RoomsManager';
@@ -17,7 +17,7 @@ class App {
   roomsManager = new RoomsManager();
 
   handleClient(socket: Socket): void {
-    socket.on(ENUM_SOCKET_EVENT_SERVER.SET_ROOM_PLAYER_NAME, (arg: IEventSetRoomPlayerName) => {
+    socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, (arg: IEventSubRoomState) => {
       this.roomsManager.dispatch({
         roomName: arg.roomName,
         actionRoom: ADD_PLAYER(arg.playerName, socket),

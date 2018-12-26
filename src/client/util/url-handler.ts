@@ -1,30 +1,33 @@
-// url source of true playerName roomName ?
-const urlGetPlayerName = (): string | undefined => {
-  const firstSplit = window.location.href.split('[');
-  if (firstSplit.length <= 1) {
-    return undefined;
+const urlGetRoomPlayerName = (): { playerName: string | undefined, roomName: string | undefined } => {
+  const UndefinedObj = {
+    playerName: undefined,
+    roomName: undefined,
+  };
+
+  const sp = window.location.href.split('#');
+  const scnd = sp[1];
+  if (scnd === undefined) {
+    return UndefinedObj;
   }
 
-  const name = firstSplit[1].split(']')[0];
-  if (name.length <= 0) {
-    return undefined;
+  const sp2 = scnd.split('[');
+  const roomName = sp2[0];
+  const scnd2 = sp2[1];
+  if (scnd2 === undefined) {
+    return UndefinedObj;
   }
 
-  return name;
+  const sp3 = scnd2.split(']');
+  const playerName = sp3[0];
+
+  if (playerName === undefined || roomName === undefined) {
+    return UndefinedObj;
+  }
+
+  return {
+    playerName,
+    roomName,
+  };
 };
 
-const urlGetRoomName = (): string | undefined => {
-  const firstSplit = window.location.href.split('#');
-  if (firstSplit.length <= 1) {
-    return undefined;
-  }
-
-  const name = firstSplit[1].split('[')[0];
-  if (name.length <= 0) {
-    return undefined;
-  }
-
-  return name;
-};
-
-export {urlGetPlayerName, urlGetRoomName};
+export {urlGetRoomPlayerName};

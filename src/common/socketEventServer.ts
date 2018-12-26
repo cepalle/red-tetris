@@ -1,11 +1,15 @@
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 import {IOptionGame} from '@src/common/ITypeRoomManager';
 
-// SET_ROOM_PLAYER_NAME
-interface IEventSetRoomPlayerName {
+// SUB_ROOM_STATE
+interface IEventSubRoomState {
   roomName: string,
 
   playerName: string,
+}
+
+// SUB_ROOMS_PLAYERS_NAME
+interface IEventSubRoomsPlayersName {
 }
 
 // SET_GAME_OPTION
@@ -28,7 +32,8 @@ interface IEventMovePiece {
 }
 
 enum ENUM_SOCKET_EVENT_SERVER {
-  SET_ROOM_PLAYER_NAME = 'SET_ROOM_PLAYER_NAME',
+  SUB_ROOM_STATE = 'SUB_ROOM_STATE',
+  SUB_ROOMS_PLAYERS_NAME = 'SUB_ROOMS_PLAYERS_NAME',
   SET_GAME_OPTION = 'SET_GAME_OPTION',
   START_GAME = 'START_GAME',
   MOVE_PIECE = 'MOVE_PIECE',
@@ -36,8 +41,9 @@ enum ENUM_SOCKET_EVENT_SERVER {
 
 export {
   ENUM_SOCKET_EVENT_SERVER,
-  IEventSetRoomPlayerName,
+  IEventSubRoomState,
   IEventSetGameOption,
   IEventStartGame,
   IEventMovePiece,
+  IEventSubRoomsPlayersName,
 };

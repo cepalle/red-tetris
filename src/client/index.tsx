@@ -16,7 +16,7 @@ render(
   document.getElementById('app'),
 );
 
-onAll(store.getState().socket, store.dispatch);
+onAll(store)();
 
 const eventHandlerWithStore = eventHandler(store);
 

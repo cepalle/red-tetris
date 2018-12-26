@@ -9,6 +9,7 @@ enum EnumAction {
   SEND_UPDATE_OPTION_GAME,
   SEND_MOVE_PIECE,
   SEND_ROOM_PLAYER_NAME,
+  REFRESH,
 }
 
 interface IAction {
@@ -95,12 +96,25 @@ const SEND_ROOM_PLAYER_NAME = (): ISendRoomPlayerName => {
   };
 };
 
+// REFRESH
+
+interface IRefresh {
+  readonly type: EnumAction.REFRESH,
+}
+
+const REFRESH = (): IRefresh => {
+  return {
+    type: EnumAction.REFRESH,
+  };
+};
+
 type ReduxAction = IOnSetRoomeState
   | IOnSetRoomesPlayersName
   | ISendMovePiece
   | ISendStartGame
   | ISendUpdateOptionGame
-  | ISendRoomPlayerName;
+  | ISendRoomPlayerName
+  | IRefresh;
 
 export {
   EnumAction,
@@ -117,4 +131,6 @@ export {
   SEND_UPDATE_OPTION_GAME,
   ISendRoomPlayerName,
   SEND_ROOM_PLAYER_NAME,
+  IRefresh,
+  REFRESH,
 };

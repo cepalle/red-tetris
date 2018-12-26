@@ -3,7 +3,7 @@ import {
   ENUM_SOCKET_EVENT_SERVER,
   IEventMovePiece,
   IEventSetGameOption,
-  IEventSetRoomPlayerName,
+  IEventSubRoomState,
   IEventStartGame,
 } from '@src/common/socketEventServer';
 
@@ -19,8 +19,8 @@ const sendMovePiece = (socket: SocketIOClient.Socket, arg: IEventMovePiece) => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, arg);
 };
 
-const sendRoomPlayerName = (socket: SocketIOClient.Socket, arg: IEventSetRoomPlayerName) => {
-  socket.emit(ENUM_SOCKET_EVENT_SERVER.SET_ROOM_PLAYER_NAME, arg);
+const sendRoomPlayerName = (socket: SocketIOClient.Socket, arg: IEventSubRoomState) => {
+  socket.emit(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, arg);
 };
 
 const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) => {

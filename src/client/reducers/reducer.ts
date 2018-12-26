@@ -1,32 +1,40 @@
 import {EnumAction, ReduxAction} from '../actions/action-creators';
-import {urlGetPlayerName, urlGetRoomName} from '@src/client/util/url-handler';
+import {urlGetRoomPlayerName} from '@src/client/util/url-handler';
 import * as io from 'socket.io-client';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
-import {
-  reducerOnSetRoomsPlayersName,
-  reducerOnSetRoomState,
-} from '@src/client/reducers/reducer-aux';
+import {reducerOnSetRoomsPlayersName, reducerOnSetRoomState} from '@src/client/reducers/reducer-aux';
 import {IRoomState} from '@src/common/ITypeRoomManager';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
 
+enum ENUM_ROUTE {
+  HOME,
+  TETRIS_GAME,
+}
+
 interface IState {
   readonly socket: SocketIOClient.Socket,
-  readonly roomState: IRoomState | undefined,
   readonly playerName: string | undefined,
   readonly roomName: string | undefined,
+  readonly route: ENUM_ROUTE,
+
+  readonly roomState: IRoomState | undefined,
   readonly roomsPlayersName: IRoomPlayersName[],
 }
 
 const initApp = (): IState => {
   const socket: SocketIOClient.Socket = io(SOCKET_URL);
+  const {playerName, roomName} = urlGetRoomPlayerName();
+
+  const route = (playerName !== undefined && roomName !== undefined) ? ENUM_ROUTE.TETRIS_GAME : ENUM_ROUTE.HOME;
 
   return {
     socket: socket,
+    playerName: playerName,
+    roomName: roomName,
+    route: route,
     roomState: undefined,
-    playerName: urlGetPlayerName(),
-    roomName: urlGetRoomName(),
     roomsPlayersName: [],
   };
 };
@@ -37,6 +45,8 @@ const reducer = (state = initApp(), action: ReduxAction): IState => {
       return reducerOnSetRoomState(state, action);
     case EnumAction.ON_SET_ROOMS_PLAYERS_NAME:
       return reducerOnSetRoomsPlayersName(state, action);
+    case EnumAction.REFRESH:
+      return {...state};
     default:
       return state;
   }
@@ -46,4 +56,5 @@ export {
   reducer,
   EnumAction,
   IState,
+  ENUM_ROUTE,
 };
