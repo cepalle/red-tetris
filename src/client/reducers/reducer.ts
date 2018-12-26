@@ -2,7 +2,7 @@ import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {urlGetRoomPlayerName} from '@src/client/util/url-handler';
 import * as io from 'socket.io-client';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
-import {reducerOnSetRoomsPlayersName, reducerOnSetRoomState} from '@src/client/reducers/reducer-aux';
+import {reducerOnSetRoomsPlayersName, reducerOnSetRoomState, reducerRefresh} from '@src/client/reducers/reducer-aux';
 import {IRoomState} from '@src/common/ITypeRoomManager';
 
 // mv socket handler ?
@@ -46,7 +46,7 @@ const reducer = (state = initApp(), action: ReduxAction): IState => {
     case EnumAction.ON_SET_ROOMS_PLAYERS_NAME:
       return reducerOnSetRoomsPlayersName(state, action);
     case EnumAction.REFRESH:
-      return {...state};
+      return reducerRefresh(state, action);
     default:
       return state;
   }

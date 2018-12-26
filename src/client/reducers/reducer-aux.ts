@@ -1,5 +1,6 @@
-import {IState} from '@src/client/reducers/reducer';
-import {IOnSetRoomesPlayersName, IOnSetRoomeState} from '@src/client/actions/action-creators';
+import {ENUM_ROUTE, IState} from '@src/client/reducers/reducer';
+import {IOnSetRoomesPlayersName, IOnSetRoomeState, IRefresh} from '@src/client/actions/action-creators';
+import {urlGetRoomPlayerName} from '@src/client/util/url-handler';
 
 const reducerOnSetRoomState = (state: IState, action: IOnSetRoomeState): IState => {
   return {
@@ -15,7 +16,20 @@ const reducerOnSetRoomsPlayersName = (state: IState, action: IOnSetRoomesPlayers
   };
 };
 
+const reducerRefresh = (state: IState, action: IRefresh): IState => {
+  const {playerName, roomName} = urlGetRoomPlayerName();
+  const route = (playerName !== undefined && roomName !== undefined) ? ENUM_ROUTE.TETRIS_GAME : ENUM_ROUTE.HOME;
+
+  return {
+    ...state,
+    playerName: playerName,
+    roomName: roomName,
+    route: route,
+  };
+};
+
 export {
   reducerOnSetRoomState,
   reducerOnSetRoomsPlayersName,
+  reducerRefresh,
 };

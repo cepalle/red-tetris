@@ -2,6 +2,8 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {IState} from '@src/client/reducers/reducer';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
+import {Dispatch} from 'redux';
+import {ReduxAction, REFRESH} from '@src/client/actions/action-creators';
 
 const mapStateToProps = (state: IState) => {
   return {
@@ -9,8 +11,15 @@ const mapStateToProps = (state: IState) => {
   };
 };
 
+const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
+  return {
+    refresh: () => dispatch(REFRESH()),
+  };
+};
+
 interface IProps {
   roomsPlayersName: IRoomPlayersName[],
+  refresh: () => void,
 }
 
 interface IStateComponent {
@@ -27,10 +36,11 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
   public handleSubmit = (e: any) => {
     e.preventDefault();
     const {roomName, playerName} = this.state;
+    const {refresh} = this.props;
 
     if (roomName.length > 1 && playerName.length > 1) {
       window.location.href = `#${roomName}[${playerName}]`;
-      location.reload();
+      refresh();
     }
   };
 
@@ -126,7 +136,7 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
 
 const Home = connect(
   mapStateToProps,
-  undefined,
+  mapDispatchToProps,
 )(HomeComponent);
 
 export {Home};

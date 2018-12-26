@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {
-  ReduxAction, SEND_START_GAME, SEND_UPDATE_OPTION_GAME,
+  ReduxAction, REFRESH, SEND_START_GAME, SEND_UPDATE_OPTION_GAME,
 } from '../actions/action-creators';
 import {Dispatch} from 'redux';
 import {IState} from '@src/client/reducers/reducer';
@@ -55,6 +55,7 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
     onClickStartGame: (): void => {
       dispatch(SEND_START_GAME());
     },
+    refresh: () => dispatch(REFRESH()),
   };
 };
 
@@ -65,15 +66,16 @@ interface IProps {
   onChangeAddWallLine: () => void,
   onChangeGroundResizer: () => void,
   onClickStartGame: () => void,
+  refresh: () => void,
 }
 
 const InfoPanelComponent = (props: IProps) => {
 
-  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame} = props;
+  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame, refresh} = props;
 
   const onClickHome = () => {
-    window.location.href = '';
-    location.reload();
+    window.location.href = ``;
+    refresh();
   };
 
   return (
