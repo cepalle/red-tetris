@@ -5,6 +5,9 @@ import {store} from './middlewares/store';
 import './index.css';
 import './util/event-handler';
 import {App} from '@src/client/containers/app';
+import {PIECE_MOVE} from '@src/client/actions/action-creators';
+import {ENUM_PIECES_MOVE} from '@src/common/IType';
+import {eventHandler} from '@src/client/util/event-handler';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -12,14 +15,12 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app'));
 
-/*
+const eventHandlerWithStore = eventHandler(store);
+
 window.addEventListener('keydown', event =>
-    eventHandler(event,
-      !store.getState().playerName || !store.getState().roomName,
-      store.dispatch),
+    eventHandlerWithStore(event),
   false);
 
 window.setInterval(() =>
-    animateClock(store.dispatch, store.getState().animate),
+    store.dispatch(PIECE_MOVE(ENUM_PIECES_MOVE.DOWN)),
   500);
-*/

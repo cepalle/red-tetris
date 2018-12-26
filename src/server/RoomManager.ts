@@ -13,6 +13,7 @@ interface IPlayer {
   grid: ENUM_PIECES[][];
   score: number;
   nbLineCompleted: number;
+  playing: boolean;
   win: boolean;
   lost: boolean;
   master: boolean;
@@ -31,6 +32,7 @@ const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlaye
     grid: grid,
     score: 0,
     nbLineCompleted: 0,
+    playing: false,
     win: false,
     lost: false,
     master: master,

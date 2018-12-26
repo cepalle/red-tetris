@@ -1,6 +1,8 @@
-import {Dispatch} from 'redux';
-import {PIECE_MOVE, ReduxAction, SEND_START_GAME} from '@src/client/actions/action-creators';
+import {Store} from 'redux';
+import {PIECE_MOVE, SEND_START_GAME} from '@src/client/actions/action-creators';
 import {ENUM_PIECES_MOVE} from '@src/common/IType';
+import {IState} from '@src/client/reducers/reducer';
+import {isPlaying} from '@src/client/reducers/isPlaying';
 
 const keyEnter = 13;
 const keySpace = 32;
@@ -11,9 +13,12 @@ const keyDown = 40;
 const keyS = 83;
 const keyC = 67;
 
-const eventHandler = (event: any, isInGame: boolean, dispatch: Dispatch<ReduxAction>) => {
+const eventHandler = (store: Store<IState>) => (event: any) => {
 
-  if (isInGame) {
+  const state = store.getState();
+  const dispatch = store.dispatch;
+
+  if (!isPlaying(state)) {
     return;
   }
 
