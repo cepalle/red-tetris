@@ -19,7 +19,6 @@ enum ENUM_PIECES_MOVE {
   LEFT = 'PIECES_MOVE_LEFT',
   DOWN = 'PIECES_MOVE_DOWN',
   DROP = 'PIECES_DROP',
-  SWITCH = 'PIECE_SWITCH',
 }
 
 enum ENUM_PIECES {
@@ -298,7 +297,7 @@ const PIECES_DESCR: IPiecesDescr[][] = [
 ];
 
 const getPiece = (pieces: ENUM_PIECES, rot = 0): ENUM_PIECES[][] => PIECES_DESCR[pieces - 1][rot].piece;
-const getPieceInfo = (pieces: ENUM_PIECES, rot = 0): IPieceInfo => PIECES_DESCR[pieces - 1][rot].info;
+// const getPieceInfo = (pieces: ENUM_PIECES, rot = 0): IPieceInfo => PIECES_DESCR[pieces - 1][rot].info;
 
 // --- GRID
 
@@ -424,132 +423,104 @@ const moveRot = (rot: number, move: ENUM_PIECES_MOVE): number => {
   return rot;
 };
 
-const updatePieceSwitch = (grid: number[][], flow: IPiece[]): { bool: boolean; flow: IPiece[] } => {
-  if (flow.length < 2) {
-    return {bool: false, flow};
+// Can block ?
+const moveCollision = (
+  grid: number[][],
+  posPiece: IPos,
+  piece: IPiece,
+): IPos => {
+  const newPieceDescr = getPiece(piece.num, piece.rot);
+
+  let collisionType = hasCollision(grid, newPieceDescr, posPiece);
+
+  let newPos = posPiece;
+  while (collisionType && collisionType !== ENUM_COLLISION_TYPE.WALL_TOP) {
+    newPos = {
+      ...newPos,
+      ...(
+        collisionType === ENUM_COLLISION_TYPE.WALL_LEFT ?
+          {x: newPos.x + 1} :
+          collisionType === ENUM_COLLISION_TYPE.WALL_RIGHT ?
+            {x: newPos.x - 1} :
+            {y: newPos.y - 1}
+      ),
+    };
+    collisionType = hasCollision(grid, newPieceDescr, newPos);
   }
-
-  const [p1, p2, ...rest] = flow;
-
-  const newP1 = moveCollision({...p1, pos: p2.pos}, grid);
-  const newP2 = moveCollision({...p2, pos: p1.pos}, grid);
-
-  return {bool: false, flow: [newP2, newP1, ...rest]};
+  return newPos;
 };
 
 const updatePieceRot = (
   grid: number[][],
-  flow: IPiece[],
-  move: ENUM_PIECES_MOVE,
-): { bool: boolean; flow: IPiece[] } => {
-  if (flow.length < 1) {
-    return {bool: false, flow};
-  }
-
-  const [first, ...rest] = flow;
-
-  const newPiece: IPiece = moveCollision({
-    ...first,
-    rot: moveRot(first.rot, move),
-    pos: movePose(first.pos, move),
-  }, grid);
-
-  return {bool: false, flow: [newPiece, ...rest]};
-};
-
-// Can block ?
-const moveCollision = (
+  posPiece: IPos,
   piece: IPiece,
-  grid: number[][],
-): IPiece => {
-  const newPieceDescr = getPiece(piece.num, piece.rot);
+  move: ENUM_PIECES_MOVE.ROT_LEFT | ENUM_PIECES_MOVE.ROT_RIGHT,
+): { piecePlaced: boolean; pos: IPos } => {
 
-  let collisionType = hasCollision(grid, newPieceDescr, piece.pos);
+  const newPiece = {
+    ...piece,
+    rot: moveRot(piece.rot, move),
+  };
 
-  let newPiece = piece;
-  while (collisionType && collisionType !== ENUM_COLLISION_TYPE.WALL_TOP) {
-    newPiece = {
-      ...newPiece,
-      pos: {
-        ...newPiece.pos,
-        ...(
-          collisionType === ENUM_COLLISION_TYPE.WALL_LEFT ?
-            {x: newPiece.pos.x + 1} :
-            collisionType === ENUM_COLLISION_TYPE.WALL_RIGHT ?
-              {x: newPiece.pos.x - 1} :
-              {y: newPiece.pos.y - 1}
-        ),
-      },
-    };
-    collisionType = hasCollision(grid, newPieceDescr, newPiece.pos);
-  }
-  return newPiece;
+  const newPosPiece: IPos = moveCollision(grid, posPiece, newPiece);
+
+  return {piecePlaced: false, pos: newPosPiece};
 };
 
 const updatePiecePos = (
   grid: number[][],
-  Flow: IPiece[],
+  posPiece: IPos,
+  piece: IPiece,
   move: ENUM_PIECES_MOVE,
-): { bool: boolean; flow: IPiece[] } => {
-
-  const [cur, ...rest] = Flow;
+): { piecePlaced: boolean; pos: IPos } => {
 
   if (move === ENUM_PIECES_MOVE.ROT_LEFT || move === ENUM_PIECES_MOVE.ROT_RIGHT) {
-    return updatePieceRot(grid, Flow, move);
+    return updatePieceRot(grid, posPiece, piece, move);
   }
   if (move === ENUM_PIECES_MOVE.DROP) {
-    const newPieceDescr = getPiece(cur.num, cur.rot);
+    const newPieceDescr = getPiece(piece.num, piece.rot);
 
-    let newCur = cur;
-    while (!hasCollision(grid, newPieceDescr, newCur.pos)) {
-      newCur = {
-        ...newCur,
-        pos: {
-          ...newCur.pos,
-          y: newCur.pos.y + 1,
-        },
+    let newPos = posPiece;
+    while (hasCollision(grid, newPieceDescr, newPos) === undefined) {
+      newPos = {
+        ...newPos,
+        y: newPos.y + 1,
       };
     }
-    newCur = {
-      ...newCur,
-      pos: {
-        ...newCur.pos,
-        y: newCur.pos.y - 1,
-      },
+    newPos = {
+      ...newPos,
+      y: newPos.y - 1,
     };
-    return {bool: true, flow: [newCur, ...rest]};
+    return {piecePlaced: true, pos: newPos};
   }
   if (move === ENUM_PIECES_MOVE.RIGHT || move === ENUM_PIECES_MOVE.LEFT) {
-    const newCur = {
-      ...cur,
-      pos: movePose(cur.pos, move),
-    };
-    const newPieceDescr = getPiece(newCur.num, newCur.rot);
+    const newPieceDescr = getPiece(piece.num, piece.rot);
+    const newpose = movePose(posPiece, move);
+    const col = hasCollision(grid, newPieceDescr, posPiece);
 
     return {
-      bool: false,
-      flow: (!hasCollision(grid, newPieceDescr, newCur.pos)) ? [newCur, ...rest] : Flow,
+      piecePlaced: false,
+      pos: (col === undefined) ? newpose : posPiece,
     };
   }
   if (move === ENUM_PIECES_MOVE.DOWN) {
-    const newCur = {
-      ...cur,
-      pos: movePose(cur.pos, move),
-    };
-    const newPieceDescr = getPiece(newCur.num, newCur.rot);
+    const newPieceDescr = getPiece(piece.num, piece.rot);
+    const newpose = movePose(posPiece, move);
+    const col = hasCollision(grid, newPieceDescr, posPiece);
 
-    if (!hasCollision(grid, newPieceDescr, newCur.pos)) {
+    if (col === undefined) {
       return {
-        bool: false,
-        flow: [newCur, ...rest],
+        piecePlaced: false,
+        pos: newpose,
       };
     }
     return {
-      bool: true,
-      flow: Flow,
+      piecePlaced: true,
+      pos: posPiece,
     };
   }
-  return updatePieceSwitch(grid, Flow);
+
+  return {piecePlaced: false, pos: posPiece};
 };
 
 const gridDelLine = (grid: ENUM_PIECES[][]): { grid: ENUM_PIECES[][]; nbLineToSend: number } => {

@@ -5,7 +5,11 @@ import io from 'socket.io-client';
 import {onAll} from '@src/client/util/socket-handler';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
 import {store} from '@src/client/middlewares/store';
-import {reducerOnSetRoomsPlayersName, reducerOnSetRoomState, reducerPieceMove} from '@src/client/reducers/reducer-aux';
+import {
+  reducerOnSetRoomsPlayersName,
+  reducerOnSetRoomState,
+  reducerPieceMove,
+} from '@src/client/reducers/reducer-aux';
 import {GRID_WIDTH, IPos} from '@src/common/grid-piece-handler';
 
 // mv socket handler ?

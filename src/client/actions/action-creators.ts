@@ -6,6 +6,7 @@ enum EnumAction {
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
   PIECE_MOVE,
+  SEND_PIECE_SWITCH,
   SEND_START_GAME,
   SEND_UPDATE_OPTION_GAME,
 }
@@ -82,11 +83,24 @@ const SEND_UPDATE_OPTION_GAME = (optionGame: IOptionGame): ISendUpdateOptionGame
   };
 };
 
+// SEND_PIECE_SWITCH
+
+interface IPieceSwitch extends IAction {
+  readonly type: EnumAction.SEND_PIECE_SWITCH,
+}
+
+const SEND_PIECE_SWITCH = () => {
+  return {
+    type: EnumAction.SEND_PIECE_SWITCH,
+  };
+};
+
 type ReduxAction = IOnSetRoomeState
   | IOnSetRoomesPlayersName
   | IPieceMove
   | ISendStartGame
-  | ISendUpdateOptionGame;
+  | ISendUpdateOptionGame
+  | IPieceSwitch;
 
 export {
   EnumAction,
@@ -101,4 +115,6 @@ export {
   SEND_START_GAME,
   ISendUpdateOptionGame,
   SEND_UPDATE_OPTION_GAME,
+  IPieceSwitch,
+  SEND_PIECE_SWITCH,
 };
