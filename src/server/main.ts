@@ -7,20 +7,40 @@ import {
   ENUM_SOCKET_EVENT_SERVER, IEventMovePiece,
   IEventSetGameOption,
   IEventSubRoomState,
-  IEventStartGame,
+  IEventStartGame, IEventSubRoomsPlayersName,
 } from '@src/common/socketEventServer';
 import {RoomsManager} from './RoomsManager';
 import {ADD_PLAYER, DEL_PLAYER, MOVE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/RoomManager';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {ENUM_SOCKET_EVENT_CLIENT, IEventSetRoomsPlayersName, IRoomPlayersName} from '@src/common/socketEventClient';
 
 class App {
 
   roomsManager = new RoomsManager();
+  roomsPlayersNameSub: BehaviorSubject<IRoomPlayersName[]> = new BehaviorSubject<IRoomPlayersName[]>([]);
 
   handleClient(socket: Socket): void {
+    let subRoomsPlayersNAme: Subscription | undefined = undefined;
+
     socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, (arg: IEventSubRoomState) => {
       this.roomsManager.dispatch({
         roomName: arg.roomName,
         actionRoom: ADD_PLAYER(arg.playerName, socket),
+      });
+    });
+
+    socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, (arg: IEventSubRoomsPlayersName) => {
+      if (subRoomsPlayersNAme !== undefined) {
+        return;
+      }
+      subRoomsPlayersNAme = this.roomsPlayersNameSub.subscribe((roomsPlayersName: IRoomPlayersName[]) => {
+        const sendSetRoomsPlayersName = (sock: Socket, ag: IEventSetRoomsPlayersName) => {
+          sock.emit(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, ag);
+        };
+
+        sendSetRoomsPlayersName(socket, {
+          roomsPlayersName: roomsPlayersName,
+        });
       });
     });
 
@@ -52,6 +72,9 @@ class App {
       });
       socket.removeAllListeners();
       socket.disconnect(true);
+      if (subRoomsPlayersNAme !== undefined) {
+        subRoomsPlayersNAme.unsubscribe();
+      }
     });
   }
 
@@ -73,6 +96,16 @@ class App {
     server.listen(4433, () => {
       console.log('Server on port : 4433');
     });
+
+    setInterval(() => {
+      this.roomsPlayersNameSub.next(this.roomsManager.roomManagers.map((r) => {
+        return {
+          roomName: r.state.roomName,
+          playerNames: r.state.players.map((p) => p.playerName),
+        };
+      }));
+    }, 1000);
+
   }
 }
 
