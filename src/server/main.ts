@@ -1,4 +1,3 @@
-import './util/ArraysUtil';
 import * as express from 'express';
 import * as https from 'https';
 import {Server} from 'http';

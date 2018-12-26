@@ -1,7 +1,7 @@
 import {Socket} from 'socket.io';
-import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {IPiece, IPos} from '@src/common/grid-piece-handler';
 import {factPlayer, IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
+import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 
 // -- ACTION
 
