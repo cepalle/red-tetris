@@ -1,7 +1,7 @@
 import {Socket} from 'socket.io';
-import {IPiece, IPos} from '@src/common/grid-piece-handler';
+import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 import {factPlayer, IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
-import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
+import {BehaviorSubject} from 'rxjs';
 
 // -- ACTION
 
@@ -10,7 +10,7 @@ enum EnumActionRoomStore {
   DEL_PLAYER,
   UPDATE_OPTION_GAME,
   START_GAME,
-  PLACE_PIECE,
+  MOVE_PIECE,
 }
 
 interface IActionRoom {
@@ -129,27 +129,25 @@ const reducerStartGame = (state: IRoomState, action: IActionStartGame): IRoomSta
   };
 };
 
-// PLACE_PIECE
+// MOVE_PIECE
 
-interface IActionPlacePiece extends IActionRoom {
-  type: EnumActionRoomStore.PLACE_PIECE;
+interface IActionMovePiece extends IActionRoom {
+  type: EnumActionRoomStore.MOVE_PIECE;
 
   socketId: string,
-  piece: IPiece,
-  pos: IPos
+  move: ENUM_PIECES_MOVE,
 }
 
-const PLACE_PIECE = (piece: IPiece, pos: IPos, socketId: string): IActionPlacePiece => {
+const MOVE_PIECE = (socketId: string, move: ENUM_PIECES_MOVE): IActionMovePiece => {
   return {
-    type: EnumActionRoomStore.PLACE_PIECE,
+    type: EnumActionRoomStore.MOVE_PIECE,
 
     socketId,
-    piece,
-    pos,
+    move,
   };
 };
 
-const reducerPlacePiece = (state: IRoomState, action: IActionPlacePiece): IRoomState => {
+const reducerMovePiece = (state: IRoomState, action: IActionMovePiece): IRoomState => {
   // const {piece, pos} = arg;
   // TODO
   return state;
@@ -161,7 +159,7 @@ type ActionRoom = IActionRoomAddPlayer
   | IActionRoomDelPlayer
   | IActionUpdateOptionGame
   | IActionStartGame
-  | IActionPlacePiece;
+  | IActionMovePiece;
 
 // -- REDUCER
 
@@ -176,8 +174,8 @@ const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
       return reducerUpdateOptionGame(state, action);
     case EnumActionRoomStore.START_GAME:
       return reducerStartGame(state, action);
-    case EnumActionRoomStore.PLACE_PIECE:
-      return reducerPlacePiece(state, action);
+    case EnumActionRoomStore.MOVE_PIECE:
+      return reducerMovePiece(state, action);
     default:
       return state;
   }
@@ -229,5 +227,5 @@ export {
   DEL_PLAYER,
   UPDATE_OPTION_GAME,
   START_GAME,
-  PLACE_PIECE,
+  MOVE_PIECE,
 };

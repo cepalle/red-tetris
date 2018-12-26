@@ -25,7 +25,6 @@ const initApp = (): IState => {
   const socket: SocketIOClient.Socket = io.connect(SOCKET_URL);
 
   onAll(socket, store.dispatch);
-  // send player and room name ?
 
   return {
     socket: socket,

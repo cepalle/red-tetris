@@ -52,11 +52,10 @@
     "sourceMap": true
   },
   "include": [
-    "src/**/*"
+    "src/**/*" // to change
   ],
   "exclude": [
     "node_modules",
-    "src/client/**/*",
     "src/**/*.spec.*"
   ]
 }
