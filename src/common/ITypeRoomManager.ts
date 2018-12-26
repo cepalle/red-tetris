@@ -12,12 +12,11 @@ interface IPlayer {
   playing: boolean;
   win: boolean;
   lost: boolean;
-  master: boolean;
   flow: IPiece[];
   posPiece: IPos;
 }
 
-const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlayer => {
+const factPlayer = (playerName: string, socket: Socket): IPlayer => {
   const grid = Array(GRID_HEIGHT).fill(0).map(() =>
     Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
   );
@@ -32,7 +31,6 @@ const factPlayer = (playerName: string, socket: Socket, master: boolean): IPlaye
     playing: false,
     win: false,
     lost: false,
-    master: master,
     flow: genFlow(20),
     posPiece: initPiece(),
   };

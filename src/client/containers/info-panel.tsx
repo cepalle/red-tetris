@@ -6,44 +6,23 @@ import {
 import {Dispatch} from 'redux';
 import {IState} from '@src/client/reducers/reducer';
 import {store} from '@src/client/middlewares/store';
-import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
+import {IOptionGame} from '@src/common/ITypeRoomManager';
 
 const mp3 = require('@src/client/assets/Original_Tetris_theme.mp3');
 
-const extractInfo = (
-  roomState: IRoomState | undefined,
-  playerName: string | undefined,
-): {
-  isMaster: boolean | undefined;
-  optionGame: IOptionGame | undefined;
-} => {
-  const objUndefined = {
-    isMaster: undefined,
-    optionGame: undefined,
-  };
-
-  if (roomState === undefined || playerName === undefined) {
-    return objUndefined;
-  }
-
-  const player = roomState.players.find((p) => p.playerName === playerName);
-
-  if (player === undefined) {
-    return objUndefined;
-  }
-
-  return {
-    isMaster: player.master,
-    optionGame: roomState.optionGame,
-  };
-};
-
 const mapStateToProps = (state: IState) => {
-  const {isMaster, optionGame} = extractInfo(state.roomState, state.playerName);
 
+  const room = state.roomState;
+
+  if (room === undefined) {
+    return {
+      optionGame: undefined,
+      playing: false,
+    };
+  }
   return {
-    isMaster,
-    optionGame,
+    optionGame: room.optionGame,
+    playing: room.playing,
   };
 };
 
@@ -80,8 +59,8 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
 };
 
 interface IProps {
-  isMaster: boolean | undefined,
   optionGame: IOptionGame | undefined,
+  playing: boolean,
 
   onChangeAddWallLine: () => void,
   onChangeGroundResizer: () => void,
@@ -90,7 +69,7 @@ interface IProps {
 
 const InfoPanelComponent = (props: IProps) => {
 
-  const {isMaster, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame} = props;
+  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame} = props;
 
   const onClickHome = () => {
     window.location.href = '';
@@ -119,7 +98,7 @@ const InfoPanelComponent = (props: IProps) => {
                 className={'font_color_key'}>{'<keyC>'}</span>{': switch the current piece with the next piece'}<br/>
             </div>
 
-            {isMaster && optionGame &&
+            {playing && optionGame &&
             <div className={'pad'}>
               <div className={'row'}>
                 Options:

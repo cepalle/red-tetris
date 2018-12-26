@@ -96,7 +96,7 @@ const GridPlayerComponent = (props: IProps) => {
       </div>
       <div className={'column center'}>
       <span className={'pad font_white font_retro row center'}>
-        YOU!{player.master && '(Master)'}{player.lost && '(lost)'}{player.win && '(Win)'}
+        YOU!{player.lost && '(lost)'}{player.win && '(Win)'}
         {player.isSpectator && '(Viewer)'}
       </span>
         <div className={'row center'}>

@@ -48,11 +48,10 @@ const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoo
     // TODO
   }
 
-  const isMaster = state.players.length === 0;
   return {
     ...state,
     players: [...state.players,
-      factPlayer(playerName, socket, isMaster),
+      factPlayer(playerName, socket),
     ],
   };
 };
@@ -126,6 +125,10 @@ const reducerStartGame = (state: IRoomState, action: IActionStartGame): IRoomSta
   return {
     ...state,
     playing: true,
+    players: state.players.map((p) => ({
+      ...p,
+      playing: true,
+    })),
   };
 };
 
