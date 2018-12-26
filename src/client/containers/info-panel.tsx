@@ -73,6 +73,7 @@ const InfoPanelComponent = (props: IProps) => {
 
   const onClickHome = () => {
     window.location.href = '';
+    location.reload();
   };
 
   return (

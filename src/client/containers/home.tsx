@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {IState} from '@src/client/reducers/reducer';
-import {useState} from 'react';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
 
 const mapStateToProps = (state: IState) => {
@@ -14,92 +13,116 @@ interface IProps {
   roomsPlayersName: IRoomPlayersName[],
 }
 
-const HomeComponent = (props: IProps) => {
+interface IStateComponent {
+  roomName: string,
+  playerName: string,
+}
 
-  const {roomsPlayersName} = props;
+class HomeComponent extends React.Component<IProps, IStateComponent> {
+  public readonly state: IStateComponent = {
+    roomName: '',
+    playerName: '',
+  };
 
-  const [roomName, setRoomName] = useState('');
-  const [playerName, setPlayerName] = useState('');
-
-  const handleSubmit = (e: any) => {
+  public handleSubmit = (e: any) => {
     e.preventDefault();
+    const {roomName, playerName} = this.state;
+
     if (roomName.length > 1 && playerName.length > 1) {
-      window.location.href = `#${roomName}[${playerName}]`; // refresh page ?
+      window.location.href = `#${roomName}[${playerName}]`;
+      location.reload();
     }
   };
 
-  const handleChangeRoom = (e: any) => {
+  public handleChangeRoom = (e: any) => {
     e.preventDefault();
-    setRoomName(e.target.value);
+    this.setState({
+      roomName: e.target.value,
+    });
   };
 
-  const handleChangePlayer = (e: any) => {
-    e.preventDefault();
-    setPlayerName(e.target.value);
+  public setRoomName = (roomName: string) => {
+    this.setState({
+      roomName: roomName,
+    });
   };
 
-  const room = roomsPlayersName.find(e => e.roomName === roomName);
-  const playerInRoom = (room) ? room.playerNames : undefined;
+  public handleChangePlayer = (e: any) => {
+    e.preventDefault();
+    this.setState({
+      playerName: e.target.value,
+    });
+  };
 
-  return (
-    <div className={'row center font_white pad'}>
-      <div className={'color8'}>
-        <div className={'row center'}>
-          <h1 className={'font_white font_retro'}>TETRIS</h1>
-        </div>
-        <form onSubmit={(e) => handleSubmit(e)} className={'pad'}>
-          <label>
-            #<input type="text"
-                    value={roomName}
-                    onChange={(e) => handleChangeRoom(e)}
-                    placeholder={'Choose or create room'}/>
-          </label>
-          <label>
-            [<input type="text"
-                    value={playerName}
-                    onChange={(e) => handleChangePlayer(e)}
-                    placeholder={'Your Name'}/>]
-          </label>
-          <input type="submit" value="Join"/>
-        </form>
+  public render(): React.ReactNode {
 
-        <div className={'column pad'}>
-          <div className={'pad'}>
-            Current Room:
+    const {handleChangePlayer, handleChangeRoom, handleSubmit, setRoomName} = this;
+    const {roomsPlayersName} = this.props;
+    const {roomName, playerName} = this.state;
+
+    const room = roomsPlayersName.find(e => e.roomName === roomName);
+    const playerInRoom = (room) ? room.playerNames : undefined;
+
+    return (
+      <div className={'row center font_white pad'}>
+        <div className={'color8'}>
+          <div className={'row center'}>
+            <h1 className={'font_white font_retro'}>TETRIS</h1>
+          </div>
+          <form onSubmit={(e) => handleSubmit(e)} className={'pad'}>
+            <label>
+              #<input type="text"
+                      value={roomName}
+                      onChange={(e) => handleChangeRoom(e)}
+                      placeholder={'Choose or create room'}/>
+            </label>
+            <label>
+              [<input type="text"
+                      value={playerName}
+                      onChange={(e) => handleChangePlayer(e)}
+                      placeholder={'Your Name'}/>]
+            </label>
+            <input type="submit" value="Join"/>
+          </form>
+
+          <div className={'column pad'}>
+            <div className={'pad'}>
+              Current Room:
+            </div>
+
+            {roomsPlayersName.length === 0 &&
+            <div>
+              No room
+            </div>
+            }
+
+            {roomsPlayersName.map((r, i) =>
+              <button className={'font_retro buttonPlay font_white font_button_home'} key={i}
+                      onClick={() => setRoomName(r.roomName)}>{r.roomName}
+              </button>,
+            )}
           </div>
 
-          {roomsPlayersName.length === 0 &&
-          <div>
-            No room
+          {playerInRoom &&
+          <div className={'column pad'}>
+            <div className={'pad'}>
+              Current Player in this room:
+            </div>
+            <div className={'pad'}>
+              {playerInRoom.map((name, i) =>
+                <div key={i} className={'font_retro font_white'}>
+                  {name}
+                </div>,
+              )}
+            </div>
           </div>
           }
 
-          {roomsPlayersName.map((r, i) =>
-            <button className={'font_retro buttonPlay font_white font_button_home'} key={i}
-                    onClick={() => setRoomName(r.roomName)}>{r.roomName}
-            </button>,
-          )}
         </div>
-
-        {playerInRoom &&
-        <div className={'column pad'}>
-          <div className={'pad'}>
-            Current Player in this room:
-          </div>
-          <div className={'pad'}>
-            {playerInRoom.map((name, i) =>
-              <div key={i} className={'font_retro font_white'}>
-                {name}
-              </div>,
-            )}
-          </div>
-        </div>
-        }
-
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 const Home = connect(
   mapStateToProps,
