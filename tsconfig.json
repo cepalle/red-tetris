@@ -52,7 +52,8 @@
     "sourceMap": true
   },
   "include": [
-    "src/**/*" // to change
+    "src/**/*"
+    // to change
   ],
   "exclude": [
     "node_modules",

@@ -6,9 +6,7 @@
   "scripts": {
     "client-dev": "webpack-dev-server --mode development",
     "client-build": "webpack ./src/client/index.tsx ",
-    "srv-dev": "echo TODO",
-    "srv-build": "tsc",
-    "srv-dist": "tsc && node dist/server/main.js",
+    "srv": "ts-node -r tsconfig-paths/register ./src/server/main.ts",
     "test": "mocha -r jsdom-global/register --recursive --require babel-core/register --reporter spec",
     "test-server": "mocha --recursive --require babel-core/register --reporter spec \"test/1_server/\"",
     "coverage": "nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha --recursive -r jsdom-global/register",
@@ -65,6 +63,8 @@
     "mocha": "^5.2.0",
     "nyc": "^11.9.0",
     "style-loader": "^0.20.3",
+    "ts-node": "^7.0.1",
+    "tsconfig-paths": "^3.7.0",
     "tslint": "^5.12.0",
     "tslint-react": "^3.6.0"
   },
