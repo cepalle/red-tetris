@@ -43,6 +43,7 @@ const reducerAddPlayer = (
 
   const {playerName, socket} = action;
 
+  /*
   const hasPlayerName = state.players.some((p) => p.playerName === playerName);
   if (hasPlayerName) {
     // TODO emit error
@@ -54,6 +55,7 @@ const reducerAddPlayer = (
     // TODO
     return state;
   }
+  */
 
   const isMaster = state.players.length === 0;
   const player = Player.factPlayer(playerName, socket, isMaster);
@@ -89,9 +91,35 @@ const reducerDelPlayer = (
 
   const {socketId} = action;
 
+  let players = state.players.filter((p) => p.socket.id !== socketId);
+
+  if (players.length > 0) {
+    if (!players.some((p) => p.isMaster)) {
+      const [frst, ...rest] = players;
+      players = [{...frst, isMaster: true}, ...rest];
+    }
+
+    if (players.length > 1) {
+      if (players.filter((p) => p.playing).length === 1) {
+        players = players.map((p) => {
+          if (p.playing) {
+            return {
+              ...p,
+              playing: false,
+              win: true,
+            };
+          }
+          return p;
+        });
+      }
+    }
+
+  }
+
   return {
     ...state,
-    players: state.players.filter((p) => p.socket.id !== socketId),
+    playing: players.some((p) => p.playing),
+    players: players,
   };
 };
 
@@ -146,6 +174,7 @@ const reducerStartGame = (
     players: state.players.map((p) => ({
       ...p,
       playing: true,
+      isSpectator: false,
     })),
   };
 };
