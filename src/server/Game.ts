@@ -228,10 +228,7 @@ class Game {
     };
     this.stateSub = new BehaviorSubject<IRoomState>(this.state);
     this.sub = this.stateSub.subscribe((state: IRoomState) => {
-      console.log('coucou');
       state.players.forEach((p) => {
-        console.log('coucou p');
-
         sendSetRoomState(p.socket, {
           room: {
             ...state,

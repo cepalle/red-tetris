@@ -108,7 +108,7 @@ const InfoPanelComponent = (props: IProps) => {
                 className={'font_color_key'}>{'<keyC>'}</span>{': switch the current piece with the next piece'}<br/>
             </div>
 
-            {!playing && optionGame && isMaster &&
+            {!playing && optionGame !== undefined && isMaster &&
             <div className={'pad'}>
               <div className={'row'}>
                 Options:

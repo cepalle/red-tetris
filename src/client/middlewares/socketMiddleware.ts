@@ -13,7 +13,7 @@ const sendStartGame = (socket: SocketIOClient.Socket, arg: IEventServerStartGame
 };
 
 const sendUpdateOptionGame = (socket: SocketIOClient.Socket, arg: IEventServerSetGameOption): void => {
-  socket.emit(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
+  socket.emit(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, arg);
 };
 
 const sendMovePiece = (socket: SocketIOClient.Socket, arg: IEventServerMovePiece) => {
