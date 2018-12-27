@@ -23,6 +23,8 @@ class App {
     let subRoomsPlayersNAme: Subscription | undefined = undefined;
 
     socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, (arg: IEventSubRoomState) => {
+      console.log(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, arg);
+
       this.roomsManager.dispatch({
         roomName: arg.roomName,
         actionRoom: ADD_PLAYER(arg.playerName, socket),
@@ -30,6 +32,8 @@ class App {
     });
 
     socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, (arg: IEventSubRoomsPlayersName) => {
+      console.log(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, arg);
+
       if (subRoomsPlayersNAme !== undefined) {
         return;
       }
@@ -45,6 +49,8 @@ class App {
     });
 
     socket.on(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, (arg: IEventSetGameOption) => {
+      console.log(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, arg);
+
       this.roomsManager.dispatch({
         roomName: arg.roomName,
         actionRoom: UPDATE_OPTION_GAME(arg.optionGame),
@@ -52,6 +58,8 @@ class App {
     });
 
     socket.on(ENUM_SOCKET_EVENT_SERVER.START_GAME, (arg: IEventStartGame) => {
+      console.log(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
+
       this.roomsManager.dispatch({
         roomName: arg.roomName,
         actionRoom: START_GAME(),
@@ -59,6 +67,8 @@ class App {
     });
 
     socket.on(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, (arg: IEventMovePiece) => {
+      console.log(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, arg);
+
       this.roomsManager.dispatch({
         roomName: arg.roomName,
         actionRoom: MOVE_PIECE(socket.id, arg.move),
@@ -66,6 +76,8 @@ class App {
     });
 
     socket.on('disconnect', () => {
+      console.log('disconnect');
+
       this.roomsManager.dispatch({
         socketId: socket.id,
         actionRoom: DEL_PLAYER(socket.id),
@@ -98,12 +110,13 @@ class App {
     });
 
     setInterval(() => {
-      this.roomsPlayersNameSub.next(this.roomsManager.roomManagers.map((r) => {
+      const next = this.roomsManager.roomManagers.map((r) => {
         return {
           roomName: r.state.roomName,
           playerNames: r.state.players.map((p) => p.playerName),
         };
-      }));
+      });
+      this.roomsPlayersNameSub.next(next);
     }, 1000);
 
   }

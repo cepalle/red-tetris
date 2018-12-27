@@ -11,6 +11,8 @@ const cbSetRoomState = (
 ) => (
   arg: IEventSetRoomState,
 ) => {
+  console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, arg);
+
   dispatch(ON_SET_ROOM_STATE(arg));
 };
 
@@ -19,6 +21,8 @@ const cbSetRoomsPlayersName = (
 ) => (
   arg: IEventSetRoomsPlayersName,
 ) => {
+  console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
+
   dispatch(ON_SET_ROOMS_PLAYERS_NAME(arg));
 };
 
