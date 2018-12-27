@@ -52,7 +52,7 @@ const cbOnConnection = (
     }
   }
 
-  store.dispatch(REFRESH());
+  store.dispatch(REFRESH(false));
 };
 
 const onAll = (store: Store<IState>) => () => {

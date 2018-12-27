@@ -55,7 +55,7 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
     onClickStartGame: (): void => {
       dispatch(SEND_START_GAME());
     },
-    refresh: () => dispatch(REFRESH()),
+    refresh: () => dispatch(REFRESH(true)),
   };
 };
 

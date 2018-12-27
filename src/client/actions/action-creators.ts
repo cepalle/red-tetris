@@ -100,11 +100,13 @@ const SEND_ROOM_PLAYER_NAME = (): ISendRoomPlayerName => {
 
 interface IRefresh {
   readonly type: EnumAction.REFRESH,
+  readonly socketReconnect: boolean,
 }
 
-const REFRESH = (): IRefresh => {
+const REFRESH = (socketReconnect: boolean): IRefresh => {
   return {
     type: EnumAction.REFRESH,
+    socketReconnect,
   };
 };
 

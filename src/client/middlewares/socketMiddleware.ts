@@ -6,6 +6,7 @@ import {
   IEventSubRoomState,
   IEventStartGame,
 } from '@src/common/socketEventServer';
+import {isPlaying} from '@src/client/reducers/isPlaying';
 
 const sendStartGame = (socket: SocketIOClient.Socket, arg: IEventStartGame): void => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
@@ -52,7 +53,7 @@ const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) =>
       }
       break;
     case EnumAction.SEND_MOVE_PIECE:
-      if (state.socket !== undefined && state.roomName !== undefined) {
+      if (state.socket !== undefined && state.roomName !== undefined && isPlaying(state)) {
         sendMovePiece(state.socket, {
           roomName: state.roomName,
           move: action.move,

@@ -17,8 +17,14 @@ const reducerOnSetRoomsPlayersName = (state: IState, action: IOnSetRoomesPlayers
 };
 
 const reducerRefresh = (state: IState, action: IRefresh): IState => {
+  if (action.socketReconnect) {
+    state.socket.disconnect();
+  }
   const {playerName, roomName} = urlGetRoomPlayerName();
   const route = (playerName !== undefined && roomName !== undefined) ? ENUM_ROUTE.TETRIS_GAME : ENUM_ROUTE.HOME;
+  if (action.socketReconnect) {
+    state.socket.connect();
+  }
 
   return {
     ...state,

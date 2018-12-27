@@ -13,7 +13,7 @@ const mapStateToProps = (state: IState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
   return {
-    refresh: () => dispatch(REFRESH()),
+    refresh: () => dispatch(REFRESH(true)),
   };
 };
 
