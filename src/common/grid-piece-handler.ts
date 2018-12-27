@@ -504,7 +504,7 @@ const updatePiecePos = (
   if (move === ENUM_PIECES_MOVE.RIGHT || move === ENUM_PIECES_MOVE.LEFT) {
     const newPieceDescr = getPiece(piece.num, piece.rot);
     const newpose = movePose(posPiece, move);
-    const col = hasCollision(grid, newPieceDescr, posPiece);
+    const col = hasCollision(grid, newPieceDescr, newpose);
 
     return {
       piecePlaced: false,
@@ -515,7 +515,7 @@ const updatePiecePos = (
   if (move === ENUM_PIECES_MOVE.DOWN) {
     const newPieceDescr = getPiece(piece.num, piece.rot);
     const newpose = movePose(posPiece, move);
-    const col = hasCollision(grid, newPieceDescr, posPiece);
+    const col = hasCollision(grid, newPieceDescr, newpose);
 
     if (col === undefined) {
       return {
