@@ -4,7 +4,7 @@ import {Piece} from '@src/server/Piece';
 
 class Player {
 
-  static factPlayer = (playerName: string, socketId: string): IPlayer => {
+  static factPlayer = (playerName: string, socketId: string, isMaster: boolean): IPlayer => {
     const grid = Array(GRID_HEIGHT).fill(0).map(() =>
       Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
     );
@@ -19,6 +19,7 @@ class Player {
       playing: false,
       win: false,
       lost: false,
+      isMaster: isMaster,
       flow: Piece.genFlow(20),
       posPiece: initPiece(),
     };

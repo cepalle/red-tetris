@@ -12,6 +12,7 @@ interface IPlayer {
   lost: boolean;
   flow: IPiece[];
   posPiece: IPos;
+  isMaster: boolean;
 }
 
 interface IOptionGame {

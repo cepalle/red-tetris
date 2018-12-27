@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import {IState} from '@src/client/reducers/reducer';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
 import {Dispatch} from 'redux';
-import {ReduxAction, REFRESH} from '@src/client/actions/action-creators';
+import {ReduxAction} from '@src/client/actions/action-creators';
 
 const mapStateToProps = (state: IState) => {
   return {
@@ -13,13 +13,11 @@ const mapStateToProps = (state: IState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
   return {
-    refresh: () => dispatch(REFRESH(true)),
   };
 };
 
 interface IProps {
   roomsPlayersName: IRoomPlayersName[],
-  refresh: () => void,
 }
 
 interface IStateComponent {

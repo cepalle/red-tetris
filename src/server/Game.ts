@@ -52,11 +52,12 @@ const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoo
   }
 
   // TODO Sub
+  const isMaster = state.players.length === 0;
 
   return {
     ...state,
     players: [...state.players,
-      Player.factPlayer(playerName, socket.id),
+      Player.factPlayer(playerName, socket.id, isMaster),
     ],
   };
 };

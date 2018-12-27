@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
 import {
-  ReduxAction, REFRESH, SEND_START_GAME, SEND_UPDATE_OPTION_GAME,
+  ReduxAction, SEND_START_GAME, SEND_UPDATE_OPTION_GAME,
 } from '../actions/action-creators';
 import {Dispatch} from 'redux';
 import {IState} from '@src/client/reducers/reducer';
@@ -10,19 +10,27 @@ import {IOptionGame} from '@src/common/ITypeRoomManager';
 
 const mp3 = require('@src/client/assets/Original_Tetris_theme.mp3');
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: IState): {
+  optionGame: IOptionGame | undefined;
+  playing: boolean;
+  isMaster: boolean;
+} => {
 
   const room = state.roomState;
-
   if (room === undefined) {
     return {
       optionGame: undefined,
       playing: false,
+      isMaster: false,
     };
   }
+
+  const player = room.players.find((p) => p.playerName === state.playerName);
+
   return {
     optionGame: room.optionGame,
     playing: room.playing,
+    isMaster: player !== undefined ? player.isMaster : false,
   };
 };
 
@@ -55,23 +63,22 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
     onClickStartGame: (): void => {
       dispatch(SEND_START_GAME());
     },
-    refresh: () => dispatch(REFRESH(true)),
   };
 };
 
 interface IProps {
   optionGame: IOptionGame | undefined,
   playing: boolean,
+  isMaster: boolean,
 
   onChangeAddWallLine: () => void,
   onChangeGroundResizer: () => void,
   onClickStartGame: () => void,
-  refresh: () => void,
 }
 
 const InfoPanelComponent = (props: IProps) => {
 
-  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame} = props;
+  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame, isMaster} = props;
 
   const onClickHome = () => {
     window.location.href = `#home`;
@@ -101,7 +108,7 @@ const InfoPanelComponent = (props: IProps) => {
                 className={'font_color_key'}>{'<keyC>'}</span>{': switch the current piece with the next piece'}<br/>
             </div>
 
-            {playing && optionGame &&
+            {!playing && optionGame && isMaster &&
             <div className={'pad'}>
               <div className={'row'}>
                 Options:
