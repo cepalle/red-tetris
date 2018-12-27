@@ -4,6 +4,7 @@ import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {Player} from '@src/server/Player';
 import {ENUM_SOCKET_EVENT_CLIENT, IEventClientSetRoomState} from '@src/common/socketEventClient';
+import {Piece} from '@src/server/Piece';
 
 // -- ACTION
 
@@ -167,7 +168,9 @@ const reducerStartGame = (
   state: IRoomState,
   action: IActionStartGame,
 ): IRoomState => {
-  // TODO set interval, use optino Game
+  // TODO set interval, use option Game
+  const flow = Piece.genFlow(20);
+
   return {
     ...state,
     playing: true,
@@ -175,6 +178,7 @@ const reducerStartGame = (
       ...p,
       playing: true,
       isSpectator: false,
+      flow: flow,
     })),
   };
 };
@@ -203,7 +207,18 @@ const reducerMovePiece = (
 ): IRoomState => {
   // const {piece, pos} = arg;
   // TODO
-  return state;
+
+  let players = state.players;
+  if (state.players.some((p) => p.flow.length < 5)) {
+    const flowToAdd = Piece.genFlow(20);
+
+    players = state.players.map((p) => ({...p, flow: [...p.flow, ...flowToAdd]}));
+  }
+
+  return {
+    ...state,
+    players: players,
+  };
 };
 
 // -- ACTION ROOM

@@ -1,6 +1,5 @@
 import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, initPiece} from '../common/grid-piece-handler';
 import {IPlayer} from '../common/ITypeRoomManager';
-import {Piece} from '@src/server/Piece';
 import {Socket} from 'socket.io';
 
 class Player {
@@ -21,7 +20,7 @@ class Player {
       win: false,
       lost: false,
       isMaster: isMaster,
-      flow: Piece.genFlow(20),
+      flow: [],
       posPiece: initPiece(),
     };
   };
