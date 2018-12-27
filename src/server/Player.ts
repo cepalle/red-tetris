@@ -22,6 +22,7 @@ class Player {
       isMaster: isMaster,
       flow: Piece.genFlow(20),
       posPiece: initPiece(),
+      subState: undefined,
     };
   };
 }

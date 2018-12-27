@@ -3,6 +3,11 @@ import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
 import {BehaviorSubject} from 'rxjs';
 import {Player} from '@src/server/Player';
+import {ENUM_SOCKET_EVENT_CLIENT, IEventSetRoomState} from '@src/common/socketEventClient';
+
+const sendSetRoomState = (socket: Socket, arg: IEventSetRoomState) => {
+  socket.emit(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, arg);
+};
 
 // -- ACTION
 
@@ -35,7 +40,11 @@ const ADD_PLAYER = (playerName: string, socket: Socket): IActionRoomAddPlayer =>
   };
 };
 
-const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoomState => {
+const reducerAddPlayer = (
+  stateSub: BehaviorSubject<IRoomState>,
+  state: IRoomState,
+  action: IActionRoomAddPlayer,
+): IRoomState => {
 
   const {playerName, socket} = action;
 
@@ -51,13 +60,21 @@ const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoo
     return state;
   }
 
-  // TODO Sub
   const isMaster = state.players.length === 0;
+  const player = Player.factPlayer(playerName, socket.id, isMaster);
+
+  const sub = stateSub.subscribe((r: IRoomState) => {
+    sendSetRoomState(socket, {
+      room: r,
+    });
+  });
 
   return {
     ...state,
-    players: [...state.players,
-      Player.factPlayer(playerName, socket.id, isMaster),
+    players: [...state.players, {
+      ...player,
+      subState: sub,
+    },
     ],
   };
 };
@@ -71,16 +88,25 @@ interface IActionRoomDelPlayer extends IActionRoom {
 }
 
 const DEL_PLAYER = (socketId: string): IActionRoomDelPlayer => {
-  // TODO
   return {
     type: EnumActionRoomStore.DEL_PLAYER,
     socketId,
   };
 };
 
-const reducerDelPlayer = (state: IRoomState, action: IActionRoomDelPlayer): IRoomState => {
+const reducerDelPlayer = (
+  stateSub: BehaviorSubject<IRoomState>,
+  state: IRoomState,
+  action: IActionRoomDelPlayer,
+): IRoomState => {
 
   const {socketId} = action;
+
+  state.players.filter((p) => p.socketId === socketId).forEach((p) => {
+    if (p.subState !== undefined) {
+      p.subState.unsubscribe();
+    }
+  });
 
   return {
     ...state,
@@ -103,7 +129,11 @@ const UPDATE_OPTION_GAME = (optionGame: IOptionGame): IActionUpdateOptionGame =>
   };
 };
 
-const reducerUpdateOptionGame = (state: IRoomState, action: IActionUpdateOptionGame): IRoomState => {
+const reducerUpdateOptionGame = (
+  stateSub: BehaviorSubject<IRoomState>,
+  state: IRoomState,
+  action: IActionUpdateOptionGame,
+): IRoomState => {
 
   const {optionGame} = action;
 
@@ -125,7 +155,12 @@ const START_GAME = (): IActionStartGame => {
   };
 };
 
-const reducerStartGame = (state: IRoomState, action: IActionStartGame): IRoomState => {
+const reducerStartGame = (
+  stateSub: BehaviorSubject<IRoomState>,
+  state: IRoomState,
+  action: IActionStartGame,
+): IRoomState => {
+  // TODO set interval
   return {
     ...state,
     playing: true,
@@ -154,7 +189,11 @@ const MOVE_PIECE = (socketId: string, move: ENUM_PIECES_MOVE): IActionMovePiece 
   };
 };
 
-const reducerMovePiece = (state: IRoomState, action: IActionMovePiece): IRoomState => {
+const reducerMovePiece = (
+  stateSub: BehaviorSubject<IRoomState>,
+  state: IRoomState,
+  action: IActionMovePiece,
+): IRoomState => {
   // const {piece, pos} = arg;
   // TODO
   return state;
@@ -170,18 +209,18 @@ type ActionRoom = IActionRoomAddPlayer
 
 // -- REDUCER
 
-const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
+const reducer = (stateSub: BehaviorSubject<IRoomState>, state: IRoomState, action: ActionRoom): IRoomState => {
   switch (action.type) {
     case EnumActionRoomStore.ADD_PLAYER:
-      return reducerAddPlayer(state, action);
+      return reducerAddPlayer(stateSub, state, action);
     case EnumActionRoomStore.DEL_PLAYER:
-      return reducerDelPlayer(state, action);
+      return reducerDelPlayer(stateSub, state, action);
     case EnumActionRoomStore.UPDATE_OPTION_GAME:
-      return reducerUpdateOptionGame(state, action);
+      return reducerUpdateOptionGame(stateSub, state, action);
     case EnumActionRoomStore.START_GAME:
-      return reducerStartGame(state, action);
+      return reducerStartGame(stateSub, state, action);
     case EnumActionRoomStore.MOVE_PIECE:
-      return reducerMovePiece(state, action);
+      return reducerMovePiece(stateSub, state, action);
     default:
       return state;
   }
@@ -208,8 +247,7 @@ class Game {
   }
 
   public dispatch(action: ActionRoom): void {
-    // use middelware for check ?
-    const newState = reducer(this.state, action);
+    const newState = reducer(this.stateSub, this.state, action);
 
     if (newState !== this.state) {
       this.state = newState;

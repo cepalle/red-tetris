@@ -1,4 +1,5 @@
 import {ENUM_PIECES, IPiece, IPos} from '@src/common/grid-piece-handler';
+import {Subscription} from 'rxjs';
 
 interface IPlayer {
   playerName: string;
@@ -13,6 +14,7 @@ interface IPlayer {
   flow: IPiece[];
   posPiece: IPos;
   isMaster: boolean;
+  subState: Subscription | undefined;
 }
 
 interface IOptionGame {
