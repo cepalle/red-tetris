@@ -399,8 +399,8 @@ const placePiecePreview = (grid: ENUM_PIECES[][], piece: IPiece, pos: IPos): ENU
   const pieceDescr = getPiece(piece.num, piece.rot);
   let loc = pos;
 
-  while (!hasCollision(grid, pieceDescr, loc)) {
-    loc = {...loc, y: loc.y - 1};
+  while (hasCollision(grid, pieceDescr, loc) === undefined) {
+    loc = {...loc, y: loc.y + 1};
   }
   if (loc.y > 0) {
     loc = {...loc, y: loc.y - 1};
