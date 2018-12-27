@@ -379,8 +379,8 @@ const hasCollision = (grid: number[][], piece: ENUM_PIECES[][], loc: IPos): ENUM
   return collisionType;
 };
 
-const placePiece = (grid: number[][], piece: IPiece, pos: IPos, isPreview = false): number[][] => {
-  const pieceDescr: number[][] = getPiece(piece.num, piece.rot);
+const placePiece = (grid: ENUM_PIECES[][], piece: IPiece, pos: IPos, isPreview = false): ENUM_PIECES[][] => {
+  const pieceDescr: ENUM_PIECES[][] = getPiece(piece.num, piece.rot);
 
   return grid.map((line, y) => line.map((nb, x) => {
     if (y >= pos.y &&
@@ -391,7 +391,7 @@ const placePiece = (grid: number[][], piece: IPiece, pos: IPos, isPreview = fals
     ) {
       return (isPreview) ? ENUM_PIECES.preview : pieceDescr[y - pos.y][x - pos.x];
     }
-    return x;
+    return nb;
   }));
 };
 

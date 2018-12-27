@@ -30,6 +30,7 @@ const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
     lineBuild,
     lineBuild,
     lineBuild,
+    lineBuild,
     Array(4 + 1).fill(wallType),
   ];
 
@@ -89,7 +90,7 @@ const GridPlayerComponent = (props: IProps) => {
         <div className={'column'}>
           {gridRender.map((line, i) =>
             <div key={i} className={'row'}>
-              {line.map((el, j) => <div key={j} className={'casePlayer + color' + el}/>)}
+              {line.map((el, j) => <div key={j} className={`casePlayer color${el}`}/>)}
             </div>,
           )}
         </div>

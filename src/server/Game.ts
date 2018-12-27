@@ -167,7 +167,7 @@ const reducerStartGame = (
   state: IRoomState,
   action: IActionStartGame,
 ): IRoomState => {
-  // TODO set interval
+  // TODO set interval, use optino Game
   return {
     ...state,
     playing: true,
