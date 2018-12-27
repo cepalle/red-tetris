@@ -1,4 +1,4 @@
-import {IPlayer} from '@src/common/ITypeRoomManager';
+import {IPlayerClient} from '@src/common/socketEventClient';
 
 // --- TYPE
 
@@ -328,7 +328,7 @@ const PRIO_COLLISION = [
   ENUM_COLLISION_TYPE.WALL_LEFT,
 ];
 
-const chooseWallType = (player: IPlayer): ENUM_PIECES => {
+const chooseWallType = (player: IPlayerClient): ENUM_PIECES => {
   return (
     player.lost ?
       ENUM_PIECES.wall_loose :

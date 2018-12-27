@@ -4,15 +4,19 @@ import {Server} from 'http';
 import * as fs from 'fs';
 import {Socket} from 'socket.io';
 import {
-  ENUM_SOCKET_EVENT_SERVER, IEventMovePiece,
-  IEventSetGameOption,
-  IEventSubRoomState,
-  IEventStartGame, IEventSubRoomsPlayersName,
+  ENUM_SOCKET_EVENT_SERVER, IEventServerMovePiece,
+  IEventServerSetGameOption,
+  IEventServerSubRoomState,
+  IEventServerStartGame, IEventServerSubRoomsPlayersName,
 } from '@src/common/socketEventServer';
 import {GamesManager} from './GamesManager';
 import {ADD_PLAYER, DEL_PLAYER, MOVE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/Game';
 import {BehaviorSubject, Subscription} from 'rxjs';
-import {ENUM_SOCKET_EVENT_CLIENT, IEventSetRoomsPlayersName, IRoomPlayersName} from '@src/common/socketEventClient';
+import {
+  ENUM_SOCKET_EVENT_CLIENT,
+  IEventClientSetRoomsPlayersName,
+  IRoomPlayersName,
+} from '@src/common/socketEventClient';
 
 class App {
 
@@ -24,8 +28,8 @@ class App {
 
     let subRoomsPlayersNAme: Subscription | undefined = undefined;
 
-    socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, (arg: IEventSubRoomState) => {
-      console.log(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, arg);
+    socket.on(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, (arg: IEventServerSubRoomState) => {
+      console.log(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);
 
       this.gamesManager.dispatch({
         roomName: arg.roomName,
@@ -33,14 +37,14 @@ class App {
       });
     });
 
-    socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, (arg: IEventSubRoomsPlayersName) => {
+    socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, (arg: IEventServerSubRoomsPlayersName) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, arg);
 
       if (subRoomsPlayersNAme !== undefined && !subRoomsPlayersNAme.closed) {
         return;
       }
       subRoomsPlayersNAme = this.roomsPlayersNameSub.subscribe((roomsPlayersName: IRoomPlayersName[]) => {
-        const sendSetRoomsPlayersName = (sock: Socket, ag: IEventSetRoomsPlayersName) => {
+        const sendSetRoomsPlayersName = (sock: Socket, ag: IEventClientSetRoomsPlayersName) => {
           sock.emit(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, ag);
         };
 
@@ -50,7 +54,7 @@ class App {
       });
     });
 
-    socket.on(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, (arg: IEventSetGameOption) => {
+    socket.on(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, (arg: IEventServerSetGameOption) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, arg);
 
       this.gamesManager.dispatch({
@@ -59,7 +63,7 @@ class App {
       });
     });
 
-    socket.on(ENUM_SOCKET_EVENT_SERVER.START_GAME, (arg: IEventStartGame) => {
+    socket.on(ENUM_SOCKET_EVENT_SERVER.START_GAME, (arg: IEventServerStartGame) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
 
       this.gamesManager.dispatch({
@@ -68,7 +72,7 @@ class App {
       });
     });
 
-    socket.on(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, (arg: IEventMovePiece) => {
+    socket.on(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, (arg: IEventServerMovePiece) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, arg);
 
       this.gamesManager.dispatch({

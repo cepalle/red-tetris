@@ -8,7 +8,7 @@ import {
   placePiece,
   placePiecePreview,
 } from '@src/common/grid-piece-handler';
-import {IPlayer} from '@src/common/ITypeRoomManager';
+import {IPlayerClient} from '@src/common/socketEventClient';
 
 const mapStateToProps = (state: IState) => {
   const player = (state.roomState === undefined) ? undefined :
@@ -20,7 +20,7 @@ const mapStateToProps = (state: IState) => {
 };
 
 interface IProps {
-  player: IPlayer | undefined,
+  player: IPlayerClient | undefined,
 }
 
 const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {

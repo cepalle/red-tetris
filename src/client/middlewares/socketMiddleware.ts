@@ -1,27 +1,27 @@
 import {EnumAction, ReduxAction} from '@src/client/actions/action-creators';
 import {
   ENUM_SOCKET_EVENT_SERVER,
-  IEventMovePiece,
-  IEventSetGameOption,
-  IEventSubRoomState,
-  IEventStartGame,
+  IEventServerMovePiece,
+  IEventServerSetGameOption,
+  IEventServerSubRoomState,
+  IEventServerStartGame,
 } from '@src/common/socketEventServer';
 import {isPlaying} from '@src/client/reducers/isPlaying';
 
-const sendStartGame = (socket: SocketIOClient.Socket, arg: IEventStartGame): void => {
+const sendStartGame = (socket: SocketIOClient.Socket, arg: IEventServerStartGame): void => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
 };
 
-const sendUpdateOptionGame = (socket: SocketIOClient.Socket, arg: IEventSetGameOption): void => {
+const sendUpdateOptionGame = (socket: SocketIOClient.Socket, arg: IEventServerSetGameOption): void => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
 };
 
-const sendMovePiece = (socket: SocketIOClient.Socket, arg: IEventMovePiece) => {
+const sendMovePiece = (socket: SocketIOClient.Socket, arg: IEventServerMovePiece) => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, arg);
 };
 
-const sendRoomPlayerName = (socket: SocketIOClient.Socket, arg: IEventSubRoomState) => {
-  socket.emit(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, arg);
+const sendRoomPlayerName = (socket: SocketIOClient.Socket, arg: IEventServerSubRoomState) => {
+  socket.emit(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);
 };
 
 const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) => {

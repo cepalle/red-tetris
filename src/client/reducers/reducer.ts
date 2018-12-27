@@ -1,9 +1,8 @@
 import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {urlGetRoomPlayerName} from '@src/client/util/url-handler';
 import * as io from 'socket.io-client';
-import {IRoomPlayersName} from '@src/common/socketEventClient';
+import {IRoomPlayersName, IRoomStateClient} from '@src/common/socketEventClient';
 import {reducerOnSetRoomsPlayersName, reducerOnSetRoomState, reducerRefresh} from '@src/client/reducers/reducer-aux';
-import {IRoomState} from '@src/common/ITypeRoomManager';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
@@ -19,7 +18,7 @@ interface IState {
   readonly roomName: string | undefined,
   readonly route: ENUM_ROUTE,
 
-  readonly roomState: IRoomState | undefined,
+  readonly roomState: IRoomStateClient | undefined,
   readonly roomsPlayersName: IRoomPlayersName[],
 }
 

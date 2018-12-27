@@ -17,7 +17,13 @@ class GamesManager {
 
   public dispatch = (action: IActionRooms): void => {
     this.dispatchMain(action);
-    this.games = this.games.filter((r) => r.state.players.length > 0);
+
+    this.games.forEach((g) => {
+      if (g.nbPlayer() === 0) {
+        g.unsubscribe();
+      }
+    });
+    this.games = this.games.filter((r) => r.nbPlayer() > 0);
   };
 
   private dispatchMain = (action: IActionRooms): void => {

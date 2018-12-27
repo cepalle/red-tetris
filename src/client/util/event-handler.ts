@@ -1,6 +1,6 @@
 import {Store} from 'redux';
 import {SEND_MOVE_PIECE, SEND_START_GAME} from '@src/client/actions/action-creators';
-import {IState} from '@src/client/reducers/reducer';
+import {ENUM_ROUTE, IState} from '@src/client/reducers/reducer';
 import {isPlaying} from '@src/client/reducers/isPlaying';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 
@@ -18,7 +18,15 @@ const eventHandler = (store: Store<IState>) => (event: any) => {
   const state = store.getState();
   const dispatch = store.dispatch;
 
+  if (state.route !== ENUM_ROUTE.TETRIS_GAME) {
+    return;
+  }
+
   if (!isPlaying(state)) {
+    if (event.keyCode === keyEnter) {
+      event.preventDefault();
+      dispatch(SEND_START_GAME());
+    }
     return;
   }
 
@@ -46,11 +54,6 @@ const eventHandler = (store: Store<IState>) => (event: any) => {
     case keySpace:
       event.preventDefault();
       dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.DROP));
-      break;
-
-    case keyEnter:
-      event.preventDefault();
-      dispatch(SEND_START_GAME());
       break;
 
     case keyS:

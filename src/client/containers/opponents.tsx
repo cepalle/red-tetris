@@ -2,7 +2,7 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {IState} from '@src/client/reducers/reducer';
 import {chooseWallType, ENUM_PIECES, GRID_WIDTH} from '@src/common/grid-piece-handler';
-import {IPlayer} from '@src/common/ITypeRoomManager';
+import {IPlayerClient} from '@src/common/socketEventClient';
 
 const mapStateToProps = (state: IState) => {
 
@@ -17,7 +17,7 @@ const mapStateToProps = (state: IState) => {
 };
 
 interface IProps {
-  opponents: IPlayer[],
+  opponents: IPlayerClient[],
 }
 
 const OpponentComponent = (props: IProps) => {
@@ -26,7 +26,7 @@ const OpponentComponent = (props: IProps) => {
 
   const infoRenders: Array<{
     grid: ENUM_PIECES[][];
-    player: IPlayer;
+    player: IPlayerClient;
   }> = opponents.map((playerState) => {
 
     const wallType = chooseWallType(playerState);

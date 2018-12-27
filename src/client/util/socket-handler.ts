@@ -1,15 +1,15 @@
-import {ENUM_SOCKET_EVENT_CLIENT, IEventSetRoomsPlayersName, IEventSetRoomState} from '@src/common/socketEventClient';
+import {ENUM_SOCKET_EVENT_CLIENT, IEventClientSetRoomsPlayersName, IEventClientSetRoomState} from '@src/common/socketEventClient';
 import {Dispatch, Store} from 'redux';
 import {ON_SET_ROOM_STATE, ON_SET_ROOMS_PLAYERS_NAME, ReduxAction, REFRESH} from '@src/client/actions/action-creators';
 import {ENUM_ROUTE, IState} from '@src/client/reducers/reducer';
-import {ENUM_SOCKET_EVENT_SERVER, IEventSubRoomsPlayersName, IEventSubRoomState} from '@src/common/socketEventServer';
+import {ENUM_SOCKET_EVENT_SERVER, IEventServerSubRoomsPlayersName, IEventServerSubRoomState} from '@src/common/socketEventServer';
 
 // ON
 
 const cbSetRoomState = (
   dispatch: Dispatch<ReduxAction>,
 ) => (
-  arg: IEventSetRoomState,
+  arg: IEventClientSetRoomState,
 ) => {
   console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, arg);
 
@@ -19,7 +19,7 @@ const cbSetRoomState = (
 const cbSetRoomsPlayersName = (
   dispatch: Dispatch<ReduxAction>,
 ) => (
-  arg: IEventSetRoomsPlayersName,
+  arg: IEventClientSetRoomsPlayersName,
 ) => {
   console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
 
@@ -32,7 +32,7 @@ const cbOnConnection = (
   const state = store.getState();
 
   if (state.route === ENUM_ROUTE.HOME) {
-    const sendSubRoomsPlayersName = (socket: SocketIOClient.Socket, arg: IEventSubRoomsPlayersName) => {
+    const sendSubRoomsPlayersName = (socket: SocketIOClient.Socket, arg: IEventServerSubRoomsPlayersName) => {
       socket.emit(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, arg);
     };
 
@@ -40,8 +40,8 @@ const cbOnConnection = (
   }
 
   if (state.route === ENUM_ROUTE.TETRIS_GAME) {
-    const sendSubRoomState = (socket: SocketIOClient.Socket, arg: IEventSubRoomState) => {
-      socket.emit(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, arg);
+    const sendSubRoomState = (socket: SocketIOClient.Socket, arg: IEventServerSubRoomState) => {
+      socket.emit(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);
     };
 
     if (state.roomName !== undefined && state.playerName !== undefined) {

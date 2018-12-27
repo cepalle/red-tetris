@@ -1,9 +1,9 @@
 import {ENUM_PIECES, IPiece, IPos} from '@src/common/grid-piece-handler';
-import {Subscription} from 'rxjs';
+import {Socket} from 'socket.io';
 
 interface IPlayer {
   playerName: string;
-  socketId: string;
+  socket: Socket;
   isSpectator: boolean;
   grid: ENUM_PIECES[][];
   score: number;
@@ -14,7 +14,6 @@ interface IPlayer {
   flow: IPiece[];
   posPiece: IPos;
   isMaster: boolean;
-  subState: Subscription | undefined;
 }
 
 interface IOptionGame {

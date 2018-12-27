@@ -1,13 +1,9 @@
 import {Socket} from 'socket.io';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
 import {Player} from '@src/server/Player';
-import {ENUM_SOCKET_EVENT_CLIENT, IEventSetRoomState} from '@src/common/socketEventClient';
-
-const sendSetRoomState = (socket: Socket, arg: IEventSetRoomState) => {
-  socket.emit(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, arg);
-};
+import {ENUM_SOCKET_EVENT_CLIENT, IEventClientSetRoomState} from '@src/common/socketEventClient';
 
 // -- ACTION
 
@@ -41,7 +37,6 @@ const ADD_PLAYER = (playerName: string, socket: Socket): IActionRoomAddPlayer =>
 };
 
 const reducerAddPlayer = (
-  stateSub: BehaviorSubject<IRoomState>,
   state: IRoomState,
   action: IActionRoomAddPlayer,
 ): IRoomState => {
@@ -54,26 +49,19 @@ const reducerAddPlayer = (
     return state;
   }
 
-  const hasSocket = state.players.some((p) => p.socketId === socket.id);
+  const hasSocket = state.players.some((p) => p.socket.id === socket.id);
   if (hasSocket) {
     // TODO
     return state;
   }
 
   const isMaster = state.players.length === 0;
-  const player = Player.factPlayer(playerName, socket.id, isMaster);
-
-  const sub = stateSub.subscribe((r: IRoomState) => {
-    sendSetRoomState(socket, {
-      room: r,
-    });
-  });
+  const player = Player.factPlayer(playerName, socket, isMaster);
 
   return {
     ...state,
     players: [...state.players, {
       ...player,
-      subState: sub,
     },
     ],
   };
@@ -95,22 +83,15 @@ const DEL_PLAYER = (socketId: string): IActionRoomDelPlayer => {
 };
 
 const reducerDelPlayer = (
-  stateSub: BehaviorSubject<IRoomState>,
   state: IRoomState,
   action: IActionRoomDelPlayer,
 ): IRoomState => {
 
   const {socketId} = action;
 
-  state.players.filter((p) => p.socketId === socketId).forEach((p) => {
-    if (p.subState !== undefined) {
-      p.subState.unsubscribe();
-    }
-  });
-
   return {
     ...state,
-    players: state.players.filter((p) => p.socketId !== socketId),
+    players: state.players.filter((p) => p.socket.id !== socketId),
   };
 };
 
@@ -130,7 +111,6 @@ const UPDATE_OPTION_GAME = (optionGame: IOptionGame): IActionUpdateOptionGame =>
 };
 
 const reducerUpdateOptionGame = (
-  stateSub: BehaviorSubject<IRoomState>,
   state: IRoomState,
   action: IActionUpdateOptionGame,
 ): IRoomState => {
@@ -156,7 +136,6 @@ const START_GAME = (): IActionStartGame => {
 };
 
 const reducerStartGame = (
-  stateSub: BehaviorSubject<IRoomState>,
   state: IRoomState,
   action: IActionStartGame,
 ): IRoomState => {
@@ -190,7 +169,6 @@ const MOVE_PIECE = (socketId: string, move: ENUM_PIECES_MOVE): IActionMovePiece 
 };
 
 const reducerMovePiece = (
-  stateSub: BehaviorSubject<IRoomState>,
   state: IRoomState,
   action: IActionMovePiece,
 ): IRoomState => {
@@ -209,18 +187,18 @@ type ActionRoom = IActionRoomAddPlayer
 
 // -- REDUCER
 
-const reducer = (stateSub: BehaviorSubject<IRoomState>, state: IRoomState, action: ActionRoom): IRoomState => {
+const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
   switch (action.type) {
     case EnumActionRoomStore.ADD_PLAYER:
-      return reducerAddPlayer(stateSub, state, action);
+      return reducerAddPlayer(state, action);
     case EnumActionRoomStore.DEL_PLAYER:
-      return reducerDelPlayer(stateSub, state, action);
+      return reducerDelPlayer(state, action);
     case EnumActionRoomStore.UPDATE_OPTION_GAME:
-      return reducerUpdateOptionGame(stateSub, state, action);
+      return reducerUpdateOptionGame(state, action);
     case EnumActionRoomStore.START_GAME:
-      return reducerStartGame(stateSub, state, action);
+      return reducerStartGame(state, action);
     case EnumActionRoomStore.MOVE_PIECE:
-      return reducerMovePiece(stateSub, state, action);
+      return reducerMovePiece(state, action);
     default:
       return state;
   }
@@ -232,8 +210,13 @@ class Game {
 
   state: IRoomState;
   stateSub: BehaviorSubject<IRoomState>;
+  sub: Subscription;
 
   constructor(roomName: string) {
+    const sendSetRoomState = (socket: Socket, arg: IEventClientSetRoomState) => {
+      socket.emit(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, arg);
+    };
+
     this.state = {
       roomName: roomName,
       players: [],
@@ -244,10 +227,26 @@ class Game {
       },
     };
     this.stateSub = new BehaviorSubject<IRoomState>(this.state);
+    this.sub = this.stateSub.subscribe((state: IRoomState) => {
+      console.log('coucou');
+      state.players.forEach((p) => {
+        console.log('coucou p');
+
+        sendSetRoomState(p.socket, {
+          room: {
+            ...state,
+            players: state.players.map((p) => ({
+              ...p,
+              socket: undefined,
+            })),
+          },
+        });
+      });
+    });
   }
 
   public dispatch(action: ActionRoom): void {
-    const newState = reducer(this.stateSub, this.state, action);
+    const newState = reducer(this.state, action);
 
     if (newState !== this.state) {
       this.state = newState;
@@ -256,11 +255,15 @@ class Game {
   }
 
   public hasSocketId(socketId: string): boolean {
-    return this.state.players.some((p) => p.socketId === socketId);
+    return this.state.players.some((p) => p.socket.id === socketId);
   }
 
   public nbPlayer(): number {
     return this.state.players.length;
+  }
+
+  public unsubscribe(): void {
+    this.sub.unsubscribe();
   }
 
 }

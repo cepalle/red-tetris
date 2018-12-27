@@ -1,4 +1,4 @@
-import {IEventSetRoomsPlayersName, IEventSetRoomState} from '@src/common/socketEventClient';
+import {IEventClientSetRoomsPlayersName, IEventClientSetRoomState} from '@src/common/socketEventClient';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 import {IOptionGame} from '@src/common/ITypeRoomManager';
 
@@ -20,10 +20,10 @@ interface IAction {
 
 interface IOnSetRoomeState extends IAction {
   readonly type: EnumAction.ON_SET_ROOM_STATE
-  readonly arg: IEventSetRoomState
+  readonly arg: IEventClientSetRoomState
 }
 
-const ON_SET_ROOM_STATE = (arg: IEventSetRoomState): IOnSetRoomeState => {
+const ON_SET_ROOM_STATE = (arg: IEventClientSetRoomState): IOnSetRoomeState => {
   return {
     type: EnumAction.ON_SET_ROOM_STATE,
     arg: arg,
@@ -34,10 +34,10 @@ const ON_SET_ROOM_STATE = (arg: IEventSetRoomState): IOnSetRoomeState => {
 
 interface IOnSetRoomesPlayersName extends IAction {
   readonly type: EnumAction.ON_SET_ROOMS_PLAYERS_NAME
-  readonly arg: IEventSetRoomsPlayersName
+  readonly arg: IEventClientSetRoomsPlayersName
 }
 
-const ON_SET_ROOMS_PLAYERS_NAME = (arg: IEventSetRoomsPlayersName): IOnSetRoomesPlayersName => {
+const ON_SET_ROOMS_PLAYERS_NAME = (arg: IEventClientSetRoomsPlayersName): IOnSetRoomesPlayersName => {
   return {
     type: EnumAction.ON_SET_ROOMS_PLAYERS_NAME,
     arg: arg,

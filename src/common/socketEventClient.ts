@@ -1,8 +1,30 @@
-import {IRoomState} from '@src/common/ITypeRoomManager';
-
 // SET_ROOM_STATE
-interface IEventSetRoomState {
-  room: IRoomState
+import {IOptionGame} from '@src/common/ITypeRoomManager';
+import {ENUM_PIECES, IPiece, IPos} from '@src/common/grid-piece-handler';
+
+interface IPlayerClient {
+  playerName: string;
+  isSpectator: boolean;
+  grid: ENUM_PIECES[][];
+  score: number;
+  nbLineCompleted: number;
+  playing: boolean;
+  win: boolean;
+  lost: boolean;
+  flow: IPiece[];
+  posPiece: IPos;
+  isMaster: boolean;
+}
+
+interface IRoomStateClient {
+  roomName: string;
+  playing: boolean;
+  players: IPlayerClient[];
+  optionGame: IOptionGame;
+}
+
+interface IEventClientSetRoomState {
+  room: IRoomStateClient
 }
 
 // SET_ROOMS_PLAYERS_NAME
@@ -11,7 +33,7 @@ interface IRoomPlayersName {
   playerNames: string[],
 }
 
-interface IEventSetRoomsPlayersName {
+interface IEventClientSetRoomsPlayersName {
   roomsPlayersName: IRoomPlayersName[]
 }
 
@@ -24,7 +46,9 @@ enum ENUM_SOCKET_EVENT_CLIENT {
 
 export {
   ENUM_SOCKET_EVENT_CLIENT,
-  IEventSetRoomState,
-  IEventSetRoomsPlayersName,
+  IEventClientSetRoomState,
+  IEventClientSetRoomsPlayersName,
   IRoomPlayersName,
+  IRoomStateClient,
+  IPlayerClient,
 };
