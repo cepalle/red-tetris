@@ -7,17 +7,17 @@ interface IActionRooms {
   actionRoom: ActionRoom
 }
 
-class RoomsManager {
+class GamesManager {
 
-  roomManagers: Game[];
+  games: Game[];
 
   constructor() {
-    this.roomManagers = [];
+    this.games = [];
   }
 
   public dispatch = (action: IActionRooms): void => {
     this.dispatchMain(action);
-    this.roomManagers = this.roomManagers.filter((r) => r.state.players.length > 0);
+    this.games = this.games.filter((r) => r.state.players.length > 0);
   };
 
   private dispatchMain = (action: IActionRooms): void => {
@@ -25,10 +25,10 @@ class RoomsManager {
     const {roomName, socketId, actionRoom} = action;
 
     if (roomName !== undefined) {
-      let room = this.roomManagers.find((r) => r.state.roomName === roomName);
+      let room = this.games.find((r) => r.state.roomName === roomName);
       if (room === undefined) {
         room = new Game(roomName);
-        this.roomManagers.push(room);
+        this.games.push(room);
       }
 
       room.dispatch(actionRoom);
@@ -36,7 +36,7 @@ class RoomsManager {
     }
 
     if (socketId !== undefined) {
-      this.roomManagers.forEach((r) => {
+      this.games.forEach((r) => {
         if (r.hasSocketId(socketId)) {
           r.dispatch(actionRoom);
         }
@@ -48,4 +48,4 @@ class RoomsManager {
 
 }
 
-export {RoomsManager};
+export {GamesManager};

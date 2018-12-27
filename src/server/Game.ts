@@ -1,7 +1,8 @@
 import {Socket} from 'socket.io';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
-import {factPlayer, IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
+import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
 import {BehaviorSubject} from 'rxjs';
+import {Player} from '@src/server/Player';
 
 // -- ACTION
 
@@ -55,7 +56,7 @@ const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoo
   return {
     ...state,
     players: [...state.players,
-      factPlayer(playerName, socket.id),
+      Player.factPlayer(playerName, socket.id),
     ],
   };
 };

@@ -9,14 +9,14 @@ import {
   IEventSubRoomState,
   IEventStartGame, IEventSubRoomsPlayersName,
 } from '@src/common/socketEventServer';
-import {RoomsManager} from './RoomsManager';
+import {GamesManager} from './GamesManager';
 import {ADD_PLAYER, DEL_PLAYER, MOVE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/Game';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {ENUM_SOCKET_EVENT_CLIENT, IEventSetRoomsPlayersName, IRoomPlayersName} from '@src/common/socketEventClient';
 
 class App {
 
-  roomsManager = new RoomsManager();
+  gamesManager = new GamesManager();
   roomsPlayersNameSub: BehaviorSubject<IRoomPlayersName[]> = new BehaviorSubject<IRoomPlayersName[]>([]);
 
   handleClient(socket: Socket): void {
@@ -27,7 +27,7 @@ class App {
     socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, (arg: IEventSubRoomState) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, arg);
 
-      this.roomsManager.dispatch({
+      this.gamesManager.dispatch({
         roomName: arg.roomName,
         actionRoom: ADD_PLAYER(arg.playerName, socket),
       });
@@ -53,7 +53,7 @@ class App {
     socket.on(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, (arg: IEventSetGameOption) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, arg);
 
-      this.roomsManager.dispatch({
+      this.gamesManager.dispatch({
         roomName: arg.roomName,
         actionRoom: UPDATE_OPTION_GAME(arg.optionGame),
       });
@@ -62,7 +62,7 @@ class App {
     socket.on(ENUM_SOCKET_EVENT_SERVER.START_GAME, (arg: IEventStartGame) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
 
-      this.roomsManager.dispatch({
+      this.gamesManager.dispatch({
         roomName: arg.roomName,
         actionRoom: START_GAME(),
       });
@@ -71,7 +71,7 @@ class App {
     socket.on(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, (arg: IEventMovePiece) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.MOVE_PIECE, arg);
 
-      this.roomsManager.dispatch({
+      this.gamesManager.dispatch({
         roomName: arg.roomName,
         actionRoom: MOVE_PIECE(socket.id, arg.move),
       });
@@ -80,7 +80,7 @@ class App {
     socket.on('disconnect', () => {
       console.log('disconnect', socket.id);
 
-      this.roomsManager.dispatch({
+      this.gamesManager.dispatch({
         socketId: socket.id,
         actionRoom: DEL_PLAYER(socket.id),
       });
@@ -112,7 +112,7 @@ class App {
     });
 
     setInterval(() => {
-      const next = this.roomsManager.roomManagers.map((r) => {
+      const next = this.gamesManager.games.map((r) => {
         return {
           roomName: r.state.roomName,
           playerNames: r.state.players.map((p) => p.playerName),
