@@ -50,6 +50,8 @@ const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoo
     return state;
   }
 
+  // TODO Sub
+
   return {
     ...state,
     players: [...state.players,
@@ -67,6 +69,7 @@ interface IActionRoomDelPlayer extends IActionRoom {
 }
 
 const DEL_PLAYER = (socketId: string): IActionRoomDelPlayer => {
+  // TODO
   return {
     type: EnumActionRoomStore.DEL_PLAYER,
     socketId,
@@ -165,7 +168,6 @@ type ActionRoom = IActionRoomAddPlayer
 
 // -- REDUCER
 
-// use middelware for check end send socket... ?
 const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
   switch (action.type) {
     case EnumActionRoomStore.ADD_PLAYER:
@@ -185,7 +187,7 @@ const reducer = (state: IRoomState, action: ActionRoom): IRoomState => {
 
 // -- ROOM MANAGER
 
-class RoomManager {
+class Game {
 
   state: IRoomState;
   stateSub: BehaviorSubject<IRoomState>;
@@ -204,6 +206,7 @@ class RoomManager {
   }
 
   public dispatch(action: ActionRoom): void {
+    // use middelware for check ?
     const newState = reducer(this.state, action);
 
     if (newState !== this.state) {
@@ -223,7 +226,7 @@ class RoomManager {
 }
 
 export {
-  RoomManager,
+  Game,
   ActionRoom,
   ADD_PLAYER,
   DEL_PLAYER,

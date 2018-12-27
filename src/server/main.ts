@@ -10,7 +10,7 @@ import {
   IEventStartGame, IEventSubRoomsPlayersName,
 } from '@src/common/socketEventServer';
 import {RoomsManager} from './RoomsManager';
-import {ADD_PLAYER, DEL_PLAYER, MOVE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/RoomManager';
+import {ADD_PLAYER, DEL_PLAYER, MOVE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/Game';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {ENUM_SOCKET_EVENT_CLIENT, IEventSetRoomsPlayersName, IRoomPlayersName} from '@src/common/socketEventClient';
 

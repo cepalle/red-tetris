@@ -1,4 +1,4 @@
-import {ActionRoom, RoomManager} from '@src/server/RoomManager';
+import {ActionRoom, Game} from '@src/server/Game';
 
 interface IActionRooms {
   roomName?: string,
@@ -9,7 +9,7 @@ interface IActionRooms {
 
 class RoomsManager {
 
-  roomManagers: RoomManager[];
+  roomManagers: Game[];
 
   constructor() {
     this.roomManagers = [];
@@ -27,7 +27,7 @@ class RoomsManager {
     if (roomName !== undefined) {
       let room = this.roomManagers.find((r) => r.state.roomName === roomName);
       if (room === undefined) {
-        room = new RoomManager(roomName);
+        room = new Game(roomName);
         this.roomManagers.push(room);
       }
 
