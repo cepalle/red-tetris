@@ -340,7 +340,7 @@ const chooseWallType = (player: IPlayerClient): ENUM_PIECES => {
   );
 };
 
-const hasCollision = (grid: number[][], piece: ENUM_PIECES[][], loc: IPos): ENUM_COLLISION_TYPE | undefined => {
+const hasCollision = (grid: ENUM_PIECES[][], piece: ENUM_PIECES[][], loc: IPos): ENUM_COLLISION_TYPE | undefined => {
   let collisionType: ENUM_COLLISION_TYPE | undefined = undefined;
 
   const comp = (col1: ENUM_COLLISION_TYPE | undefined, col2: ENUM_COLLISION_TYPE): boolean => {
@@ -395,7 +395,7 @@ const placePiece = (grid: ENUM_PIECES[][], piece: IPiece, pos: IPos, isPreview =
   }));
 };
 
-const placePiecePreview = (grid: number[][], piece: IPiece, pos: IPos) => {
+const placePiecePreview = (grid: ENUM_PIECES[][], piece: IPiece, pos: IPos): ENUM_PIECES[][] => {
   const pieceDescr = getPiece(piece.num, piece.rot);
   let loc = pos;
 
@@ -433,7 +433,7 @@ const moveRot = (rot: number, move: ENUM_PIECES_MOVE): number => {
 
 // Can block ?
 const moveCollision = (
-  grid: number[][],
+  grid: ENUM_PIECES[][],
   posPiece: IPos,
   piece: IPiece,
 ): IPos => {
@@ -459,11 +459,11 @@ const moveCollision = (
 };
 
 const updatePieceRot = (
-  grid: number[][],
+  grid: ENUM_PIECES[][],
   posPiece: IPos,
   piece: IPiece,
   move: ENUM_PIECES_MOVE.ROT_LEFT | ENUM_PIECES_MOVE.ROT_RIGHT,
-): { piecePlaced: boolean; pos: IPos } => {
+): { piecePlaced: boolean; pos: IPos; piece: IPiece } => {
 
   const newPiece = {
     ...piece,
@@ -472,15 +472,15 @@ const updatePieceRot = (
 
   const newPosPiece: IPos = moveCollision(grid, posPiece, newPiece);
 
-  return {piecePlaced: false, pos: newPosPiece};
+  return {piecePlaced: false, pos: newPosPiece, piece: newPiece};
 };
 
 const updatePiecePos = (
-  grid: number[][],
+  grid: ENUM_PIECES[][],
   posPiece: IPos,
   piece: IPiece,
   move: ENUM_PIECES_MOVE,
-): { piecePlaced: boolean; pos: IPos } => {
+): { piecePlaced: boolean; pos: IPos; piece: IPiece } => {
 
   if (move === ENUM_PIECES_MOVE.ROT_LEFT || move === ENUM_PIECES_MOVE.ROT_RIGHT) {
     return updatePieceRot(grid, posPiece, piece, move);
@@ -499,7 +499,7 @@ const updatePiecePos = (
       ...newPos,
       y: newPos.y - 1,
     };
-    return {piecePlaced: true, pos: newPos};
+    return {piecePlaced: true, pos: newPos, piece};
   }
   if (move === ENUM_PIECES_MOVE.RIGHT || move === ENUM_PIECES_MOVE.LEFT) {
     const newPieceDescr = getPiece(piece.num, piece.rot);
@@ -509,6 +509,7 @@ const updatePiecePos = (
     return {
       piecePlaced: false,
       pos: (col === undefined) ? newpose : posPiece,
+      piece,
     };
   }
   if (move === ENUM_PIECES_MOVE.DOWN) {
@@ -520,15 +521,17 @@ const updatePiecePos = (
       return {
         piecePlaced: false,
         pos: newpose,
+        piece,
       };
     }
     return {
       piecePlaced: true,
       pos: posPiece,
+      piece,
     };
   }
 
-  return {piecePlaced: false, pos: posPiece};
+  return {piecePlaced: false, pos: posPiece, piece};
 };
 
 const gridDelLine = (grid: ENUM_PIECES[][]): { grid: ENUM_PIECES[][]; nbLineToSend: number } => {

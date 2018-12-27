@@ -1,5 +1,5 @@
 import {Socket} from 'socket.io';
-import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
+import {ENUM_PIECES_MOVE, updatePiecePos} from '@src/common/grid-piece-handler';
 import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {Player} from '@src/server/Player';
@@ -205,10 +205,26 @@ const reducerMovePiece = (
   state: IRoomState,
   action: IActionMovePiece,
 ): IRoomState => {
-  // const {piece, pos} = arg;
-  // TODO
+  const {move, socketId} = action;
 
-  let players = state.players;
+  const player = state.players.find((p) => p.socket.id === socketId);
+  if (player === undefined) {
+    return state;
+  }
+
+  const {pos, piece} = updatePiecePos(player.grid, player.posPiece, player.flow[0], move);
+
+  let players = state.players.map((p) => {
+    if (p.socket.id === socketId) {
+      return {
+        ...p,
+        posPiece: pos,
+        flow: p.flow.map((pi, i) => (i === 0) ? piece : pi),
+      };
+    }
+    return p;
+  });
+
   if (state.players.some((p) => p.flow.length < 5)) {
     const flowToAdd = Piece.genFlow(20);
 
@@ -272,16 +288,18 @@ class Game {
     };
     this.stateSub = new BehaviorSubject<IRoomState>(this.state);
     this.sub = this.stateSub.subscribe((state: IRoomState) => {
+      const ToSend = {
+        room: {
+          ...state,
+          players: state.players.map((pl) => ({
+            ...pl,
+            socket: undefined,
+          })),
+        },
+      };
+
       state.players.forEach((p) => {
-        sendSetRoomState(p.socket, {
-          room: {
-            ...state,
-            players: state.players.map((p) => ({
-              ...p,
-              socket: undefined,
-            })),
-          },
-        });
+        sendSetRoomState(p.socket, ToSend);
       });
     });
   }
