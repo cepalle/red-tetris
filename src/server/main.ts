@@ -20,6 +20,8 @@ class App {
   roomsPlayersNameSub: BehaviorSubject<IRoomPlayersName[]> = new BehaviorSubject<IRoomPlayersName[]>([]);
 
   handleClient(socket: Socket): void {
+    console.log('connect', socket.id);
+
     let subRoomsPlayersNAme: Subscription | undefined = undefined;
 
     socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOM_STATE, (arg: IEventSubRoomState) => {
@@ -34,7 +36,7 @@ class App {
     socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, (arg: IEventSubRoomsPlayersName) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, arg);
 
-      if (subRoomsPlayersNAme !== undefined) {
+      if (subRoomsPlayersNAme !== undefined && !subRoomsPlayersNAme.closed) {
         return;
       }
       subRoomsPlayersNAme = this.roomsPlayersNameSub.subscribe((roomsPlayersName: IRoomPlayersName[]) => {
@@ -76,7 +78,7 @@ class App {
     });
 
     socket.on('disconnect', () => {
-      console.log('disconnect');
+      console.log('disconnect', socket.id);
 
       this.roomsManager.dispatch({
         socketId: socket.id,

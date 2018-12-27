@@ -1,10 +1,9 @@
-import {Socket} from 'socket.io';
 import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, initPiece, IPiece, IPos} from '@src/common/grid-piece-handler';
 import {genFlow} from '@src/common/flowUtils';
 
 interface IPlayer {
   playerName: string;
-  socket: Socket;
+  socketId: string;
   isSpectator: boolean;
   grid: ENUM_PIECES[][];
   score: number;
@@ -16,14 +15,14 @@ interface IPlayer {
   posPiece: IPos;
 }
 
-const factPlayer = (playerName: string, socket: Socket): IPlayer => {
+const factPlayer = (playerName: string, socketId: string): IPlayer => {
   const grid = Array(GRID_HEIGHT).fill(0).map(() =>
     Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
   );
 
   return {
     playerName: playerName,
-    socket: socket,
+    socketId: socketId,
     isSpectator: true,
     grid: grid,
     score: 0,

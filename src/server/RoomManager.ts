@@ -41,17 +41,19 @@ const reducerAddPlayer = (state: IRoomState, action: IActionRoomAddPlayer): IRoo
   const hasPlayerName = state.players.some((p) => p.playerName === playerName);
   if (hasPlayerName) {
     // TODO emit error
+    return state;
   }
 
-  const hasSocket = state.players.some((p) => p.socket.id === socket.id);
+  const hasSocket = state.players.some((p) => p.socketId === socket.id);
   if (hasSocket) {
     // TODO
+    return state;
   }
 
   return {
     ...state,
     players: [...state.players,
-      factPlayer(playerName, socket),
+      factPlayer(playerName, socket.id),
     ],
   };
 };
@@ -75,13 +77,10 @@ const reducerDelPlayer = (state: IRoomState, action: IActionRoomDelPlayer): IRoo
 
   const {socketId} = action;
 
-  if (state.players.some((p) => p.socket.id === socketId)) {
-    return {
-      ...state,
-      players: state.players.filter((p) => p.socket.id === socketId),
-    };
-  }
-  return state;
+  return {
+    ...state,
+    players: state.players.filter((p) => p.socketId !== socketId),
+  };
 };
 
 // UPDATE_OPTION_GAME
@@ -214,7 +213,7 @@ class RoomManager {
   }
 
   public hasSocketId(socketId: string): boolean {
-    return this.state.players.some((p) => p.socket.id === socketId);
+    return this.state.players.some((p) => p.socketId === socketId);
   }
 
   public nbPlayer(): number {

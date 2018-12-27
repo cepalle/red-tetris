@@ -36,11 +36,10 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
   public handleSubmit = (e: any) => {
     e.preventDefault();
     const {roomName, playerName} = this.state;
-    const {refresh} = this.props;
 
     if (roomName.length > 1 && playerName.length > 1) {
       window.location.href = `#${roomName}[${playerName}]`;
-      refresh();
+      window.location.reload();
     }
   };
 
