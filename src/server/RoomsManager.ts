@@ -24,6 +24,7 @@ class RoomsManager {
       let room = this.roomManagers.find((r) => r.state.roomName === roomName);
       if (room === undefined) {
         room = new RoomManager(roomName);
+        this.roomManagers.push(room);
       }
 
       room.dispatch(actionRoom);

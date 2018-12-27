@@ -71,11 +71,11 @@ interface IProps {
 
 const InfoPanelComponent = (props: IProps) => {
 
-  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame, refresh} = props;
+  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame} = props;
 
   const onClickHome = () => {
     window.location.href = ``;
-    refresh();
+    // refresh();
   };
 
   return (

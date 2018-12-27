@@ -113,10 +113,10 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
             )}
           </div>
 
-          {playerInRoom &&
+          {playerInRoom && room &&
           <div className={'column pad'}>
             <div className={'pad'}>
-              Current Player in this room:
+              Current Player in {room.roomName}:
             </div>
             <div className={'pad'}>
               {playerInRoom.map((name, i) =>
