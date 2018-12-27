@@ -209,7 +209,8 @@ const reducerMovePiece = (
 
   let newplayers = moveHandler(state.players, move, socketId);
 
-  // check win, end ...
+  // check win, end ...del ligne add wall ..
+
   if (newplayers.some((p) => p.flow.length < 5)) {
     const flowToAdd = Piece.genFlow(20);
 

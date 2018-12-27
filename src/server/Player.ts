@@ -1,4 +1,4 @@
-import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, initPiece} from '../common/grid-piece-handler';
+import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, initPose} from '../common/grid-piece-handler';
 import {IPlayer} from '../common/ITypeRoomManager';
 import {Socket} from 'socket.io';
 
@@ -21,7 +21,7 @@ class Player {
       lost: false,
       isMaster: isMaster,
       flow: [],
-      posPiece: initPiece(),
+      posPiece: initPose(),
     };
   };
 }

@@ -13,7 +13,7 @@ interface IPiece {
   readonly rot: number,
 }
 
-const initPiece = () => {
+const initPose = () => {
   return {
     x: Math.floor(GRID_WIDTH / 2),
     y: 0,
@@ -593,7 +593,6 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
     const grid = player.grid;
 
     const newPose = moveCollision(grid, piecePos, piece1);
-    console.log(piecePos, newPose);
 
     return players.map((p) => {
       if (p.socket.id === socketId) {
@@ -607,20 +606,28 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
     });
   }
 
-  const {pos, piece} = updatePiecePos(player.grid, player.posPiece, player.flow[0], move);
+  const {pos, piece, piecePlaced} = updatePiecePos(player.grid, player.posPiece, player.flow[0], move);
+  const nwFlow = player.flow.map((pi, i) => (i === 0) ? piece : pi);
 
-  let newPlayers = players.map((p) => {
+  return players.map((p) => {
     if (p.socket.id === socketId) {
-      return {
-        ...p,
-        posPiece: pos,
-        flow: p.flow.map((pi, i) => (i === 0) ? piece : pi),
-      };
+      if (piecePlaced) {
+        return {
+          ...p,
+          grid: placePiece(p.grid, nwFlow[0], pos),
+          flow: nwFlow.filter((f, i) => i > 0),
+          posPiece: initPose(),
+        };
+      } else {
+        return {
+          ...p,
+          posPiece: pos,
+          flow: nwFlow,
+        };
+      }
     }
     return p;
   });
-
-  return newPlayers;
 };
 
 export {
@@ -639,6 +646,6 @@ export {
   chooseWallType,
   IPiece,
   IPos,
-  initPiece,
+  initPose,
   moveHandler,
 };
