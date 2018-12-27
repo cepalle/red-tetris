@@ -1,4 +1,5 @@
 import {IPlayerClient} from '@src/common/socketEventClient';
+import {IPlayer} from '@src/common/ITypeRoomManager';
 
 // --- TYPE
 
@@ -431,7 +432,6 @@ const moveRot = (rot: number, move: ENUM_PIECES_MOVE): number => {
   return rot;
 };
 
-// Can block ?
 const moveCollision = (
   grid: ENUM_PIECES[][],
   posPiece: IPos,
@@ -442,14 +442,11 @@ const moveCollision = (
   let collisionType = hasCollision(grid, newPieceDescr, posPiece);
 
   let newPos = posPiece;
-  while (collisionType && collisionType !== ENUM_COLLISION_TYPE.WALL_TOP) {
+  while (collisionType !== undefined && collisionType !== ENUM_COLLISION_TYPE.WALL_TOP) {
     newPos = {
       ...newPos,
-      ...(
-        collisionType === ENUM_COLLISION_TYPE.WALL_LEFT ?
-          {x: newPos.x + 1} :
-          collisionType === ENUM_COLLISION_TYPE.WALL_RIGHT ?
-            {x: newPos.x - 1} :
+      ...(collisionType === ENUM_COLLISION_TYPE.WALL_LEFT ? {x: newPos.x + 1} :
+          collisionType === ENUM_COLLISION_TYPE.WALL_RIGHT ? {x: newPos.x - 1} :
             {y: newPos.y - 1}
       ),
     };
@@ -576,6 +573,56 @@ const gridAddWall = (grid: ENUM_PIECES[][], amount: number): ENUM_PIECES[][] => 
   return newGrid;
 };
 
+const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: string): IPlayer[] => {
+
+  const player = players.find((p) => p.socket.id === socketId);
+  if (player === undefined) {
+    return players;
+  }
+
+  if (move === ENUM_PIECES_MOVE.SWITCH) {
+    if (player.flow.length < 2) {
+      return players;
+    }
+
+    const [frst, scnd, ...rest] = player.flow;
+    const newFlow = [scnd, frst, ...rest];
+
+    const piece1 = newFlow[0];
+    const piecePos = player.posPiece;
+    const grid = player.grid;
+
+    const newPose = moveCollision(grid, piecePos, piece1);
+    console.log(piecePos, newPose);
+
+    return players.map((p) => {
+      if (p.socket.id === socketId) {
+        return {
+          ...p,
+          flow: newFlow,
+          posPiece: newPose,
+        };
+      }
+      return p;
+    });
+  }
+
+  const {pos, piece} = updatePiecePos(player.grid, player.posPiece, player.flow[0], move);
+
+  let newPlayers = players.map((p) => {
+    if (p.socket.id === socketId) {
+      return {
+        ...p,
+        posPiece: pos,
+        flow: p.flow.map((pi, i) => (i === 0) ? piece : pi),
+      };
+    }
+    return p;
+  });
+
+  return newPlayers;
+};
+
 export {
   GRID_HEIGHT,
   GRID_WIDTH,
@@ -593,4 +640,5 @@ export {
   IPiece,
   IPos,
   initPiece,
+  moveHandler,
 };

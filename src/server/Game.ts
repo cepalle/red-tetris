@@ -1,5 +1,5 @@
 import {Socket} from 'socket.io';
-import {ENUM_PIECES_MOVE, updatePiecePos} from '@src/common/grid-piece-handler';
+import {ENUM_PIECES_MOVE, moveHandler} from '@src/common/grid-piece-handler';
 import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {Player} from '@src/server/Player';
@@ -207,33 +207,18 @@ const reducerMovePiece = (
 ): IRoomState => {
   const {move, socketId} = action;
 
-  const player = state.players.find((p) => p.socket.id === socketId);
-  if (player === undefined) {
-    return state;
-  }
+  let newplayers = moveHandler(state.players, move, socketId);
 
-  const {pos, piece} = updatePiecePos(player.grid, player.posPiece, player.flow[0], move);
-
-  let players = state.players.map((p) => {
-    if (p.socket.id === socketId) {
-      return {
-        ...p,
-        posPiece: pos,
-        flow: p.flow.map((pi, i) => (i === 0) ? piece : pi),
-      };
-    }
-    return p;
-  });
-
-  if (state.players.some((p) => p.flow.length < 5)) {
+  // check win, end ...
+  if (newplayers.some((p) => p.flow.length < 5)) {
     const flowToAdd = Piece.genFlow(20);
 
-    players = state.players.map((p) => ({...p, flow: [...p.flow, ...flowToAdd]}));
+    newplayers = state.players.map((p) => ({...p, flow: [...p.flow, ...flowToAdd]}));
   }
 
   return {
     ...state,
-    players: players,
+    players: newplayers,
   };
 };
 
