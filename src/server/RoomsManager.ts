@@ -15,8 +15,12 @@ class RoomsManager {
     this.roomManagers = [];
   }
 
-  // middelware ? clean room empty ?
-  public dispatch(action: IActionRooms): void {
+  public dispatch = (action: IActionRooms): void => {
+    this.dispatchMain(action);
+    this.roomManagers = this.roomManagers.filter((r) => r.state.players.length > 0);
+  };
+
+  private dispatchMain = (action: IActionRooms): void => {
 
     const {roomName, socketId, actionRoom} = action;
 
@@ -40,7 +44,7 @@ class RoomsManager {
       return;
     }
 
-  }
+  };
 
 }
 
