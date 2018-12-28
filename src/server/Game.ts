@@ -3,7 +3,7 @@ import {
   ENUM_PIECES,
   ENUM_PIECES_MOVE,
   GRID_HEIGHT,
-  GRID_WIDTH,
+  gridInit,
   initPose,
   moveHandler,
 } from '@src/common/grid-piece-handler';
@@ -67,7 +67,7 @@ const reducerAddPlayer = (
   */
 
   const isMaster = state.players.length === 0;
-  const player = Player.factPlayer(playerName, socket, isMaster);
+  const player = Player.factPlayer(playerName, socket, isMaster, GRID_HEIGHT);
 
   return {
     ...state,
@@ -178,9 +178,8 @@ const reducerStartGame = (
 ): IRoomState => {
   // TODO set interval, use option Game
   const flow = Piece.genFlow(20);
-  const grid = Array(GRID_HEIGHT).fill(0).map(() =>
-    Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
-  );
+
+  const gridHeight = state.optionGame.groundResizer ? GRID_HEIGHT + state.players.length * 2 : GRID_HEIGHT;
 
   return {
     ...state,
@@ -195,7 +194,7 @@ const reducerStartGame = (
       score: 0,
       nbLineCompleted: 0,
       posPiece: initPose(),
-      grid: grid,
+      grid: gridInit(gridHeight),
     })),
   };
 };
@@ -224,7 +223,7 @@ const reducerMovePiece = (
 ): IRoomState => {
   const {move, socketId} = action;
 
-  let newplayers = moveHandler(state.players, move, socketId);
+  let newplayers = moveHandler(state.players, move, socketId, state.optionGame);
 
   // update player lost
   newplayers = newplayers.map((p) => {

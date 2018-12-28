@@ -1,5 +1,5 @@
 import {IPlayerClient} from '@src/common/socketEventClient';
-import {IPlayer} from '@src/common/ITypeRoomManager';
+import {IOptionGame, IPlayer} from '@src/common/ITypeRoomManager';
 
 // --- TYPE
 
@@ -587,7 +587,12 @@ const calScore = (nbLine: number) => {
   return 500;
 };
 
-const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: string): IPlayer[] => {
+const moveHandler = (
+  players: IPlayer[],
+  move: ENUM_PIECES_MOVE,
+  socketId: string,
+  optionGame: IOptionGame,
+): IPlayer[] => {
 
   const player = players.find((p) => p.socket.id === socketId);
   if (player === undefined) {
@@ -662,7 +667,7 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
         grid: grid,
       };
     } else {
-      const newGrid = gridAddWall(p.grid, nbLineToAdd, posX);
+      const newGrid = (optionGame.addWallLine) ? gridAddWall(p.grid, nbLineToAdd, posX) : p.grid;
       return {
         ...p,
         grid: newGrid,
@@ -671,6 +676,12 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
     }
   });
 
+};
+
+const gridInit = (gridHeight: number): ENUM_PIECES[][] => {
+  return Array(gridHeight).fill(0).map(() =>
+    Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
+  );
 };
 
 export {
@@ -691,4 +702,5 @@ export {
   IPos,
   initPose,
   moveHandler,
+  gridInit,
 };

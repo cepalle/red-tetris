@@ -1,19 +1,16 @@
-import {ENUM_PIECES, GRID_HEIGHT, GRID_WIDTH, initPose} from '../common/grid-piece-handler';
+import {gridInit, initPose} from '../common/grid-piece-handler';
 import {IPlayer} from '../common/ITypeRoomManager';
 import {Socket} from 'socket.io';
 
 class Player {
 
-  static factPlayer = (playerName: string, socket: Socket, isMaster: boolean): IPlayer => {
-    const grid = Array(GRID_HEIGHT).fill(0).map(() =>
-      Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
-    );
+  static factPlayer = (playerName: string, socket: Socket, isMaster: boolean, gridHeight: number): IPlayer => {
 
     return {
       playerName: playerName,
       socket: socket,
       isSpectator: true,
-      grid: grid,
+      grid: gridInit(gridHeight),
       score: 0,
       nbLineCompleted: 0,
       playing: false,
