@@ -531,13 +531,13 @@ const updatePiecePos = (
   return {piecePlaced: false, pos: posPiece, piece};
 };
 
-const gridDelLine = (grid: ENUM_PIECES[][]): { grid: ENUM_PIECES[][]; nbLineToSend: number } => {
+const gridDelLine = (grid: ENUM_PIECES[][]): { grid: ENUM_PIECES[][]; nbLineToAdd: number } => {
 
   let nbToSend = 0;
 
   let newGrid = grid.map((line, y) => {
     const asEmpty = line.some((el) => el === ENUM_PIECES.empty);
-    const asWall = line.some((el) => el === ENUM_PIECES.wall);
+    const asWall = line.some((el) => el === ENUM_PIECES.wall_malus);
 
     if (!asEmpty) {
       if (!asWall) {
@@ -554,13 +554,11 @@ const gridDelLine = (grid: ENUM_PIECES[][]): { grid: ENUM_PIECES[][]; nbLineToSe
 
   return {
     grid: newGrid,
-    nbLineToSend: nbToSend,
+    nbLineToAdd: nbToSend,
   };
 };
 
-const gridAddWall = (grid: ENUM_PIECES[][], amount: number): ENUM_PIECES[][] => {
-  const posX = Math.floor(Math.random() * GRID_WIDTH);
-
+const gridAddWall = (grid: ENUM_PIECES[][], amount: number, posX: number): ENUM_PIECES[][] => {
   const toAdd = Array(GRID_WIDTH).fill(ENUM_PIECES.wall_malus);
   toAdd[posX] = ENUM_PIECES.empty;
 
@@ -590,9 +588,9 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
 
     const piece1 = newFlow[0];
     const piecePos = player.posPiece;
-    const grid = player.grid;
+    const gridP = player.grid;
 
-    const newPose = moveCollision(grid, piecePos, piece1);
+    const newPose = moveCollision(gridP, piecePos, piece1);
 
     return players.map((p) => {
       if (p.socket.id === socketId) {
@@ -609,25 +607,46 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
   const {pos, piece, piecePlaced} = updatePiecePos(player.grid, player.posPiece, player.flow[0], move);
   const nwFlow = player.flow.map((pi, i) => (i === 0) ? piece : pi);
 
-  return players.map((p) => {
-    if (p.socket.id === socketId) {
-      if (piecePlaced) {
-        return {
-          ...p,
-          grid: placePiece(p.grid, nwFlow[0], pos),
-          flow: nwFlow.filter((f, i) => i > 0),
-          posPiece: initPose(),
-        };
-      } else {
+  if (!piecePlaced) {
+    return players.map((p) => {
+      if (p.socket.id === socketId) {
         return {
           ...p,
           posPiece: pos,
           flow: nwFlow,
         };
       }
+      return p;
+    });
+  }
+
+  const newPlayer = {
+    ...player,
+    grid: placePiece(player.grid, nwFlow[0], pos),
+    flow: nwFlow.filter((f, i) => i > 0),
+    posPiece: initPose(),
+  };
+
+  const {grid, nbLineToAdd} = gridDelLine(newPlayer.grid);
+
+  const posX = Math.floor(Math.random() * GRID_WIDTH);
+
+  return players.map((p) => {
+    if (p.socket.id === socketId) {
+      return {
+        ...newPlayer,
+        grid: grid,
+      };
+    } else {
+      const newGrid = gridAddWall(p.grid, nbLineToAdd, posX);
+      return {
+        ...p,
+        grid: newGrid,
+        posPiece: moveCollision(newGrid, p.posPiece, p.flow[0]),
+      };
     }
-    return p;
   });
+
 };
 
 export {
