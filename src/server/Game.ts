@@ -1,5 +1,12 @@
 import {Socket} from 'socket.io';
-import {ENUM_PIECES_MOVE, moveHandler} from '@src/common/grid-piece-handler';
+import {
+  ENUM_PIECES,
+  ENUM_PIECES_MOVE,
+  GRID_HEIGHT,
+  GRID_WIDTH,
+  initPose,
+  moveHandler,
+} from '@src/common/grid-piece-handler';
 import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {Player} from '@src/server/Player';
@@ -170,6 +177,9 @@ const reducerStartGame = (
 ): IRoomState => {
   // TODO set interval, use option Game
   const flow = Piece.genFlow(20);
+  const grid = Array(GRID_HEIGHT).fill(0).map(() =>
+    Array(GRID_WIDTH).fill(ENUM_PIECES.empty),
+  );
 
   return {
     ...state,
@@ -179,6 +189,12 @@ const reducerStartGame = (
       playing: true,
       isSpectator: false,
       flow: flow,
+      win: false,
+      lost: false,
+      score: 0,
+      nbLineCompleted: 0,
+      posPiece: initPose(),
+      grid: grid,
     })),
   };
 };
@@ -209,7 +225,29 @@ const reducerMovePiece = (
 
   let newplayers = moveHandler(state.players, move, socketId);
 
-  // check win, end ...del ligne add wall ..
+  newplayers = newplayers.map((p) => {
+    if (p.grid[3].some((pi) => pi !== ENUM_PIECES.empty)) {
+      return {
+        ...p,
+        lost: true,
+        playing: false,
+      };
+    }
+    return p;
+  });
+
+  if (newplayers.filter((p) => p.playing).length === 1) {
+    newplayers = newplayers.map((p) => {
+      if (p.playing) {
+        return {
+          ...p,
+          playing: false,
+          win: true,
+        };
+      }
+      return p;
+    });
+  }
 
   if (newplayers.some((p) => p.flow.length < 5)) {
     const flowToAdd = Piece.genFlow(20);
@@ -220,6 +258,7 @@ const reducerMovePiece = (
   return {
     ...state,
     players: newplayers,
+    playing: newplayers.some((p) => p.playing),
   };
 };
 
