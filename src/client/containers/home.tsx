@@ -12,8 +12,7 @@ const mapStateToProps = (state: IState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
-  return {
-  };
+  return {};
 };
 
 interface IProps {
@@ -35,7 +34,7 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
     e.preventDefault();
     const {roomName, playerName} = this.state;
 
-    if (roomName.length > 1 && playerName.length > 1) {
+    if (this.checkRoomPlayerName(roomName, playerName)) {
       window.location.href = `#${roomName}[${playerName}]`;
       window.location.reload();
     }
@@ -61,9 +60,30 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
     });
   };
 
+  public checkRoomPlayerName = (roomName: string, playerName: string): boolean => {
+    if (roomName.length < 3 || playerName.length < 3) {
+      return false;
+    }
+    const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+    for (let i = 0; i < roomName.length; i++) {
+      if (!letters.includes(roomName[i])) {
+        return false;
+      }
+    }
+
+    for (let i = 0; i < playerName.length; i++) {
+      if (!letters.includes(playerName[i])) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   public render(): React.ReactNode {
 
-    const {handleChangePlayer, handleChangeRoom, handleSubmit, setRoomName} = this;
+    const {handleChangePlayer, handleChangeRoom, handleSubmit, setRoomName, checkRoomPlayerName} = this;
     const {roomsPlayersName} = this.props;
     const {roomName, playerName} = this.state;
 
@@ -91,6 +111,12 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
             </label>
             <input type="submit" value="Join"/>
           </form>
+
+          {!checkRoomPlayerName(roomName, playerName) &&
+          <div className={'column pad font_red'}>
+            Player and Room name must have minimum <br/>three characters, letter or number.
+          </div>
+          }
 
           <div className={'column pad'}>
             <div className={'pad'}>
