@@ -1,4 +1,4 @@
-## Overview (switch in TypeScript in progress)
+## Overview
 
 Full Stack TypeScript Multiplayer Tetris Game build with Node, socket.io, React and Redux.
 
