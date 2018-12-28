@@ -13,6 +13,7 @@ import {Player} from '@src/server/Player';
 import {ENUM_SOCKET_EVENT_CLIENT, IEventClientSetRoomState} from '@src/common/socketEventClient';
 import {Piece} from '@src/server/Piece';
 import Timeout = NodeJS.Timeout;
+import {updateWin} from '@src/server/updateWin';
 
 // -- ACTION
 
@@ -108,21 +109,7 @@ const reducerDelPlayer = (
       players = [{...frst, isMaster: true}, ...rest];
     }
 
-    if (players.length > 1) {
-      if (players.filter((p) => p.playing).length === 1) {
-        players = players.map((p) => {
-          if (p.playing) {
-            return {
-              ...p,
-              playing: false,
-              win: true,
-            };
-          }
-          return p;
-        });
-      }
-    }
-
+    players = updateWin(players);
   }
 
   return {
@@ -238,18 +225,7 @@ const reducerMovePiece = (
   });
 
   // update player win
-  if (newplayers.filter((p) => p.playing).length === 1) {
-    newplayers = newplayers.map((p) => {
-      if (p.playing) {
-        return {
-          ...p,
-          playing: false,
-          win: true,
-        };
-      }
-      return p;
-    });
-  }
+  newplayers = updateWin(newplayers);
 
   // add flow if need
   if (newplayers.some((p) => p.flow.length < 5)) {
