@@ -12,6 +12,7 @@ import {BehaviorSubject, Subscription} from 'rxjs';
 import {Player} from '@src/server/Player';
 import {ENUM_SOCKET_EVENT_CLIENT, IEventClientSetRoomState} from '@src/common/socketEventClient';
 import {Piece} from '@src/server/Piece';
+import Timeout = NodeJS.Timeout;
 
 // -- ACTION
 
@@ -299,6 +300,7 @@ class Game {
   state: IRoomState;
   stateSub: BehaviorSubject<IRoomState>;
   sub: Subscription;
+  intervalDownPiece: Timeout;
 
   constructor(roomName: string) {
     const sendSetRoomState = (socket: Socket, arg: IEventClientSetRoomState) => {
@@ -330,6 +332,13 @@ class Game {
         sendSetRoomState(p.socket, ToSend);
       });
     });
+    this.intervalDownPiece = setInterval(() => {
+      this.state.players.forEach((p) => {
+        if (p.playing) {
+          this.dispatch(MOVE_PIECE(p.socket.id, ENUM_PIECES_MOVE.DOWN));
+        }
+      });
+    }, 500);
   }
 
   public dispatch(action: ActionRoom): void {
@@ -351,6 +360,7 @@ class Game {
 
   public unsubscribe(): void {
     this.sub.unsubscribe();
+    clearInterval(this.intervalDownPiece);
   }
 
 }
