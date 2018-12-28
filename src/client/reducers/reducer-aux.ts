@@ -1,5 +1,5 @@
 import {ENUM_ROUTE, IState} from '@src/client/reducers/reducer';
-import {IOnSetRoomesPlayersName, IOnSetRoomeState, IRefresh} from '@src/client/actions/action-creators';
+import {IOnSetError, IOnSetRoomesPlayersName, IOnSetRoomeState, IRefresh} from '@src/client/actions/action-creators';
 import {urlGetRoomPlayerName} from '@src/client/util/url-handler';
 
 const reducerOnSetRoomState = (state: IState, action: IOnSetRoomeState): IState => {
@@ -13,6 +13,14 @@ const reducerOnSetRoomsPlayersName = (state: IState, action: IOnSetRoomesPlayers
   return {
     ...state,
     roomsPlayersName: action.arg.roomsPlayersName,
+  };
+};
+
+const reducerOnSetError = (state: IState, action: IOnSetError): IState => {
+  return {
+    ...state,
+    route: ENUM_ROUTE.HOME,
+    errorMsg: action.arg.msg,
   };
 };
 
@@ -38,4 +46,5 @@ export {
   reducerOnSetRoomState,
   reducerOnSetRoomsPlayersName,
   reducerRefresh,
+  reducerOnSetError,
 };

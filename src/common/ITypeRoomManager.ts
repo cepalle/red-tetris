@@ -2,18 +2,18 @@ import {ENUM_PIECES, IPiece, IPos} from '@src/common/grid-piece-handler';
 import {Socket} from 'socket.io';
 
 interface IPlayer {
-  playerName: string;
-  socket: Socket;
-  isSpectator: boolean;
-  grid: ENUM_PIECES[][];
-  score: number;
-  nbLineCompleted: number;
-  playing: boolean;
-  win: boolean;
-  lost: boolean;
-  flow: IPiece[];
-  posPiece: IPos;
-  isMaster: boolean;
+  readonly playerName: string;
+  readonly socket: Socket;
+  readonly isSpectator: boolean;
+  readonly grid: ENUM_PIECES[][];
+  readonly score: number;
+  readonly nbLineCompleted: number;
+  readonly playing: boolean;
+  readonly win: boolean;
+  readonly lost: boolean;
+  readonly flow: IPiece[];
+  readonly posPiece: IPos;
+  readonly isMaster: boolean;
 }
 
 interface IOptionGame {
@@ -22,10 +22,10 @@ interface IOptionGame {
 }
 
 interface IRoomState {
-  roomName: string;
-  playing: boolean;
-  players: IPlayer[];
-  optionGame: IOptionGame;
+  readonly roomName: string;
+  readonly playing: boolean;
+  readonly players: IPlayer[];
+  readonly optionGame: IOptionGame;
 }
 
 export {

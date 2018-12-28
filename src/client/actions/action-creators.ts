@@ -1,10 +1,15 @@
-import {IEventClientSetRoomsPlayersName, IEventClientSetRoomState} from '@src/common/socketEventClient';
+import {
+  IEventClientSetError,
+  IEventClientSetRoomsPlayersName,
+  IEventClientSetRoomState,
+} from '@src/common/socketEventClient';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 import {IOptionGame} from '@src/common/ITypeRoomManager';
 
 enum EnumAction {
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
+  ON_SET_ERROR,
   SEND_START_GAME,
   SEND_UPDATE_OPTION_GAME,
   SEND_MOVE_PIECE,
@@ -15,6 +20,20 @@ enum EnumAction {
 interface IAction {
   readonly type: EnumAction
 }
+
+// ON_SET_ERROR
+
+interface IOnSetError extends IAction {
+  readonly type: EnumAction.ON_SET_ERROR
+  readonly arg: IEventClientSetError
+}
+
+const ON_SET_ERROR = (arg: IEventClientSetError): IOnSetError => {
+  return {
+    type: EnumAction.ON_SET_ERROR,
+    arg: arg,
+  };
+};
 
 // ON_SET_ROOM_STATE
 
@@ -116,7 +135,8 @@ type ReduxAction = IOnSetRoomeState
   | ISendStartGame
   | ISendUpdateOptionGame
   | ISendRoomPlayerName
-  | IRefresh;
+  | IRefresh
+  | IOnSetError;
 
 export {
   EnumAction,
@@ -135,4 +155,6 @@ export {
   SEND_ROOM_PLAYER_NAME,
   IRefresh,
   REFRESH,
+  IOnSetError,
+  ON_SET_ERROR,
 };

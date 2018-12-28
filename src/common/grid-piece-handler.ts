@@ -50,14 +50,14 @@ enum ENUM_PIECES {
 // --- PIECE
 
 interface IPieceInfo {
-  x: number,
-  y: number,
-  width: number
+  readonly x: number,
+  readonly y: number,
+  readonly width: number
 }
 
 interface IPiecesDescr {
-  info: IPieceInfo,
-  piece: ENUM_PIECES[][],
+  readonly info: IPieceInfo,
+  readonly piece: ENUM_PIECES[][],
 }
 
 const PIECES_DESCR: IPiecesDescr[][] = [

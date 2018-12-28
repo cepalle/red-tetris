@@ -1,8 +1,23 @@
-import {ENUM_SOCKET_EVENT_CLIENT, IEventClientSetRoomsPlayersName, IEventClientSetRoomState} from '@src/common/socketEventClient';
+import {
+  ENUM_SOCKET_EVENT_CLIENT,
+  IEventClientSetError,
+  IEventClientSetRoomsPlayersName,
+  IEventClientSetRoomState,
+} from '@src/common/socketEventClient';
 import {Dispatch, Store} from 'redux';
-import {ON_SET_ROOM_STATE, ON_SET_ROOMS_PLAYERS_NAME, ReduxAction, REFRESH} from '@src/client/actions/action-creators';
+import {
+  ON_SET_ERROR,
+  ON_SET_ROOM_STATE,
+  ON_SET_ROOMS_PLAYERS_NAME,
+  ReduxAction,
+  REFRESH,
+} from '@src/client/actions/action-creators';
 import {ENUM_ROUTE, IState} from '@src/client/reducers/reducer';
-import {ENUM_SOCKET_EVENT_SERVER, IEventServerSubRoomsPlayersName, IEventServerSubRoomState} from '@src/common/socketEventServer';
+import {
+  ENUM_SOCKET_EVENT_SERVER,
+  IEventServerSubRoomsPlayersName,
+  IEventServerSubRoomState,
+} from '@src/common/socketEventServer';
 
 // ON
 
@@ -24,6 +39,16 @@ const cbSetRoomsPlayersName = (
   console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
 
   dispatch(ON_SET_ROOMS_PLAYERS_NAME(arg));
+};
+
+const cbSetError = (
+  dispatch: Dispatch<ReduxAction>,
+) => (
+  arg: IEventClientSetError,
+) => {
+  console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
+
+  dispatch(ON_SET_ERROR(arg));
 };
 
 const cbOnConnection = (
@@ -64,6 +89,7 @@ const onAll = (store: Store<IState>) => () => {
 
   socket.on(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, cbSetRoomState(dispatch));
   socket.on(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, cbSetRoomsPlayersName(dispatch));
+  socket.on(ENUM_SOCKET_EVENT_CLIENT.SET_ERROR, cbSetError(dispatch));
 };
 
 export {

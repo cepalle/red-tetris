@@ -8,6 +8,8 @@ import {ReduxAction} from '@src/client/actions/action-creators';
 const mapStateToProps = (state: IState) => {
   return {
     roomsPlayersName: state.roomsPlayersName,
+    playerName: state.playerName,
+    roomName: state.roomName,
   };
 };
 
@@ -17,27 +19,29 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
 
 interface IProps {
   roomsPlayersName: IRoomPlayersName[],
+  playerName: string | undefined,
+  roomName: string | undefined,
 }
 
 interface IStateComponent {
-  roomName: string,
-  playerName: string,
+  roomNameInput: string,
+  playerNameInput: string,
 }
 
 class HomeComponent extends React.Component<IProps, IStateComponent> {
   public readonly state: IStateComponent = {
-    roomName: '',
-    playerName: '',
+    roomNameInput: this.props.roomName === undefined ? '' : this.props.roomName,
+    playerNameInput: this.props.playerName === undefined ? '' : this.props.playerName,
   };
 
   public handleSubmit = (e: any) => {
     e.preventDefault();
-    const {roomName, playerName} = this.state;
+    const {roomNameInput, playerNameInput} = this.state;
     const {roomsPlayersName} = this.props;
 
-    if (this.checkRoomPlayerName(roomName, playerName) &&
-      this.checkRoomPlayerNameExiste(roomName, playerName, roomsPlayersName)) {
-      window.location.href = `#${roomName}[${playerName}]`;
+    if (this.checkRoomPlayerName(roomNameInput, playerNameInput) &&
+      this.checkRoomPlayerNameExiste(roomNameInput, playerNameInput, roomsPlayersName)) {
+      window.location.href = `#${roomNameInput}[${playerNameInput}]`;
       window.location.reload();
     }
   };
@@ -45,20 +49,20 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
   public handleChangeRoom = (e: any) => {
     e.preventDefault();
     this.setState({
-      roomName: e.target.value,
+      roomNameInput: e.target.value,
     });
   };
 
   public setRoomName = (roomName: string) => {
     this.setState({
-      roomName: roomName,
+      roomNameInput: roomName,
     });
   };
 
   public handleChangePlayer = (e: any) => {
     e.preventDefault();
     this.setState({
-      playerName: e.target.value,
+      playerNameInput: e.target.value,
     });
   };
 
@@ -110,9 +114,9 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
       handleSubmit, setRoomName, checkRoomPlayerName, checkRoomPlayerNameExiste,
     } = this;
     const {roomsPlayersName} = this.props;
-    const {roomName, playerName} = this.state;
+    const {roomNameInput, playerNameInput} = this.state;
 
-    const room = roomsPlayersName.find(e => e.roomName === roomName);
+    const room = roomsPlayersName.find(e => e.roomName === roomNameInput);
     const playerInRoom = (room) ? room.playerNames : undefined;
 
     return (
@@ -124,26 +128,26 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
           <form onSubmit={(e) => handleSubmit(e)} className={'pad'}>
             <label>
               #<input type="text"
-                      value={roomName}
+                      value={roomNameInput}
                       onChange={(e) => handleChangeRoom(e)}
                       placeholder={'Choose or create room'}/>
             </label>
             <label>
               [<input type="text"
-                      value={playerName}
+                      value={playerNameInput}
                       onChange={(e) => handleChangePlayer(e)}
                       placeholder={'Your Name'}/>]
             </label>
             <input type="submit" value="Join"/>
           </form>
 
-          {!checkRoomPlayerName(roomName, playerName) &&
+          {!checkRoomPlayerName(roomNameInput, playerNameInput) &&
           <div className={'column pad font_red'}>
             Player and Room name must have minimum <br/>three characters, letter or number.
           </div>
           }
 
-          {!checkRoomPlayerNameExiste(roomName, playerName, roomsPlayersName) &&
+          {!checkRoomPlayerNameExiste(roomNameInput, playerNameInput, roomsPlayersName) &&
           <div className={'column pad font_red'}>
             A player has already this name in this room.
           </div>

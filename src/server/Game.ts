@@ -10,10 +10,15 @@ import {
 import {IOptionGame, IRoomState} from '@src/common/ITypeRoomManager';
 import {BehaviorSubject, Subscription} from 'rxjs';
 import {Player} from '@src/server/Player';
-import {ENUM_SOCKET_EVENT_CLIENT, IEventClientSetRoomState} from '@src/common/socketEventClient';
+import {
+  ENUM_SOCKET_EVENT_CLIENT,
+  EnumError,
+  IEventClientSetError,
+  IEventClientSetRoomState,
+} from '@src/common/socketEventClient';
 import {Piece} from '@src/server/Piece';
-import Timeout = NodeJS.Timeout;
 import {updateWin} from '@src/server/updateWin';
+import Timeout = NodeJS.Timeout;
 
 // -- ACTION
 
@@ -26,16 +31,16 @@ enum EnumActionRoomStore {
 }
 
 interface IActionRoom {
-  type: EnumActionRoomStore;
+  readonly type: EnumActionRoomStore;
 }
 
 // ADD_PLAYER
 
 interface IActionRoomAddPlayer extends IActionRoom {
-  type: EnumActionRoomStore.ADD_PLAYER;
+  readonly type: EnumActionRoomStore.ADD_PLAYER;
 
-  playerName: string;
-  socket: Socket;
+  readonly playerName: string;
+  readonly socket: Socket;
 }
 
 const ADD_PLAYER = (playerName: string, socket: Socket): IActionRoomAddPlayer => {
@@ -53,19 +58,16 @@ const reducerAddPlayer = (
 
   const {playerName, socket} = action;
 
-  /*
   const hasPlayerName = state.players.some((p) => p.playerName === playerName);
   if (hasPlayerName) {
-    // TODO emit error
-    return state;
-  }
+    const toSend: IEventClientSetError = {
+      error_type: EnumError.PLAYER_SAME_NAME,
+      msg: 'A player has already this name in this room',
+    };
 
-  const hasSocket = state.players.some((p) => p.socket.id === socket.id);
-  if (hasSocket) {
-    // TODO
+    socket.emit(ENUM_SOCKET_EVENT_CLIENT.SET_ERROR, toSend);
     return state;
   }
-  */
 
   const isMaster = state.players.length === 0;
   const player = Player.factPlayer(playerName, socket, isMaster, GRID_HEIGHT);
@@ -82,9 +84,9 @@ const reducerAddPlayer = (
 // DEL_PLAYER
 
 interface IActionRoomDelPlayer extends IActionRoom {
-  type: EnumActionRoomStore.DEL_PLAYER;
+  readonly type: EnumActionRoomStore.DEL_PLAYER;
 
-  socketId: string;
+  readonly socketId: string;
 }
 
 const DEL_PLAYER = (socketId: string): IActionRoomDelPlayer => {
@@ -122,9 +124,9 @@ const reducerDelPlayer = (
 // UPDATE_OPTION_GAME
 
 interface IActionUpdateOptionGame extends IActionRoom {
-  type: EnumActionRoomStore.UPDATE_OPTION_GAME;
+  readonly type: EnumActionRoomStore.UPDATE_OPTION_GAME;
 
-  optionGame: IOptionGame;
+  readonly optionGame: IOptionGame;
 }
 
 const UPDATE_OPTION_GAME = (optionGame: IOptionGame): IActionUpdateOptionGame => {
@@ -150,7 +152,7 @@ const reducerUpdateOptionGame = (
 // START_GAME
 
 interface IActionStartGame extends IActionRoom {
-  type: EnumActionRoomStore.START_GAME;
+  readonly type: EnumActionRoomStore.START_GAME;
 }
 
 const START_GAME = (): IActionStartGame => {
@@ -189,10 +191,10 @@ const reducerStartGame = (
 // MOVE_PIECE
 
 interface IActionMovePiece extends IActionRoom {
-  type: EnumActionRoomStore.MOVE_PIECE;
+  readonly type: EnumActionRoomStore.MOVE_PIECE;
 
-  socketId: string,
-  move: ENUM_PIECES_MOVE,
+  readonly socketId: string,
+  readonly move: ENUM_PIECES_MOVE,
 }
 
 const MOVE_PIECE = (socketId: string, move: ENUM_PIECES_MOVE): IActionMovePiece => {

@@ -3,38 +3,48 @@ import {IOptionGame} from '@src/common/ITypeRoomManager';
 import {ENUM_PIECES, IPiece, IPos} from '@src/common/grid-piece-handler';
 
 interface IPlayerClient {
-  playerName: string;
-  isSpectator: boolean;
-  grid: ENUM_PIECES[][];
-  score: number;
-  nbLineCompleted: number;
-  playing: boolean;
-  win: boolean;
-  lost: boolean;
-  flow: IPiece[];
-  posPiece: IPos;
-  isMaster: boolean;
+  readonly playerName: string;
+  readonly isSpectator: boolean;
+  readonly grid: ENUM_PIECES[][];
+  readonly score: number;
+  readonly nbLineCompleted: number;
+  readonly playing: boolean;
+  readonly win: boolean;
+  readonly lost: boolean;
+  readonly flow: IPiece[];
+  readonly posPiece: IPos;
+  readonly isMaster: boolean;
 }
 
 interface IRoomStateClient {
-  roomName: string;
-  playing: boolean;
-  players: IPlayerClient[];
-  optionGame: IOptionGame;
+  readonly roomName: string;
+  readonly playing: boolean;
+  readonly players: IPlayerClient[];
+  readonly optionGame: IOptionGame;
 }
 
 interface IEventClientSetRoomState {
-  room: IRoomStateClient
+  readonly room: IRoomStateClient
 }
 
 // SET_ROOMS_PLAYERS_NAME
 interface IRoomPlayersName {
-  roomName: string,
-  playerNames: string[],
+  readonly roomName: string,
+  readonly playerNames: string[],
 }
 
 interface IEventClientSetRoomsPlayersName {
-  roomsPlayersName: IRoomPlayersName[]
+  readonly roomsPlayersName: IRoomPlayersName[]
+}
+
+// SET_ERROR
+enum EnumError {
+  PLAYER_SAME_NAME,
+}
+
+interface IEventClientSetError {
+  readonly error_type: EnumError,
+  readonly msg: string,
 }
 
 // ---
@@ -42,13 +52,16 @@ interface IEventClientSetRoomsPlayersName {
 enum ENUM_SOCKET_EVENT_CLIENT {
   SET_ROOM_STATE = 'SET_ROOM_STATE',
   SET_ROOMS_PLAYERS_NAME = 'SET_ROOMS_PLAYERS_NAME',
+  SET_ERROR = 'SET_ERROR',
 }
 
 export {
   ENUM_SOCKET_EVENT_CLIENT,
+  EnumError,
   IEventClientSetRoomState,
   IEventClientSetRoomsPlayersName,
   IRoomPlayersName,
   IRoomStateClient,
   IPlayerClient,
+  IEventClientSetError,
 };

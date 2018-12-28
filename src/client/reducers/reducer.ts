@@ -2,7 +2,12 @@ import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {urlGetRoomPlayerName} from '@src/client/util/url-handler';
 import * as io from 'socket.io-client';
 import {IRoomPlayersName, IRoomStateClient} from '@src/common/socketEventClient';
-import {reducerOnSetRoomsPlayersName, reducerOnSetRoomState, reducerRefresh} from '@src/client/reducers/reducer-aux';
+import {
+  reducerOnSetError,
+  reducerOnSetRoomsPlayersName,
+  reducerOnSetRoomState,
+  reducerRefresh,
+} from '@src/client/reducers/reducer-aux';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
@@ -20,6 +25,7 @@ interface IState {
 
   readonly roomState: IRoomStateClient | undefined,
   readonly roomsPlayersName: IRoomPlayersName[],
+  readonly errorMsg: string | undefined,
 }
 
 const initApp = (): IState => {
@@ -35,6 +41,7 @@ const initApp = (): IState => {
     route: route,
     roomState: undefined,
     roomsPlayersName: [],
+    errorMsg: undefined,
   };
 };
 
@@ -44,6 +51,8 @@ const reducer = (state = initApp(), action: ReduxAction): IState => {
       return reducerOnSetRoomState(state, action);
     case EnumAction.ON_SET_ROOMS_PLAYERS_NAME:
       return reducerOnSetRoomsPlayersName(state, action);
+    case EnumAction.ON_SET_ERROR:
+      return reducerOnSetError(state, action);
     case EnumAction.REFRESH:
       return reducerRefresh(state, action);
     default:
