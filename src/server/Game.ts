@@ -225,6 +225,7 @@ const reducerMovePiece = (
 
   let newplayers = moveHandler(state.players, move, socketId);
 
+  // update player lost
   newplayers = newplayers.map((p) => {
     if (p.grid[3].some((pi) => pi !== ENUM_PIECES.empty)) {
       return {
@@ -236,6 +237,7 @@ const reducerMovePiece = (
     return p;
   });
 
+  // update player win
   if (newplayers.filter((p) => p.playing).length === 1) {
     newplayers = newplayers.map((p) => {
       if (p.playing) {
@@ -249,6 +251,7 @@ const reducerMovePiece = (
     });
   }
 
+  // add flow if need
   if (newplayers.some((p) => p.flow.length < 5)) {
     const flowToAdd = Piece.genFlow(20);
 

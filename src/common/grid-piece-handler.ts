@@ -645,6 +645,7 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
 
   const {grid, nbLineToAdd} = gridDelLine(newPlayer.grid);
 
+  // update score with line del
   newPlayer = {
     ...newPlayer,
     score: newPlayer.score + calScore(nbLineToAdd),
@@ -653,6 +654,7 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
 
   const posX = Math.floor(Math.random() * GRID_WIDTH);
 
+  // add malus wall
   return players.map((p) => {
     if (p.socket.id === socketId) {
       return {
