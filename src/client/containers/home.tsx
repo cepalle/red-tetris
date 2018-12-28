@@ -33,8 +33,10 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
   public handleSubmit = (e: any) => {
     e.preventDefault();
     const {roomName, playerName} = this.state;
+    const {roomsPlayersName} = this.props;
 
-    if (this.checkRoomPlayerName(roomName, playerName)) {
+    if (this.checkRoomPlayerName(roomName, playerName) &&
+      this.checkRoomPlayerNameExiste(roomName, playerName, roomsPlayersName)) {
       window.location.href = `#${roomName}[${playerName}]`;
       window.location.reload();
     }
@@ -81,9 +83,32 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
     return true;
   };
 
+  public checkRoomPlayerNameExiste = (
+    roomName: string,
+    playerName: string,
+    roomsPlayersName: IRoomPlayersName[],
+  ): boolean => {
+
+    for (let i = 0; i < roomsPlayersName.length; i++) {
+      if (roomsPlayersName[i].roomName !== roomName) {
+        continue;
+      }
+      for (let j = 0; j < roomsPlayersName[i].playerNames.length; j++) {
+        if (roomsPlayersName[i].playerNames[j] === playerName) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
   public render(): React.ReactNode {
 
-    const {handleChangePlayer, handleChangeRoom, handleSubmit, setRoomName, checkRoomPlayerName} = this;
+    const {
+      handleChangePlayer, handleChangeRoom,
+      handleSubmit, setRoomName, checkRoomPlayerName, checkRoomPlayerNameExiste,
+    } = this;
     const {roomsPlayersName} = this.props;
     const {roomName, playerName} = this.state;
 
@@ -115,6 +140,12 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
           {!checkRoomPlayerName(roomName, playerName) &&
           <div className={'column pad font_red'}>
             Player and Room name must have minimum <br/>three characters, letter or number.
+          </div>
+          }
+
+          {!checkRoomPlayerNameExiste(roomName, playerName, roomsPlayersName) &&
+          <div className={'column pad font_red'}>
+            A player has already this name in this room.
           </div>
           }
 
