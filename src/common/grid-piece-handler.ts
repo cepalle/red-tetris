@@ -571,6 +571,22 @@ const gridAddWall = (grid: ENUM_PIECES[][], amount: number, posX: number): ENUM_
   return newGrid;
 };
 
+const calScore = (nbLine: number) => {
+  if (nbLine <= 0) {
+    return 0;
+  }
+  if (nbLine === 1) {
+    return 40;
+  }
+  if (nbLine === 2) {
+    return 100;
+  }
+  if (nbLine === 3) {
+    return 200;
+  }
+  return 500;
+};
+
 const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: string): IPlayer[] => {
 
   const player = players.find((p) => p.socket.id === socketId);
@@ -620,7 +636,7 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
     });
   }
 
-  const newPlayer = {
+  let newPlayer = {
     ...player,
     grid: placePiece(player.grid, nwFlow[0], pos),
     flow: nwFlow.filter((f, i) => i > 0),
@@ -628,6 +644,12 @@ const moveHandler = (players: IPlayer[], move: ENUM_PIECES_MOVE, socketId: strin
   };
 
   const {grid, nbLineToAdd} = gridDelLine(newPlayer.grid);
+
+  newPlayer = {
+    ...newPlayer,
+    score: newPlayer.score + calScore(nbLineToAdd),
+    nbLineCompleted: newPlayer.nbLineCompleted + nbLineToAdd,
+  };
 
   const posX = Math.floor(Math.random() * GRID_WIDTH);
 
