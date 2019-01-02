@@ -6,18 +6,12 @@ Play it at: https://cepalle.github.io/red-tetris/
 
 ## Run it locally
 
-After:
 ````cmd
  npm install
+ npm run srv-dist
 ````
-run:
-````cmd
- npm run srv-dev
-````
-and:
-````cmd
- npm run client-dev
-````
+
+You can now play in http://localhost:8080:4433
 
 ## Images
 

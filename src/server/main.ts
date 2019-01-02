@@ -99,6 +99,8 @@ class App {
   main(): void {
     const app = express();
 
+    app.use(express.static('build'));
+
     const server = (process.env.NODE_ENV && process.env.NODE_ENV === 'production') ?
       https.createServer(
         {
