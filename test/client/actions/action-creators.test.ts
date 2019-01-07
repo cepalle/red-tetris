@@ -1,8 +1,8 @@
 import {expect} from 'chai';
 import {describe, it} from 'mocha';
-import {GRID_WIDTH, initPose} from '../../src/common/grid-piece-handler';
+import {GRID_WIDTH, initPose} from '../../../src/common/grid-piece-handler';
 
-describe('grid-piece-handler', () => {
+describe('grid-piece-handler.test.ts', () => {
 
   it('initPose', () => {
     const result: { x: number; y: number } = initPose();

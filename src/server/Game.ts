@@ -343,6 +343,7 @@ class Game {
 }
 
 export {
+  EnumActionRoomStore,
   Game,
   ActionRoom,
   ADD_PLAYER,
