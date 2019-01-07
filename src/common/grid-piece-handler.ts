@@ -703,4 +703,5 @@ export {
   initPose,
   moveHandler,
   gridInit,
+  calScore,
 };
