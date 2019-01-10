@@ -11,7 +11,7 @@ describe('GameManager.test.ts', () => {
     id: '123',
   };
 
-  it('', () => {
+  it('GamesManager', () => {
     gameManager.dispatch({
       roomName: 'room1',
       actionRoom: ADD_PLAYER('playerName', socket),

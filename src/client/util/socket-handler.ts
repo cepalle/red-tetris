@@ -26,7 +26,7 @@ const cbSetRoomState = (
 ) => (
   arg: IEventClientSetRoomState,
 ) => {
-  console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, arg);
+  // console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, arg);
 
   dispatch(ON_SET_ROOM_STATE(arg));
 };
@@ -36,7 +36,7 @@ const cbSetRoomsPlayersName = (
 ) => (
   arg: IEventClientSetRoomsPlayersName,
 ) => {
-  console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
+  // console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
 
   dispatch(ON_SET_ROOMS_PLAYERS_NAME(arg));
 };
@@ -46,7 +46,7 @@ const cbSetError = (
 ) => (
   arg: IEventClientSetError,
 ) => {
-  console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
+  // console.log(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, arg);
 
   dispatch(ON_SET_ERROR(arg));
 };
@@ -94,4 +94,8 @@ const onAll = (store: Store<IState>) => () => {
 
 export {
   onAll,
+  cbSetRoomState,
+  cbOnConnection,
+  cbSetError,
+  cbSetRoomsPlayersName,
 };
