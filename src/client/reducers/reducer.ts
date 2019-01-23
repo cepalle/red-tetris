@@ -1,12 +1,6 @@
 import {EnumAction, ReduxAction} from '../actions/action-creators';
 import * as io from 'socket.io-client';
 import {IRoomPlayersName, IRoomStateClient} from '@src/common/socketEventClient';
-import {
-  reducerOnSetError,
-  reducerOnSetRoomsPlayersName,
-  reducerOnSetRoomState,
-  reducerRefresh,
-} from '@src/client/reducers/reducer-aux';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
@@ -37,13 +31,28 @@ const initApp = (): IState => {
 const reducer = (state = initApp(), action: ReduxAction): IState => {
   switch (action.type) {
     case EnumAction.ON_SET_ROOM_STATE:
-      return reducerOnSetRoomState(state, action);
+      return {
+        ...state,
+        roomState: action.arg.room,
+      };
     case EnumAction.ON_SET_ROOMS_PLAYERS_NAME:
-      return reducerOnSetRoomsPlayersName(state, action);
+      return {
+        ...state,
+        roomsPlayersName: action.arg.roomsPlayersName,
+      };
     case EnumAction.ON_SET_ERROR:
-      return reducerOnSetError(state, action);
+      return {
+        ...state,
+        errorMsg: action.arg.msg,
+      };
     case EnumAction.REFRESH:
-      return reducerRefresh(state, action);
+      return {...state};
+    case EnumAction.SEND_JOIN_ROOM:
+      return {
+        ...state,
+        playerName: action.playerName,
+        roomName: action.roomName,
+      };
     default:
       return state;
   }

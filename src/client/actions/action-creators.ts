@@ -14,6 +14,10 @@ enum EnumAction {
   SEND_UPDATE_OPTION_GAME,
   SEND_MOVE_PIECE,
   SEND_ROOM_PLAYER_NAME,
+  SEND_JOIN_ROOM,
+  SEND_QUIT_ROOM,
+  SEND_SUB_ROOMS_PLAYERS_NAME,
+  SEND_UN_SUB_ROOMS_PLAYERS_NAME,
   REFRESH,
 }
 
@@ -127,6 +131,60 @@ const REFRESH = (): IRefresh => {
   };
 };
 
+// SEND_JOIN_ROOM
+
+interface ISendJoinRoom {
+  readonly type: EnumAction.SEND_JOIN_ROOM,
+
+  readonly playerName: string,
+  readonly roomName: string,
+}
+
+const SEND_JOIN_ROOM = (playerName: string, roomName: string): ISendJoinRoom => {
+  return {
+    type: EnumAction.SEND_JOIN_ROOM,
+
+    playerName,
+    roomName,
+  };
+};
+
+// SEND_QUIT_ROOM
+
+interface ISendQuitRoom {
+  readonly type: EnumAction.SEND_QUIT_ROOM,
+}
+
+const SEND_QUIT_ROOM = (): ISendQuitRoom => {
+  return {
+    type: EnumAction.SEND_QUIT_ROOM,
+  };
+};
+
+// SEND_SUB_ROOMS_PLAYERS_NAME
+
+interface ISendSubRoomsPlayersName {
+  readonly type: EnumAction.SEND_SUB_ROOMS_PLAYERS_NAME,
+}
+
+const SEND_SUB_ROOMS_PLAYERS_NAME = (): ISendSubRoomsPlayersName => {
+  return {
+    type: EnumAction.SEND_SUB_ROOMS_PLAYERS_NAME,
+  };
+};
+
+// SEND_UN_SUB_ROOMS_PLAYERS_NAME
+
+interface ISendUnSubRoomsPlayersName {
+  readonly type: EnumAction.SEND_UN_SUB_ROOMS_PLAYERS_NAME,
+}
+
+const SEND_UN_SUB_ROOMS_PLAYERS_NAME = (): ISendUnSubRoomsPlayersName => {
+  return {
+    type: EnumAction.SEND_UN_SUB_ROOMS_PLAYERS_NAME,
+  };
+};
+
 type ReduxAction = IOnSetRoomeState
   | IOnSetRoomesPlayersName
   | ISendMovePiece
@@ -134,7 +192,11 @@ type ReduxAction = IOnSetRoomeState
   | ISendUpdateOptionGame
   | ISendRoomPlayerName
   | IRefresh
-  | IOnSetError;
+  | IOnSetError
+  | ISendJoinRoom
+  | ISendQuitRoom
+  | ISendSubRoomsPlayersName
+  | ISendUnSubRoomsPlayersName;
 
 export {
   EnumAction,
@@ -155,4 +217,12 @@ export {
   REFRESH,
   IOnSetError,
   ON_SET_ERROR,
+  ISendJoinRoom,
+  SEND_JOIN_ROOM,
+  ISendQuitRoom,
+  SEND_QUIT_ROOM,
+  ISendSubRoomsPlayersName,
+  SEND_SUB_ROOMS_PLAYERS_NAME,
+  ISendUnSubRoomsPlayersName,
+  SEND_UN_SUB_ROOMS_PLAYERS_NAME,
 };

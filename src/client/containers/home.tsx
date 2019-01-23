@@ -4,6 +4,7 @@ import {IState} from '@src/client/reducers/reducer';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
 import {Dispatch} from 'redux';
 import {ReduxAction} from '@src/client/actions/action-creators';
+import {checkRoomPlayerName} from '@src/client/util/checkRoomPlayerName';
 
 const mapStateToProps = (state: IState) => {
   return {
@@ -35,11 +36,11 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
   };
 
   public componentDidMount() {
-    // TODO use midelware
+    // TODO use midelware SUB
   }
 
   public componentWillUnmount() {
-    // TODO
+    // TODO UN_SUB
   }
 
   public handleSubmit = (e: any) => {
@@ -47,7 +48,7 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
     const {roomNameInput, playerNameInput} = this.state;
     const {roomsPlayersName} = this.props;
 
-    if (this.checkRoomPlayerName(roomNameInput, playerNameInput) &&
+    if (checkRoomPlayerName(roomNameInput, playerNameInput) &&
       this.checkRoomPlayerNameExiste(roomNameInput, playerNameInput, roomsPlayersName)) {
       window.location.href = `#/game?roomName=${roomNameInput}&playerName=${playerNameInput}`;
     }
@@ -71,27 +72,6 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
     this.setState({
       playerNameInput: e.target.value,
     });
-  };
-
-  public checkRoomPlayerName = (roomName: string, playerName: string): boolean => {
-    if (roomName.length < 3 || playerName.length < 3) {
-      return false;
-    }
-    const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-    for (let i = 0; i < roomName.length; i++) {
-      if (!letters.includes(roomName[i])) {
-        return false;
-      }
-    }
-
-    for (let i = 0; i < playerName.length; i++) {
-      if (!letters.includes(playerName[i])) {
-        return false;
-      }
-    }
-
-    return true;
   };
 
   public checkRoomPlayerNameExiste = (
@@ -118,7 +98,7 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
 
     const {
       handleChangePlayer, handleChangeRoom,
-      handleSubmit, setRoomName, checkRoomPlayerName, checkRoomPlayerNameExiste,
+      handleSubmit, setRoomName, checkRoomPlayerNameExiste,
     } = this;
     const {roomsPlayersName} = this.props;
     const {roomNameInput, playerNameInput} = this.state;

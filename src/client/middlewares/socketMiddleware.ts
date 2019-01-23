@@ -77,6 +77,14 @@ const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) =>
         });
       }
       break;
+    case EnumAction.SEND_JOIN_ROOM:
+      break;
+    case EnumAction.SEND_QUIT_ROOM:
+      break;
+    case EnumAction.SEND_SUB_ROOMS_PLAYERS_NAME:
+      break;
+    case EnumAction.SEND_UN_SUB_ROOMS_PLAYERS_NAME:
+      break;
     default:
       break;
   }
