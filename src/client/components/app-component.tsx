@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {TetrisGameComponent} from './tetris-game-component';
+import {TetrisGame} from '../containers/tetris-game';
 import {Home} from '../containers/home';
 import {Redirect, Route, Switch} from 'react-router';
 import {store} from '../middlewares/store';
@@ -18,7 +18,7 @@ const AppComponent = () => (
     <Route render={() => (
       store.getState().socket.connected ?
         <Switch>
-          <Route path="/game" component={TetrisGameComponent}/>
+          <Route path="/game" component={TetrisGame}/>
           <Route path="/home" component={Home}/>
           <Route render={() => <Redirect to="/home"/>}/>
         </Switch> :

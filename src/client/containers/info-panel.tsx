@@ -81,8 +81,7 @@ const InfoPanelComponent = (props: IProps) => {
   const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame, isMaster} = props;
 
   const onClickHome = () => {
-    window.location.href = `#home`;
-    window.location.reload();
+    window.location.href = `#/home`;
   };
 
   return (

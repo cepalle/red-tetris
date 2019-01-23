@@ -8,6 +8,23 @@ import {
 } from '@src/common/socketEventServer';
 import {isPlaying} from '@src/client/reducers/isPlaying';
 
+/*
+const sendSubRoomsPlayersName = (socket: SocketIOClient.Socket, arg: IEventServerSubRoomsPlayersName) => {
+  socket.emit(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, arg);
+};
+
+    const sendSubRoomState = (socket: SocketIOClient.Socket, arg: IEventServerSubRoomState) => {
+      socket.emit(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);
+    };
+
+    if (state.roomName !== undefined && state.playerName !== undefined) {
+      sendSubRoomState(state.socket, {
+        playerName: state.playerName,
+        roomName: state.roomName,
+      });
+    }
+*/
+
 const sendStartGame = (socket: SocketIOClient.Socket, arg: IEventServerStartGame): void => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.START_GAME, arg);
 };

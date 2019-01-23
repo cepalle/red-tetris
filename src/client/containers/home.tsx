@@ -34,6 +34,14 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
     playerNameInput: this.props.playerName === undefined ? '' : this.props.playerName,
   };
 
+  public componentDidMount() {
+    // TODO use midelware
+  }
+
+  public componentWillUnmount() {
+    // TODO
+  }
+
   public handleSubmit = (e: any) => {
     e.preventDefault();
     const {roomNameInput, playerNameInput} = this.state;
@@ -41,8 +49,7 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
 
     if (this.checkRoomPlayerName(roomNameInput, playerNameInput) &&
       this.checkRoomPlayerNameExiste(roomNameInput, playerNameInput, roomsPlayersName)) {
-      window.location.href = `#${roomNameInput}[${playerNameInput}]`;
-      window.location.reload();
+      window.location.href = `#/game?playerName=${roomNameInput}&roomName=${playerNameInput}`;
     }
   };
 

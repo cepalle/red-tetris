@@ -47,31 +47,6 @@ const cbSetError = (
 
 const cbOnConnection = () => {
   window.location.href = `/#/home`;
-
-  /*
-  const state = store.getState();
-
-  if (state.route === ENUM_ROUTE.HOME) {
-    const sendSubRoomsPlayersName = (socket: SocketIOClient.Socket, arg: IEventServerSubRoomsPlayersName) => {
-      socket.emit(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, arg);
-    };
-
-    sendSubRoomsPlayersName(state.socket, {});
-  }
-
-  if (state.route === ENUM_ROUTE.TETRIS_GAME) {
-    const sendSubRoomState = (socket: SocketIOClient.Socket, arg: IEventServerSubRoomState) => {
-      socket.emit(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);
-    };
-
-    if (state.roomName !== undefined && state.playerName !== undefined) {
-      sendSubRoomState(state.socket, {
-        playerName: state.playerName,
-        roomName: state.roomName,
-      });
-    }
-  }
-  */
 };
 
 const onAll = (store: Store<IState>) => () => {
