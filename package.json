@@ -13,7 +13,7 @@
     "test-common": "mocha -r ts-node/register -r tsconfig-paths/register test/common/**/*.test.ts",
     "test-all": "npm run test-client && npm run test-server && npm run test-common",
     "coverage": "nyc npm run test-all",
-    "predeploy": "npm run build",
+    "predeploy": "npm run client-build",
     "deploy": "gh-pages -d build"
   },
   "nyc": {
