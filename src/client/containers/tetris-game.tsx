@@ -6,6 +6,7 @@ import {IState} from '../reducers/reducer';
 import {Dispatch} from 'redux';
 import {ReduxAction} from '../actions/action-creators';
 import {connect} from 'react-redux';
+import {IMatch} from '@src/client/util/IMatch';
 
 const mapStateToProps = (state: IState) => {
   return {};
@@ -16,6 +17,7 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
 };
 
 interface IProps {
+  match: IMatch
 }
 
 interface IStateComponent {
@@ -23,6 +25,9 @@ interface IStateComponent {
 
 class TetrisGameComponent extends React.Component<IProps, IStateComponent> {
   public componentDidMount() {
+    const {params} = this.props.match;
+    const roomName = params.get('roomName');
+    const playerName = params.get('playerName');
     // TODO use midelware
   }
 

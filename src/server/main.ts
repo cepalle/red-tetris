@@ -7,7 +7,7 @@ import {
   ENUM_SOCKET_EVENT_SERVER, IEventServerMovePiece,
   IEventServerSetGameOption,
   IEventServerSubRoomState,
-  IEventServerStartGame, IEventServerSubRoomsPlayersName,
+  IEventServerStartGame, IEventServerSubRoomsPlayersName, IEventServerUnSubRoomState, IEventServerUnSubRoomsPlayersName,
 } from '@src/common/socketEventServer';
 import {GamesManager} from './GamesManager';
 import {ADD_PLAYER, DEL_PLAYER, MOVE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/Game';
@@ -37,6 +37,15 @@ class App {
       });
     });
 
+    socket.on(ENUM_SOCKET_EVENT_SERVER.QUIT_ROOM, (arg: IEventServerUnSubRoomState) => {
+      console.log(ENUM_SOCKET_EVENT_SERVER.QUIT_ROOM, arg);
+
+      this.gamesManager.dispatch({
+        socketId: socket.id,
+        actionRoom: DEL_PLAYER(socket.id),
+      });
+    });
+
     socket.on(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, (arg: IEventServerSubRoomsPlayersName) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.SUB_ROOMS_PLAYERS_NAME, arg);
 
@@ -52,6 +61,12 @@ class App {
           roomsPlayersName: roomsPlayersName,
         });
       });
+    });
+
+    socket.on(ENUM_SOCKET_EVENT_SERVER.UN_SUB_ROOMS_PLAYERS_NAME, (arg: IEventServerUnSubRoomsPlayersName) => {
+      if (subRoomsPlayersNAme !== undefined) {
+        subRoomsPlayersNAme.unsubscribe();
+      }
     });
 
     socket.on(ENUM_SOCKET_EVENT_SERVER.SET_GAME_OPTION, (arg: IEventServerSetGameOption) => {
@@ -88,11 +103,13 @@ class App {
         socketId: socket.id,
         actionRoom: DEL_PLAYER(socket.id),
       });
-      socket.removeAllListeners();
-      socket.disconnect(true);
+
       if (subRoomsPlayersNAme !== undefined) {
         subRoomsPlayersNAme.unsubscribe();
       }
+
+      socket.removeAllListeners();
+      socket.disconnect(true);
     });
   }
 

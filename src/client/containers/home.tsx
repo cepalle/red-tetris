@@ -49,7 +49,7 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
 
     if (this.checkRoomPlayerName(roomNameInput, playerNameInput) &&
       this.checkRoomPlayerNameExiste(roomNameInput, playerNameInput, roomsPlayersName)) {
-      window.location.href = `#/game?playerName=${roomNameInput}&roomName=${playerNameInput}`;
+      window.location.href = `#/game?roomName=${roomNameInput}&playerName=${playerNameInput}`;
     }
   };
 
