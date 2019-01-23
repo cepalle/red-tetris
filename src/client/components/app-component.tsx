@@ -12,23 +12,20 @@ const OffLineComponent = () => (
   </div>
 );
 
-const AppComponent = () => {
-
-  return (
-    <Switch>
-      <Route path="/offline" component={OffLineComponent}/>
-      <Route render={() => (
-        store.getState().socket.connected ?
-          <Switch>
-            <Route path="/game" component={TetrisGameComponent}/>
-            <Route path="/home" component={Home}/>
-            <Route render={() => <Redirect to="/home"/>}/>
-          </Switch> :
-          <Redirect to={'/offline'}/>
-      )
-      }/>
-    </Switch>
-  );
-};
+const AppComponent = () => (
+  <Switch>
+    <Route path="/offline" component={OffLineComponent}/>
+    <Route render={() => (
+      store.getState().socket.connected ?
+        <Switch>
+          <Route path="/game" component={TetrisGameComponent}/>
+          <Route path="/home" component={Home}/>
+          <Route render={() => <Redirect to="/home"/>}/>
+        </Switch> :
+        <Redirect to={'/offline'}/>
+    )
+    }/>
+  </Switch>
+);
 
 export {AppComponent};

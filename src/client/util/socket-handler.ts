@@ -45,9 +45,7 @@ const cbSetError = (
   dispatch(ON_SET_ERROR(arg));
 };
 
-const cbOnConnection = (
-  store: Store<IState>,
-) => () => {
+const cbOnConnection = () => {
   window.location.href = `/#/home`;
 
   /*
@@ -81,7 +79,7 @@ const onAll = (store: Store<IState>) => () => {
   const socket = store.getState().socket;
   const dispatch = store.dispatch;
 
-  socket.on('connect', cbOnConnection(store));
+  socket.on('connect', cbOnConnection);
 
   socket.on(ENUM_SOCKET_EVENT_CLIENT.SET_ROOM_STATE, cbSetRoomState(dispatch));
   socket.on(ENUM_SOCKET_EVENT_CLIENT.SET_ROOMS_PLAYERS_NAME, cbSetRoomsPlayersName(dispatch));
