@@ -45,4 +45,5 @@ socket.on(socketDefs.GENFLOW_RESPONSE, arg => cbGenFlowResponse(arg, store.dispa
 export {
   socketEmit,
   socketIsConnect,
+  socket,
 };

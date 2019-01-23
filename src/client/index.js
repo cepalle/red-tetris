@@ -22,8 +22,9 @@ window.addEventListener('keydown', event =>
       store.dispatch),
   false);
 
-window.setInterval(() =>
-    animateClock(store.dispatch, store.getState().animate),
-  500);
+window.setInterval(() => {
+    animateClock(store.dispatch, store.getState().animate)
+  }, 500,
+);
 
 emitHome(socketEmit);

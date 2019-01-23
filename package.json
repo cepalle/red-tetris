@@ -8,9 +8,10 @@
     "build": "webpack ./src/client/index.js ",
     "srv-dist": "babel src/server --out-dir dist && node dist/server/App.js",
     "srv-dev": "babel-watch -w src src/server/App.js",
-    "test": "mocha -r jsdom-global/register --recursive --require babel-core/register --reporter spec",
+    "test-all": "mocha -r jsdom-global/register --recursive --require babel-core/register --reporter spec",
     "test-server": "mocha --recursive --require babel-core/register --reporter spec \"test/1_server/\"",
-    "coverage": "nyc --include src --all -r text -r lcov -r text --require babel-core/register mocha --recursive -r jsdom-global/register",
+    "test-client": "mocha --recursive --require babel-core/register -r jsdom-global/register --reporter spec \"test/2_client/\"",
+    "coverage": "nyc npm run test-all",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -50,5 +51,5 @@
     "nyc": "^11.9.0",
     "style-loader": "^0.20.3"
   },
-  "homepage": "http://cepalle.github.io/blackpath"
+  "homepage": "http://cepalle.github.io/red-tetris"
 }

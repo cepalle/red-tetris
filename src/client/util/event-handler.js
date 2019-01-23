@@ -56,6 +56,9 @@ const eventHandler = (event, isInGame, dispatch) => {
       event.preventDefault();
       dispatch(movePiece(PIECES_MOVE.SWITCH));
       break;
+
+    default:
+      break;
   }
 };
 

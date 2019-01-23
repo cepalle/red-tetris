@@ -27,24 +27,41 @@ import {
 
 describe('socket test', () => {
   it('socket', () => {
-    emitGenFlow("room");
-    emitPlayerLoose("room101", "player42");
-    emitPlayerCompleteLine("qwefad", "dadas", 10);
-    emitQuitGame("grwse", "dqdsa");
+    emitGenFlow("room", () => {
+    });
+    emitPlayerLoose("room101", "player42", () => {
+    });
+    emitPlayerCompleteLine("qwefad", "dadas", 10, () => {
+    });
+    emitQuitGame("grwse", "dqdsa", () => {
+    });
 
-    cbPacketPlayerJoin({});
-    cbPacketPlayerQuit({});
-    cbPacketPlayerPromoted({});
-    cbPacketPlayerLose({});
+    cbPacketPlayerJoin({}, () => {
+    });
+    cbPacketPlayerQuit({}, () => {
+    });
+    cbPacketPlayerPromoted({}, () => {
+    });
+    cbPacketPlayerLose({}, () => {
+    });
 
-    cbPacketGenFlow({});
-    cbPacketPlayerCompleteLine({});
-    cbPacketTetrisPlacePiece({});
-    cbJoinRoomResponse({});
-    cbQuitRoomResponse({});
-    cbStartPlayingResponse({});
-    cbTetrisPlacePieceResponse({});
-    cbPlayerCompleteLineResponse({});
-    cbGenFlowResponse({});
+    cbPacketGenFlow({}, () => {
+    });
+    cbPacketPlayerCompleteLine({}, () => {
+    });
+    cbPacketTetrisPlacePiece({}, () => {
+    });
+    cbJoinRoomResponse({}, () => {
+    });
+    cbQuitRoomResponse({}, () => {
+    });
+    cbStartPlayingResponse({}, () => {
+    });
+    cbTetrisPlacePieceResponse({}, () => {
+    });
+    cbPlayerCompleteLineResponse({}, () => {
+    });
+    cbGenFlowResponse({}, () => {
+    });
   });
 });

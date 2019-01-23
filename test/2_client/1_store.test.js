@@ -34,7 +34,7 @@ describe('store test', () => {
   it('dispatch eventHandler no Name', () => {
     const event = {
       keyCode: 0,
-      preventDefault: () => undefined,
+      preventDefault: () => {},
     };
     eventHandler(event);
   });
@@ -80,25 +80,25 @@ describe('store test', () => {
   it('dispatch eventHandler with Name', () => {
     const event = {
       keyCode: 0,
-      preventDefault: () => undefined,
+      preventDefault: () => {},
     };
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 13;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 32;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 37;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 38;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 39;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 40;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 83;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
     event.keyCode = 67;
-    eventHandler(event);
+    eventHandler(event, false, () => {});
   });
   it('dispatch move', () => {
     store.dispatch(movePiece(PIECES_MOVE.ROT_LEFT));
