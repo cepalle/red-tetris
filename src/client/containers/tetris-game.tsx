@@ -7,6 +7,7 @@ import {Dispatch} from 'redux';
 import {ReduxAction, SEND_JOIN_ROOM, SEND_QUIT_ROOM} from '../actions/action-creators';
 import {connect} from 'react-redux';
 import {checkRoomPlayerName} from '@src/client/util/checkRoomPlayerName';
+import {eventHandlerWithStore} from '@src/client/middlewares/store';
 
 const mapStateToProps = (state: IState) => {
   return {};
@@ -43,11 +44,25 @@ class TetrisGameComponent extends React.Component<IProps, IStateComponent> {
     } else {
       joinRoom(playerName, roomName);
     }
+
+    // ---
+
+    window.addEventListener(
+      'keydown',
+      eventHandlerWithStore,
+      false,
+    );
   }
 
   public componentWillUnmount() {
     const {quitRoom} = this.props;
     quitRoom();
+
+    window.removeEventListener(
+      'keydown',
+      eventHandlerWithStore,
+      false,
+    );
   }
 
   public render(): React.ReactNode {
