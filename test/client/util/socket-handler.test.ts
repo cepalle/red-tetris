@@ -1,7 +1,6 @@
 import {describe, it} from 'mocha';
-import {ENUM_ROUTE, reducer} from '../../../src/client/reducers/reducer';
+import {reducer} from '../../../src/client/reducers/reducer';
 import {
-  cbOnConnection,
   cbSetError,
   cbSetRoomsPlayersName,
   cbSetRoomState, onAll,
@@ -28,12 +27,6 @@ describe('socket-handler.test.ts', () => {
 
   it('cbSetError', () => {
     cbSetError(dispatchMock as any)({} as any);
-  });
-
-  it('cbOnConnection', () => {
-    cbOnConnection(storeMock as any)();
-    state.route = ENUM_ROUTE.TETRIS_GAME;
-    cbOnConnection(storeMock as any)();
   });
 
   it('onAll', () => {

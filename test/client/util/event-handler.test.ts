@@ -1,5 +1,5 @@
 import {describe, it} from 'mocha';
-import {ENUM_ROUTE, reducer} from '../../../src/client/reducers/reducer';
+import {reducer} from '../../../src/client/reducers/reducer';
 import {eventHandler} from '../../../src/client/util/event-handler';
 
 describe('event-handler.test.ts', () => {
@@ -25,8 +25,6 @@ describe('event-handler.test.ts', () => {
       67,
     ];
 
-    state.route = ENUM_ROUTE.TETRIS_GAME;
-
     eventHandler(storeMock)({
       preventDefault: () => {
       },
@@ -48,8 +46,6 @@ describe('event-handler.test.ts', () => {
         keyCode: k,
       });
     });
-
-    state.route = ENUM_ROUTE.HOME;
 
     eventHandler(storeMock)({
       preventDefault: () => {

@@ -40,7 +40,7 @@ describe('action-creators.test.ts', () => {
   });
 
   it('REFRESH', () => {
-    reducer(state, REFRESH(false));
+    reducer(state, REFRESH());
   });
 
   state.socket.disconnect();
