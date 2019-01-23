@@ -10,14 +10,8 @@ import {
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
   ReduxAction,
-  REFRESH,
 } from '@src/client/actions/action-creators';
-import {ENUM_ROUTE, IState} from '@src/client/reducers/reducer';
-import {
-  ENUM_SOCKET_EVENT_SERVER,
-  IEventServerSubRoomsPlayersName,
-  IEventServerSubRoomState,
-} from '@src/common/socketEventServer';
+import {IState} from '@src/client/reducers/reducer';
 
 // ON
 
@@ -54,6 +48,9 @@ const cbSetError = (
 const cbOnConnection = (
   store: Store<IState>,
 ) => () => {
+  window.location.href = `/#/home`;
+
+  /*
   const state = store.getState();
 
   if (state.route === ENUM_ROUTE.HOME) {
@@ -76,8 +73,7 @@ const cbOnConnection = (
       });
     }
   }
-
-  store.dispatch(REFRESH(false));
+  */
 };
 
 const onAll = (store: Store<IState>) => () => {

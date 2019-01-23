@@ -3,13 +3,16 @@ import {render} from 'react-dom';
 import {Provider} from 'react-redux';
 import {store} from './middlewares/store';
 import './index.css';
-import {App} from '@src/client/containers/app';
+import {AppComponent} from '@src/client/components/app-component';
 import {eventHandler} from '@src/client/util/event-handler';
 import {onAll} from '@src/client/util/socket-handler';
+import {HashRouter} from 'react-router-dom';
 
 render(
   <Provider store={store}>
-    <App/>
+    <HashRouter>
+      <AppComponent/>
+    </HashRouter>
   </Provider>,
   document.getElementById('app'),
 );
