@@ -2,14 +2,14 @@ import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 import {IOptionGame} from '@src/common/ITypeRoomManager';
 
 // JOIN_ROOM
-interface IEventServerSubRoomState {
+interface IEventServerJoinRoom {
   roomName: string,
 
   playerName: string,
 }
 
 // QUIT_ROOM
-interface IEventServerUnSubRoomState {
+interface IEventServerQuitRoom {
   roomName: string,
 
   playerName: string,
@@ -54,11 +54,11 @@ enum ENUM_SOCKET_EVENT_SERVER {
 
 export {
   ENUM_SOCKET_EVENT_SERVER,
-  IEventServerSubRoomState,
+  IEventServerJoinRoom,
   IEventServerSetGameOption,
   IEventServerStartGame,
   IEventServerMovePiece,
   IEventServerSubRoomsPlayersName,
-  IEventServerUnSubRoomState,
+  IEventServerQuitRoom,
   IEventServerUnSubRoomsPlayersName,
 };

@@ -6,8 +6,8 @@ import {Socket} from 'socket.io';
 import {
   ENUM_SOCKET_EVENT_SERVER, IEventServerMovePiece,
   IEventServerSetGameOption,
-  IEventServerSubRoomState,
-  IEventServerStartGame, IEventServerSubRoomsPlayersName, IEventServerUnSubRoomState, IEventServerUnSubRoomsPlayersName,
+  IEventServerJoinRoom,
+  IEventServerStartGame, IEventServerSubRoomsPlayersName, IEventServerQuitRoom, IEventServerUnSubRoomsPlayersName,
 } from '@src/common/socketEventServer';
 import {GamesManager} from './GamesManager';
 import {ADD_PLAYER, DEL_PLAYER, MOVE_PIECE, START_GAME, UPDATE_OPTION_GAME} from '@src/server/Game';
@@ -28,7 +28,7 @@ class App {
 
     let subRoomsPlayersNAme: Subscription | undefined = undefined;
 
-    socket.on(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, (arg: IEventServerSubRoomState) => {
+    socket.on(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, (arg: IEventServerJoinRoom) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);
 
       this.gamesManager.dispatch({
@@ -37,7 +37,7 @@ class App {
       });
     });
 
-    socket.on(ENUM_SOCKET_EVENT_SERVER.QUIT_ROOM, (arg: IEventServerUnSubRoomState) => {
+    socket.on(ENUM_SOCKET_EVENT_SERVER.QUIT_ROOM, (arg: IEventServerQuitRoom) => {
       console.log(ENUM_SOCKET_EVENT_SERVER.QUIT_ROOM, arg);
 
       this.gamesManager.dispatch({

@@ -3,7 +3,11 @@ import {connect} from 'react-redux';
 import {IState} from '@src/client/reducers/reducer';
 import {IRoomPlayersName} from '@src/common/socketEventClient';
 import {Dispatch} from 'redux';
-import {ReduxAction} from '@src/client/actions/action-creators';
+import {
+  ReduxAction,
+  SEND_SUB_ROOMS_PLAYERS_NAME,
+  SEND_UN_SUB_ROOMS_PLAYERS_NAME,
+} from '@src/client/actions/action-creators';
 import {checkRoomPlayerName} from '@src/client/util/checkRoomPlayerName';
 
 const mapStateToProps = (state: IState) => {
@@ -15,13 +19,18 @@ const mapStateToProps = (state: IState) => {
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
-  return {};
+  return {
+    subRoomsPlayersName: () => dispatch(SEND_SUB_ROOMS_PLAYERS_NAME()),
+    unSubRoomsPlayersName: () => dispatch(SEND_UN_SUB_ROOMS_PLAYERS_NAME()),
+  };
 };
 
 interface IProps {
   roomsPlayersName: IRoomPlayersName[],
   playerName: string | undefined,
   roomName: string | undefined,
+  subRoomsPlayersName: () => void,
+  unSubRoomsPlayersName: () => void,
 }
 
 interface IStateComponent {
@@ -36,11 +45,13 @@ class HomeComponent extends React.Component<IProps, IStateComponent> {
   };
 
   public componentDidMount() {
-    // TODO use midelware SUB
+    const {subRoomsPlayersName} = this.props;
+    subRoomsPlayersName();
   }
 
   public componentWillUnmount() {
-    // TODO UN_SUB
+    const {unSubRoomsPlayersName} = this.props;
+    unSubRoomsPlayersName();
   }
 
   public handleSubmit = (e: any) => {

@@ -6,7 +6,6 @@ import {IState} from '../reducers/reducer';
 import {Dispatch} from 'redux';
 import {ReduxAction, SEND_JOIN_ROOM, SEND_QUIT_ROOM} from '../actions/action-creators';
 import {connect} from 'react-redux';
-import {IMatch} from '@src/client/util/IMatch';
 import {checkRoomPlayerName} from '@src/client/util/checkRoomPlayerName';
 
 const mapStateToProps = (state: IState) => {
@@ -21,9 +20,9 @@ const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
 };
 
 interface IProps {
-  match: IMatch;
   joinRoom: (playerName: string, roomName: string) => void;
   quitRoom: () => void;
+  location: any
 }
 
 interface IStateComponent {
@@ -31,10 +30,13 @@ interface IStateComponent {
 
 class TetrisGameComponent extends React.Component<IProps, IStateComponent> {
   public componentDidMount() {
-    const {joinRoom} = this.props;
-    const {params} = this.props.match;
-    const roomName = params.get('roomName');
-    const playerName = params.get('playerName');
+    const {joinRoom, location} = this.props;
+    const params = new URLSearchParams(location.search);
+
+    const roomNameOrNull = params.get('roomName');
+    const roomName = roomNameOrNull === null ? '' : roomNameOrNull;
+    const playerNameOrNull = params.get('playerName');
+    const playerName = playerNameOrNull === null ? '' : playerNameOrNull;
 
     if (!checkRoomPlayerName(roomName, playerName)) {
       window.location.href = `#/home`;
