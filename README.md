@@ -9,7 +9,7 @@ Full Stack TypeScript Multiplayer Tetris Game build with node, socket.io, React 
  npm run srv-dist
 ````
 
-You can now play in http://localhost:8080:4433
+You can now play in http://localhost:4433
 
 ## Images
 
