@@ -34,6 +34,7 @@ describe('Socket tests', function () {
       })
     });
   });
+
   describe('RoomSocketHandler', function () {
     describe('#joinRoom', function () {
 
@@ -108,6 +109,7 @@ describe('Socket tests', function () {
       })
     });
   });
+
   describe("TetrisSocketHandler", function () {
     describe("placePiece", () => {
       it("should send the piece placed", function (done) {
