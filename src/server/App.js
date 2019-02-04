@@ -60,8 +60,12 @@ class App {
     server.listen(4433, function () {
       console.log('Server on port : 4433');
     });
+    return { server, io }
   }
 }
 
 
 const app = new App().main();
+
+
+export default app
