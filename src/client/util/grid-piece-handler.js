@@ -270,5 +270,6 @@ export {
   updatePiecePos,
   gridDelLine,
   gridAddWall,
-  placePiecePreview
+  placePiecePreview,
+  newRot,
 }
