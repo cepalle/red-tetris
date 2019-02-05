@@ -5,20 +5,15 @@
   "main": "index.js",
   "scripts": {
     "pre-build": "mkdir -p ./dist ./dist/server ./dist/client ./dist/common && cp -r ./src/common ./dist/",
-
     "build": "npm run srv-build && npm run client-build",
-
     "client-dev": "webpack-dev-server --mode development --open",
     "client-build": "npm run pre-build && webpack ./src/client/index.js ",
-
     "srv-dev": "babel-watch -w src src/server/App.js",
     "srv-build": "npm run pre-build && babel src/server --out-dir dist/server",
-
     "test-all": "npm run test-server && npm run test-client",
     "test-server": "mocha --recursive --require babel-core/register --reporter spec \"test/1_server/\"",
     "test-client": "mocha --recursive --require babel-core/register -r jsdom-global/register --reporter spec \"test/2_client/\"",
     "coverage": "nyc npm run test-all && nyc report --reporter=lcov",
-
     "predeploy": "npm run build",
     "deploy": "echo 'not available'"
   },

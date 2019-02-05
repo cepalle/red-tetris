@@ -48,8 +48,8 @@ class App {
 
     const io = require("socket.io")(server);
     io.on(socketDefs.CONNECTION, (e) => this.handleClient(e));
-    server.listen((process.env.PORT) || 4423, function () {
-      console.log('Server on port : ' + (process.env.PORT || 4423));
+    server.listen((process.env.PORT) || 4433, function () {
+      console.log('Server on port : ' + (process.env.PORT || 4433));
     });
     return { server, io }
   }
