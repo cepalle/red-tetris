@@ -12,12 +12,14 @@ After:
 ````
 run:
 ````cmd
- npm run srv-dev
+ npm run build
 ````
 and:
 ````cmd
- npm run client-dev
+ npm run serve
 ````
+
+RED TETRIS will be available at localhost:4433.
 
 ## Images
 

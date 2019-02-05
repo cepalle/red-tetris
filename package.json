@@ -16,6 +16,7 @@
     "coverage": "nyc npm run test-all && nyc report --reporter=lcov",
     "predeploy": "npm run build",
     "deploy": "echo 'not available'",
+    "serve": "node dist/server/App.js",
     "clean": "rm -rf dist && rm -rf .nyc_output",
     "clean-all": "npm run clean && rm -rf node_modules"
   },
