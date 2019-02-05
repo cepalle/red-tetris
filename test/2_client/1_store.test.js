@@ -1,7 +1,16 @@
 import {store} from "../../src/client/middlewares/store";
 import {
-  addError, addPiecesFlow, connectionResponse, movePiece, sendStartGame,
-  toggleGroundResizer, toggleAddWallLine, emitQuitGame, updateRoomPlayerName
+  addError,
+  addPiecesFlow,
+  connectionResponse,
+  movePiece,
+  sendStartGame,
+  toggleGroundResizer,
+  toggleAddWallLine,
+  emitQuitGame,
+  updateRoomPlayerName,
+  updateEmiteUpdateGrid,
+  updateSocketIsConnect
 } from "../../src/client/actions/action-creators";
 import {PIECES_MOVE} from "../../src/common/pieces";
 import {eventHandler} from "../../src/client/util/event-handler";
@@ -110,6 +119,15 @@ describe('store test', () => {
     }
     store.dispatch(movePiece(PIECES_MOVE.SWITCH));
   });
+
+  it('dispatch UPDATE_EMITE_UPDATE_GRID', () => {
+    store.dispatch(updateEmiteUpdateGrid(true));
+  });
+
+  it('dispatch UPDATE_SOCKET_IS_CONNECT', () => {
+    store.dispatch(updateSocketIsConnect(true));
+  });
+
   it('middleware', () => {
     store.getState().EmitLoose = true;
     store.getState().EmitCompleteLine = true;
