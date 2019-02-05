@@ -15,7 +15,9 @@
     "test-client": "mocha --recursive --require babel-core/register -r jsdom-global/register --reporter spec \"test/2_client/\"",
     "coverage": "nyc npm run test-all && nyc report --reporter=lcov",
     "predeploy": "npm run build",
-    "deploy": "echo 'not available'"
+    "deploy": "echo 'not available'",
+    "clean": "rm -rf dist && rm -rf .nyc_output",
+    "clean-all": "npm run clean && rm -rf node_modules"
   },
   "keywords": [],
   "author": "cepalle;aviscogl",
