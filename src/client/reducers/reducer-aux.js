@@ -25,6 +25,14 @@ const reducerPiecesFlow = (state, {pieces}) => {
 const reducerError = (state, {error}) => {
   logger_reducer(["error"]);
 
+  if (error.type === "PLAYER_ALREADY_IN_ROOM") {
+    return Object.assign({}, state, {
+      error: error,
+      playerName: "",
+      roomName: "",
+    });
+  }
+
   return Object.assign({}, state, {error: error});
 };
 
