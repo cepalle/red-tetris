@@ -1,8 +1,10 @@
-import {gridAddWall, gridDelLine, updatePiecePos, placePiece} from "../util/grid-piece-handler";
+import {gridAddWall, gridDelLine, updatePiecePos, placePiece, hasCollision} from "../util/grid-piece-handler";
 import {logger_reducer} from "../util/logger-handler";
 import {initPlayerState} from "./reducer";
 import {asLoose, ifWinSet} from "../util/loose-win-handler";
 import {GRID_HEIGHT} from "../../common/grid";
+import {clonePiece} from "../util/clone-handler";
+import {getPiece} from "../../common/pieces";
 
 /**
  * Add pieces to the getState.piecesFlow.
@@ -181,6 +183,18 @@ const reducerAddWallLine = (state, {amount}) => {
   const newGrid = gridAddWall(player.grid, amount);
   const loose = asLoose(newGrid);
 
+  // --- Ptach
+
+  const [frst, ...rest] = state.piecesFlow;
+
+  const newPiece = clonePiece(frst);
+  const newPieceDescr = getPiece(newPiece.num, newPiece.rot);
+  while (hasCollision(newGrid, newPieceDescr, newPiece.pos) !== undefined) {
+    newPiece.pos.y--;
+  }
+
+  // ---
+
   const newState = Object.assign({}, state, {
     playerStates: state.playerStates.map(el => {
       if (el.playerName === state.playerName) {
@@ -191,6 +205,7 @@ const reducerAddWallLine = (state, {amount}) => {
       }
       return el;
     }),
+    piecesFlow: [newPiece, ...rest],
     animate: state.animate && !loose,
     EmitLoose: loose,
     EmitUpdateGrid: true,
