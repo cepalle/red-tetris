@@ -2,9 +2,9 @@ import {
   IEventClientSetError,
   IEventClientSetRoomsPlayersName,
   IEventClientSetRoomState,
-} from '@src/common/socketEventClient';
-import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
-import {IOptionGame} from '@src/common/ITypeRoomManager';
+} from '../../../common/socketEventClient';
+import {ENUM_PIECES_MOVE} from '../../../common/grid-piece-handler';
+import {IOptionGame} from '../../../common/ITypeRoomManager';
 
 enum EnumAction {
   ON_SET_ROOM_STATE,

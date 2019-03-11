@@ -1,11 +1,11 @@
-import {EnumAction, ReduxAction} from '../actions/action-creators';
+import {EnumAction, ReduxAction} from './actions/action-creators';
 import * as io from 'socket.io-client';
 import {IRoomPlayersName, IRoomStateClient} from '@src/common/socketEventClient';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
 
-interface IState {
+interface IDataState {
   readonly socket: SocketIOClient.Socket,
   readonly playerName: string | undefined,
   readonly roomName: string | undefined,
@@ -15,7 +15,12 @@ interface IState {
   readonly errorMsg: string | undefined,
 }
 
-const initApp = (): IState => {
+export interface IRouterState {
+  router: any,
+  data: IDataState,
+}
+
+const initApp = (): IDataState => {
   const socket: SocketIOClient.Socket = io(SOCKET_URL);
 
   return {
@@ -28,7 +33,7 @@ const initApp = (): IState => {
   };
 };
 
-const reducer = (state = initApp(), action: ReduxAction): IState => {
+const reducer = (state = initApp(), action: ReduxAction): IDataState => {
   switch (action.type) {
     case EnumAction.ON_SET_ROOM_STATE:
       return {
@@ -61,5 +66,5 @@ const reducer = (state = initApp(), action: ReduxAction): IState => {
 export {
   reducer,
   EnumAction,
-  IState,
+  IDataState,
 };

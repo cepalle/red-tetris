@@ -2,15 +2,15 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {
   ReduxAction, SEND_START_GAME, SEND_UPDATE_OPTION_GAME,
-} from '../actions/action-creators';
+} from '../redux/actions/action-creators';
 import {Dispatch} from 'redux';
-import {IState} from '@src/client/reducers/reducer';
-import {store} from '@src/client/middlewares/store';
-import {IOptionGame} from '@src/common/ITypeRoomManager';
+import {IDataState} from '../redux/reducer';
+import {store} from '../redux/middlewares/store';
+import {IOptionGame} from '../../common/ITypeRoomManager';
 
-const mp3 = require('@src/client/assets/Original_Tetris_theme.mp3');
+const mp3 = require('../assets/Original_Tetris_theme.mp3');
 
-const mapStateToProps = (state: IState): {
+const mapStateToProps = (state: IDataState): {
   optionGame: IOptionGame | undefined;
   playing: boolean;
   isMaster: boolean;

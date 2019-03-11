@@ -1,33 +1,15 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {IState} from '@src/client/reducers/reducer';
-import {chooseWallType, ENUM_PIECES, GRID_WIDTH} from '@src/common/grid-piece-handler';
-import {IPlayerClient} from '@src/common/socketEventClient';
+import { IRouterState } from '../redux/reducer';
+import { useCallback } from 'react';
+import { useMappedState } from 'redux-react-hook';
+import { chooseWallType, ENUM_PIECES, GRID_WIDTH } from '@src/common/grid-piece-handler';
+import { IPlayerClient, IRoomPlayersName } from '@src/common/socketEventClient';
 
-const mapStateToProps = (state: IState) => {
-
-  if (state.roomState === undefined) {
-    return {
-      opponents: [],
-    };
-  }
-  return {
-    opponents: state.roomState.players.filter((p) => p.playerName !== state.playerName),
-  };
-};
-
-interface IProps {
-  opponents: IPlayerClient[],
-}
-
-const OpponentComponent = (props: IProps) => {
-
-  const {opponents} = props;
-
-  const infoRenders: Array<{
-    grid: ENUM_PIECES[][];
-    player: IPlayerClient;
-  }> = opponents.map((playerState) => {
+const opponentsToInfoRenders = (opponents: IRoomPlayersName[]): Array<{
+  grid: ENUM_PIECES[][];
+  player: IPlayerClient;
+}> => {
+  return opponents.map((playerState) => {
 
     const wallType = chooseWallType(playerState);
     const grid = playerState.grid.map(l => l.map(e => e));
@@ -56,6 +38,20 @@ const OpponentComponent = (props: IProps) => {
       player: playerState,
     };
   });
+};
+
+const Opponents = () => {
+
+  const mapState = useCallback(
+    (state: IRouterState) => ({
+      opponents: state.data.roomState === undefined ? []
+        : state.data.roomState.players.filter((p) => p.playerName !== state.data.playerName),
+    }),
+    [],
+  );
+  const { opponents } = useMappedState(mapState);
+
+
 
   return (
     <div className={'row wrap center'}>
@@ -93,9 +89,4 @@ const OpponentComponent = (props: IProps) => {
   );
 };
 
-const Opponents = connect(
-  mapStateToProps,
-  undefined,
-)(OpponentComponent);
-
-export {Opponents};
+export { Opponents };

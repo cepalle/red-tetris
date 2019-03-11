@@ -1,12 +1,12 @@
-import {EnumAction, ReduxAction} from '@src/client/actions/action-creators';
+import {EnumAction, ReduxAction} from '../actions/action-creators';
 import {
   ENUM_SOCKET_EVENT_SERVER,
   IEventServerMovePiece,
   IEventServerSetGameOption,
   IEventServerJoinRoom,
   IEventServerStartGame, IEventServerSubRoomsPlayersName, IEventServerQuitRoom, IEventServerUnSubRoomsPlayersName,
-} from '@src/common/socketEventServer';
-import {isPlaying} from '@src/client/reducers/isPlaying';
+} from '../../../common/socketEventServer';
+import {isPlaying} from '../isPlaying';
 
 const sendJoinRoom = (socket: SocketIOClient.Socket, arg: IEventServerJoinRoom) => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);

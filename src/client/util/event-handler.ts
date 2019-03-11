@@ -1,7 +1,7 @@
 import {Store} from 'redux';
-import {SEND_MOVE_PIECE, SEND_START_GAME} from '@src/client/actions/action-creators';
-import {IState} from '@src/client/reducers/reducer';
-import {isPlaying} from '@src/client/reducers/isPlaying';
+import {SEND_MOVE_PIECE, SEND_START_GAME} from '@src/client/redux/actions/action-creators';
+import {IDataState} from '@src/client/redux/reducer';
+import {isPlaying} from '@src/client/redux/isPlaying';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 
 const keyEnter = 13;
@@ -13,7 +13,7 @@ const keyDown = 40;
 const keyS = 83;
 const keyC = 67;
 
-const eventHandler = (store: Store<IState>) => (event: any) => {
+const eventHandler = (store: Store<IDataState>) => (event: any) => {
 
   const state = store.getState();
   const dispatch = store.dispatch;

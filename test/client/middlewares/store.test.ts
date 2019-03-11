@@ -1,12 +1,12 @@
 import {describe, it} from 'mocha';
-import {store} from '../../../src/client/middlewares/store';
+import {store} from '../../../src/client/redux/middlewares/store';
 import {
   ON_SET_ERROR,
   SEND_MOVE_PIECE,
   SEND_ROOM_PLAYER_NAME,
   SEND_START_GAME,
   SEND_UPDATE_OPTION_GAME,
-} from '../../../src/client/actions/action-creators';
+} from '../../../src/client/redux/actions/action-creators';
 import {ENUM_PIECES_MOVE} from '../../../src/common/grid-piece-handler';
 import {EnumError} from '../../../src/common/socketEventClient';
 

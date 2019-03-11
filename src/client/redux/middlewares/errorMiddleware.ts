@@ -1,4 +1,4 @@
-import {EnumAction, ReduxAction} from '@src/client/actions/action-creators';
+import {EnumAction, ReduxAction} from '../actions/action-creators';
 
 const errorMiddleware = (store: any) => (next: any) => (action: ReduxAction) => {
 

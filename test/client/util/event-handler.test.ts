@@ -1,5 +1,5 @@
 import {describe, it} from 'mocha';
-import {reducer} from '../../../src/client/reducers/reducer';
+import {reducer} from '../../../src/client/redux/reducer';
 import {eventHandler} from '../../../src/client/util/event-handler';
 
 describe('event-handler.test.ts', () => {

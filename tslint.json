@@ -37,6 +37,6 @@
     "typedef": [true,"parameter", "property-declaration"],
     "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore"],
     // tslint-react
-    "jsx-no-lambda": true
+    "jsx-no-lambda": false
   }
 }

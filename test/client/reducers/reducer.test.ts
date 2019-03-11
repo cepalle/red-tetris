@@ -1,11 +1,11 @@
 import {describe, it} from 'mocha';
-import {reducer} from '../../../src/client/reducers/reducer';
+import {reducer} from '../../../src/client/redux/reducer';
 import {
   ON_SET_ERROR,
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
   REFRESH,
-} from '../../../src/client/actions/action-creators';
+} from '../../../src/client/redux/actions/action-creators';
 import {EnumError} from '../../../src/common/socketEventClient';
 
 describe('action-creators.test.ts', () => {

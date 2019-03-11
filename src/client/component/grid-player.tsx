@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {connect} from 'react-redux';
-import {IState} from '../reducers/reducer';
+import {IDataState} from '../redux/reducer';
 import {
   chooseWallType,
   ENUM_PIECES,
   GRID_WIDTH,
   placePiece,
   placePiecePreview,
-} from '@src/common/grid-piece-handler';
-import {IPlayerClient} from '@src/common/socketEventClient';
+} from '../../common/grid-piece-handler';
+import {IPlayerClient} from '../../common/socketEventClient';
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: IDataState) => {
   const player = (state.roomState === undefined) ? undefined :
     state.roomState.players.find((p) => p.playerName === state.playerName);
 

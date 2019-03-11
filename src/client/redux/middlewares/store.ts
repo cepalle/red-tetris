@@ -1,9 +1,9 @@
 import {createStore, applyMiddleware} from 'redux';
-import {reducer} from '../reducers/reducer';
+import {reducer} from '../reducer';
 import {socketMiddleware} from './socketMiddleware';
-import {errorMiddleware} from '@src/client/middlewares/errorMiddleware';
-import {onAll} from '@src/client/util/socket-handler';
-import {eventHandler} from '@src/client/util/event-handler';
+import {onAll} from '../../util/socket-handler';
+import {eventHandler} from '../../util/event-handler';
+import { errorMiddleware } from '@src/client/redux/middlewares/errorMiddleware';
 
 const store = createStore(
   reducer,

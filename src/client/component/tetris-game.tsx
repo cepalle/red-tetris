@@ -2,14 +2,14 @@ import * as React from 'react';
 import {InfoPanel} from './info-panel';
 import {GridPlayer} from './grid-player';
 import {Opponents} from './opponents';
-import {IState} from '../reducers/reducer';
+import {IDataState} from '../redux/reducer';
 import {Dispatch} from 'redux';
-import {ReduxAction, SEND_JOIN_ROOM, SEND_QUIT_ROOM} from '../actions/action-creators';
+import {ReduxAction, SEND_JOIN_ROOM, SEND_QUIT_ROOM} from '../redux/actions/action-creators';
 import {connect} from 'react-redux';
-import {checkRoomPlayerName} from '@src/client/util/checkRoomPlayerName';
-import {eventHandlerWithStore} from '@src/client/middlewares/store';
+import {checkRoomPlayerName} from '../util/checkRoomPlayerName';
+import {eventHandlerWithStore} from '../redux/middlewares/store';
 
-const mapStateToProps = (state: IState) => {
+const mapStateToProps = (state: IDataState) => {
   return {};
 };
 

@@ -10,8 +10,8 @@ import {
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
   ReduxAction,
-} from '@src/client/actions/action-creators';
-import {IState} from '@src/client/reducers/reducer';
+} from '@src/client/redux/actions/action-creators';
+import {IDataState} from '@src/client/redux/reducer';
 
 // ON
 
@@ -49,7 +49,7 @@ const cbOnConnection = () => {
   window.location.href = `/#/home`;
 };
 
-const onAll = (store: Store<IState>) => () => {
+const onAll = (store: Store<IDataState>) => () => {
 
   const socket = store.getState().socket;
   const dispatch = store.dispatch;
