@@ -6,8 +6,8 @@ import {
   ENUM_PIECES, GRID_WIDTH,
   placePiece,
   placePiecePreview,
-} from '@src/common/grid-piece-handler';
-import { IDataState } from '@src/client/redux/reducer';
+} from '../../../common/grid-piece-handler';
+import { IDataState } from '../../redux/reducer';
 
 const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
   const lineBuild = [...(Array(4).fill(ENUM_PIECES.empty)), wallType];

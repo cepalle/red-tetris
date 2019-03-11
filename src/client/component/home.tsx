@@ -1,17 +1,41 @@
 import * as React from 'react';
 import {
+  SEND_JOIN_ROOM,
   SEND_SUB_ROOMS_PLAYERS_NAME,
   SEND_UN_SUB_ROOMS_PLAYERS_NAME,
 } from '../redux/actions/action-creators';
-import { checkRoomPlayerName } from '../util/checkRoomPlayerName';
 import { useEffect, useState } from 'react';
 import { useDispatch, useMappedState } from 'redux-react-hook';
 import { useCallback } from 'react';
 import { IRoomPlayersName } from '@src/common/socketEventClient';
-import { push } from 'connected-react-router';
-import { IDataState } from "@src/client/redux/reducer";
+import { IDataState } from '@src/client/redux/reducer';
 
 export const setChange = (set: (i: any) => void) => (event: any) => set(event.target.value);
+
+const checkRoomPlayerName = (roomName: string | undefined, playerName: string | undefined): boolean => {
+  if (roomName === undefined || playerName === undefined) {
+    return false
+  }
+
+  if (roomName.length < 3 || playerName.length < 3) {
+    return false;
+  }
+  const letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+  for (let i = 0; i < roomName.length; i++) {
+    if (!letters.includes(roomName[i])) {
+      return false;
+    }
+  }
+
+  for (let i = 0; i < playerName.length; i++) {
+    if (!letters.includes(playerName[i])) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 const checkRoomPlayerNameExiste = (
   roomName: string,
@@ -53,16 +77,14 @@ export const Home = () => {
     return () => {
       dispatch(SEND_UN_SUB_ROOMS_PLAYERS_NAME());
     }
-  }, []); // TODO deps
-
-  // ---
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
 
     if (checkRoomPlayerName(roomNameInput, playerNameInput) &&
       checkRoomPlayerNameExiste(roomNameInput, playerNameInput, roomsPlayersName)) {
-      dispatch(push(`/game`))
+      dispatch(SEND_JOIN_ROOM(playerNameInput, roomNameInput));
     }
   };
 

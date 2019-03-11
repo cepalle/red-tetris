@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import { useMappedState } from 'redux-react-hook';
-import { chooseWallType, ENUM_PIECES, GRID_WIDTH } from '@src/common/grid-piece-handler';
-import { IPlayerClient } from '@src/common/socketEventClient';
-import { IDataState } from "@src/client/redux/reducer";
+import { chooseWallType, ENUM_PIECES, GRID_WIDTH } from '../../../common/grid-piece-handler';
+import { IPlayerClient } from '../../../common/socketEventClient';
+import { IDataState } from '../../redux/reducer';
 
 const opponentsToInfoRenders = (opponents: IPlayerClient[]): Array<{
   grid: ENUM_PIECES[][];

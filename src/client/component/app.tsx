@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TetrisGame } from './tetris-game';
+import { Game } from './game/game';
 import { Home } from './home';
 import { useCallback } from 'react';
 import { useMappedState } from 'redux-react-hook';
@@ -31,7 +31,7 @@ const App = () => {
     return  <OffLineComponent/>;
   }
   if (playerName !== undefined && roomName !== undefined) {
-    return <TetrisGame/>;
+    return <Game/>;
   }
   return <Home/>;
 };

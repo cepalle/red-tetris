@@ -46,6 +46,14 @@ const reducer = (state = initApp(), action: ReduxAction): IDataState => {
       return {
         ...state,
         errorMsg: action.arg.msg,
+        playerName: undefined,
+        roomName: undefined,
+      };
+    case EnumAction.SEND_QUIT_ROOM:
+      return {
+        ...state,
+        playerName: undefined,
+        roomName: undefined,
       };
     case EnumAction.REFRESH:
       return { ...state };

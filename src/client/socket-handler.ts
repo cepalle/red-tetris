@@ -3,15 +3,14 @@ import {
   IEventClientSetError,
   IEventClientSetRoomsPlayersName,
   IEventClientSetRoomState,
-} from '@src/common/socketEventClient';
+} from '../common/socketEventClient';
 import { Dispatch, Store } from 'redux';
 import {
   ON_SET_ERROR,
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
-  ReduxAction, REFRESH,
-} from '@src/client/redux/actions/action-creators';
-import { push } from 'connected-react-router';
+  ReduxAction, REFRESH
+} from "@src/client/redux/actions/action-creators";
 import { IDataState } from "@src/client/redux/reducer";
 
 // ON
@@ -49,14 +48,8 @@ const cbSetError = (
 const cbOnConnection = (
   dispatch: Dispatch<any>,
 ) => async () => {
-  const sleep = (ms: number) => {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  };
-
   console.log('connect');
 
-  dispatch(push('/888'));
-  await sleep(500);
   dispatch(REFRESH());
 };
 

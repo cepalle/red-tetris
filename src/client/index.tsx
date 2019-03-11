@@ -5,15 +5,13 @@ import './index.css';
 import { applyMiddleware, createStore } from 'redux';
 import { StoreContext } from 'redux-react-hook';
 import { App } from '@src/client/component/app';
-import { onAll } from '@src/client/util/socket-handler';
+import { onAll } from '@src/client/socket-handler';
 import { reducer } from '@src/client/redux/reducer';
-import { errorMiddleware } from '@src/client/redux/middlewares/errorMiddleware';
-import { socketMiddleware } from '@src/client/redux/middlewares/socketMiddleware';
+import { socketMiddleware } from '@src/client/redux/socketMiddleware';
 
 const store = createStore(
   reducer,
   applyMiddleware(
-    errorMiddleware,
     socketMiddleware,
   ),
 );

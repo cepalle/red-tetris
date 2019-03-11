@@ -1,6 +1,12 @@
-import { Dispatch } from 'redux';
-import {SEND_MOVE_PIECE} from '@src/client/redux/actions/action-creators';
-import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
+import * as React from 'react';
+import { InfoPanel } from './info-panel';
+import { GridPlayer } from './grid-player';
+import { Opponents } from './opponents';
+import { useEffect } from 'react';
+import { useDispatch } from 'redux-react-hook';
+import { Dispatch } from "redux";
+import { SEND_MOVE_PIECE } from "@src/client/redux/actions/action-creators";
+import { ENUM_PIECES_MOVE } from "@src/common/grid-piece-handler";
 
 const keySpace = 32;
 const keyLeft = 37;
@@ -48,4 +54,39 @@ export const keysHandler = (dispatch: Dispatch<any>) => (event: any) => {
       dispatch(SEND_MOVE_PIECE(ENUM_PIECES_MOVE.SWITCH));
       break;
   }
+};
+
+export const Game = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const eventListner = keysHandler(dispatch);
+
+    window.addEventListener(
+      'keydown',
+      eventListner,
+      false,
+    );
+
+    return () => {
+      window.removeEventListener(
+        'keydown',
+        eventListner,
+        false,
+      );
+    };
+  });
+
+  return (
+    <div className={'column'}>
+      <div className={'row center'}>
+        <div className={'row color8 pad'}>
+          <InfoPanel/>
+          <GridPlayer/>
+        </div>
+      </div>
+      <Opponents/>
+    </div>
+  );
 };

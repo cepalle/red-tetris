@@ -4,7 +4,7 @@ import {
   cbSetError,
   cbSetRoomsPlayersName,
   cbSetRoomState, onAll,
-} from '../../../src/client/util/socket-handler';
+} from '../../../src/client/socket-handler';
 
 describe('socket-handler.test.ts', () => {
 

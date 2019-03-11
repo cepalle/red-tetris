@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { IOptionGame } from '../../common/ITypeRoomManager';
+import { IOptionGame } from '../../../common/ITypeRoomManager';
 import { useDispatch, useMappedState } from 'redux-react-hook';
-import { push } from 'connected-react-router';
 import { useCallback } from 'react';
-import { SEND_START_GAME, SEND_TOGGLE_OPTION_GAME } from '@src/client/redux/actions/action-creators';
-import { IDataState } from "@src/client/redux/reducer";
+import { SEND_QUIT_ROOM, SEND_START_GAME, SEND_TOGGLE_OPTION_GAME } from '../../redux/actions/action-creators';
+import { IDataState } from '../../redux/reducer';
 
-const mp3 = require('../assets/Original_Tetris_theme.mp3');
+const mp3 = require('../../assets/Original_Tetris_theme.mp3');
 
 const InfoPanel = () => {
 
@@ -40,7 +39,7 @@ const InfoPanel = () => {
   const { isMaster, optionGame, playing } = useMappedState(mapState);
 
   const onClickHome = () => {
-    dispatch(push('/'));
+    dispatch(SEND_QUIT_ROOM());
   };
 
   return (
@@ -48,7 +47,7 @@ const InfoPanel = () => {
       <div className={'row'}>
         <div className={'column'}>
           <div className={'row center pad buttonPlay'} onClick={() => onClickHome()}>
-            <img className={'pad'} src={require('../assets/home-8x.png')} height="32" width="32" alt={'home'}/>
+            <img className={'pad'} src={require('../../assets/home-8x.png')} height="32" width="32" alt={'home'}/>
             <h1 className={'font_white font_retro pad'}>TETRIS</h1>
           </div>
 
