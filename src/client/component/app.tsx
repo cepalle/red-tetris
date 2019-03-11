@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { TetrisGame } from './tetris-game';
 import { Home } from './home';
-import { Redirect, Route, Switch } from 'react-router';
-import { useStoreConnected } from '@src/client/hooks/useStoreConnected';
+import { useCallback } from 'react';
+import { useMappedState } from 'redux-react-hook';
+import { IDataState } from '@src/client/redux/reducer';
 
 const OffLineComponent = () => (
   <div className={'row center font_white'}>
@@ -14,16 +15,25 @@ const OffLineComponent = () => (
 
 const App = () => {
 
-  const connected = useStoreConnected();
-
-  return !connected ? <OffLineComponent/> : (
-    <Switch>
-      <Route path="/game" component={TetrisGame}/>
-      <Route path="/" component={Home}/>
-      <Route render={() => <Redirect to="/"/>}/>
-    </Switch>
+  const mapState = useCallback(
+    (state: IDataState) => ({
+      connected: state.socket.connected,
+      playerName: state.playerName,
+      roomName: state.roomState,
+    }),
+    [],
   );
+  const { connected, playerName, roomName } = useMappedState(mapState);
 
+  console.log('App', connected);
+
+  if (!connected) {
+    return  <OffLineComponent/>;
+  }
+  if (playerName !== undefined && roomName !== undefined) {
+    return <TetrisGame/>;
+  }
+  return <Home/>;
 };
 
 export { App };

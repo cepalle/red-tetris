@@ -1,6 +1,6 @@
-import {EnumAction, ReduxAction} from './actions/action-creators';
+import { EnumAction, ReduxAction } from './actions/action-creators';
 import * as io from 'socket.io-client';
-import {IRoomPlayersName, IRoomStateClient} from '@src/common/socketEventClient';
+import { IRoomPlayersName, IRoomStateClient } from '@src/common/socketEventClient';
 
 // mv socket handler ?
 const SOCKET_URL = 'http://localhost:4433';
@@ -15,13 +15,10 @@ interface IDataState {
   readonly errorMsg: string | undefined,
 }
 
-export interface IRouterState {
-  router: any,
-  data: IDataState,
-}
-
 const initApp = (): IDataState => {
   const socket: SocketIOClient.Socket = io(SOCKET_URL);
+
+  console.log("Init Reducer");
 
   return {
     socket: socket,
@@ -51,7 +48,7 @@ const reducer = (state = initApp(), action: ReduxAction): IDataState => {
         errorMsg: action.arg.msg,
       };
     case EnumAction.REFRESH:
-      return {...state};
+      return { ...state };
     case EnumAction.SEND_JOIN_ROOM:
       return {
         ...state,

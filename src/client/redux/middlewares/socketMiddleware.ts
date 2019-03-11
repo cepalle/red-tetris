@@ -1,4 +1,4 @@
-import {EnumAction, ReduxAction} from '../actions/action-creators';
+import { EnumAction, ReduxAction } from '../actions/action-creators';
 import {
   ENUM_SOCKET_EVENT_SERVER,
   IEventServerMovePiece,
@@ -6,7 +6,8 @@ import {
   IEventServerJoinRoom,
   IEventServerStartGame, IEventServerSubRoomsPlayersName, IEventServerQuitRoom, IEventServerUnSubRoomsPlayersName,
 } from '../../../common/socketEventServer';
-import {isPlaying} from '../isPlaying';
+import { isPlaying } from '../../util/isPlaying';
+import { IDataState } from "@src/client/redux/reducer";
 
 const sendJoinRoom = (socket: SocketIOClient.Socket, arg: IEventServerJoinRoom) => {
   socket.emit(ENUM_SOCKET_EVENT_SERVER.JOIN_ROOM, arg);
@@ -42,14 +43,17 @@ const sendRoomPlayerName = (socket: SocketIOClient.Socket, arg: IEventServerJoin
 
 const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) => {
 
-  const state = store.getState();
+  const state: IDataState = store.getState();
 
   switch (action.type) {
     case EnumAction.SEND_ROOM_PLAYER_NAME:
-      if (state.socket !== undefined && state.roomName !== undefined) {
+      if (state.socket !== undefined
+        && state.roomName !== undefined
+        && state.playerName !== undefined
+      ) {
         sendRoomPlayerName(state.socket, {
           roomName: state.roomName,
-          playerName: state.playerNames,
+          playerName: state.playerName,
         });
       }
       break;
@@ -60,11 +64,20 @@ const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) =>
         });
       }
       break;
-    case EnumAction.SEND_UPDATE_OPTION_GAME:
-      if (state.socket !== undefined && state.roomName !== undefined) {
+    case EnumAction.SEND_TOGGLE_OPTION_GAME:
+      if (state.socket !== undefined
+        && state.roomName !== undefined
+        && state.roomState !== undefined
+      ) {
         sendUpdateOptionGame(state.socket, {
           roomName: state.roomName,
-          optionGame: action.optionGame,
+          optionGame: {
+            ...state.roomState.optionGame,
+            ...(action.toToggle === 'addWallLine' ?
+                { addWallLine: !state.roomState.optionGame.addWallLine } :
+                { groundResizer: !state.roomState.optionGame.groundResizer }
+            ),
+          },
         });
       }
       break;
@@ -85,7 +98,10 @@ const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) =>
       }
       break;
     case EnumAction.SEND_QUIT_ROOM:
-      if (state.socket !== undefined) {
+      if (state.socket !== undefined
+        && state.roomName !== undefined
+        && state.playerName !== undefined
+      ) {
         sendQuitRoom(state.socket, {
           playerName: state.playerName,
           roomName: state.roomName,
@@ -109,4 +125,4 @@ const socketMiddleware = (store: any) => (next: any) => (action: ReduxAction) =>
   return next(action);
 };
 
-export {socketMiddleware};
+export { socketMiddleware };

@@ -1,27 +1,13 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {IDataState} from '../redux/reducer';
+import { useCallback } from 'react';
+import { useMappedState } from 'redux-react-hook';
 import {
   chooseWallType,
-  ENUM_PIECES,
-  GRID_WIDTH,
+  ENUM_PIECES, GRID_WIDTH,
   placePiece,
   placePiecePreview,
-} from '../../common/grid-piece-handler';
-import {IPlayerClient} from '../../common/socketEventClient';
-
-const mapStateToProps = (state: IDataState) => {
-  const player = (state.roomState === undefined) ? undefined :
-    state.roomState.players.find((p) => p.playerName === state.playerName);
-
-  return {
-    player: player,
-  };
-};
-
-interface IProps {
-  player: IPlayerClient | undefined,
-}
+} from '@src/common/grid-piece-handler';
+import { IDataState } from '@src/client/redux/reducer';
 
 const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
   const lineBuild = [...(Array(4).fill(ENUM_PIECES.empty)), wallType];
@@ -42,9 +28,20 @@ const initFlowRender = (wallType: ENUM_PIECES): ENUM_PIECES[][] => {
   ];
 };
 
-const GridPlayerComponent = (props: IProps) => {
-  /* PLAYERGRID */
-  const {player} = props;
+const GridPlayer = () => {
+
+  const mapState = useCallback(
+    (state: IDataState) => {
+      const plr = (state.roomState === undefined) ? undefined :
+        state.roomState.players.find((p) => p.playerName === state.playerName);
+
+      return {
+        player: plr,
+      };
+    },
+    [],
+  );
+  const { player } = useMappedState(mapState);
 
   if (player === undefined) {
     return (
@@ -54,7 +51,7 @@ const GridPlayerComponent = (props: IProps) => {
     );
   }
 
-  const {flow, grid, posPiece} = player;
+  const { flow, grid, posPiece } = player;
 
   const wallType = chooseWallType(player);
 
@@ -77,7 +74,7 @@ const GridPlayerComponent = (props: IProps) => {
   if (flow.length > 0 && !player.lost && !player.win && !player.isSpectator) {
     for (let i = 0; i < piecesRender.length; i++) {
       const piece = piecesRender[i];
-      previewRender = placePiece(previewRender, piece, {x: 0, y: 1 + i * 5});
+      previewRender = placePiece(previewRender, piece, { x: 0, y: 1 + i * 5 });
     }
   }
 
@@ -113,9 +110,4 @@ const GridPlayerComponent = (props: IProps) => {
   );
 };
 
-const GridPlayer = connect(
-  mapStateToProps,
-  undefined,
-)(GridPlayerComponent);
-
-export {GridPlayer};
+export { GridPlayer };

@@ -1,6 +1,6 @@
 import {describe, it} from 'mocha';
 import {reducer} from '../../../src/client/redux/reducer';
-import {eventHandler} from '../../../src/client/util/event-handler';
+import {keysHandler} from '../../../src/client/util/keys-handler';
 
 describe('event-handler.test.ts', () => {
 
@@ -13,7 +13,7 @@ describe('event-handler.test.ts', () => {
     dispatch: dispatchMock,
   };
 
-  it('eventHandler', () => {
+  it('keysHandler', () => {
     const keys = [
       13,
       32,
@@ -25,7 +25,7 @@ describe('event-handler.test.ts', () => {
       67,
     ];
 
-    eventHandler(storeMock)({
+    keysHandler(storeMock)({
       preventDefault: () => {
       },
       keyCode: 13,
@@ -40,14 +40,14 @@ describe('event-handler.test.ts', () => {
     };
 
     keys.forEach((k) => {
-      eventHandler(storeMock)({
+      keysHandler(storeMock)({
         preventDefault: () => {
         },
         keyCode: k,
       });
     });
 
-    eventHandler(storeMock)({
+    keysHandler(storeMock)({
       preventDefault: () => {
       },
       keyCode: 13,

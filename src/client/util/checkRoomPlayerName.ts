@@ -1,4 +1,8 @@
-const checkRoomPlayerName = (roomName: string, playerName: string): boolean => {
+const checkRoomPlayerName = (roomName: string | undefined, playerName: string | undefined): boolean => {
+  if (roomName === undefined || playerName === undefined) {
+    return false
+  }
+
   if (roomName.length < 3 || playerName.length < 3) {
     return false;
   }

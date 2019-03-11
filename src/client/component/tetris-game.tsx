@@ -1,88 +1,70 @@
 import * as React from 'react';
-import {InfoPanel} from './info-panel';
-import {GridPlayer} from './grid-player';
-import {Opponents} from './opponents';
-import {IDataState} from '../redux/reducer';
-import {Dispatch} from 'redux';
-import {ReduxAction, SEND_JOIN_ROOM, SEND_QUIT_ROOM} from '../redux/actions/action-creators';
-import {connect} from 'react-redux';
-import {checkRoomPlayerName} from '../util/checkRoomPlayerName';
-import {eventHandlerWithStore} from '../redux/middlewares/store';
+import { InfoPanel } from './info-panel';
+import { GridPlayer } from './grid-player';
+import { Opponents } from './opponents';
+import { checkRoomPlayerName } from '../util/checkRoomPlayerName';
+import { useEffect } from 'react';
+import { useDispatch, useMappedState } from 'redux-react-hook';
+import { SEND_JOIN_ROOM, SEND_QUIT_ROOM } from '@src/client/redux/actions/action-creators';
+import { push } from 'connected-react-router';
+import { useCallback } from 'react';
+import { keysHandler } from '@src/client/util/keys-handler';
+import { IDataState } from "@src/client/redux/reducer";
 
-const mapStateToProps = (state: IDataState) => {
-  return {};
-};
+export const TetrisGame = () => {
 
-const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
-  return {
-    joinRoom: (playerName: string, roomName: string) => dispatch(SEND_JOIN_ROOM(playerName, roomName)),
-    quitRoom: () => dispatch(SEND_QUIT_ROOM()),
-  };
-};
+  const dispatch = useDispatch();
 
-interface IProps {
-  joinRoom: (playerName: string, roomName: string) => void;
-  quitRoom: () => void;
-  location: any
-}
+  const mapState = useCallback(
+    (state: IDataState) => ({
+      playerName: state.playerName,
+      roomName: state.roomName,
+    }),
+    [],
+  );
+  const { playerName, roomName } = useMappedState(mapState);
 
-interface IStateComponent {
-}
+  useEffect(() => {
 
-class TetrisGameComponent extends React.Component<IProps, IStateComponent> {
-  public componentDidMount() {
-    const {joinRoom, location} = this.props;
-    const params = new URLSearchParams(location.search);
-
-    const roomNameOrNull = params.get('roomName');
-    const roomName = roomNameOrNull === null ? '' : roomNameOrNull;
-    const playerNameOrNull = params.get('playerName');
-    const playerName = playerNameOrNull === null ? '' : playerNameOrNull;
-
-    if (!checkRoomPlayerName(roomName, playerName)) {
-      window.location.href = `#/home`;
+    if (playerName === undefined
+      || roomName === undefined
+      || !checkRoomPlayerName(roomName, playerName)
+    ) {
+      dispatch(push('/'));
     } else {
-      joinRoom(playerName, roomName);
+      dispatch(SEND_JOIN_ROOM(playerName, roomName));
     }
 
-    // ---
+    return () => {
+      dispatch(SEND_QUIT_ROOM());
+    };
+  });
 
+  useEffect(() => {
     window.addEventListener(
       'keydown',
-      eventHandlerWithStore,
+      keysHandler(dispatch),
       false,
     );
-  }
 
-  public componentWillUnmount() {
-    const {quitRoom} = this.props;
-    quitRoom();
+    return () => {
+      window.removeEventListener(
+        'keydown',
+        keysHandler(dispatch),
+        false,
+      );
+    };
+  });
 
-    window.removeEventListener(
-      'keydown',
-      eventHandlerWithStore,
-      false,
-    );
-  }
-
-  public render(): React.ReactNode {
-    return (
-      <div className={'column'}>
-        <div className={'row center'}>
-          <div className={'row color8 pad'}>
-            <InfoPanel/>
-            <GridPlayer/>
-          </div>
+  return (
+    <div className={'column'}>
+      <div className={'row center'}>
+        <div className={'row color8 pad'}>
+          <InfoPanel/>
+          <GridPlayer/>
         </div>
-        <Opponents/>
       </div>
-    );
-  }
-}
-
-const TetrisGame = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(TetrisGameComponent);
-
-export {TetrisGame};
+      <Opponents/>
+    </div>
+  );
+};

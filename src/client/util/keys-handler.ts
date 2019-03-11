@@ -1,10 +1,7 @@
-import {Store} from 'redux';
-import {SEND_MOVE_PIECE, SEND_START_GAME} from '@src/client/redux/actions/action-creators';
-import {IDataState} from '@src/client/redux/reducer';
-import {isPlaying} from '@src/client/redux/isPlaying';
+import { Dispatch } from 'redux';
+import {SEND_MOVE_PIECE} from '@src/client/redux/actions/action-creators';
 import {ENUM_PIECES_MOVE} from '@src/common/grid-piece-handler';
 
-const keyEnter = 13;
 const keySpace = 32;
 const keyLeft = 37;
 const keyUp = 38;
@@ -13,18 +10,7 @@ const keyDown = 40;
 const keyS = 83;
 const keyC = 67;
 
-const eventHandler = (store: Store<IDataState>) => (event: any) => {
-
-  const state = store.getState();
-  const dispatch = store.dispatch;
-
-  if (!isPlaying(state)) {
-    if (event.keyCode === keyEnter) {
-      event.preventDefault();
-      dispatch(SEND_START_GAME());
-    }
-    return;
-  }
+export const keysHandler = (dispatch: Dispatch<any>) => (event: any) => {
 
   switch (event.keyCode) {
     case keyLeft:
@@ -63,5 +49,3 @@ const eventHandler = (store: Store<IDataState>) => (event: any) => {
       break;
   }
 };
-
-export {eventHandler};

@@ -3,15 +3,14 @@ import {
   IEventClientSetRoomsPlayersName,
   IEventClientSetRoomState,
 } from '../../../common/socketEventClient';
-import {ENUM_PIECES_MOVE} from '../../../common/grid-piece-handler';
-import {IOptionGame} from '../../../common/ITypeRoomManager';
+import { ENUM_PIECES_MOVE } from '../../../common/grid-piece-handler';
 
 enum EnumAction {
   ON_SET_ROOM_STATE,
   ON_SET_ROOMS_PLAYERS_NAME,
   ON_SET_ERROR,
   SEND_START_GAME,
-  SEND_UPDATE_OPTION_GAME,
+  SEND_TOGGLE_OPTION_GAME,
   SEND_MOVE_PIECE,
   SEND_ROOM_PLAYER_NAME,
   SEND_JOIN_ROOM,
@@ -93,17 +92,17 @@ const SEND_START_GAME = (): ISendStartGame => {
   };
 };
 
-// SEND_UPDATE_OPTION_GAME
+// SEND_TOGGLE_OPTION_GAME
 
 interface ISendUpdateOptionGame extends IAction {
-  readonly type: EnumAction.SEND_UPDATE_OPTION_GAME,
-  readonly optionGame: IOptionGame,
+  readonly type: EnumAction.SEND_TOGGLE_OPTION_GAME;
+  readonly toToggle: string;
 }
 
-const SEND_UPDATE_OPTION_GAME = (optionGame: IOptionGame): ISendUpdateOptionGame => {
+const SEND_TOGGLE_OPTION_GAME = (toToggle: string): ISendUpdateOptionGame => {
   return {
-    type: EnumAction.SEND_UPDATE_OPTION_GAME,
-    optionGame,
+    type: EnumAction.SEND_TOGGLE_OPTION_GAME,
+    toToggle,
   };
 };
 
@@ -210,7 +209,7 @@ export {
   ISendStartGame,
   SEND_START_GAME,
   ISendUpdateOptionGame,
-  SEND_UPDATE_OPTION_GAME,
+  SEND_TOGGLE_OPTION_GAME,
   ISendRoomPlayerName,
   SEND_ROOM_PLAYER_NAME,
   IRefresh,

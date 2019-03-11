@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { IRouterState } from '../redux/reducer';
 import { useCallback } from 'react';
 import { useMappedState } from 'redux-react-hook';
 import { chooseWallType, ENUM_PIECES, GRID_WIDTH } from '@src/common/grid-piece-handler';
-import { IPlayerClient, IRoomPlayersName } from '@src/common/socketEventClient';
+import { IPlayerClient } from '@src/common/socketEventClient';
+import { IDataState } from "@src/client/redux/reducer";
 
-const opponentsToInfoRenders = (opponents: IRoomPlayersName[]): Array<{
+const opponentsToInfoRenders = (opponents: IPlayerClient[]): Array<{
   grid: ENUM_PIECES[][];
   player: IPlayerClient;
 }> => {
@@ -43,15 +43,15 @@ const opponentsToInfoRenders = (opponents: IRoomPlayersName[]): Array<{
 const Opponents = () => {
 
   const mapState = useCallback(
-    (state: IRouterState) => ({
-      opponents: state.data.roomState === undefined ? []
-        : state.data.roomState.players.filter((p) => p.playerName !== state.data.playerName),
+    (state: IDataState) => ({
+      opponents: state.roomState === undefined ? []
+        : state.roomState.players.filter((p) => p.playerName !== state.playerName),
     }),
     [],
   );
   const { opponents } = useMappedState(mapState);
 
-
+  const infoRenders = opponentsToInfoRenders(opponents);
 
   return (
     <div className={'row wrap center'}>

@@ -1,87 +1,46 @@
 import * as React from 'react';
-import {connect} from 'react-redux';
-import {
-  ReduxAction, SEND_START_GAME, SEND_UPDATE_OPTION_GAME,
-} from '../redux/actions/action-creators';
-import {Dispatch} from 'redux';
-import {IDataState} from '../redux/reducer';
-import {store} from '../redux/middlewares/store';
-import {IOptionGame} from '../../common/ITypeRoomManager';
+import { IOptionGame } from '../../common/ITypeRoomManager';
+import { useDispatch, useMappedState } from 'redux-react-hook';
+import { push } from 'connected-react-router';
+import { useCallback } from 'react';
+import { SEND_START_GAME, SEND_TOGGLE_OPTION_GAME } from '@src/client/redux/actions/action-creators';
+import { IDataState } from "@src/client/redux/reducer";
 
 const mp3 = require('../assets/Original_Tetris_theme.mp3');
 
-const mapStateToProps = (state: IDataState): {
-  optionGame: IOptionGame | undefined;
-  playing: boolean;
-  isMaster: boolean;
-} => {
+const InfoPanel = () => {
 
-  const room = state.roomState;
-  if (room === undefined) {
-    return {
-      optionGame: undefined,
-      playing: false,
-      isMaster: false,
-    };
-  }
+  const dispatch = useDispatch();
 
-  const player = room.players.find((p) => p.playerName === state.playerName);
-
-  return {
-    optionGame: room.optionGame,
-    playing: room.playing,
-    isMaster: player !== undefined ? player.isMaster : false,
-  };
-};
-
-const mapDispatchToProps = (dispatch: Dispatch<ReduxAction>) => {
-  return {
-    onChangeAddWallLine: (): void => {
-      const roomState = store.getState().roomState;
-      if (roomState === undefined) {
-        return;
+  const mapState = useCallback(
+    (state: IDataState): {
+      optionGame: IOptionGame | undefined;
+      playing: boolean;
+      isMaster: boolean;
+    } => {
+      const room = state.roomState;
+      if (room === undefined) {
+        return {
+          optionGame: undefined,
+          playing: false,
+          isMaster: false,
+        };
       }
 
-      const oldOption = roomState.optionGame;
-      dispatch(SEND_UPDATE_OPTION_GAME({
-        ...oldOption,
-        addWallLine: !oldOption.addWallLine,
-      }));
+      const player = room.players.find((p) => p.playerName === state.playerName);
+
+      return {
+        optionGame: room.optionGame,
+        playing: room.playing,
+        isMaster: player !== undefined ? player.isMaster : false,
+      };
     },
-    onChangeGroundResizer: (): void => {
-      const roomState = store.getState().roomState;
-      if (roomState === undefined) {
-        return;
-      }
-
-      const oldOption = roomState.optionGame;
-      dispatch(SEND_UPDATE_OPTION_GAME({
-        ...oldOption,
-        groundResizer: !oldOption.groundResizer,
-      }));
-    },
-    onClickStartGame: (): void => {
-      dispatch(SEND_START_GAME());
-    },
-  };
-};
-
-interface IProps {
-  optionGame: IOptionGame | undefined,
-  playing: boolean,
-  isMaster: boolean,
-
-  onChangeAddWallLine: () => void,
-  onChangeGroundResizer: () => void,
-  onClickStartGame: () => void,
-}
-
-const InfoPanelComponent = (props: IProps) => {
-
-  const {playing, optionGame, onChangeAddWallLine, onChangeGroundResizer, onClickStartGame, isMaster} = props;
+    [],
+  );
+  const { isMaster, optionGame, playing } = useMappedState(mapState);
 
   const onClickHome = () => {
-    window.location.href = `#/home`;
+    dispatch(push('/'));
   };
 
   return (
@@ -117,7 +76,7 @@ const InfoPanelComponent = (props: IProps) => {
                   name="addWallLine"
                   type="checkbox"
                   checked={optionGame.addWallLine}
-                  onChange={() => onChangeAddWallLine()}/>
+                  onChange={() => dispatch(SEND_TOGGLE_OPTION_GAME('addWallLine'))}/>
                 : Add malus lines to adversers when lines are completed.
               </label>
               <label className={'row'}>
@@ -125,10 +84,11 @@ const InfoPanelComponent = (props: IProps) => {
                   name="groundResizer"
                   type="checkbox"
                   checked={optionGame.groundResizer}
-                  onChange={() => onChangeGroundResizer()}/>
+                  onChange={() => dispatch(SEND_TOGGLE_OPTION_GAME('groundResizer'))}/>
                 : Increase the height of the Tetris grid in multiplayer mode.
               </label>
-              <button className={'font_retro font_white font_button buttonPlay'} onClick={() => onClickStartGame()}>
+              <button className={'font_retro font_white font_button buttonPlay'}
+                      onClick={() => dispatch(SEND_START_GAME())}>
                 Play!
               </button>
             </div>
@@ -139,16 +99,11 @@ const InfoPanelComponent = (props: IProps) => {
       </div>
       <div className={'row'}>
         <div className={'column'}>
-          <audio controls loop autoPlay src={mp3} className={'color0'}/>
+          <audio controls={true} loop={true} autoPlay={true} src={mp3} className={'color0'}/>
         </div>
       </div>
     </div>
   );
 };
 
-const InfoPanel = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(InfoPanelComponent);
-
-export {InfoPanel};
+export { InfoPanel };

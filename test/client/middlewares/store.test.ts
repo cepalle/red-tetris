@@ -1,11 +1,11 @@
 import {describe, it} from 'mocha';
-import {store} from '../../../src/client/redux/middlewares/store';
+import {store} from '../../../src/client/redux/store';
 import {
   ON_SET_ERROR,
   SEND_MOVE_PIECE,
   SEND_ROOM_PLAYER_NAME,
   SEND_START_GAME,
-  SEND_UPDATE_OPTION_GAME,
+  SEND_TOGGLE_OPTION_GAME,
 } from '../../../src/client/redux/actions/action-creators';
 import {ENUM_PIECES_MOVE} from '../../../src/common/grid-piece-handler';
 import {EnumError} from '../../../src/common/socketEventClient';
@@ -22,8 +22,8 @@ describe('store.test.ts', () => {
     store.dispatch(SEND_START_GAME());
   });
 
-  it('SEND_UPDATE_OPTION_GAME', () => {
-    store.dispatch(SEND_UPDATE_OPTION_GAME({
+  it('SEND_TOGGLE_OPTION_GAME', () => {
+    store.dispatch(SEND_TOGGLE_OPTION_GAME({
       groundResizer: true,
       addWallLine: true,
     }));

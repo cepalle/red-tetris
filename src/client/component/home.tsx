@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { IRouterState } from '../redux/reducer';
 import {
   SEND_SUB_ROOMS_PLAYERS_NAME,
   SEND_UN_SUB_ROOMS_PLAYERS_NAME,
@@ -10,6 +9,7 @@ import { useDispatch, useMappedState } from 'redux-react-hook';
 import { useCallback } from 'react';
 import { IRoomPlayersName } from '@src/common/socketEventClient';
 import { push } from 'connected-react-router';
+import { IDataState } from "@src/client/redux/reducer";
 
 export const setChange = (set: (i: any) => void) => (event: any) => set(event.target.value);
 
@@ -38,8 +38,8 @@ export const Home = () => {
   const dispatch = useDispatch();
 
   const mapState = useCallback(
-    (state: IRouterState) => ({
-      roomsPlayersName: state.data.roomsPlayersName,
+    (state: IDataState) => ({
+      roomsPlayersName: state.roomsPlayersName,
     }),
     [],
   );
@@ -62,7 +62,7 @@ export const Home = () => {
 
     if (checkRoomPlayerName(roomNameInput, playerNameInput) &&
       checkRoomPlayerNameExiste(roomNameInput, playerNameInput, roomsPlayersName)) {
-      dispatch(push(`#/game?roomName=${roomNameInput}&playerName=${playerNameInput}`))
+      dispatch(push(`/game`))
     }
   };
 

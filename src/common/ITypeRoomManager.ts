@@ -1,5 +1,5 @@
-import {ENUM_PIECES, IPiece, IPos} from '@src/common/grid-piece-handler';
-import {Socket} from 'socket.io';
+import { ENUM_PIECES, IPiece, IPos } from '@src/common/grid-piece-handler';
+import { Socket } from 'socket.io';
 
 interface IPlayer {
   readonly playerName: string;

@@ -1,4 +1,4 @@
-import {IDataState} from '@src/client/redux/reducer';
+import {IDataState} from '../redux/reducer';
 
 const isPlaying = (state: IDataState): boolean => {
   if (state.playerName === undefined || state.roomState === undefined) {
