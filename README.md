@@ -1,6 +1,6 @@
 ## Overview
 
-Full Stack TypeScript Multiplayer Tetris Game build with node, socket.io, React, Redux and Hooks.
+Full Stack TypeScript Multiplayer Tetris Game build with Node, Socket.io, React, Redux and Hooks.
 
 ## Run it locally
 
