@@ -53,16 +53,15 @@ const InfoPanel = () => {
 
           <div className={'font_white pad'}>
             <div className={'pad color0'}>
-              <span className={'font_color_key'}>{'<keyRight>'}</span>{': move right'}<br/>
-              <span className={'font_color_key'}>{'<keyLeft>'}</span>{': move left'}<br/>
-              <span className={'font_color_key'}>{'<keyDown>'}</span>{': move down'}<br/>
-              <span className={'font_color_key'}>{'<keyUp>'}</span>{': rotate right'}<br/>
-              <span className={'font_color_key'}>{'<keySpace>'}</span>{': place the piece'}<br/>
-              <span className={'font_color_key'}>{'<keyEnter>'}</span>{': start the game if your are master'}<br/>
+              <span className={'font_color_key'}>{'<keyRight>'}</span>{': Move right'}<br/>
+              <span className={'font_color_key'}>{'<keyLeft>'}</span>{': Move left'}<br/>
+              <span className={'font_color_key'}>{'<keyDown>'}</span>{': Move down'}<br/>
+              <span className={'font_color_key'}>{'<keyUp>'}</span>{': Rotate right'}<br/>
+              <span className={'font_color_key'}>{'<keySpace>'}</span>{': Place the piece'}<br/>
               <span className={'font_color_key'}>{'<keyS>'}</span>
               {'or'}
               <span
-                className={'font_color_key'}>{'<keyC>'}</span>{': switch the current piece with the next piece'}<br/>
+                className={'font_color_key'}>{'<keyC>'}</span>{': Switch the current piece with the next piece'}<br/>
             </div>
 
             {!playing && optionGame !== undefined && isMaster &&
