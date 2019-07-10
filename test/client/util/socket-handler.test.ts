@@ -33,5 +33,5 @@ describe('socket-handler.test.ts', () => {
     onAll(storeMock as any)();
   });
 
-  state.socket.disconnect();
+  state.client.disconnect();
 });

@@ -70,7 +70,7 @@ const reducerAddPlayer = (
   }
 
   const isMaster = state.players.length === 0;
-  const player = Player.factPlayer(playerName, socket, isMaster, GRID_HEIGHT);
+  const player = Player.newPlayer(playerName, socket, isMaster, GRID_HEIGHT);
 
   return {
     ...state,
@@ -165,7 +165,6 @@ const reducerStartGame = (
   state: IRoomState,
   action: IActionStartGame,
 ): IRoomState => {
-  // TODO set interval, use option Game
   const flow = Piece.genFlow(20);
 
   const gridHeight = state.optionGame.groundResizer ? GRID_HEIGHT + state.players.length * 2 : GRID_HEIGHT;

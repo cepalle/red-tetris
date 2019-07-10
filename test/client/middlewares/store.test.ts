@@ -40,5 +40,5 @@ describe('store.test.ts', () => {
       }));
   });
 
-  store.getState().socket.disconnect();
+  store.getState().client.disconnect();
 });

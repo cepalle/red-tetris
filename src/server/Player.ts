@@ -4,7 +4,7 @@ import {Socket} from 'socket.io';
 
 class Player {
 
-  static factPlayer = (playerName: string, socket: Socket, isMaster: boolean, gridHeight: number): IPlayer => {
+  static newPlayer = (playerName: string, socket: Socket, isMaster: boolean, gridHeight: number): IPlayer => {
 
     return {
       playerName: playerName,

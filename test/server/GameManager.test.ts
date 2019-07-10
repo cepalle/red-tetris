@@ -1,9 +1,9 @@
 import {describe} from 'mocha';
-import {GamesManager} from '../../src/server/GamesManager';
+import {GamesDispatcher} from '../../src/server/GamesDispatcher';
 import {ADD_PLAYER, DEL_PLAYER} from '../../src/server/Game';
 
 describe('GameManager.test.ts', () => {
-  const gameManager = new GamesManager();
+  const gameManager = new GamesDispatcher();
   const socket: any = {
     emit: (...arg: any[]) => {
       // console.log('emit: ', arg);
@@ -11,7 +11,7 @@ describe('GameManager.test.ts', () => {
     id: '123',
   };
 
-  it('GamesManager', () => {
+  it('GamesDispatcher', () => {
     gameManager.dispatch({
       roomName: 'room1',
       actionRoom: ADD_PLAYER('playerName', socket),

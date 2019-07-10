@@ -7,7 +7,7 @@ interface IActionRooms {
   actionRoom: ActionRoom
 }
 
-class GamesManager {
+class GamesDispatcher {
 
   games: Game[];
 
@@ -16,18 +16,6 @@ class GamesManager {
   }
 
   public dispatch = (action: IActionRooms): void => {
-    this.dispatchMain(action);
-
-    this.games.forEach((g) => {
-      if (g.nbPlayer() === 0) {
-        g.unsubscribe();
-      }
-    });
-    this.games = this.games.filter((r) => r.nbPlayer() > 0);
-  };
-
-  private dispatchMain = (action: IActionRooms): void => {
-
     const {roomName, socketId, actionRoom} = action;
 
     if (roomName !== undefined) {
@@ -36,22 +24,22 @@ class GamesManager {
         room = new Game(roomName);
         this.games.push(room);
       }
-
       room.dispatch(actionRoom);
-      return;
-    }
-
-    if (socketId !== undefined) {
+    } else if (socketId !== undefined) {
       this.games.forEach((r) => {
         if (r.hasSocketId(socketId)) {
           r.dispatch(actionRoom);
         }
       });
-      return;
     }
 
+    this.games.forEach((g) => {
+      if (g.nbPlayer() === 0) {
+        g.unsubscribe();
+      }
+    });
+    this.games = this.games.filter((r) => r.nbPlayer() > 0);
   };
-
 }
 
-export {GamesManager};
+export {GamesDispatcher};

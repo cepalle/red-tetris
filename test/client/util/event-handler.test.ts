@@ -55,5 +55,5 @@ describe('event-handler.test.ts', () => {
 
   });
 
-  state.socket.disconnect();
+  state.client.disconnect();
 });
