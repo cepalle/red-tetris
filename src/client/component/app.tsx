@@ -25,8 +25,6 @@ const App = () => {
   );
   const { connected, playerName, roomName } = useMappedState(mapState);
 
-  console.log('App', connected);
-
   if (!connected) {
     return  <OffLineComponent/>;
   }
