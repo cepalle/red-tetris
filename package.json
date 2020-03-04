@@ -68,9 +68,9 @@
     "webpack-dev-server": "^3.7.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.0",
-    "@babel/preset-env": "^7.6.0",
-    "@types/chai": "^4.2.1",
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
+    "@types/chai": "^4.2.10",
     "@types/mocha": "^5.2.7",
     "babel-cli": "^6.26.0",
     "babel-watch": "^7.0.0",
@@ -87,8 +87,8 @@
     "nyc": "^13.3.0",
     "style-loader": "^0.20.3",
     "ts-node": "^7.0.1",
-    "tsconfig-paths": "^3.8.0",
-    "tslint": "^5.19.0",
+    "tsconfig-paths": "^3.9.0",
+    "tslint": "^5.20.1",
     "tslint-react": "^3.6.0"
   },
   "homepage": "http://cepalle.github.io/red-tetris"
